@@ -259,7 +259,7 @@ public:
      * implementation returns 0 (no extra features) */
     virtual Features supportedFeatures() const
     {
-        return 0;
+        return nullptr;
     }
 
     /** Sets the menu to be shown when the new view button is clicked.
@@ -364,6 +364,8 @@ private Q_SLOTS:
     void searchBarDestroyed();
 
 private:
+    Q_DISABLE_COPY(ViewContainer)
+
     void forgetView(QWidget *view);
 
     NavigationVisibility _navigationVisibility;
@@ -413,7 +415,7 @@ protected:
     void navigationVisibilityChanged(NavigationVisibility mode) Q_DECL_OVERRIDE;
     void navigationPositionChanged(NavigationPosition position) Q_DECL_OVERRIDE;
     void navigationTabWidthExpandingChanged(bool expand) Q_DECL_OVERRIDE;
-    void navigationTextModeChanged(bool mode) Q_DECL_OVERRIDE;
+    void navigationTextModeChanged(bool useTextWidth) Q_DECL_OVERRIDE;
     void moveViewWidget(int fromIndex, int toIndex) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
@@ -439,6 +441,8 @@ Q_SIGNALS:
     void closeTab(ViewContainer *self, QWidget *activeView);
 
 private:
+    Q_DISABLE_COPY(TabbedViewContainer)
+
     void dynamicTabBarVisibility();
     void setTabBarVisible(bool visible);
     void setTabActivity(int index, bool activity);

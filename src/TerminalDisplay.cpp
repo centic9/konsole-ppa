@@ -32,7 +32,7 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QFileInfo>
-#include <QGridLayout>
+#include <QVBoxLayout>
 #include <QAction>
 #include <QFontDatabase>
 #include <QLabel>
@@ -55,8 +55,8 @@
 #include <KIO/DropJob>
 #include <KJobWidgets>
 #include <KMessageBox>
+#include <KMessageWidget>
 #include <KIO/StatJob>
-#include <KWindowSystem>
 
 // Konsole
 #include "Filter.h"
@@ -131,6 +131,26 @@ const ColorEntry* TerminalDisplay::colorTable() const
 {
     return _colorTable;
 }
+
+void TerminalDisplay::updateScrollBarPalette()
+{
+    QColor backgroundColor = _colorTable[DEFAULT_BACK_COLOR];
+    backgroundColor.setAlphaF(_opacity);
+    QPalette p = palette();
+    p.setColor(QPalette::Window, backgroundColor);
+
+    //this is a workaround to add some readability to old themes like Fusion
+    //changing the light value for button a bit makes themes like fusion, windows and oxygen way more readable and pleasing
+    QColor buttonColor;
+    buttonColor.setHsvF(backgroundColor.hueF(), backgroundColor.saturationF(), backgroundColor.valueF() + (backgroundColor.valueF() < 0.5 ? 0.2 : -0.2));
+    p.setColor(QPalette::Button, buttonColor);
+
+    p.setColor(QPalette::WindowText, _colorTable[DEFAULT_FORE_COLOR]);
+    p.setColor(QPalette::ButtonText, _colorTable[DEFAULT_FORE_COLOR]);
+    _scrollBar->setPalette(p);
+
+}
+
 void TerminalDisplay::setBackgroundColor(const QColor& color)
 {
     _colorTable[DEFAULT_BACK_COLOR] = color;
@@ -139,9 +159,7 @@ void TerminalDisplay::setBackgroundColor(const QColor& color)
     p.setColor(backgroundRole(), color);
     setPalette(p);
 
-    // Avoid propagating the palette change to the scroll bar
-    _scrollBar->setPalette(QApplication::palette());
-
+    updateScrollBarPalette();
     update();
 }
 QColor TerminalDisplay::getBackgroundColor() const
@@ -153,12 +171,14 @@ void TerminalDisplay::setForegroundColor(const QColor& color)
 {
     _colorTable[DEFAULT_FORE_COLOR] = color;
 
+    updateScrollBarPalette();
     update();
 }
 void TerminalDisplay::setColorTable(const ColorEntry table[])
 {
-    for (int i = 0; i < TABLE_COLORS; i++)
+    for (int i = 0; i < TABLE_COLORS; i++) {
         _colorTable[i] = table[i];
+    }
 
     setBackgroundColor(_colorTable[DEFAULT_BACK_COLOR]);
 }
@@ -171,8 +191,9 @@ void TerminalDisplay::setColorTable(const ColorEntry table[])
 
 static inline bool isLineCharString(const QString& string)
 {
-    if (string.length() == 0)
+    if (string.length() == 0) {
         return false;
+    }
 
     return isSupportedLineChar(string.at(0).unicode());
 }
@@ -198,8 +219,9 @@ void TerminalDisplay::fontChange(const QFont&)
         }
     }
 
-    if (_fontWidth < 1)
+    if (_fontWidth < 1) {
         _fontWidth = 1;
+    }
 
     _fontAscent = fm.ascent();
 
@@ -214,13 +236,15 @@ void TerminalDisplay::setVTFont(const QFont& f)
     QFontMetrics fontMetrics(newFont);
 
     // This check seems extreme and semi-random
-    if ((fontMetrics.height() > height()) || (fontMetrics.maxWidth() > width()))
+    if ((fontMetrics.height() > height()) || (fontMetrics.maxWidth() > width())) {
         return;
+    }
 
     // hint that text should be drawn without anti-aliasing.
     // depending on the user's font configuration, this may not be respected
-    if (!_antialiasText)
+    if (!_antialiasText) {
         newFont.setStyleStrategy(QFont::StyleStrategy(newFont.styleStrategy() | QFont::NoAntialias));
+    }
 
     // experimental optimization.  Konsole assumes that the terminal is using a
     // mono-spaced font, in which case kerning information should have an effect.
@@ -310,8 +334,9 @@ namespace Konsole
 QAccessibleInterface* accessibleInterfaceFactory(const QString &key, QObject *object)
 {
     Q_UNUSED(key)
-    if (TerminalDisplay *display = qobject_cast<TerminalDisplay*>(object))
+    if (TerminalDisplay *display = qobject_cast<TerminalDisplay*>(object)) {
         return new TerminalDisplayAccessible(display);
+    }
     return nullptr;
 }
 
@@ -328,7 +353,7 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
     : QWidget(parent)
     , _screenWindow(nullptr)
     , _bellMasked(false)
-    , _gridLayout(nullptr)
+    , _verticalLayout(new QVBoxLayout(this))
     , _fontHeight(1)
     , _fontWidth(1)
     , _fontAscent(1)
@@ -342,12 +367,14 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
     , _resizing(false)
     , _showTerminalSizeHint(true)
     , _bidiEnabled(false)
+    , _isPrimaryScreen(true)
     , _actSel(0)
     , _wordSelectionMode(false)
     , _lineSelectionMode(false)
-    , _preserveLineBreaks(false)
+    , _preserveLineBreaks(true)
     , _columnSelectionMode(false)
     , _autoCopySelectedText(false)
+    , _copyTextAsHTML(true)
     , _middleClickPasteMode(Enum::PasteFromX11Selection)
     , _scrollbarLocation(Enum::ScrollBarRight)
     , _scrollFullPage(false)
@@ -367,7 +394,7 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
     , _resizeWidget(nullptr)
     , _resizeTimer(nullptr)
     , _flowControlWarningEnabled(false)
-    , _outputSuspendedLabel(nullptr)
+    , _outputSuspendedMessageWidget(nullptr)
     , _lineSpacing(0)
     , _blendColor(qRgba(0, 0, 0, 0xff))
     , _filterChain(new TerminalImageFilterChain())
@@ -377,9 +404,12 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
     , _useFontLineCharacters(false)
     , _printerFriendly(false)
     , _sessionController(nullptr)
+    , _trimLeadingSpaces(false)
     , _trimTrailingSpaces(false)
     , _margin(1)
     , _centerContents(false)
+    , _readOnlyMessageWidget(nullptr)
+    , _readOnly(false)
     , _opacity(1.0)
 {
     // terminal applications are not designed with Right-To-Left in mind,
@@ -390,6 +420,7 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
 
     // create scroll bar for scrolling output up and down
     _scrollBar = new QScrollBar(this);
+    _scrollBar->setAutoFillBackground(false);
     // set the scroll bar's slider to occupy the whole area of the scroll bar initially
     setScroll(0, 0);
     _scrollBar->setCursor(Qt::ArrowCursor);
@@ -428,10 +459,18 @@ TerminalDisplay::TerminalDisplay(QWidget* parent)
     // that TerminalDisplay will handle repainting its entire area.
     setAttribute(Qt::WA_OpaquePaintEvent);
 
-    _gridLayout = new QGridLayout;
-    _gridLayout->setContentsMargins(0, 0, 0, 0);
+    // Add the stretch item once, the KMessageWidgets are inserted at index 0.
+    _verticalLayout->addStretch();
+    _verticalLayout->setSpacing(0);
 
-    setLayout(_gridLayout);
+    setLayout(_verticalLayout);
+
+    // Take the scrollbar into account and add a margin to the layout. Without the timer the scrollbar width
+    // is garbage.
+    QTimer::singleShot(0, this, [this]() {
+        const int scrollBarWidth = _scrollBar->isVisible() ? geometry().intersected(_scrollBar->geometry()).width() : 0;
+        _verticalLayout->setContentsMargins(0, 0, scrollBarWidth, 0);
+    });
 
     new AutoScrollHandler(this);
 
@@ -446,8 +485,13 @@ TerminalDisplay::~TerminalDisplay()
     disconnect(_blinkTextTimer);
     disconnect(_blinkCursorTimer);
 
+    delete _readOnlyMessageWidget;
+    delete _outputSuspendedMessageWidget;
     delete[] _image;
     delete _filterChain;
+
+    _readOnlyMessageWidget = nullptr;
+    _outputSuspendedMessageWidget = nullptr;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -513,58 +557,79 @@ static void drawLineChar(QPainter& paint, int x, int y, int w, int h, uchar code
     const quint32 toDraw = LineChars[code];
 
     //Top _lines:
-    if ((toDraw & TopL) != 0u)
+    if ((toDraw & TopL) != 0u) {
         paint.drawLine(cx - 1, y, cx - 1, cy - 2);
-    if ((toDraw & TopC) != 0u)
+    }
+    if ((toDraw & TopC) != 0u) {
         paint.drawLine(cx, y, cx, cy - 2);
-    if ((toDraw & TopR) != 0u)
+    }
+    if ((toDraw & TopR) != 0u) {
         paint.drawLine(cx + 1, y, cx + 1, cy - 2);
+    }
 
     //Bot _lines:
-    if ((toDraw & BotL) != 0u)
+    if ((toDraw & BotL) != 0u) {
         paint.drawLine(cx - 1, cy + 2, cx - 1, ey);
-    if ((toDraw & BotC) != 0u)
+    }
+    if ((toDraw & BotC) != 0u) {
         paint.drawLine(cx, cy + 2, cx, ey);
-    if ((toDraw & BotR) != 0u)
+    }
+    if ((toDraw & BotR) != 0u) {
         paint.drawLine(cx + 1, cy + 2, cx + 1, ey);
+    }
 
     //Left _lines:
-    if ((toDraw & LeftT) != 0u)
+    if ((toDraw & LeftT) != 0u) {
         paint.drawLine(x, cy - 1, cx - 2, cy - 1);
-    if ((toDraw & LeftC) != 0u)
+    }
+    if ((toDraw & LeftC) != 0u) {
         paint.drawLine(x, cy, cx - 2, cy);
-    if ((toDraw & LeftB) != 0u)
+    }
+    if ((toDraw & LeftB) != 0u) {
         paint.drawLine(x, cy + 1, cx - 2, cy + 1);
+    }
 
     //Right _lines:
-    if ((toDraw & RightT) != 0u)
+    if ((toDraw & RightT) != 0u) {
         paint.drawLine(cx + 2, cy - 1, ex, cy - 1);
-    if ((toDraw & RightC) != 0u)
+    }
+    if ((toDraw & RightC) != 0u) {
         paint.drawLine(cx + 2, cy, ex, cy);
-    if ((toDraw & RightB) != 0u)
+    }
+    if ((toDraw & RightB) != 0u) {
         paint.drawLine(cx + 2, cy + 1, ex, cy + 1);
+    }
 
     //Intersection points.
-    if ((toDraw & Int11) != 0u)
+    if ((toDraw & Int11) != 0u) {
         paint.drawPoint(cx - 1, cy - 1);
-    if ((toDraw & Int12) != 0u)
+    }
+    if ((toDraw & Int12) != 0u) {
         paint.drawPoint(cx, cy - 1);
-    if ((toDraw & Int13) != 0u)
+    }
+    if ((toDraw & Int13) != 0u) {
         paint.drawPoint(cx + 1, cy - 1);
+    }
 
-    if ((toDraw & Int21) != 0u)
+    if ((toDraw & Int21) != 0u) {
         paint.drawPoint(cx - 1, cy);
-    if ((toDraw & Int22) != 0u)
+    }
+    if ((toDraw & Int22) != 0u) {
         paint.drawPoint(cx, cy);
-    if ((toDraw & Int23) != 0u)
+    }
+    if ((toDraw & Int23) != 0u) {
         paint.drawPoint(cx + 1, cy);
+    }
 
-    if ((toDraw & Int31) != 0u)
+    if ((toDraw & Int31) != 0u) {
         paint.drawPoint(cx - 1, cy + 1);
-    if ((toDraw & Int32) != 0u)
+    }
+    if ((toDraw & Int32) != 0u) {
         paint.drawPoint(cx, cy + 1);
-    if ((toDraw & Int33) != 0u)
+    }
+    if ((toDraw & Int33) != 0u) {
         paint.drawPoint(cx + 1, cy + 1);
+    }
 }
 
 static void drawOtherChar(QPainter& paint, int x, int y, int w, int h, uchar code)
@@ -586,6 +651,9 @@ static void drawOtherChar(QPainter& paint, int x, int y, int w, int h, uchar cod
             paint.drawLine(cx + xHalfGap, cy - 1, ex, cy - 1);
             paint.drawLine(cx + xHalfGap, cy + 1, ex, cy + 1);
             // No break!
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
+            Q_FALLTHROUGH();
+#endif
         case 0x4C: // BOX DRAWINGS LIGHT DOUBLE DASH HORIZONTAL
             paint.drawLine(x, cy, cx - xHalfGap - 1, cy);
             paint.drawLine(cx + xHalfGap, cy, ex, cy);
@@ -596,6 +664,9 @@ static void drawOtherChar(QPainter& paint, int x, int y, int w, int h, uchar cod
             paint.drawLine(cx - 1, cy + yHalfGap, cx - 1, ey);
             paint.drawLine(cx + 1, cy + yHalfGap, cx + 1, ey);
             // No break!
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
+            Q_FALLTHROUGH();
+#endif
         case 0x4E: // BOX DRAWINGS LIGHT DOUBLE DASH VERTICAL
             paint.drawLine(cx, y, cx, cy - yHalfGap - 1);
             paint.drawLine(cx, cy + yHalfGap, cx, ey);
@@ -661,10 +732,11 @@ void TerminalDisplay::drawLineCharString(QPainter& painter, int x, int y, const 
 
     for (int i = 0 ; i < str.length(); i++) {
         const uchar code = str[i].cell();
-        if (LineChars[code] != 0u)
+        if (LineChars[code] != 0u) {
             drawLineChar(painter, x + (_fontWidth * i), y, _fontWidth, _fontHeight, code);
-        else
+        } else {
             drawOtherChar(painter, x + (_fontWidth * i), y, _fontWidth, _fontHeight, code);
+        }
     }
 
     painter.setPen(originalPen);
@@ -705,6 +777,7 @@ void TerminalDisplay::setOpacity(qreal opacity)
     }*/
 
     _blendColor = color.rgba();
+    updateScrollBarPalette();
 }
 
 void TerminalDisplay::setWallpaper(ColorSchemeWallpaper::Ptr p)
@@ -721,34 +794,26 @@ void TerminalDisplay::drawBackground(QPainter& painter, const QRect& rect, const
     // brush from the scroll-bar's palette, to give the effect of the scroll-bar
     // being outside of the terminal display and visual consistency with other KDE
     // applications.
-    //
-    QRect scrollBarArea = _scrollBar->isVisible() ?
-                          rect.intersected(_scrollBar->geometry()) :
-                          QRect();
-    QRegion contentsRegion = QRegion(rect).subtracted(scrollBarArea);
-    QRect contentsRect = contentsRegion.boundingRect();
 
     if (useOpacitySetting && !_wallpaper->isNull() &&
-            _wallpaper->draw(painter, contentsRect, _opacity)) {
+            _wallpaper->draw(painter, rect, _opacity)) {
     } else if (qAlpha(_blendColor) < 0xff && useOpacitySetting) {
 #if defined(Q_OS_MACOS)
         // TODO - On MacOS, using CompositionMode doesn't work.  Altering the
         //        transparency in the color scheme alters the brightness.
-        painter.fillRect(contentsRect, backgroundColor);
+        painter.fillRect(rect, backgroundColor);
 #else
         QColor color(backgroundColor);
         color.setAlpha(qAlpha(_blendColor));
 
         painter.save();
         painter.setCompositionMode(QPainter::CompositionMode_Source);
-        painter.fillRect(contentsRect, color);
+        painter.fillRect(rect, color);
         painter.restore();
 #endif
     } else {
-        painter.fillRect(contentsRect, backgroundColor);
+        painter.fillRect(rect, backgroundColor);
     }
-
-    painter.fillRect(scrollBarArea, _scrollBar->palette().background());
 }
 
 void TerminalDisplay::drawCursor(QPainter& painter,
@@ -758,8 +823,9 @@ void TerminalDisplay::drawCursor(QPainter& painter,
                                  bool& invertCharacterColor)
 {
     // don't draw cursor which is currently blinking
-    if (_cursorBlinking)
+    if (_cursorBlinking) {
         return;
+    }
 
     // shift rectangle top down one pixel to leave some space
     // between top and bottom
@@ -808,12 +874,14 @@ void TerminalDisplay::drawCharacters(QPainter& painter,
                                      bool invertCharacterColor)
 {
     // don't draw text which is currently blinking
-    if (_textBlinking && ((style->rendition & RE_BLINK) != 0))
+    if (_textBlinking && ((style->rendition & RE_BLINK) != 0)) {
         return;
+    }
 
     // don't draw concealed characters
-    if ((style->rendition & RE_CONCEAL) != 0)
+    if ((style->rendition & RE_CONCEAL) != 0) {
         return;
+    }
 
     // setup bold and underline
     bool useBold = (((style->rendition & RE_BOLD) != 0) && _boldIntense) || font().bold();
@@ -875,15 +943,17 @@ void TerminalDisplay::drawTextFragment(QPainter& painter ,
     const QColor backgroundColor = style->backgroundColor.color(_colorTable);
 
     // draw background if different from the display's background color
-    if (backgroundColor != palette().background().color())
+    if (backgroundColor != palette().background().color()) {
         drawBackground(painter, rect, backgroundColor,
                        false /* do not use transparency */);
+    }
 
     // draw cursor shape if the current character is the cursor
     // this may alter the foreground and background colors
     bool invertCharacterColor = false;
-    if ((style->rendition & RE_CURSOR) != 0)
+    if ((style->rendition & RE_CURSOR) != 0) {
         drawCursor(painter, rect, foregroundColor, backgroundColor, invertCharacterColor);
+    }
 
     // draw text
     drawCharacters(painter, rect, text, style, invertCharacterColor);
@@ -929,11 +999,21 @@ uint TerminalDisplay::randomSeed() const
 // Instead only new lines have to be drawn
 void TerminalDisplay::scrollImage(int lines , const QRect& screenWindowRegion)
 {
+    // return if there is nothing to do
+    if ((lines == 0) || (_image == nullptr)) {
+        return;
+    }
+
     // if the flow control warning is enabled this will interfere with the
     // scrolling optimizations and cause artifacts.  the simple solution here
     // is to just disable the optimization whilst it is visible
-    if ((_outputSuspendedLabel != nullptr) && _outputSuspendedLabel->isVisible())
+    if ((_outputSuspendedMessageWidget != nullptr) && _outputSuspendedMessageWidget->isVisible()) {
         return;
+    }
+
+    if ((_readOnlyMessageWidget != nullptr) && _readOnlyMessageWidget->isVisible()) {
+        return;
+    }
 
     // constrain the region to the display
     // the bottom of the region is capped to the number of lines in the display's
@@ -943,15 +1023,16 @@ void TerminalDisplay::scrollImage(int lines , const QRect& screenWindowRegion)
     region.setBottom(qMin(region.bottom(), this->_lines - 2));
 
     // return if there is nothing to do
-    if (lines == 0
-            || _image == nullptr
-            || !region.isValid()
+    if (!region.isValid()
             || (region.top() + abs(lines)) >= region.bottom()
-            || this->_lines <= region.height()) return;
+            || this->_lines <= region.height()) {
+        return;
+    }
 
     // hide terminal size label to prevent it being scrolled
-    if ((_resizeWidget != nullptr) && _resizeWidget->isVisible())
+    if ((_resizeWidget != nullptr) && _resizeWidget->isVisible()) {
         _resizeWidget->hide();
+    }
 
     // Note:  With Qt 4.4 the left edge of the scrolled area must be at 0
     // to get the correct (newly exposed) part of the widget repainted.
@@ -1080,8 +1161,9 @@ void TerminalDisplay::processFilters()
 
 void TerminalDisplay::updateImage()
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
     // optimization - scroll the existing image where possible and
     // avoid expensive text drawing for parts of the image that
@@ -1145,7 +1227,7 @@ void TerminalDisplay::updateImage()
             }
         }
 
-        if (!_resizing) // not while _resizing, we're expecting a paintEvent
+        if (!_resizing) { // not while _resizing, we're expecting a paintEvent
             for (x = 0; x < columnsToUpdate; ++x) {
                 _hasTextBlinker |= (newLine[x].rendition & RE_BLINK);
 
@@ -1153,19 +1235,23 @@ void TerminalDisplay::updateImage()
                 // We also take the next one into account to handle the situation
                 // where characters exceed their cell width.
                 if (dirtyMask[x] != 0) {
-                    if (newLine[x + 0].character == 0u)
+                    if (newLine[x + 0].character == 0u) {
                         continue;
+                    }
                     const bool lineDraw = newLine[x + 0].isLineChar();
                     const bool doubleWidth = (x + 1 == columnsToUpdate) ? false : (newLine[x + 1].character == 0);
                     const RenditionFlags cr = newLine[x].rendition;
                     const CharacterColor clipboard = newLine[x].backgroundColor;
-                    if (newLine[x].foregroundColor != cf) cf = newLine[x].foregroundColor;
+                    if (newLine[x].foregroundColor != cf) {
+                        cf = newLine[x].foregroundColor;
+                    }
                     const int lln = columnsToUpdate - x;
                     for (len = 1; len < lln; ++len) {
                         const Character& ch = newLine[x + len];
 
-                        if (ch.character == 0u)
+                        if (ch.character == 0u) {
                             continue; // Skip trailing part of multi-col chars.
+                        }
 
                         const bool nextIsDoubleWidth = (x + len + 1 == columnsToUpdate) ? false : (newLine[x + len + 1].character == 0);
 
@@ -1174,15 +1260,18 @@ void TerminalDisplay::updateImage()
                                 (ch.rendition & ~RE_EXTENDED_CHAR) != (cr & ~RE_EXTENDED_CHAR) ||
                                 (dirtyMask[x + len] == 0) ||
                                 ch.isLineChar() != lineDraw ||
-                                nextIsDoubleWidth != doubleWidth)
+                                nextIsDoubleWidth != doubleWidth) {
                             break;
+                        }
                     }
 
                     const bool saveFixedFont = _fixedFont;
-                    if (lineDraw)
+                    if (lineDraw) {
                         _fixedFont = false;
-                    if (doubleWidth)
+                    }
+                    if (doubleWidth) {
                         _fixedFont = false;
+                    }
 
                     updateLine = true;
 
@@ -1190,13 +1279,15 @@ void TerminalDisplay::updateImage()
                     x += len - 1;
                 }
             }
+        }
 
         //both the top and bottom halves of double height _lines must always be redrawn
         //although both top and bottom halves contain the same characters, only
         //the top one is actually
         //drawn.
-        if (_lineProperties.count() > y)
+        if (_lineProperties.count() > y) {
             updateLine |= (_lineProperties[y] & LINE_DOUBLEHEIGHT);
+        }
 
         // if the characters on the line are different in the old and the new _image
         // then this line must be repainted.
@@ -1320,10 +1411,11 @@ void TerminalDisplay::printContent(QPainter& painter, bool friendly)
 
 QPoint TerminalDisplay::cursorPosition() const
 {
-    if (_screenWindow != nullptr)
+    if (_screenWindow != nullptr) {
         return _screenWindow->cursorPosition();
-    else
+    } else {
         return QPoint(0, 0);
+    }
 }
 
 FilterChain* TerminalDisplay::filterChain() const
@@ -1404,21 +1496,25 @@ void TerminalDisplay::paintFilters(QPainter& painter)
             // display in _columns
 
             // Check image size so _image[] is valid (see makeImage)
-            if (loc(endColumn, line) > _imageSize)
+            if (loc(endColumn, line) > _imageSize) {
                 break;
+            }
 
             // ignore whitespace at the end of the lines
-            while (_image[loc(endColumn, line)].isSpace() && endColumn > 0)
+            while (_image[loc(endColumn, line)].isSpace() && endColumn > 0) {
                 endColumn--;
+            }
 
             // increment here because the column which we want to set 'endColumn' to
             // is the first whitespace character at the end of the line
             endColumn++;
 
-            if (line == spot->startLine())
+            if (line == spot->startLine()) {
                 startColumn = spot->startColumn();
-            if (line == spot->endLine())
+            }
+            if (line == spot->endLine()) {
                 endColumn = spot->endColumn();
+            }
 
             // TODO: resolve this comment with the new margin/center code
             // subtract one pixel from
@@ -1476,8 +1572,9 @@ void TerminalDisplay::drawContents(QPainter& paint, const QRect& rect)
     unistr.reserve(numberOfColumns);
     for (int y = luy; y <= rly; y++) {
         int x = lux;
-        if ((_image[loc(lux, y)].character == 0u) && (x != 0))
+        if ((_image[loc(lux, y)].character == 0u) && (x != 0)) {
             x--; // Search for start of multi-column character
+        }
         for (; x <= rlx; x++) {
             int len = 1;
             int p = 0;
@@ -1546,29 +1643,35 @@ void TerminalDisplay::drawContents(QPainter& paint, const QRect& rect)
                     }
                 }
 
-                if (doubleWidth) // assert((_image[loc(x+len,y)+1].character == 0)), see above if condition
+                if (doubleWidth) { // assert((_image[loc(x+len,y)+1].character == 0)), see above if condition
                     len++; // Skip trailing part of multi-column character
+                }
                 len++;
             }
-            if ((x + len < _usedColumns) && (_image[loc(x + len, y)].character == 0u))
+            if ((x + len < _usedColumns) && (_image[loc(x + len, y)].character == 0u)) {
                 len++; // Adjust for trailing part of multi-column character
+            }
 
             const bool save__fixedFont = _fixedFont;
-            if (lineDraw)
+            if (lineDraw) {
                 _fixedFont = false;
-            if (doubleWidth)
+            }
+            if (doubleWidth) {
                 _fixedFont = false;
+            }
             unistr.resize(p);
 
             // Create a text scaling matrix for double width and double height lines.
             QMatrix textScale;
 
             if (y < _lineProperties.size()) {
-                if ((_lineProperties[y] & LINE_DOUBLEWIDTH) != 0)
+                if ((_lineProperties[y] & LINE_DOUBLEWIDTH) != 0) {
                     textScale.scale(2, 1);
+                }
 
-                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0)
+                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0) {
                     textScale.scale(1, 2);
+                }
             }
 
             //Apply text scaling matrix.
@@ -1609,8 +1712,9 @@ void TerminalDisplay::drawContents(QPainter& paint, const QRect& rect)
                 //both _lines will have the LINE_DOUBLEHEIGHT attribute.
                 //If the current line has the LINE_DOUBLEHEIGHT attribute,
                 //we can therefore skip the next line
-                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0)
+                if ((_lineProperties[y] & LINE_DOUBLEHEIGHT) != 0) {
                     y++;
+                }
             }
 
             x += len - 1;
@@ -1624,7 +1728,7 @@ void TerminalDisplay::drawCurrentResultRect(QPainter& painter)
         return;
     }
 
-    QRect r(0, (_screenWindow->currentResultLine() - _screenWindow->currentLine())*_fontHeight,
+    QRect r(0, _contentRect.top() + (_screenWindow->currentResultLine() - _screenWindow->currentLine()) * _fontHeight,
             contentsRect().width(), _fontHeight);
     painter.fillRect(r, QColor(0, 0, 255, 80));
 }
@@ -1650,8 +1754,9 @@ void TerminalDisplay::setBlinkingCursorEnabled(bool blink)
 {
     _allowBlinkingCursor = blink;
 
-    if (blink && !_blinkCursorTimer->isActive())
+    if (blink && !_blinkCursorTimer->isActive()) {
         _blinkCursorTimer->start();
+    }
 
     if (!blink && _blinkCursorTimer->isActive()) {
         _blinkCursorTimer->stop();
@@ -1667,8 +1772,9 @@ void TerminalDisplay::setBlinkingTextEnabled(bool blink)
 {
     _allowBlinkingText = blink;
 
-    if (blink && !_blinkTextTimer->isActive())
+    if (blink && !_blinkTextTimer->isActive()) {
         _blinkTextTimer->start();
+    }
 
     if (!blink && _blinkTextTimer->isActive()) {
         _blinkTextTimer->stop();
@@ -1690,8 +1796,9 @@ void TerminalDisplay::focusOutEvent(QFocusEvent*)
     Q_ASSERT(!_cursorBlinking);
 
     // if text is blinking (hidden), blink it again to make it shown
-    if (_textBlinking)
+    if (_textBlinking) {
         blinkTextEvent();
+    }
 
     // suppress further text blinking
     _blinkTextTimer->stop();
@@ -1704,13 +1811,15 @@ void TerminalDisplay::focusOutEvent(QFocusEvent*)
 
 void TerminalDisplay::focusInEvent(QFocusEvent*)
 {
-    if (_allowBlinkingCursor)
+    if (_allowBlinkingCursor) {
         _blinkCursorTimer->start();
+    }
 
     updateCursor();
 
-    if (_allowBlinkingText && _hasTextBlinker)
+    if (_allowBlinkingText && _hasTextBlinker) {
         _blinkTextTimer->start();
+    }
 
     emit focusGained();
 }
@@ -1750,14 +1859,16 @@ void TerminalDisplay::updateCursor()
 
 void TerminalDisplay::resizeEvent(QResizeEvent*)
 {
-    if (contentsRect().isValid())
+    if (contentsRect().isValid()) {
         updateImageSize();
+    }
 }
 
 void TerminalDisplay::propagateSize()
 {
-    if (_image != nullptr)
+    if (_image != nullptr) {
         updateImageSize();
+    }
 }
 
 void TerminalDisplay::updateImageSize()
@@ -1780,8 +1891,9 @@ void TerminalDisplay::updateImageSize()
         delete[] oldImage;
     }
 
-    if (_screenWindow != nullptr)
+    if (_screenWindow != nullptr) {
         _screenWindow->setWindowLines(_lines);
+    }
 
     _resizing = (oldLines != _lines) || (oldColumns != _columns);
 
@@ -1815,8 +1927,9 @@ void TerminalDisplay::makeImage()
 
 void TerminalDisplay::clearImage()
 {
-    for (int i = 0; i <= _imageSize; ++i)
+    for (int i = 0; i <= _imageSize; ++i) {
         _image[i] = Screen::DefaultChar;
+    }
 }
 
 void TerminalDisplay::calcGeometry()
@@ -1910,13 +2023,15 @@ void TerminalDisplay::setCenterContents(bool enable)
 
 void TerminalDisplay::setScrollBarPosition(Enum::ScrollBarPositionEnum position)
 {
-    if (_scrollbarLocation == position)
+    if (_scrollbarLocation == position) {
         return;
+    }
 
-    if (position == Enum::ScrollBarHidden)
+    if (position == Enum::ScrollBarHidden) {
         _scrollBar->hide();
-    else
+    } else {
         _scrollBar->show();
+    }
 
     _scrollbarLocation = position;
 
@@ -1926,8 +2041,9 @@ void TerminalDisplay::setScrollBarPosition(Enum::ScrollBarPositionEnum position)
 
 void TerminalDisplay::scrollBarPositionChanged(int)
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
     _screenWindow->scrollTo(_scrollBar->value());
 
@@ -1984,9 +2100,26 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
         return;
     }
 
-    if (!contentsRect().contains(ev->pos())) return;
+    if (!contentsRect().contains(ev->pos())) {
+        return;
+    }
 
-    if (_screenWindow == nullptr) return;
+    if (_screenWindow == nullptr) {
+        return;
+    }
+
+    // Ignore clicks on the message widget
+    if (_readOnlyMessageWidget != nullptr) {
+        if (_readOnlyMessageWidget->isVisible() && _readOnlyMessageWidget->frameGeometry().contains(ev->pos())) {
+            return;
+        }
+    }
+
+    if (_outputSuspendedMessageWidget != nullptr) {
+        if (_outputSuspendedMessageWidget->isVisible() && _outputSuspendedMessageWidget->frameGeometry().contains(ev->pos())) {
+            return;
+        }
+    }
 
     int charLine;
     int charColumn;
@@ -2033,7 +2166,9 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
                     _actSel = 1; // left mouse button pressed but nothing selected yet.
                 }
             } else {
-                emit mouseSignal(0, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+                if(!_readOnly) {
+                    emit mouseSignal(0, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+                }
             }
 
             if ((_openLinksByDirectClick || ((ev->modifiers() & Qt::ControlModifier) != 0u))) {
@@ -2048,10 +2183,13 @@ void TerminalDisplay::mousePressEvent(QMouseEvent* ev)
     } else if (ev->button() == Qt::MidButton) {
         processMidButtonClick(ev);
     } else if (ev->button() == Qt::RightButton) {
-        if (_mouseMarks || ((ev->modifiers() & Qt::ShiftModifier) != 0u))
+        if (_mouseMarks || ((ev->modifiers() & Qt::ShiftModifier) != 0u)) {
             emit configureRequest(ev->pos());
-        else
-            emit mouseSignal(2, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+        } else {
+            if(!_readOnly) {
+                emit mouseSignal(2, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+            }
+        }
     }
 }
 
@@ -2105,13 +2243,15 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
             _mouseOverHotspotArea |= r;
         }
 
-        if ((_openLinksByDirectClick || ((ev->modifiers() & Qt::ControlModifier) != 0u)) && (cursor().shape() != Qt::PointingHandCursor))
+        if ((_openLinksByDirectClick || ((ev->modifiers() & Qt::ControlModifier) != 0u)) && (cursor().shape() != Qt::PointingHandCursor)) {
             setCursor(Qt::PointingHandCursor);
+        }
 
         update(_mouseOverHotspotArea | previousHotspotArea);
     } else if (!_mouseOverHotspotArea.isEmpty()) {
-        if ((_openLinksByDirectClick || ((ev->modifiers() & Qt::ControlModifier) != 0u)) || (cursor().shape() == Qt::PointingHandCursor))
+        if ((_openLinksByDirectClick || ((ev->modifiers() & Qt::ControlModifier) != 0u)) || (cursor().shape() == Qt::PointingHandCursor)) {
             setCursor(_mouseMarks ? Qt::IBeamCursor : Qt::ArrowCursor);
+        }
 
         update(_mouseOverHotspotArea);
         // set hotspot area to an invalid rectangle
@@ -2119,19 +2259,24 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
     }
 
     // for auto-hiding the cursor, we need mouseTracking
-    if (ev->buttons() == Qt::NoButton) return;
+    if (ev->buttons() == Qt::NoButton) {
+        return;
+    }
 
     // if the terminal is interested in mouse movements
     // then emit a mouse movement signal, unless the shift
     // key is being held down, which overrides this.
     if (!_mouseMarks && !(ev->modifiers() & Qt::ShiftModifier)) {
         int button = 3;
-        if ((ev->buttons() & Qt::LeftButton) != 0u)
+        if ((ev->buttons() & Qt::LeftButton) != 0u) {
             button = 0;
-        if ((ev->buttons() & Qt::MidButton) != 0u)
+        }
+        if ((ev->buttons() & Qt::MidButton) != 0u) {
             button = 1;
-        if ((ev->buttons() & Qt::RightButton) != 0u)
+        }
+        if ((ev->buttons() & Qt::RightButton) != 0u) {
             button = 2;
+        }
 
         emit mouseSignal(button,
                          charColumn + 1,
@@ -2160,10 +2305,14 @@ void TerminalDisplay::mouseMoveEvent(QMouseEvent* ev)
         return;
     }
 
-    if (_actSel == 0) return;
+    if (_actSel == 0) {
+        return;
+    }
 
 // don't extend selection while pasting
-    if ((ev->buttons() & Qt::MidButton) != 0u) return;
+    if ((ev->buttons() & Qt::MidButton) != 0u) {
+        return;
+    }
 
     extendSelection(ev->pos());
 }
@@ -2179,8 +2328,9 @@ void TerminalDisplay::leaveEvent(QEvent *)
 
 void TerminalDisplay::extendSelection(const QPoint& position)
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
     //if ( !contentsRect().contains(ev->pos()) ) return;
     const QPoint tL  = contentsRect().topLeft();
@@ -2230,18 +2380,56 @@ void TerminalDisplay::extendSelection(const QPoint& position)
 
     if (_wordSelectionMode) {
         // Extend to word boundaries
+        int i;
+        QChar selClass;
+
         const bool left_not_right = (here.y() < _iPntSelCorr.y() ||
                                      (here.y() == _iPntSelCorr.y() && here.x() < _iPntSelCorr.x()));
         const bool old_left_not_right = (_pntSelCorr.y() < _iPntSelCorr.y() ||
                                          (_pntSelCorr.y() == _iPntSelCorr.y() && _pntSelCorr.x() < _iPntSelCorr.x()));
         swapping = left_not_right != old_left_not_right;
 
+        // Find left (left_not_right ? from here : from start)
+        QPoint left = left_not_right ? here : _iPntSelCorr;
+        i = loc(left.x(), left.y());
+        if (i >= 0 && i <= _imageSize) {
+            selClass = charClass(_image[i]);
+            while (((left.x() > 0) || (left.y() > 0 && (_lineProperties[left.y() - 1] & LINE_WRAPPED)))
+                    && charClass(_image[i - 1]) == selClass) {
+                i--;
+                if (left.x() > 0) {
+                    left.rx()--;
+                } else {
+                    left.rx() = _usedColumns - 1;
+                    left.ry()--;
+                }
+            }
+        }
+
+        // Find left (left_not_right ? from start : from here)
+        QPoint right = left_not_right ? _iPntSelCorr : here;
+        i = loc(right.x(), right.y());
+        if (i >= 0 && i <= _imageSize) {
+            selClass = charClass(_image[i]);
+            while (((right.x() < _usedColumns - 1) || (right.y() < _usedLines - 1 && (_lineProperties[right.y()] & LINE_WRAPPED)))
+                    && charClass(_image[i + 1]) == selClass) {
+                i++;
+                if (right.x() < _usedColumns - 1) {
+                    right.rx()++;
+                } else {
+                    right.rx() = 0;
+                    right.ry()++;
+                }
+            }
+        }
+
+        // Pick which is start (ohere) and which is extension (here)
         if (left_not_right) {
-            ohere = findWordEnd(_iPntSelCorr);
-            here = findWordStart(here);
+            here = left;
+            ohere = right;
         } else {
-            ohere = findWordStart(_iPntSelCorr);
-            here = findWordEnd(here);
+            here = right;
+            ohere = left;
         }
         ohere.rx()++;
     }
@@ -2307,9 +2495,13 @@ void TerminalDisplay::extendSelection(const QPoint& position)
         }
     }
 
-    if ((here == _pntSelCorr) && (scroll == _scrollBar->value())) return; // not moved
+    if ((here == _pntSelCorr) && (scroll == _scrollBar->value())) {
+        return; // not moved
+    }
 
-    if (here == ohere) return; // It's not left, it's not right.
+    if (here == ohere) {
+        return; // It's not left, it's not right.
+    }
 
     if (_actSel < 2 || swapping) {
         if (_columnSelectionMode && !_lineSelectionMode && !_wordSelectionMode) {
@@ -2332,8 +2524,9 @@ void TerminalDisplay::extendSelection(const QPoint& position)
 
 void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
     int charLine;
     int charColumn;
@@ -2354,10 +2547,11 @@ void TerminalDisplay::mouseReleaseEvent(QMouseEvent* ev)
             //       outside the range. The procedure used in `mouseMoveEvent'
             //       applies here, too.
 
-            if (!_mouseMarks && !(ev->modifiers() & Qt::ShiftModifier))
+            if (!_mouseMarks && !(ev->modifiers() & Qt::ShiftModifier)) {
                 emit mouseSignal(0,
                                  charColumn + 1,
                                  charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 2);
+            }
         }
         _dragInfo.state = diNone;
     }
@@ -2377,27 +2571,32 @@ void TerminalDisplay::getCharacterPosition(const QPoint& widgetPoint, int& line,
     column = (widgetPoint.x() + _fontWidth / 2 - contentsRect().left() - _contentRect.left()) / _fontWidth;
     line = (widgetPoint.y() - contentsRect().top() - _contentRect.top()) / _fontHeight;
 
-    if (line < 0)
+    if (line < 0) {
         line = 0;
-    if (column < 0)
+    }
+    if (column < 0) {
         column = 0;
+    }
 
-    if (line >= _usedLines)
+    if (line >= _usedLines) {
         line = _usedLines - 1;
+    }
 
     // the column value returned can be equal to _usedColumns, which
     // is the position just after the last character displayed in a line.
     //
     // this is required so that the user can select characters in the right-most
     // column (or left-most for right-to-left input)
-    if (column > _usedColumns)
+    if (column > _usedColumns) {
         column = _usedColumns;
+    }
 }
 
 void TerminalDisplay::updateLineProperties()
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
     _lineProperties = _screenWindow->getLineProperties();
 }
@@ -2415,11 +2614,13 @@ void TerminalDisplay::processMidButtonClick(QMouseEvent* ev)
             Q_ASSERT(false);
         }
     } else {
-        int charLine = 0;
-        int charColumn = 0;
-        getCharacterPosition(ev->pos(), charLine, charColumn);
+        if(!_readOnly) {
+            int charLine = 0;
+            int charColumn = 0;
+            getCharacterPosition(ev->pos(), charLine, charColumn);
 
-        emit mouseSignal(1, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+            emit mouseSignal(1, charColumn + 1, charLine + 1 + _scrollBar->value() - _scrollBar->maximum() , 0);
+        }
     }
 }
 
@@ -2431,56 +2632,111 @@ void TerminalDisplay::mouseDoubleClickEvent(QMouseEvent* ev)
         return;
     }
 
-    if (ev->button() != Qt::LeftButton) return;
-    if (_screenWindow == nullptr) return;
+    if (ev->button() != Qt::LeftButton) {
+        return;
+    }
+    if (_screenWindow == nullptr) {
+        return;
+    }
 
     int charLine = 0;
     int charColumn = 0;
 
     getCharacterPosition(ev->pos(), charLine, charColumn);
 
+    QPoint pos(charColumn, charLine);
+
     // pass on double click as two clicks.
     if (!_mouseMarks && !(ev->modifiers() & Qt::ShiftModifier)) {
-        // Send just _ONE_ click event, since the first click of the double click
-        // was already sent by the click handler
-        emit mouseSignal(0, charColumn + 1,
-                         charLine + 1 + _scrollBar->value() - _scrollBar->maximum(),
-                         0);  // left button
+        if(!_readOnly) {
+            // Send just _ONE_ click event, since the first click of the double click
+            // was already sent by the click handler
+            emit mouseSignal(0, charColumn + 1,
+                             charLine + 1 + _scrollBar->value() - _scrollBar->maximum(),
+                             0);  // left button
+        }
         return;
     }
 
     _screenWindow->clearSelection();
+    QPoint bgnSel = pos;
+    QPoint endSel = pos;
+    int i = loc(bgnSel.x(), bgnSel.y());
+    _iPntSel = bgnSel;
+    _iPntSel.ry() += _scrollBar->value();
 
     _wordSelectionMode = true;
     _actSel = 2; // within selection
 
-    _iPntSel = QPoint(charColumn, charLine);
-    const QPoint bgnSel = findWordStart(_iPntSel);
-    const QPoint endSel = findWordEnd(_iPntSel);
-    _iPntSel.ry() += _scrollBar->value();
+    // find word boundaries...
+    const QChar selClass = charClass(_image[i]);
+    {
+        // find the start of the word
+        int x = bgnSel.x();
+        while (((x > 0) || (bgnSel.y() > 0 && (_lineProperties[bgnSel.y() - 1] & LINE_WRAPPED)))
+                && charClass(_image[i - 1]) == selClass) {
+            i--;
+            if (x > 0) {
+                x--;
+            } else {
+                x = _usedColumns - 1;
+                bgnSel.ry()--;
+            }
+        }
 
-    _screenWindow->setSelectionStart(bgnSel.x() , bgnSel.y() , false);
-    _screenWindow->setSelectionEnd(endSel.x() , endSel.y());
-    copyToX11Selection();
+        bgnSel.setX(x);
+        _screenWindow->setSelectionStart(bgnSel.x() , bgnSel.y() , false);
+
+        // find the end of the word
+        i = loc(endSel.x(), endSel.y());
+        x = endSel.x();
+        while (((x < _usedColumns - 1) || (endSel.y() < _usedLines - 1 && (_lineProperties[endSel.y()] & LINE_WRAPPED)))
+                && charClass(_image[i + 1]) == selClass) {
+            i++;
+            if (x < _usedColumns - 1) {
+                x++;
+            } else {
+                x = 0;
+                endSel.ry()++;
+            }
+        }
+
+        endSel.setX(x);
+
+        // In word selection mode don't select @ (64) if at end of word.
+        if (((_image[i].rendition & RE_EXTENDED_CHAR) == 0) &&
+                (QChar(_image[i].character) == QLatin1Char('@')) &&
+                ((endSel.x() - bgnSel.x()) > 0)) {
+            endSel.setX(x - 1);
+        }
+
+        _actSel = 2; // within selection
+
+        _screenWindow->setSelectionEnd(endSel.x() , endSel.y());
+
+        copyToX11Selection();
+    }
 
     _possibleTripleClick = true;
 
-    QTimer::singleShot(QApplication::doubleClickInterval(), this,
-                       SLOT(tripleClickTimeout()));
+    QTimer::singleShot(QApplication::doubleClickInterval(), [this]() {
+        _possibleTripleClick = false;
+    });
 }
 
 void TerminalDisplay::wheelEvent(QWheelEvent* ev)
 {
     // Only vertical scrolling is supported
-    if (ev->orientation() != Qt::Vertical)
+    if (ev->orientation() != Qt::Vertical) {
         return;
+    }
 
     const int modifiers = ev->modifiers();
 
-    _scrollWheelState.addWheelEvent(ev);
-
     // ctrl+<wheel> for zooming, like in konqueror and firefox
     if (((modifiers & Qt::ControlModifier) != 0u) && mouseWheelZoom()) {
+        _scrollWheelState.addWheelEvent(ev);
+
         int steps = _scrollWheelState.consumeLegacySteps(ScrollState::DEFAULT_ANGLE_SCROLL_LINE);
         for (;steps > 0; --steps) {
             // wheel-up for increasing font size
@@ -2490,21 +2746,22 @@ void TerminalDisplay::wheelEvent(QWheelEvent* ev)
             // wheel-down for decreasing font size
             decreaseFontSize();
         }
+    } else if (_mouseMarks && (_scrollBar->maximum() > 0)) {
+        // If the program running in the terminal is not interested in mouse events,
+        // send the event to the scrollbar if the slider has room to move
 
-        return;
-    }
+        _scrollWheelState.addWheelEvent(ev);
 
-    // if the terminal program is not interested with mouse events:
-    //  * send the event to the scrollbar if the slider has room to move
-    //  * otherwise, send simulated up / down key presses to the terminal program
-    //    for the benefit of programs such as 'less'
-    if (_mouseMarks) {
-        const bool canScroll = _scrollBar->maximum() > 0;
-        if (canScroll) {
-            _scrollBar->event(ev);
-            _sessionController->setSearchStartToWindowCurrentLine();
-            _scrollWheelState.clearAll();
-        } else {
+        _scrollBar->event(ev);
+        _sessionController->setSearchStartToWindowCurrentLine();
+        _scrollWheelState.clearAll();
+    } else if (!_readOnly) {
+        _scrollWheelState.addWheelEvent(ev);
+
+        if(_mouseMarks && !_isPrimaryScreen) {
+            // Send simulated up / down key presses to the terminal program
+            // for the benefit of programs such as 'less' (which use the alternate screen)
+
             // assume that each Up / Down key event will cause the terminal application
             // to scroll by one line.
             //
@@ -2516,29 +2773,26 @@ void TerminalDisplay::wheelEvent(QWheelEvent* ev)
             const int keyCode = lines > 0 ? Qt::Key_Up : Qt::Key_Down;
             QKeyEvent keyEvent(QEvent::KeyPress, keyCode, Qt::NoModifier);
 
-            for (int i = 0; i < abs(lines); i++)
+            for (int i = 0; i < abs(lines); i++) {
+                _screenWindow->screen()->setCurrentTerminalDisplay(this);
                 emit keyPressedSignal(&keyEvent);
-        }
-    } else {
-        // terminal program wants notification of mouse activity
+            }
+        } else if (!_mouseMarks) {
+            // terminal program wants notification of mouse activity
 
-        int charLine;
-        int charColumn;
-        getCharacterPosition(ev->pos() , charLine , charColumn);
-        const int steps = _scrollWheelState.consumeLegacySteps(ScrollState::DEFAULT_ANGLE_SCROLL_LINE);
-        const int button = (steps > 0) ? 4 : 5;
-        for (int i = 0; i < abs(steps); ++i) {
-            emit mouseSignal(button,
-                             charColumn + 1,
-                             charLine + 1 + _scrollBar->value() - _scrollBar->maximum() ,
-                             0);
+            int charLine;
+            int charColumn;
+            getCharacterPosition(ev->pos() , charLine , charColumn);
+            const int steps = _scrollWheelState.consumeLegacySteps(ScrollState::DEFAULT_ANGLE_SCROLL_LINE);
+            const int button = (steps > 0) ? 4 : 5;
+            for (int i = 0; i < abs(steps); ++i) {
+                emit mouseSignal(button,
+                                 charColumn + 1,
+                                 charLine + 1 + _scrollBar->value() - _scrollBar->maximum() ,
+                                 0);
+            }
         }
     }
-}
-
-void TerminalDisplay::tripleClickTimeout()
-{
-    _possibleTripleClick = false;
 }
 
 void TerminalDisplay::viewScrolledByUser()
@@ -2568,8 +2822,9 @@ QPoint TerminalDisplay::findLineStart(const QPoint &pnt)
             }
         }
 
-        if (lineInHistory < 1)
+        if (lineInHistory < 1) {
             break;
+        }
 
         // _lineProperties is only for the visible screen, so grab new data
         int newRegionStart = qMax(0, lineInHistory - visibleScreenLines);
@@ -2625,8 +2880,9 @@ QPoint TerminalDisplay::findWordStart(const QPoint &pnt)
     while (true) {
         for (;;j--, x--) {
             if (x > 0) {
-                if (charClass(image[j - 1]) == selClass)
+                if (charClass(image[j - 1]) == selClass) {
                     continue;
+                }
                 goto out;
             } else if (i > 0) {
                 if (((lineProperties[i - 1] & LINE_WRAPPED) != 0) &&
@@ -2681,8 +2937,9 @@ QPoint TerminalDisplay::findWordEnd(const QPoint &pnt)
         const int lineCount = lineProperties.count();
         for (;;j++, x++) {
             if (x < maxX) {
-                if (charClass(image[j + 1]) == selClass)
+                if (charClass(image[j + 1]) == selClass) {
                     continue;
+                }
                 goto out;
             } else if (i < lineCount - 1) {
                 if (((lineProperties[i] & LINE_WRAPPED) != 0) &&
@@ -2694,8 +2951,9 @@ QPoint TerminalDisplay::findWordEnd(const QPoint &pnt)
                 }
                 goto out;
             } else if (y < maxY) {
-                if (i < lineCount && ((lineProperties[i] & LINE_WRAPPED) == 0))
+                if (i < lineCount && ((lineProperties[i] & LINE_WRAPPED) == 0)) {
                     goto out;
+                }
                 break;
             } else {
                 goto out;
@@ -2730,9 +2988,27 @@ out:
     return QPoint(x, y);
 }
 
+Screen::DecodingOptions TerminalDisplay::currentDecodingOptions()
+{
+    Screen::DecodingOptions decodingOptions;
+    if (_preserveLineBreaks) {
+        decodingOptions |= Screen::PreserveLineBreaks;
+    }
+    if (_trimLeadingSpaces) {
+        decodingOptions |= Screen::TrimLeadingWhitespace;
+    }
+    if (_trimTrailingSpaces) {
+        decodingOptions |= Screen::TrimTrailingWhitespace;
+    }
+
+    return decodingOptions;
+}
+
 void TerminalDisplay::mouseTripleClickEvent(QMouseEvent* ev)
 {
-    if (_screenWindow == nullptr) return;
+    if (_screenWindow == nullptr) {
+        return;
+    }
 
     int charLine;
     int charColumn;
@@ -2771,19 +3047,33 @@ void TerminalDisplay::selectLine(QPoint pos, bool entireLine)
 
 void TerminalDisplay::selectCurrentLine()
 {
-    if (_screenWindow == nullptr) return;
+    if (_screenWindow == nullptr) {
+        return;
+    }
 
     selectLine(cursorPosition(), true);
+}
+
+void TerminalDisplay::selectAll()
+{
+    if (_screenWindow.isNull()) {
+        return;
+    }
+
+    _preserveLineBreaks = true;
+    _screenWindow->setSelectionByLineRange(0, _screenWindow->lineCount());
+    copyToX11Selection();
 }
 
 bool TerminalDisplay::focusNextPrevChild(bool next)
 {
     // for 'Tab', always disable focus switching among widgets
     // for 'Shift+Tab', leave the decision to higher level
-    if (next)
+    if (next) {
         return false;
-    else
+    } else {
         return QWidget::focusNextPrevChild(next);
+    }
 }
 
 QChar TerminalDisplay::charClass(const Character& ch) const
@@ -2793,8 +3083,9 @@ QChar TerminalDisplay::charClass(const Character& ch) const
         const ushort* chars = ExtendedCharTable::instance.lookupExtendedChar(ch.character, extendedCharLength);
         if ((chars != nullptr) && extendedCharLength > 0) {
             const QString s = QString::fromUtf16(chars, extendedCharLength);
-            if (_wordCharacters.contains(s, Qt::CaseInsensitive))
+            if (_wordCharacters.contains(s, Qt::CaseInsensitive)) {
                 return QLatin1Char('a');
+            }
             bool letterOrNumber = false;
             for (int i = 0; !letterOrNumber && i < s.size(); ++i) {
                 letterOrNumber = s.at(i).isLetterOrNumber();
@@ -2804,10 +3095,13 @@ QChar TerminalDisplay::charClass(const Character& ch) const
         return 0;
     } else {
         const QChar qch(ch.character);
-        if (qch.isSpace()) return QLatin1Char(' ');
+        if (qch.isSpace()) {
+            return QLatin1Char(' ');
+        }
 
-        if (qch.isLetterOrNumber() || _wordCharacters.contains(qch, Qt::CaseInsensitive))
+        if (qch.isLetterOrNumber() || _wordCharacters.contains(qch, Qt::CaseInsensitive)) {
             return QLatin1Char('a');
+        }
 
         return qch;
     }
@@ -2831,6 +3125,12 @@ bool TerminalDisplay::usesMouse() const
     return _mouseMarks;
 }
 
+
+void TerminalDisplay::usingPrimaryScreen(bool use)
+{
+    _isPrimaryScreen = use;
+}
+
 void TerminalDisplay::setBracketedPasteMode(bool on)
 {
     _bracketedPasteMode = on;
@@ -2848,11 +3148,17 @@ bool TerminalDisplay::bracketedPasteMode() const
 
 void TerminalDisplay::doPaste(QString text, bool appendReturn)
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
-    if (appendReturn)
+    if (_readOnly) {
+        return;
+    }
+
+    if (appendReturn) {
         text.append(QLatin1String("\r"));
+    }
 
     if (text.length() > 8000) {
         if (KMessageBox::warningContinueCancel(window(),
@@ -2862,13 +3168,15 @@ void TerminalDisplay::doPaste(QString text, bool appendReturn)
                         i18n("Confirm Paste"),
                         KStandardGuiItem::cont(),
                         KStandardGuiItem::cancel(),
-                        QStringLiteral("ShowPasteHugeTextWarning")) == KMessageBox::Cancel)
+                        QStringLiteral("ShowPasteHugeTextWarning")) == KMessageBox::Cancel) {
             return;
+        }
     }
 
     if (!text.isEmpty()) {
         text.replace(QLatin1Char('\n'), QLatin1Char('\r'));
         if (bracketedPasteMode()) {
+            text.remove(QLatin1String("\033"));
             text.prepend(QLatin1String("\033[200~"));
             text.append(QLatin1String("\033[201~"));
         }
@@ -2888,41 +3196,56 @@ void TerminalDisplay::setMiddleClickPasteMode(Enum::MiddleClickPasteModeEnum mod
     _middleClickPasteMode = mode;
 }
 
+void TerminalDisplay::setCopyTextAsHTML(bool enabled)
+{
+    _copyTextAsHTML = enabled;
+}
+
 void TerminalDisplay::copyToX11Selection()
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
-    QString text = _screenWindow->selectedText(_preserveLineBreaks, _trimTrailingSpaces);
-    if (text.isEmpty())
+
+    const QString &text = _screenWindow->selectedText(currentDecodingOptions());
+    if (text.isEmpty()) {
         return;
-    QString html = _screenWindow->selectedText(_preserveLineBreaks, _trimTrailingSpaces, true);
+    }
 
     auto mimeData = new QMimeData;
     mimeData->setText(text);
-    mimeData->setHtml(html);
+
+    if (_copyTextAsHTML) {
+        mimeData->setHtml(_screenWindow->selectedText(currentDecodingOptions() | Screen::ConvertToHtml));
+    }
 
     if (QApplication::clipboard()->supportsSelection()) {
         QApplication::clipboard()->setMimeData(mimeData, QClipboard::Selection);
     }
 
-    if (_autoCopySelectedText)
+    if (_autoCopySelectedText) {
         QApplication::clipboard()->setMimeData(mimeData, QClipboard::Clipboard);
+    }
 }
 
 void TerminalDisplay::copyToClipboard()
 {
-    if (_screenWindow == nullptr)
+    if (_screenWindow == nullptr) {
         return;
+    }
 
-    QString text = _screenWindow->selectedText(_preserveLineBreaks, _trimTrailingSpaces);
-    if (text.isEmpty())
+    const QString &text = _screenWindow->selectedText(currentDecodingOptions());
+    if (text.isEmpty()) {
         return;
-    QString html = _screenWindow->selectedText(_preserveLineBreaks, _trimTrailingSpaces, true);
+    }
 
     auto mimeData = new QMimeData;
     mimeData->setText(text);
-    mimeData->setHtml(html);
+
+    if (_copyTextAsHTML) {
+        mimeData->setHtml(_screenWindow->selectedText(currentDecodingOptions() | Screen::ConvertToHtml));
+    }
 
     QApplication::clipboard()->setMimeData(mimeData, QClipboard::Clipboard);
 }
@@ -2954,9 +3277,10 @@ void TerminalDisplay::inputMethodEvent(QInputMethodEvent* event)
         emit keyPressedSignal(&keyEvent);
     }
 
-    _inputMethodData.preeditString = event->preeditString();
-    update(preeditRect() | _inputMethodData.previousPreeditRect);
-
+    if (!_readOnly) {
+        _inputMethodData.preeditString = event->preeditString();
+        update(preeditRect() | _inputMethodData.previousPreeditRect);
+    }
     event->accept();
 }
 
@@ -2994,8 +3318,9 @@ QRect TerminalDisplay::preeditRect() const
 {
     const int preeditLength = string_width(_inputMethodData.preeditString);
 
-    if (preeditLength == 0)
+    if (preeditLength == 0) {
         return QRect();
+    }
 
     return QRect(_contentRect.left() + _fontWidth * cursorPosition().x(),
                  _contentRect.top() + _fontHeight * cursorPosition().y(),
@@ -3005,8 +3330,9 @@ QRect TerminalDisplay::preeditRect() const
 
 void TerminalDisplay::drawInputMethodPreeditString(QPainter& painter , const QRect& rect)
 {
-    if (_inputMethodData.preeditString.isEmpty())
+    if (_inputMethodData.preeditString.isEmpty()) {
         return;
+    }
 
     const QPoint cursorPos = cursorPosition();
 
@@ -3034,61 +3360,68 @@ void TerminalDisplay::setFlowControlWarningEnabled(bool enable)
 
     // if the dialog is currently visible and the flow control warning has
     // been disabled then hide the dialog
-    if (!enable)
+    if (!enable) {
         outputSuspended(false);
+    }
 }
 
 void TerminalDisplay::outputSuspended(bool suspended)
 {
     //create the label when this function is first called
-    if (_outputSuspendedLabel == nullptr) {
+    if (_outputSuspendedMessageWidget == nullptr) {
         //This label includes a link to an English language website
         //describing the 'flow control' (Xon/Xoff) feature found in almost
         //all terminal emulators.
         //If there isn't a suitable article available in the target language the link
         //can simply be removed.
-        _outputSuspendedLabel = new QLabel(i18n("<qt>Output has been "
-                                                "<a href=\"http://en.wikipedia.org/wiki/Software_flow_control\">suspended</a>"
-                                                " by pressing Ctrl+S."
-                                                "  Press <b>Ctrl+Q</b> to resume."
-                                                "  Click <a href=\"#close\">here</a> to dismiss this message.</qt>"));
+        _outputSuspendedMessageWidget = createMessageWidget(i18n("<qt>Output has been "
+                                                    "<a href=\"http://en.wikipedia.org/wiki/Software_flow_control\">suspended</a>"
+                                                    " by pressing Ctrl+S."
+                                                    " Press <b>Ctrl+Q</b> to resume.</qt>"));
 
-        QPalette palette(_outputSuspendedLabel->palette());
-        KColorScheme::adjustBackground(palette, KColorScheme::NeutralBackground);
-        _outputSuspendedLabel->setPalette(palette);
-        _outputSuspendedLabel->setAutoFillBackground(true);
-        _outputSuspendedLabel->setBackgroundRole(QPalette::Base);
-        _outputSuspendedLabel->setFont(QFontDatabase::systemFont(QFontDatabase::SmallestReadableFont));
-        _outputSuspendedLabel->setContentsMargins(5, 5, 5, 5);
-        _outputSuspendedLabel->setWordWrap(true);
-        _outputSuspendedLabel->setFocusProxy(this);
-
-        connect(_outputSuspendedLabel, &QLabel::linkActivated, this, [this](const QString &url) {
-            if (url == QLatin1String("#close")) {
-                _outputSuspendedLabel->setVisible(false);
-            } else {
-                QDesktopServices::openUrl(QUrl(url));
-            }
+        connect(_outputSuspendedMessageWidget, &KMessageWidget::linkActivated, this, [](const QString &url) {
+            QDesktopServices::openUrl(QUrl(url));
         });
 
-        //enable activation of "Xon/Xoff" link in label
-        _outputSuspendedLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse |
-                Qt::LinksAccessibleByKeyboard);
-        _outputSuspendedLabel->setOpenExternalLinks(false);
-        _outputSuspendedLabel->setVisible(false);
-
-        _gridLayout->addWidget(_outputSuspendedLabel);
-        _gridLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding,
-                                             QSizePolicy::Expanding),
-                             1, 0);
+        _outputSuspendedMessageWidget->setMessageType(KMessageWidget::Warning);
     }
 
-    _outputSuspendedLabel->setVisible(suspended);
+    suspended ? _outputSuspendedMessageWidget->animatedShow() : _outputSuspendedMessageWidget->animatedHide();
 }
 
 void TerminalDisplay::dismissOutputSuspendedMessage()
 {
     outputSuspended(false);
+}
+
+KMessageWidget* TerminalDisplay::createMessageWidget(const QString &text) {
+    auto widget = new KMessageWidget(text);
+    widget->setWordWrap(true);
+    widget->setFocusProxy(this);
+    widget->setCursor(Qt::ArrowCursor);
+
+    _verticalLayout->insertWidget(0, widget);
+    return widget;
+}
+
+void TerminalDisplay::updateReadOnlyState(bool readonly) {
+    if (_readOnly == readonly) {
+        return;
+    }
+
+    if (readonly) {
+        // Lazy create the readonly messagewidget
+        if (_readOnlyMessageWidget == nullptr) {
+            _readOnlyMessageWidget = createMessageWidget(i18n("This terminal is read-only."));
+            _readOnlyMessageWidget->setIcon(QIcon::fromTheme(QStringLiteral("object-locked")));
+        }
+    }
+
+    if (_readOnlyMessageWidget != nullptr) {
+        readonly ? _readOnlyMessageWidget->animatedShow() : _readOnlyMessageWidget->animatedHide();
+    }
+
+    _readOnly = readonly;
 }
 
 void TerminalDisplay::scrollScreenWindow(enum ScreenWindow::RelativeScrollMode mode, int amount)
@@ -3120,23 +3453,27 @@ void TerminalDisplay::keyPressEvent(QKeyEvent* event)
 
     _screenWindow->screen()->setCurrentTerminalDisplay(this);
 
-    _actSel = 0; // Key stroke implies a screen update, so TerminalDisplay won't
-    // know where the current selection is.
+    if (!_readOnly) {
+        _actSel = 0; // Key stroke implies a screen update, so TerminalDisplay won't
+                     // know where the current selection is.
 
-    if (_allowBlinkingCursor) {
-        _blinkCursorTimer->start();
-        if (_cursorBlinking) {
-            // if cursor is blinking(hidden), blink it again to show it
-            blinkCursorEvent();
+        if (_allowBlinkingCursor) {
+            _blinkCursorTimer->start();
+            if (_cursorBlinking) {
+                // if cursor is blinking(hidden), blink it again to show it
+                blinkCursorEvent();
+            }
+            Q_ASSERT(!_cursorBlinking);
         }
-        Q_ASSERT(!_cursorBlinking);
     }
 
     emit keyPressedSignal(event);
 
 #ifndef QT_NO_ACCESSIBILITY
-    QAccessibleTextCursorEvent textCursorEvent(this, _usedColumns * screenWindow()->screen()->getCursorY() + screenWindow()->screen()->getCursorX());
-    QAccessible::updateAccessibility(&textCursorEvent);
+    if (!_readOnly) {
+        QAccessibleTextCursorEvent textCursorEvent(this, _usedColumns * screenWindow()->screen()->getCursorY() + screenWindow()->screen()->getCursorX());
+        QAccessible::updateAccessibility(&textCursorEvent);
+    }
 #endif
 
     event->accept();
@@ -3147,6 +3484,11 @@ void TerminalDisplay::keyReleaseEvent(QKeyEvent *event)
     if (_showUrlHint) {
         _showUrlHint = false;
         update();
+    }
+
+    if (_readOnly) {
+        event->accept();
+        return;
     }
 
     QWidget::keyReleaseEvent(event);
@@ -3164,8 +3506,9 @@ bool TerminalDisplay::handleShortcutOverrideEvent(QKeyEvent* keyEvent)
         unsigned int currentModifier = Qt::ShiftModifier;
 
         while (currentModifier <= Qt::KeypadModifier) {
-            if ((modifiers & currentModifier) != 0u)
+            if ((modifiers & currentModifier) != 0u) {
                 modifierCount++;
+            }
             currentModifier <<= 1;
         }
         if (modifierCount < 2) {
@@ -3240,15 +3583,11 @@ int TerminalDisplay::bellMode() const
     return _bellMode;
 }
 
-void TerminalDisplay::unmaskBell()
-{
-    _bellMasked = false;
-}
-
 void TerminalDisplay::bell(const QString& message)
 {
-    if (_bellMasked)
+    if (_bellMasked) {
         return;
+    }
 
     switch (_bellMode) {
     case Enum::SystemBeepBell:
@@ -3273,13 +3612,15 @@ void TerminalDisplay::bell(const QString& message)
     // ...mainly for sound effects where rapid bells in sequence
     // produce a horrible noise.
     _bellMasked = true;
-    QTimer::singleShot(500, this, SLOT(unmaskBell()));
+    QTimer::singleShot(500, [this]() {
+        _bellMasked = false;
+    });
 }
 
 void TerminalDisplay::visualBell()
 {
     swapFGBGColors();
-    QTimer::singleShot(200, this, SLOT(swapFGBGColors()));
+    QTimer::singleShot(200, this, &Konsole::TerminalDisplay::swapFGBGColors);
 }
 
 void TerminalDisplay::swapFGBGColors()
@@ -3305,7 +3646,7 @@ void TerminalDisplay::dragEnterEvent(QDragEnterEvent* event)
     //   and pcmanfm
     // That also applies in dropEvent()
     const auto mimeData = event->mimeData();
-    if (mimeData
+    if ((!_readOnly) && (mimeData != nullptr)
             && (mimeData->hasFormat(QStringLiteral("text/plain"))
                 || mimeData->hasFormat(QStringLiteral("text/uri-list")))) {
         event->acceptProposedAction();
@@ -3314,28 +3655,34 @@ void TerminalDisplay::dragEnterEvent(QDragEnterEvent* event)
 
 void TerminalDisplay::dropEvent(QDropEvent* event)
 {
+    if (_readOnly) {
+        event->accept();
+        return;
+    }
+
     const auto mimeData = event->mimeData();
-    if (!mimeData) {
+    if (mimeData == nullptr) {
         return;
     }
     auto urls = mimeData->urls();
 
     QString dropText;
-    // temporary prevent menu/dnd on Wayland - crash in KIO::drop
-    if (!urls.isEmpty() && (!KWindowSystem::isPlatformWayland())) {
+    if (!urls.isEmpty()) {
         for (int i = 0 ; i < urls.count() ; i++) {
             KIO::StatJob* job = KIO::mostLocalUrl(urls[i], KIO::HideProgressInfo);
             bool ok = job->exec();
-            if (!ok)
+            if (!ok) {
                 continue;
+            }
 
             QUrl url = job->mostLocalUrl();
             QString urlText;
 
-            if (url.isLocalFile())
+            if (url.isLocalFile()) {
                 urlText = url.path();
-            else
+            } else {
                 urlText = url.url();
+            }
 
             // in future it may be useful to be able to insert file names with drag-and-drop
             // without quoting them (this only affects paths with spaces in)
@@ -3447,8 +3794,9 @@ AutoScrollHandler::AutoScrollHandler(QWidget* parent)
 }
 void AutoScrollHandler::timerEvent(QTimerEvent* event)
 {
-    if (event->timerId() != _timerId)
+    if (event->timerId() != _timerId) {
         return;
+    }
 
     QMouseEvent mouseEvent(QEvent::MouseMove,
                            widget()->mapFromGlobal(QCursor::pos()),
@@ -3468,13 +3816,15 @@ bool AutoScrollHandler::eventFilter(QObject* watched, QEvent* event)
         QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
         bool mouseInWidget = widget()->rect().contains(mouseEvent->pos());
         if (mouseInWidget) {
-            if (_timerId != 0)
+            if (_timerId != 0) {
                 killTimer(_timerId);
+            }
 
             _timerId = 0;
         } else {
-            if ((_timerId == 0) && ((mouseEvent->buttons() & Qt::LeftButton) != 0u))
+            if ((_timerId == 0) && ((mouseEvent->buttons() & Qt::LeftButton) != 0u)) {
                 _timerId = startTimer(100);
+            }
         }
 
         break;

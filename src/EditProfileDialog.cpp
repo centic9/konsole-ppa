@@ -1,5 +1,6 @@
 /*
     Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    Copyright 2018 by Harald Sitter <sitter@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,28 +26,29 @@
 
 // Qt
 #include <QBrush>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QFileDialog>
+#include <QFontDialog>
+#include <QInputDialog>
+#include <QIcon>
+#include <QLinearGradient>
 #include <QPainter>
+#include <QPushButton>
+#include <QRadialGradient>
 #include <QStandardItem>
 #include <QTextCodec>
-#include <QLinearGradient>
-#include <QRadialGradient>
-#include <QIcon>
 #include <QTimer>
 #include <QUrl>
-#include <QFontDialog>
-#include <QFileDialog>
-#include <QInputDialog>
-#include <QDialog>
+#include <QVBoxLayout>
+
 // KDE
 #include <KCodecAction>
-
 #include <KIconDialog>
-#include <KWindowSystem>
-#include <KMessageBox>
 #include <KLocalizedString>
-#include <QDialogButtonBox>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <KMessageBox>
+#include <KNSCore/DownloadManager>
+#include <KWindowSystem>
 
 // Konsole
 #include "ColorSchemeManager.h"
@@ -63,8 +65,15 @@ using namespace Konsole;
 
 EditProfileDialog::EditProfileDialog(QWidget *aParent) :
     QDialog(aParent),
+    _ui(nullptr),
+    _tempProfile(nullptr),
+    _profile(nullptr),
+    _pageNeedsUpdate(QVector<bool>()),
+    _previewedProperties(QHash<int, QVariant>()),
+    _delayedPreviewProperties(QHash<int, QVariant>()),
     _delayedPreviewTimer(new QTimer(this)),
-    _colorDialog(nullptr)
+    _colorDialog(nullptr),
+    mButtonBox(nullptr)
 {
     setWindowTitle(i18n("Edit Profile"));
     mButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply);
@@ -74,7 +83,6 @@ EditProfileDialog::EditProfileDialog(QWidget *aParent) :
     mainLayout->addWidget(mainWidget);
     QPushButton *okButton = mButtonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
-    okButton->setShortcut(Konsole::ACCEL | Qt::Key_Return);
     connect(mButtonBox, &QDialogButtonBox::accepted, this, &Konsole::EditProfileDialog::accept);
     connect(mButtonBox, &QDialogButtonBox::rejected, this, &Konsole::EditProfileDialog::reject);
 
@@ -83,7 +91,7 @@ EditProfileDialog::EditProfileDialog(QWidget *aParent) :
 
     connect(mButtonBox->button(QDialogButtonBox::Apply),
             &QPushButton::clicked, this,
-            &Konsole::EditProfileDialog::save);
+            &Konsole::EditProfileDialog::apply);
 
     connect(_delayedPreviewTimer, &QTimer::timeout, this,
             &Konsole::EditProfileDialog::delayedPreviewActivate);
@@ -143,8 +151,54 @@ void EditProfileDialog::reject()
 
 void EditProfileDialog::accept()
 {
+    // if the Apply button is disabled then no settings were changed
+    // or the changes have already been saved by apply()
+    if (mButtonBox->button(QDialogButtonBox::Apply)->isEnabled()) {
+        if (!isValidProfileName()) {
+            return;
+        }
+        save();
+    }
+
+    unpreviewAll();
+    QDialog::accept();
+}
+
+void EditProfileDialog::apply()
+{
+    if (!isValidProfileName()) {
+        return;
+    }
+    save();
+}
+
+bool EditProfileDialog::isValidProfileName()
+{
     Q_ASSERT(_profile);
     Q_ASSERT(_tempProfile);
+
+    // check whether the user has enough permissions to save the profile
+    QFileInfo fileInfo(_profile->path());
+    if (fileInfo.exists() && !fileInfo.isWritable()) {
+        if (!_tempProfile->isPropertySet(Profile::Name)
+            || (_tempProfile->name() == _profile->name())) {
+                KMessageBox::sorry(this,
+                                   i18n("<p>Konsole does not have permission to save this profile to:<br /> \"%1\"</p>"
+                                        "<p>To be able to save settings you can either change the permissions "
+                                        "of the profile configuration file or change the profile name to save "
+                                        "the settings to a new profile.</p>", _profile->path()));
+                return false;
+        }
+    }
+
+    const QList<Profile::Ptr> existingProfiles = ProfileManager::instance()->allProfiles();
+    QStringList otherExistingProfileNames;
+
+    foreach(auto existingProfile, existingProfiles) {
+        if (existingProfile->name() != _profile->name()) {
+            otherExistingProfileNames.append(existingProfile->name());
+        }
+    }
 
     if ((_tempProfile->isPropertySet(Profile::Name)
          && _tempProfile->name().isEmpty())
@@ -152,11 +206,20 @@ void EditProfileDialog::accept()
         KMessageBox::sorry(this,
                            i18n("<p>Each profile must have a name before it can be saved "
                                 "into disk.</p>"));
-        return;
+        // revert the name in the dialog
+        _ui->profileNameEdit->setText(_profile->name());
+        selectProfileName();
+        return false;
+    } else if (!_tempProfile->name().isEmpty() && otherExistingProfileNames.contains(_tempProfile->name())) {
+        KMessageBox::sorry(this,
+                            i18n("<p>A profile with this name already exists.</p>"));
+        // revert the name in the dialog
+        _ui->profileNameEdit->setText(_profile->name());
+        selectProfileName();
+        return false;
+    } else {
+        return true;
     }
-    save();
-    unpreviewAll();
-    QDialog::accept();
 }
 
 QString EditProfileDialog::groupProfileNames(const ProfileGroup::Ptr group, int maxLength)
@@ -216,6 +279,12 @@ void EditProfileDialog::setProfile(Profile::Ptr profile)
 const Profile::Ptr EditProfileDialog::lookupProfile() const
 {
     return _profile;
+}
+
+const QString EditProfileDialog::currentColorSchemeName() const
+{
+    const QString &currentColorSchemeName = lookupProfile()->colorScheme();
+    return currentColorSchemeName;
 }
 
 void EditProfileDialog::preparePage(int page)
@@ -420,12 +489,12 @@ void EditProfileDialog::selectIcon()
     }
 }
 
-void EditProfileDialog::profileNameChanged(const QString &text)
+void EditProfileDialog::profileNameChanged(const QString &name)
 {
-    _ui->emptyNameWarningWidget->setVisible(text.isEmpty());
+    _ui->emptyNameWarningWidget->setVisible(name.isEmpty());
 
-    updateTempProfileProperty(Profile::Name, text);
-    updateTempProfileProperty(Profile::UntranslatedName, text);
+    updateTempProfileProperty(Profile::Name, name);
+    updateTempProfileProperty(Profile::UntranslatedName, name);
     updateCaption(_tempProfile);
 }
 
@@ -469,11 +538,20 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr profile)
     _ui->transparencyWarningWidget->setCloseButtonVisible(false);
     _ui->transparencyWarningWidget->setMessageType(KMessageWidget::Warning);
 
+    _ui->colorSchemeMessageWidget->setVisible(false);
+    _ui->colorSchemeMessageWidget->setWordWrap(true);
+    _ui->colorSchemeMessageWidget->setCloseButtonVisible(false);
+    _ui->colorSchemeMessageWidget->setMessageType(KMessageWidget::Warning);
+
     _ui->editColorSchemeButton->setEnabled(false);
     _ui->removeColorSchemeButton->setEnabled(false);
+    _ui->resetColorSchemeButton->setEnabled(false);
+
+    _ui->downloadColorSchemeButton->setConfigFile(QStringLiteral("konsole.knsrc"));
 
     // setup color list
-    updateColorSchemeList(true);
+    // select the colorScheme used in the current profile
+    updateColorSchemeList(currentColorSchemeName());
 
     _ui->colorSchemeList->setMouseTracking(true);
     _ui->colorSchemeList->installEventFilter(this);
@@ -493,6 +571,11 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr profile)
             &Konsole::EditProfileDialog::removeColorScheme);
     connect(_ui->newColorSchemeButton, &QPushButton::clicked, this,
             &Konsole::EditProfileDialog::newColorScheme);
+    connect(_ui->downloadColorSchemeButton, &KNS3::Button::dialogFinished, this,
+            &Konsole::EditProfileDialog::gotNewColorSchemes);
+
+    connect(_ui->resetColorSchemeButton, &QPushButton::clicked, this,
+            &Konsole::EditProfileDialog::resetColorScheme);
 
     // setup font preview
     const bool antialias = profile->antiAliasFonts();
@@ -537,9 +620,9 @@ void EditProfileDialog::showAllFontsButtonWarning(bool enable)
 {
     if (enable) {
         KMessageBox::information(this,
-                                 QLatin1String(
+                                 QStringLiteral(
                                      "By its very nature, a terminal program requires font characters that are equal width (monospace).  Any non monospaced font may cause display issues.  This should not be necessary except in rare cases."),
-                                 QLatin1String("Warning"));
+                                 QStringLiteral("Warning"));
     }
 }
 
@@ -570,14 +653,13 @@ void EditProfileDialog::toggleMouseWheelZoom(bool enable)
     updateTempProfileProperty(Profile::MouseWheelZoomEnabled, enable);
 }
 
-void EditProfileDialog::updateColorSchemeList(bool selectCurrentScheme)
+void EditProfileDialog::updateColorSchemeList(const QString &selectedColorSchemeName)
 {
     if (_ui->colorSchemeList->model() == nullptr) {
         _ui->colorSchemeList->setModel(new QStandardItemModel(this));
     }
 
-    const QString &name = lookupProfile()->colorScheme();
-    const ColorScheme *currentScheme = ColorSchemeManager::instance()->findColorScheme(name);
+    const ColorScheme *selectedColorScheme = ColorSchemeManager::instance()->findColorScheme(selectedColorSchemeName);
 
     QStandardItemModel *model = qobject_cast<QStandardItemModel *>(_ui->colorSchemeList->model());
 
@@ -595,7 +677,9 @@ void EditProfileDialog::updateColorSchemeList(bool selectCurrentScheme)
         item->setData(QVariant::fromValue(_profile->font()), Qt::UserRole + 2);
         item->setFlags(item->flags());
 
-        if (currentScheme == scheme) {
+        // if selectedColorSchemeName is not empty then select that scheme
+        // after saving the changes in the colorScheme editor
+        if (selectedColorScheme == scheme) {
             selectedItem = item;
         }
 
@@ -604,7 +688,7 @@ void EditProfileDialog::updateColorSchemeList(bool selectCurrentScheme)
 
     model->sort(0);
 
-    if (selectCurrentScheme && (selectedItem != nullptr)) {
+    if (selectedItem != nullptr) {
         _ui->colorSchemeList->updateGeometry();
         _ui->colorSchemeList->selectionModel()->setCurrentIndex(selectedItem->index(),
                                                                 QItemSelectionModel::Select);
@@ -661,21 +745,21 @@ void EditProfileDialog::updateKeyBindingsList(bool selectCurrentTranslator)
     }
 }
 
-bool EditProfileDialog::eventFilter(QObject *watched, QEvent *aEvent)
+bool EditProfileDialog::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == _ui->colorSchemeList && aEvent->type() == QEvent::Leave) {
+    if (watched == _ui->colorSchemeList && event->type() == QEvent::Leave) {
         if (_tempProfile->isPropertySet(Profile::ColorScheme)) {
             preview(Profile::ColorScheme, _tempProfile->colorScheme());
         } else {
             unpreview(Profile::ColorScheme);
         }
     }
-    if (watched == _ui->fontPreviewLabel && aEvent->type() == QEvent::FontChange) {
+    if (watched == _ui->fontPreviewLabel && event->type() == QEvent::FontChange) {
         const QFont &labelFont = _ui->fontPreviewLabel->font();
         _ui->fontPreviewLabel->setText(i18n("%1", labelFont.family()));
     }
 
-    return QDialog::eventFilter(watched, aEvent);
+    return QDialog::eventFilter(watched, event);
 }
 
 void EditProfileDialog::unpreviewAll()
@@ -687,7 +771,7 @@ void EditProfileDialog::unpreviewAll()
     QHashIterator<int, QVariant> iter(_previewedProperties);
     while (iter.hasNext()) {
         iter.next();
-        map.insert((Profile::Property)iter.key(), iter.value());
+        map.insert(static_cast<Profile::Property>(iter.key()), iter.value());
     }
 
     // undo any preview changes
@@ -696,24 +780,24 @@ void EditProfileDialog::unpreviewAll()
     }
 }
 
-void EditProfileDialog::unpreview(int aProperty)
+void EditProfileDialog::unpreview(int property)
 {
-    _delayedPreviewProperties.remove(aProperty);
+    _delayedPreviewProperties.remove(property);
 
-    if (!_previewedProperties.contains(aProperty)) {
+    if (!_previewedProperties.contains(property)) {
         return;
     }
 
     QHash<Profile::Property, QVariant> map;
-    map.insert((Profile::Property)aProperty, _previewedProperties[aProperty]);
+    map.insert(static_cast<Profile::Property>(property), _previewedProperties[property]);
     ProfileManager::instance()->changeProfile(_profile, map, false);
 
-    _previewedProperties.remove(aProperty);
+    _previewedProperties.remove(property);
 }
 
-void EditProfileDialog::delayedPreview(int aProperty, const QVariant &value)
+void EditProfileDialog::delayedPreview(int property, const QVariant &value)
 {
-    _delayedPreviewProperties.insert(aProperty, value);
+    _delayedPreviewProperties.insert(property, value);
 
     _delayedPreviewTimer->stop();
     _delayedPreviewTimer->start(300);
@@ -730,12 +814,12 @@ void EditProfileDialog::delayedPreviewActivate()
     }
 }
 
-void EditProfileDialog::preview(int aProperty, const QVariant &value)
+void EditProfileDialog::preview(int property, const QVariant &value)
 {
     QHash<Profile::Property, QVariant> map;
-    map.insert((Profile::Property)aProperty, value);
+    map.insert(static_cast<Profile::Property>(property), value);
 
-    _delayedPreviewProperties.remove(aProperty);
+    _delayedPreviewProperties.remove(property);
 
     const Profile::Ptr original = lookupProfile();
 
@@ -745,13 +829,13 @@ void EditProfileDialog::preview(int aProperty, const QVariant &value)
     // TODO - Save the original values for each profile and use to unpreview properties
     ProfileGroup::Ptr group = original->asGroup();
     if (group && group->profiles().count() > 1
-        && original->property<QVariant>((Profile::Property)aProperty).isNull()) {
+        && original->property<QVariant>(static_cast<Profile::Property>(property)).isNull()) {
         return;
     }
 
-    if (!_previewedProperties.contains(aProperty)) {
-        _previewedProperties.insert(aProperty,
-                                    original->property<QVariant>((Profile::Property)aProperty));
+    if (!_previewedProperties.contains(property)) {
+        _previewedProperties.insert(property,
+                                    original->property<QVariant>(static_cast<Profile::Property>(property)));
     }
 
     // temporary change to color scheme
@@ -768,13 +852,112 @@ void EditProfileDialog::previewColorScheme(const QModelIndex &index)
 void EditProfileDialog::removeColorScheme()
 {
     QModelIndexList selected = _ui->colorSchemeList->selectionModel()->selectedIndexes();
+    if (selected.isEmpty()) {
+        return;
+    }
+
+    // The actual delete runs async because we need to on-demand query
+    // files managed by KNS. Deleting files managed by KNS screws up the
+    // KNS states (entry gets shown as installed when in fact we deleted it).
+    auto *manager = new KNSCore::DownloadManager(QStringLiteral("konsole.knsrc"), this);
+    connect(manager, &KNSCore::DownloadManager::searchResult,
+            [=](const KNSCore::EntryInternal::List &entries) {
+        const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+        Q_ASSERT(!name.isEmpty());
+        bool uninstalled = false;
+        // Check if the theme was installed by KNS, if so uninstall it through
+        // there and unload it.
+        for (auto entry : entries) {
+            for (const auto &file : entry.installedFiles()) {
+                if (ColorSchemeManager::colorSchemeNameFromPath(file) != name) {
+                    continue;
+                }
+                // Make sure the manager can unload it before uninstalling it.
+                if (ColorSchemeManager::instance()->unloadColorScheme(file)) {
+                    manager->uninstallEntry(entry);
+                    uninstalled = true;
+                }
+            }
+            if (uninstalled) {
+                break;
+            }
+        }
+
+        // If KNS wasn't able to remove it is a custom theme and we'll drop
+        // it manually.
+        if (!uninstalled) {
+            uninstalled = ColorSchemeManager::instance()->deleteColorScheme(name);
+        }
+
+        if (uninstalled) {
+            _ui->colorSchemeList->model()->removeRow(selected.first().row());
+        }
+
+        manager->deleteLater();
+    });
+    manager->checkForInstalled();
+
+    return;
+}
+
+void EditProfileDialog::gotNewColorSchemes(const KNS3::Entry::List &changedEntries)
+{
+    int failures = 0;
+    for (auto entry : changedEntries) {
+        switch (entry.status()) {
+        case KNS3::Entry::Installed:
+            for (const auto &file : entry.installedFiles()) {
+                if (ColorSchemeManager::instance()->loadColorScheme(file)) {
+                    continue;
+                }
+                qWarning() << "Failed to load file" << file;
+                ++failures;
+            }
+            if (failures == entry.installedFiles().size()) {
+                _ui->colorSchemeMessageWidget->setText(
+                            xi18nc("@info",
+                                   "Scheme <resource>%1</resource> failed to load.",
+                                   entry.name()));
+                _ui->colorSchemeMessageWidget->animatedShow();
+                QTimer::singleShot(8000,
+                                   _ui->colorSchemeMessageWidget,
+                                   &KMessageWidget::animatedHide);
+            }
+            break;
+        case KNS3::Entry::Deleted:
+            for (const auto &file : entry.uninstalledFiles()) {
+                if (ColorSchemeManager::instance()->unloadColorScheme(file)) {
+                    continue;
+                }
+                qWarning() << "Failed to unload file" << file;
+                // If unloading fails we do not care. Iff the scheme failed here
+                // it either wasn't loaded or was invalid to begin with.
+            }
+            break;
+        case KNS3::Entry::Invalid:
+        case KNS3::Entry::Installing:
+        case KNS3::Entry::Downloadable:
+        case KNS3::Entry::Updateable:
+        case KNS3::Entry::Updating:
+            // Not interesting.
+            break;
+        }
+    }
+    updateColorSchemeList(currentColorSchemeName());
+}
+
+void EditProfileDialog::resetColorScheme()
+{
+
+    QModelIndexList selected = _ui->colorSchemeList->selectionModel()->selectedIndexes();
 
     if (!selected.isEmpty()) {
         const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
 
-        if (ColorSchemeManager::instance()->deleteColorScheme(name)) {
-            _ui->colorSchemeList->model()->removeRow(selected.first().row());
-        }
+        ColorSchemeManager::instance()->deleteColorScheme(name);
+
+        // select the colorScheme used in the current profile
+        updateColorSchemeList(currentColorSchemeName());
     }
 }
 
@@ -835,7 +1018,10 @@ void EditProfileDialog::saveColorScheme(const ColorScheme &scheme, bool isNewSch
 
     ColorSchemeManager::instance()->addColorScheme(newScheme);
 
-    updateColorSchemeList(true);
+    const QString &selectedColorSchemeName = newScheme->name();
+
+    // select the edited or the new colorScheme after saving the changes
+    updateColorSchemeList(selectedColorSchemeName);
 
     preview(Profile::ColorScheme, newScheme->name());
 }
@@ -861,7 +1047,23 @@ void EditProfileDialog::colorSchemeSelected()
 void EditProfileDialog::updateColorSchemeButtons()
 {
     enableIfNonEmptySelection(_ui->editColorSchemeButton, _ui->colorSchemeList->selectionModel());
-    enableIfNonEmptySelection(_ui->removeColorSchemeButton, _ui->colorSchemeList->selectionModel());
+
+    QModelIndexList selected = _ui->colorSchemeList->selectionModel()->selectedIndexes();
+
+    if (!selected.isEmpty()) {
+        const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+
+        bool isResettable = ColorSchemeManager::instance()->canResetColorScheme(name);
+        _ui->resetColorSchemeButton->setEnabled(isResettable);
+
+        bool isDeletable = ColorSchemeManager::instance()->isColorSchemeDeletable(name);
+        // if a colorScheme can be restored then it can't be deleted
+        _ui->removeColorSchemeButton->setEnabled(isDeletable && !isResettable);
+    } else {
+        _ui->removeColorSchemeButton->setEnabled(false);
+        _ui->resetColorSchemeButton->setEnabled(false);
+    }
+
 }
 
 void EditProfileDialog::updateKeyBindingsButtons()
@@ -904,9 +1106,9 @@ void EditProfileDialog::createTempProfile()
     _tempProfile->setHidden(true);
 }
 
-void EditProfileDialog::updateTempProfileProperty(Profile::Property aProperty, const QVariant &value)
+void EditProfileDialog::updateTempProfileProperty(Profile::Property property, const QVariant &value)
 {
-    _tempProfile->setProperty(aProperty, value);
+    _tempProfile->setProperty(property, value);
     updateButtonApply();
 }
 
@@ -918,17 +1120,17 @@ void EditProfileDialog::updateButtonApply()
     while (iter.hasNext()) {
         iter.next();
 
-        Profile::Property aProperty = iter.key();
+        Profile::Property property = iter.key();
         QVariant value = iter.value();
 
         // for previewed property
-        if (_previewedProperties.contains(static_cast<int>(aProperty))) {
-            if (value != _previewedProperties.value(static_cast<int>(aProperty))) {
+        if (_previewedProperties.contains(static_cast<int>(property))) {
+            if (value != _previewedProperties.value(static_cast<int>(property))) {
                 userModified = true;
                 break;
             }
             // for not-previewed property
-        } else if ((value != _profile->property<QVariant>(aProperty))) {
+        } else if ((value != _profile->property<QVariant>(property))) {
             userModified = true;
             break;
         }
@@ -1024,6 +1226,9 @@ void EditProfileDialog::showKeyBindingEditor(bool isNewTranslator)
     layout->addWidget(editor);
     layout->addWidget(buttonBox);
     dialog->setLayout(layout);
+    // see also the size set in the KeyBindingEditor constructor
+    dialog->setMinimumSize(480, 430);
+    dialog->resize(500, 500);
 
     if (dialog->exec() == QDialog::Accepted) {
         auto newTranslator = new KeyboardTranslator(*editor->translator());
@@ -1170,8 +1375,16 @@ void EditProfileDialog::setupMousePage(const Profile::Ptr profile)
             SLOT(toggleCtrlRequiredForDrag(bool))
         },
         {
+            _ui->copyTextAsHTMLButton, Profile::CopyTextAsHTML,
+            SLOT(toggleCopyTextAsHTML(bool))
+        },
+        {
             _ui->copyTextToClipboardButton, Profile::AutoCopySelectedText,
             SLOT(toggleCopyTextToClipboard(bool))
+        },
+        {
+            _ui->trimLeadingSpacesButton, Profile::TrimLeadingSpacesInSelectedText,
+            SLOT(toggleTrimLeadingSpacesInSelectedText(bool))
         },
         {
             _ui->trimTrailingSpacesButton, Profile::TrimTrailingSpacesInSelectedText,
@@ -1363,9 +1576,19 @@ void EditProfileDialog::toggleOpenLinksByDirectClick(bool enable)
     updateTempProfileProperty(Profile::OpenLinksByDirectClickEnabled, enable);
 }
 
+void EditProfileDialog::toggleCopyTextAsHTML(bool enable)
+{
+    updateTempProfileProperty(Profile::CopyTextAsHTML, enable);
+}
+
 void EditProfileDialog::toggleCopyTextToClipboard(bool enable)
 {
     updateTempProfileProperty(Profile::AutoCopySelectedText, enable);
+}
+
+void EditProfileDialog::toggleTrimLeadingSpacesInSelectedText(bool enable)
+{
+    updateTempProfileProperty(Profile::TrimLeadingSpacesInSelectedText, enable);
 }
 
 void EditProfileDialog::toggleTrimTrailingSpacesInSelectedText(bool enable)

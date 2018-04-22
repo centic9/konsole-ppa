@@ -58,6 +58,7 @@ const int FAINT_COLOR_COLUMN = 3;    // column 2 : faint colors
 ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
     QDialog(aParent),
     _isNewScheme(false),
+    _ui(nullptr),
     _colors(nullptr)
 {
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Apply);
@@ -67,7 +68,6 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
     mainLayout->addWidget(mainWidget);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
-    okButton->setShortcut(Konsole::ACCEL | Qt::Key_Return);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ColorSchemeEditor::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ColorSchemeEditor::reject);
     mainLayout->addWidget(buttonBox);
@@ -92,6 +92,10 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
     connect(_ui->transparencySlider, &QSlider::valueChanged, this,
             &Konsole::ColorSchemeEditor::setTransparencyPercentLabel);
 
+    // blur behind window
+    connect(_ui->blurCheckBox, &QCheckBox::toggled, this,
+            &Konsole::ColorSchemeEditor::setBlur);
+
     // randomized background
     connect(_ui->randomizedBackgroundCheck, &QCheckBox::toggled, this,
             &Konsole::ColorSchemeEditor::setRandomizedBackgroundColor);
@@ -99,7 +103,7 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
     // wallpaper stuff
     auto dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::AllEntries);
-    dirModel->setRootPath(QLatin1String("/"));
+    dirModel->setRootPath(QStringLiteral("/"));
     auto completer = new QCompleter(this);
     completer->setModel(dirModel);
     _ui->wallpaperPath->setCompleter(completer);
@@ -228,14 +232,14 @@ void ColorSchemeEditor::wallpaperPathChanged(const QString &path)
     }
 }
 
-void ColorSchemeEditor::setDescription(const QString &text)
+void ColorSchemeEditor::setDescription(const QString &description)
 {
     if (_colors != nullptr) {
-        _colors->setDescription(text);
+        _colors->setDescription(description);
     }
 
-    if (_ui->descriptionEdit->text() != text) {
-        _ui->descriptionEdit->setText(text);
+    if (_ui->descriptionEdit->text() != description) {
+        _ui->descriptionEdit->setText(description);
     }
 }
 
@@ -247,9 +251,14 @@ void ColorSchemeEditor::setTransparencyPercentLabel(int percent)
     _colors->setOpacity(opacity);
 }
 
-void ColorSchemeEditor::setRandomizedBackgroundColor(bool randomize)
+void ColorSchemeEditor::setBlur(bool blur)
 {
-    _colors->setRandomizedBackgroundColor(randomize);
+    _colors->setBlur(blur);
+}
+
+void ColorSchemeEditor::setRandomizedBackgroundColor(bool randomized)
+{
+    _colors->setRandomizedBackgroundColor(randomized);
 }
 
 void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
@@ -277,6 +286,9 @@ void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
     const int transparencyPercent = qRound((1 - _colors->opacity()) * 100);
     _ui->transparencySlider->setValue(transparencyPercent);
     setTransparencyPercentLabel(transparencyPercent);
+
+    // blur behind window checkbox
+    _ui->blurCheckBox->setChecked(scheme->blur());
 
     // randomized background color checkbox
     _ui->randomizedBackgroundCheck->setChecked(scheme->randomizedBackgroundColor());
@@ -317,11 +329,6 @@ void ColorSchemeEditor::setupColorTable(const ColorScheme *colors)
     }
     // ensure that color names are as fully visible as possible
     _ui->colorTable->resizeColumnToContents(0);
-
-    // set the widget height to the table content
-    _ui->colorTable->setFixedHeight(
-        _ui->colorTable->verticalHeader()->length() + _ui->colorTable->horizontalHeader()->height()
-        + 2);
 }
 
 ColorScheme &ColorSchemeEditor::colorScheme() const

@@ -1,9 +1,9 @@
 # Konsole project
 
 # KDE Application Version, managed by release script
-set (KDE_APPLICATIONS_VERSION_MAJOR "17")
-set (KDE_APPLICATIONS_VERSION_MINOR "12")
-set (KDE_APPLICATIONS_VERSION_MICRO "3")
+set (KDE_APPLICATIONS_VERSION_MAJOR "18")
+set (KDE_APPLICATIONS_VERSION_MINOR "04")
+set (KDE_APPLICATIONS_VERSION_MICRO "0")
 set (KDE_APPLICATIONS_VERSION "${KDE_APPLICATIONS_VERSION_MAJOR}.${KDE_APPLICATIONS_VERSION_MINOR}.${KDE_APPLICATIONS_VERSION_MICRO}")
 
 # minimal requirements
@@ -43,9 +43,9 @@ find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
     Bookmarks Completion Config ConfigWidgets
     CoreAddons Crash GuiAddons DBusAddons
-    I18n IconThemes Init KIO Notifications NotifyConfig
+    I18n IconThemes Init KIO NewStuff NewStuffCore Notifications NotifyConfig
     Parts Pty Service TextWidgets WidgetsAddons
-    WindowSystem XmlGui DBusAddons
+    WindowSystem XmlGui DBusAddons GlobalAccel
 )
 
 find_package(KF5DocTools ${KF5_MIN_VERSION})

@@ -33,8 +33,12 @@ key Return-Shift+NewLine : "\r\n"
 key Return+Shift         : "\EOM"
 
 # Backspace and Delete codes are preserving CTRL-H.
+# Backspace without any modifiers sends '^?'
+key Backspace   -AnyMod : "\x7f"
 
-key Backspace      : "\x7f"
+# Match xterm behaviour: Backspace sends '^H' when Control is pressed
+# BS, hex \x08, \b
+key Backspace  +Control : "\b"
 
 # Arrow keys in VT52 mode
 # shift up/down are reserved for scrolling.
@@ -108,6 +112,10 @@ key Insert      +KeyPad  : "\E[2~"
 key Delete      +KeyPad  : "\E[3~"
 key PgUp -Shift+KeyPad  : "\E[5~"
 key PgDown  -Shift+KeyPad  : "\E[6~"
+
+# the key labelled 5 on the Keypad, is Qt::Key_Clear (a very intuitive
+# and discoverable name...)
+key Clear       +KeyPad : "\E[E"
 
 # other grey PC keys
 

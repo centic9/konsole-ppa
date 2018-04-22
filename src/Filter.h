@@ -142,9 +142,6 @@ public:
      */
     void reset();
 
-    /** Adds a new line of text to the filter and increments the line count */
-    //void addLine(const QString& string);
-
     /** Returns the hotspot which covers the given @p line and @p column, or 0 if no hotspot covers that area */
     HotSpot *hotSpotAt(int line, int column) const;
 
@@ -168,6 +165,8 @@ protected:
     void getLineColumn(int position, int &startLine, int &startColumn);
 
 private:
+    Q_DISABLE_COPY(Filter)
+
     QMultiHash<int, HotSpot *> _hotspots;
     QList<HotSpot *> _hotspotList;
 
@@ -211,7 +210,7 @@ public:
      * Regular expressions which match the empty string are treated as not matching
      * anything.
      */
-    void setRegExp(const QRegularExpression &text);
+    void setRegExp(const QRegularExpression &regExp);
     /** Returns the regular expression which the filter searches for in blocks of text */
     QRegularExpression regExp() const;
 
@@ -337,6 +336,8 @@ public:
 public Q_SLOTS:
     void activated();
 private:
+    Q_DISABLE_COPY(FilterObject)
+
     Filter::HotSpot *_filter;
 };
 
@@ -406,6 +407,8 @@ public:
                   const QVector<LineProperty> &lineProperties);
 
 private:
+    Q_DISABLE_COPY(TerminalImageFilterChain)
+
     QString *_buffer;
     QList<int> *_linePositions;
 };

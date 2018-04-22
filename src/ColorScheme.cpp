@@ -164,15 +164,19 @@ ColorScheme::ColorScheme() :
     _table(nullptr),
     _randomTable(nullptr),
     _opacity(1.0),
+    _blur(false),
     _wallpaper(nullptr)
 {
     setWallpaper(QString());
 }
 
 ColorScheme::ColorScheme(const ColorScheme &other) :
+    _description(QString()),
+    _name(QString()),
     _table(nullptr),
     _randomTable(nullptr),
     _opacity(other._opacity),
+    _blur(other._blur),
     _wallpaper(other._wallpaper)
 {
     setName(other.name());
@@ -198,9 +202,9 @@ ColorScheme::~ColorScheme()
     delete[] _randomTable;
 }
 
-void ColorScheme::setDescription(const QString &aDescription)
+void ColorScheme::setDescription(const QString &description)
 {
-    _description = aDescription;
+    _description = description;
 }
 
 QString ColorScheme::description() const
@@ -208,9 +212,9 @@ QString ColorScheme::description() const
     return _description;
 }
 
-void ColorScheme::setName(const QString &aName)
+void ColorScheme::setName(const QString &name)
 {
-    _name = aName;
+    _name = name;
 }
 
 QString ColorScheme::name() const
@@ -346,14 +350,24 @@ bool ColorScheme::hasDarkBackground() const
     return backgroundColor().value() < 127;
 }
 
-void ColorScheme::setOpacity(qreal aOpacity)
+void ColorScheme::setOpacity(qreal opacity)
 {
-    _opacity = aOpacity;
+    _opacity = opacity;
 }
 
 qreal ColorScheme::opacity() const
 {
     return _opacity;
+}
+
+void ColorScheme::setBlur(bool blur)
+{
+    _blur = blur;
+}
+
+bool ColorScheme::blur() const
+{
+    return _blur;
 }
 
 void ColorScheme::read(const KConfig &config)
@@ -364,6 +378,7 @@ void ColorScheme::read(const KConfig &config)
 
     _description = i18n(schemeDescription.toUtf8().constData());
     _opacity = configGroup.readEntry("Opacity", 1.0);
+    _blur = configGroup.readEntry("Blur", false);
     setWallpaper(configGroup.readEntry("Wallpaper", QString()));
 
     for (int i = 0; i < TABLE_COLORS; i++) {
@@ -400,6 +415,7 @@ void ColorScheme::write(KConfig &config) const
 
     configGroup.writeEntry("Description", _description);
     configGroup.writeEntry("Opacity", _opacity);
+    configGroup.writeEntry("Blur", _blur);
     configGroup.writeEntry("Wallpaper", _wallpaper->path());
 
     for (int i = 0; i < TABLE_COLORS; i++) {
@@ -447,8 +463,8 @@ ColorSchemeWallpaper::Ptr ColorScheme::wallpaper() const
     return _wallpaper;
 }
 
-ColorSchemeWallpaper::ColorSchemeWallpaper(const QString &aPath) :
-    _path(aPath),
+ColorSchemeWallpaper::ColorSchemeWallpaper(const QString &path) :
+    _path(path),
     _picture(nullptr)
 {
 }
@@ -479,13 +495,13 @@ bool ColorSchemeWallpaper::isNull() const
     return _path.isEmpty();
 }
 
-bool ColorSchemeWallpaper::draw(QPainter &painter, const QRect &rect, qreal opacity)
+bool ColorSchemeWallpaper::draw(QPainter &painter, const QRect rect, qreal opacity)
 {
     if ((_picture == nullptr) || _picture->isNull()) {
         return false;
     }
 
-    if (qFuzzyCompare(1.0, opacity)) {
+    if (qFuzzyCompare(qreal(1.0), opacity)) {
         painter.drawTiledPixmap(rect, *_picture, rect.topLeft());
         return true;
     }

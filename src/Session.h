@@ -95,9 +95,9 @@ public:
      *
      * Calling openTeletype() while a session is running has no effect.
      *
-     * @param masterFd The file descriptor of the pseudo-teletype master (See KPtyProcess::KPtyProcess())
+     * @param fd The file descriptor of the pseudo-teletype master (See KPtyProcess::KPtyProcess())
      */
-    void openTeletype(int masterFd);
+    void openTeletype(int fd);
 
     /**
      * Returns true if the session is currently running.  This will be true
@@ -172,6 +172,12 @@ public:
     /** Returns the format used by this session for tab titles. */
     QString tabTitleFormat(TabTitleContext context) const;
 
+    /**
+     * Returns true if the tab title has been changed by the user via the
+     * rename-tab dialog.
+     */
+    bool isTabTitleSetByUser() const;
+
     /** Returns the arguments passed to the shell process when run() is called. */
     QStringList arguments() const;
     /** Returns the program name of the shell process started when run() is called. */
@@ -210,7 +216,7 @@ public:
      * remembered before they are lost and the storage
      * (in memory, on-disk etc.) used.
      */
-    void setHistoryType(const HistoryType &type);
+    void setHistoryType(const HistoryType &hType);
     /**
      * Returns the type of history store used by this session.
      */
@@ -272,7 +278,7 @@ public:
     QString iconText() const;
 
     /** Sets the session's title for the specified @p role to @p title. */
-    void setTitle(TitleRole role, const QString &title);
+    void setTitle(TitleRole role, const QString &newTitle);
 
     /** Returns the session's title for the specified @p role. */
     QString title(TitleRole role) const;
@@ -329,11 +335,15 @@ public:
      */
     void refresh();
 
-    void startZModem(const QString &rz, const QString &dir, const QStringList &list);
+    void startZModem(const QString &zmodem, const QString &dir, const QStringList &list);
     void cancelZModem();
     bool isZModemBusy()
     {
         return _zmodemBusy;
+    }
+    void setZModemBusy(bool busy)
+    {
+        _zmodemBusy = busy;
     }
 
     /**
@@ -362,6 +372,9 @@ public:
     void sendSignal(int signal);
 
     void reportBackgroundColor(const QColor &c);
+
+    bool isReadOnly() const;
+    void setReadOnly(bool readOnly);
 
 public Q_SLOTS:
 
@@ -509,7 +522,7 @@ public Q_SLOTS:
       * Overloaded to accept a QByteArray for convenience since DBus
       * does not accept QTextCodec directly.
       */
-    Q_SCRIPTABLE bool setCodec(const QByteArray &codec);
+    Q_SCRIPTABLE bool setCodec(const QByteArray &name);
 
     /** Returns the codec used to decode incoming characters in this
      * terminal emulation
@@ -581,6 +594,9 @@ Q_SIGNALS:
     /** Emitted when the session's title has changed. */
     void titleChanged();
 
+    /** Emitted when the session gets locked / unlocked. */
+    void readOnlyChanged();
+
     /**
      * Emitted when the activity state of this session changes.
      *
@@ -625,7 +641,8 @@ Q_SIGNALS:
      * Emitted when the request for data transmission through ZModem
      * protocol is detected.
      */
-    void zmodemDetected();
+    void zmodemDownloadDetected();
+    void zmodemUploadDetected();
 
     /**
      * Emitted when the terminal process requests a change
@@ -676,12 +693,18 @@ Q_SIGNALS:
      */
     void getBackgroundColor();
 
+    /**
+     * Relays the tabRenamedByUser signal from SessionController
+     */
+    void tabRenamedByUser(bool renamed) const;
+
 private Q_SLOTS:
     void done(int, QProcess::ExitStatus);
 
-    void fireZModemDetected();
+    void fireZModemDownloadDetected();
+    void fireZModemUploadDetected();
 
-    void onReceiveBlock(const char *buffer, int len);
+    void onReceiveBlock(const char *buf, int len);
     void silenceTimerDone();
     void activityTimerDone();
 
@@ -705,7 +728,11 @@ private Q_SLOTS:
 
     void sessionAttributeRequest(int id);
 
+    void tabTitleSetByUser(bool set);
+
 private:
+    Q_DISABLE_COPY(Session)
+
     // checks that the binary 'program' is available and can be executed
     // returns the binary name if available or an empty string otherwise
     static QString checkProgram(const QString &program);
@@ -722,7 +749,7 @@ private:
     bool updateForegroundProcessInfo();
     void updateWorkingDirectory();
 
-    QString validDirectory(const QString &directory) const;
+    QString validDirectory(const QString &dir) const;
 
     QUuid _uniqueIdentifier;            // SHELL_SESSION_ID
 
@@ -748,6 +775,8 @@ private:
 
     QString _localTabTitleFormat;
     QString _remoteTabTitleFormat;
+
+    bool _tabTitleSetByUser;
 
     QString _iconName;
     QString _iconText;        // not actually used
@@ -777,6 +806,7 @@ private:
 
     QSize _preferredSize;
 
+    bool _readOnly;
     static int lastSessionId;
 };
 

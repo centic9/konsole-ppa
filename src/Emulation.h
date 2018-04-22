@@ -257,10 +257,10 @@ public Q_SLOTS:
      * to be emitted when it expires.  The timer allows multiple updates in quick
      * succession to be buffered into a single outputChanged() signal emission.
      *
-     * @param buffer A string of characters received from the terminal program.
-     * @param len The length of @p buffer
+     * @param text A string of characters received from the terminal program.
+     * @param length The length of @p text
      */
-    void receiveData(const char *buffer, int len);
+    void receiveData(const char *text, int length);
 
     /**
      * Sends information about the focus lost event to the terminal.
@@ -302,7 +302,8 @@ Q_SIGNALS:
      * Emitted when the special sequence indicating the request for data
      * transmission through ZModem protocol is detected.
      */
-    void zmodemDetected();
+    void zmodemDownloadDetected();
+    void zmodemUploadDetected();
 
     /**
      * Requests that the color of the text used
@@ -432,9 +433,9 @@ protected:
 
     /**
      * Processes an incoming character.  See receiveData()
-     * @p ch A unicode character code.
+     * @p c A unicode character code.
      */
-    virtual void receiveChar(int ch);
+    virtual void receiveChar(int c);
 
     /**
      * Sets the active screen.  The terminal has two screens, primary and alternate.
@@ -492,6 +493,8 @@ private Q_SLOTS:
     void bracketedPasteModeChanged(bool bracketedPasteMode);
 
 private:
+    Q_DISABLE_COPY(Emulation)
+
     bool _usesMouse;
     bool _bracketedPasteMode;
     QTimer _bulkTimer1;

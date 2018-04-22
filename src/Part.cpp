@@ -132,11 +132,11 @@ void Part::startProgram(const QString &program, const QStringList &arguments)
     activeSession()->run();
 }
 
-void Part::openTeletype(int fd)
+void Part::openTeletype(int ptyMasterFd)
 {
     Q_ASSERT(activeSession());
 
-    activeSession()->openTeletype(fd);
+    activeSession()->openTeletype(ptyMasterFd);
 }
 
 void Part::showShellInDir(const QString &dir)
@@ -187,7 +187,7 @@ QString Part::foregroundProcessName()
     if (activeSession()->isForegroundProcessActive()) {
         return activeSession()->foregroundProcessName();
     } else {
-        return QLatin1String("");
+        return QString();
     }
 }
 
@@ -215,11 +215,6 @@ void Part::createSession(const QString &profileName, const QString &directory)
     }
 
     _viewManager->createView(session);
-}
-
-QStringList Part::profileNameList() const
-{
-    return ProfileManager::instance()->availableProfileNames();
 }
 
 void Part::activeViewChanged(SessionController *controller)
@@ -327,22 +322,20 @@ void Part::changeSessionSettings(const QString &text)
 }
 
 // Konqueror integration
-bool Part::openUrl(const QUrl &aQUrl)
+bool Part::openUrl(const QUrl &url)
 {
-    QUrl aUrl = aQUrl;
-
-    if (url() == aUrl) {
+    if (KParts::ReadOnlyPart::url() == url) {
         emit completed();
         return true;
     }
 
-    setUrl(aUrl);
-    emit setWindowCaption(aUrl.toDisplayString(QUrl::PreferLocalFile));
+    setUrl(url);
+    emit setWindowCaption(url.toDisplayString(QUrl::PreferLocalFile));
     ////qDebug() << "Set Window Caption to " << url.pathOrUrl();
     emit started(nullptr);
 
-    if (aUrl.isLocalFile()) {
-        showShellInDir(aUrl.path());
+    if (url.isLocalFile()) {
+        showShellInDir(url.path());
     } else {
         showShellInDir(QDir::homePath());
     }
@@ -382,6 +375,11 @@ void Part::setMonitorActivityEnabled(bool enabled)
                    this,
                    &Konsole::Part::sessionStateChanged);
     }
+}
+
+bool Part::isBlurEnabled()
+{
+    return ViewManager::profileHasBlurEnabled(SessionManager::instance()->sessionProfile(activeSession()));
 }
 
 void Part::sessionStateChanged(int state)

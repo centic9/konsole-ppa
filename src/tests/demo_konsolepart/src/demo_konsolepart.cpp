@@ -20,18 +20,36 @@
 
 #include "demo_konsolepart.h"
 
+#include <QApplication>
+#include <QMenu>
+#include <QMenuBar>
+#include <QDebug>
+
 #include <KPluginLoader>
 #include <KPluginFactory>
 #include <KService>
 #include <KStandardAction>
+#include <KWindowSystem>
 
-#include <QApplication>
-#include <QMenu>
-#include <QMenuBar>
+// see below notes
+//#include "../../../WindowSystemInfo.h"
 
 demo_konsolepart::demo_konsolepart()
-    : KMainWindow()
+    : KMainWindow(),
+      _mainWindow(nullptr),
+      _terminalPart(nullptr),
+      _terminal(nullptr)
 {
+    const bool useTranslucency = KWindowSystem::compositingActive();
+
+    setAttribute(Qt::WA_TranslucentBackground, useTranslucency);
+    setAttribute(Qt::WA_NoSystemBackground, false);
+
+    // This is used in EditProfileDialog to show the warnings about
+    // transparency issues - needs refactoring as the above
+    // include does not work
+//    WindowSystemInfo::HAVE_TRANSPARENCY = useTranslucency;
+
     // Create terminal part and embed in into the main window
     _terminalPart = createPart();
     if (_terminalPart == nullptr) {
@@ -48,6 +66,13 @@ demo_konsolepart::demo_konsolepart()
 
     setCentralWidget(_terminalPart->widget());
     _terminal = qobject_cast<TerminalInterface*>(_terminalPart);
+
+    // Test if blur is enabled for profile
+    bool blurEnabled;
+    QMetaObject::invokeMethod(_terminalPart, "isBlurEnabled",
+                              Qt::DirectConnection,
+                              Q_RETURN_ARG(bool, blurEnabled));
+    qWarning()<<"blur enabled: "<<blurEnabled;
 
 }
 

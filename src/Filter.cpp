@@ -142,7 +142,8 @@ void TerminalImageFilterChain::setImage(const Character * const image, int lines
     reset();
 
     PlainTextDecoder decoder;
-    decoder.setTrailingWhitespace(false);
+    decoder.setLeadingWhitespace(true);
+    decoder.setTrailingWhitespace(true);
 
     // setup new shared buffers for the filters to process on
     auto newBuffer = new QString();
@@ -230,12 +231,6 @@ void Filter::getLineColumn(int position, int &startLine, int &startColumn)
         }
     }
 }
-
-/*void Filter::addLine(const QString& text)
-{
-    _linePositions << _buffer.length();
-    _buffer.append(text);
-}*/
 
 const QString *Filter::buffer()
 {
@@ -358,10 +353,6 @@ QRegularExpression RegExpFilter::regExp() const
     return _searchText;
 }
 
-/*void RegExpFilter::reset(int)
-{
-    _buffer = QString();
-}*/
 void RegExpFilter::process()
 {
     const QString *text = buffer();
@@ -469,7 +460,7 @@ const QRegularExpression UrlFilter::FullUrlRegExp(QStringLiteral("(www\\.(?!\\.)
                                                   QRegularExpression::OptimizeOnFirstUsageOption);
 // email address:
 // [word chars, dots or dashes]@[word chars, dots or dashes].[word chars]
-const QRegularExpression UrlFilter::EmailAddressRegExp(QStringLiteral("\\b(\\w|\\.|-)+@(\\w|\\.|-)+\\.\\w+\\b"),
+const QRegularExpression UrlFilter::EmailAddressRegExp(QStringLiteral("\\b(\\w|\\.|-|\\+)+@(\\w|\\.|-)+\\.\\w+\\b"),
                                                        QRegularExpression::OptimizeOnFirstUsageOption);
 
 // matches full url or email address
@@ -612,6 +603,8 @@ static QString createFileRegex(const QStringList &patterns, const QString &fileP
 
 FileFilter::FileFilter(Session *session) :
     _session(session)
+    , _dirPath(QString())
+    , _currentFiles(QSet<QString>())
 {
     QStringList patterns;
     QMimeDatabase mimeDatabase;
@@ -622,12 +615,10 @@ FileFilter::FileFilter(Session *session) :
 
     patterns.removeDuplicates();
 
-    QString validFilename(QLatin1String("[A-Za-z0-9\\._\\-]+"));
-    QString pathRegex(QLatin1String("([A-Za-z0-9\\._\\-/]+/)"));
+    QString validFilename(QStringLiteral("[A-Za-z0-9\\._\\-]+"));
+    QString pathRegex(QStringLiteral("([A-Za-z0-9\\._\\-/]+/)"));
     QString noSpaceRegex = QLatin1String("\\b") + createFileRegex(patterns, validFilename, pathRegex) + QLatin1String("\\b");
 
-    validFilename = QLatin1String("[A-Za-z0-9\\._\\- ]+");
-    pathRegex = QLatin1String("([A-Za-z0-9\\._\\-/ ]+/)");
     QString spaceRegex = QLatin1String("'") + createFileRegex(patterns, validFilename, pathRegex) + QLatin1String("'");
 
     QString regex = QLatin1String("(") + noSpaceRegex + QLatin1String(")|(") + spaceRegex + QLatin1String(")");
@@ -644,7 +635,8 @@ QList<QAction *> FileFilter::HotSpot::actions()
 {
     auto openAction = new QAction(_fileObject);
     openAction->setText(i18n("Open File"));
-    QObject::connect(openAction, SIGNAL(triggered()), _fileObject, SLOT(activated()));
+    QObject::connect(openAction, &QAction::triggered, _fileObject,
+                     &Konsole::FilterObject::activated);
     QList<QAction *> actions;
     actions << openAction;
     return actions;

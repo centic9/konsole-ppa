@@ -37,6 +37,7 @@
 
 // Konsole
 #include "KeyboardTranslator.h"
+#include "SessionController.h"
 #include "TerminalDisplay.h"
 
 using Konsole::Vt102Emulation;
@@ -240,7 +241,7 @@ void Vt102Emulation::initTokenizer()
     for (i = 32; i < 256; ++i) {
         charClass[i] |= CHR;
     }
-    for (s = (quint8 *)"@ABCDGHILMPSTXZcdfry"; *s != 0u; ++s) {
+    for (s = (quint8 *)"@ABCDGHILMPSTXZbcdfry"; *s != 0u; ++s) {
         charClass[*s] |= CPN;
     }
     // resize = \e[8;<row>;<col>t
@@ -300,8 +301,9 @@ const int DEL = 127;
 // process an incoming unicode character
 void Vt102Emulation::receiveChar(int cc)
 {
-  if (cc == DEL)
+  if (cc == DEL) {
     return; //VT100: ignore.
+  }
 
   if (ces(CTL))
   {
@@ -309,8 +311,9 @@ void Vt102Emulation::receiveChar(int cc)
     // This means, they do neither a resetTokenizer() nor a pushToToken(). Some of them, do
     // of course. Guess this originates from a weakly layered handling of the X-on
     // X-off protocol, which comes really below this level.
-    if (cc == CNTL('X') || cc == CNTL('Z') || cc == ESC)
+    if (cc == CNTL('X') || cc == CNTL('Z') || cc == ESC) {
         resetTokenizer(); //VT100: CAN or SUB
+    }
     if (cc != ESC)
     {
         processToken(TY_CTL(cc+'@' ),0,0);
@@ -353,11 +356,11 @@ void Vt102Emulation::receiveChar(int cc)
     if (eec(';')) { addArgument();    return; }
     for (int i = 0; i <= argc; i++)
     {
-        if (epp())
+        if (epp()) {
             processToken(TY_CSI_PR(cc,argv[i]), 0, 0);
-        else if (egt())
+        } else if (egt()) {
             processToken(TY_CSI_PG(cc), 0, 0); // spec. case for ESC]>0c or ESC]>c
-        else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2)
+        } else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2)
         {
             // ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
             i += 2;
@@ -369,27 +372,28 @@ void Vt102Emulation::receiveChar(int cc)
             // ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
             i += 2;
             processToken(TY_CSI_PS(cc, argv[i-2]), COLOR_SPACE_256, argv[i]);
-        }
-        else
+        } else {
             processToken(TY_CSI_PS(cc,argv[i]), 0, 0);
+        }
     }
     resetTokenizer();
-  }
-  else
-  {
+  } else {
     // VT52 Mode
-    if (lec(1,0,ESC))
+    if (lec(1,0,ESC)) {
         return;
+    }
     if (les(1,0,CHR))
     {
         processToken( TY_CHR(), s[0], 0);
         resetTokenizer();
         return;
     }
-    if (lec(2,1,'Y'))
+    if (lec(2,1,'Y')) {
         return;
-    if (lec(3,1,'Y'))
+    }
+    if (lec(3,1,'Y')) {
         return;
+    }
     if (p < 4)
     {
         processToken(TY_VT52(s[1] ), 0, 0);
@@ -423,8 +427,9 @@ void Vt102Emulation::processWindowAttributeRequest()
 
   QString value;
   value.reserve(tokenBufferPos-i-2);
-  for (int j = 0; j < tokenBufferPos-i-2; j++)
+  for (int j = 0; j < tokenBufferPos-i-2; j++) {
     value[j] = tokenBuffer[i+1+j];
+  }
 
   if (value == QLatin1String("?")) {
       emit sessionAttributeRequest(attribute);
@@ -680,6 +685,7 @@ void Vt102Emulation::processToken(int token, int p, int q)
     case TY_CSI_PN('T'      ) : _currentScreen->scrollDown           (p         ); break;
     case TY_CSI_PN('X'      ) : _currentScreen->eraseChars           (p         ); break;
     case TY_CSI_PN('Z'      ) : _currentScreen->backtab              (p         ); break;
+    case TY_CSI_PN('b'      ) : _currentScreen->repeatChars          (p         ); break;
     case TY_CSI_PN('c'      ) :      reportTerminalType   (          ); break; //VT100
     case TY_CSI_PN('d'      ) : _currentScreen->setCursorY           (p         ); break; //LINUX
     case TY_CSI_PN('f'      ) : _currentScreen->setCursorYX          (p,      q); break; //VT100
@@ -882,19 +888,21 @@ void Vt102Emulation::reportTerminalType()
   // VT100:  ^[[?1;2c
   // VT101:  ^[[?1;0c
   // VT102:  ^[[?6v
-  if (getMode(MODE_Ansi))
+  if (getMode(MODE_Ansi)) {
     sendString("\033[?1;2c"); // I'm a VT100
-  else
+  } else {
     sendString("\033/Z"); // I'm a VT52
+  }
 }
 
 void Vt102Emulation::reportSecondaryAttributes()
 {
   // Secondary device attribute response (Request was: ^[[>0c or ^[[>c)
-  if (getMode(MODE_Ansi))
+  if (getMode(MODE_Ansi)) {
     sendString("\033[>0;115;0c"); // Why 115?  ;)
-  else
+  } else {
     sendString("\033/Z");         // FIXME I don't think VT52 knows about it but kept for
+  }
                                   // konsoles backward compatibility.
 }
 
@@ -1035,6 +1043,12 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
     const Qt::KeyboardModifiers modifiers = event->modifiers();
     KeyboardTranslator::States states = KeyboardTranslator::NoState;
 
+    TerminalDisplay * currentView = _currentScreen->currentTerminalDisplay();
+    bool isReadOnly = false;
+    if (currentView != nullptr && currentView->sessionController() != nullptr) {
+        isReadOnly = currentView->sessionController()->isReadOnly();
+    }
+
     // get current states
     if (getMode(MODE_NewLine)) {
         states |= KeyboardTranslator::NewLineState;
@@ -1052,16 +1066,18 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
         states |= KeyboardTranslator::ApplicationKeypadState;
     }
 
-    // check flow control state
-    if ((modifiers &Qt::ControlModifier) != 0u) {
-        switch (event->key()) {
-        case Qt::Key_S:
-            emit flowControlKeyPressed(true);
-            break;
-        case Qt::Key_Q:
-        case Qt::Key_C: // cancel flow control
-            emit flowControlKeyPressed(false);
-            break;
+    if (!isReadOnly) {
+        // check flow control state
+        if ((modifiers &Qt::ControlModifier) != 0u) {
+            switch (event->key()) {
+            case Qt::Key_S:
+                emit flowControlKeyPressed(true);
+                break;
+            case Qt::Key_Q:
+            case Qt::Key_C: // cancel flow control
+                emit flowControlKeyPressed(false);
+                break;
+            }
         }
     }
 
@@ -1097,43 +1113,42 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
 
         if ( entry.command() != KeyboardTranslator::NoCommand )
         {
-            TerminalDisplay * currentView = _currentScreen->currentTerminalDisplay();
-
             if ((entry.command() & KeyboardTranslator::EraseCommand) != 0) {
                 textToSend += eraseChar();
-            } else if ((entry.command() & KeyboardTranslator::ScrollPageUpCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollPageUpCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollPages, -1);
-            else if ((entry.command() & KeyboardTranslator::ScrollPageDownCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollPageDownCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollPages, 1);
-            else if ((entry.command() & KeyboardTranslator::ScrollLineUpCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollLineUpCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollLines, -1);
-            else if ((entry.command() & KeyboardTranslator::ScrollLineDownCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollLineDownCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollLines, 1);
-            else if ((entry.command() & KeyboardTranslator::ScrollUpToTopCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollUpToTopCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollLines,
                                                 - currentView->screenWindow()->currentLine());
-            else if ((entry.command() & KeyboardTranslator::ScrollDownToBottomCommand) != 0)
+            } else if ((entry.command() & KeyboardTranslator::ScrollDownToBottomCommand) != 0) {
                 currentView->scrollScreenWindow(ScreenWindow::ScrollLines, lineCount());
-        }
-        else if (!entry.text().isEmpty())
-        {
+            }
+        } else if (!entry.text().isEmpty()) {
             textToSend += entry.text(true,modifiers);
-        }
-        else
+        } else {
             textToSend += _codec->fromUnicode(event->text());
+        }
 
-        emit sendData(textToSend);
-    }
-    else
-    {
-        // print an error message to the terminal if no key translator has been
-        // set
-        QString translatorError =  i18n("No keyboard translator available.  "
-                                         "The information needed to convert key presses "
-                                         "into characters to send to the terminal "
-                                         "is missing.");
-        reset();
-        receiveData(translatorError.toLatin1().constData(), translatorError.count());
+        if (!isReadOnly) {
+            emit sendData(textToSend);
+        }
+    } else {
+        if (!isReadOnly) {
+            // print an error message to the terminal if no key translator has been
+            // set
+            QString translatorError =  i18n("No keyboard translator available.  "
+                                             "The information needed to convert key presses "
+                                             "into characters to send to the terminal "
+                                             "is missing.");
+            reset();
+            receiveData(translatorError.toLatin1().constData(), translatorError.count());
+        }
     }
 }
 
@@ -1309,6 +1324,7 @@ void Vt102Emulation::setMode(int m)
         break;
 
     case MODE_AppScreen:
+        _screen[1]->setDefaultRendition();
         _screen[1]->clearSelection();
         setScreen(1);
         break;

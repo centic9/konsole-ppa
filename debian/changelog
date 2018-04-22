@@ -1,11 +1,14 @@
-konsole (4:17.12.3-1ubuntu1) bionic; urgency=medium
+konsole (4:18.04.0-1) unstable; urgency=medium
 
-  * Merge from debian unstable. Remaining changes:
-    - Breaks/Replaces to suit Kubuntu upload and l10n history
-    - Keep our bumped minimum build deps on Frameworks and Qt
-    - Kubuntu packaging VCS fields
+  * Team upload.
+  * New upstream release.
+  * Update the patches:
+    - Add-support-for-ECMA-48-REP-repeating-previous-character.patch: drop,
+      backported from upstream
+  * Add the newly required libkf5globalaccel-dev, and libkf5newstuff-dev build
+    dependencies.
 
- -- Rik Mills <rikmills@kubuntu.org>  Sat, 14 Apr 2018 12:35:25 +0100
+ -- Pino Toscano <pino@debian.org>  Sun, 22 Apr 2018 09:15:34 +0200
 
 konsole (4:17.12.3-1) unstable; urgency=medium
 
@@ -27,21 +30,6 @@ konsole (4:17.12.3-1) unstable; urgency=medium
 
  -- Maximiliano Curia <maxy@debian.org>  Wed, 11 Apr 2018 12:49:40 +0200
 
-konsole (4:17.12.3-0ubuntu1) bionic; urgency=medium
-
-  * New upstream release (17.12.3)
-
- -- Rik Mills <rikmills@kubuntu.org>  Fri, 16 Mar 2018 13:29:40 +0000
-
-konsole (4:17.12.2-0ubuntu1) bionic; urgency=medium
-
-  * New upstream release (17.11.80)
-  * New upstream release (17.11.90)
-  * New upstream release (17.12.0)
-  * New upstream release (17.12.2)
-
- -- Rik Mills <rikmills@kubuntu.org>  Thu, 22 Feb 2018 16:59:50 +0000
-
 konsole (4:17.08.3-1) unstable; urgency=medium
 
   * Team upload.
@@ -58,12 +46,6 @@ konsole (4:17.08.3-1) unstable; urgency=medium
   * Bump the konsole breaks/replaces in konsole-kpart to this version.
 
  -- Pino Toscano <pino@debian.org>  Sat, 02 Dec 2017 14:28:38 +0100
-
-konsole (4:17.08.3-0ubuntu1) bionic; urgency=medium
-
-  * New upstream release (17.08.3)
-
- -- Rik Mills <rikmills@kubuntu.org>  Fri, 01 Dec 2017 15:08:33 +0000
 
 konsole (4:17.08.1-1) experimental; urgency=medium
 
@@ -86,15 +68,6 @@ konsole (4:17.08.0-0neon) xenial; urgency=medium
   * New release
 
  -- Neon CI <neon@kde.org>  Thu, 17 Aug 2017 09:38:39 +0000
-
-konsole (4:17.04.3-0ubuntu1) artful; urgency=low
-
-  * New upstream release (17.04.1)
-  * Install traslations and add Breaks/Replaces against kde-l10n
-  * New upstream release (17.04.2)
-  * New upstream release (17.04.3)
-
- -- José Manuel Santamaría Lema <panfaust@gmail.com>  Fri, 18 Aug 2017 08:33:44 +0100
 
 konsole (4:17.04.3-0neon) xenial; urgency=medium
 
@@ -120,17 +93,6 @@ konsole (4:17.04.0-0neon) xenial; urgency=medium
 
  -- Neon CI <neon@kde.org>  Wed, 19 Apr 2017 13:05:39 +0000
 
-konsole (4:16.12.3-0ubuntu1) zesty; urgency=low
-
-  [ Darin Miller ]
-  * New upstream release (16.12.2)
-  * Drop upstream applied patch.
-
-  [ José Manuel Santamaría Lema ]
-  * New upstream release (16.12.3)
-
- -- José Manuel Santamaría Lema <panfaust@gmail.com>  Fri, 10 Mar 2017 21:29:26 +0000
-
 konsole (4:16.12.3-0neon) xenial; urgency=medium
 
   * New release
@@ -142,33 +104,6 @@ konsole (4:16.12.2-0neon) xenial; urgency=medium
   * New release
 
  -- Neon CI <neon@kde.org>  Wed, 08 Feb 2017 17:01:51 +0000
-
-konsole (4:16.12.1-0ubuntu3) UNRELEASED; urgency=medium
-
-  * Drop upstream-fix-build.patch as it is applied upstream
-
- -- Clive Johnston <clivejo@kubuntu.org>  Thu, 16 Feb 2017 20:12:08 +0000
-
-konsole (4:16.12.1-0ubuntu2) zesty; urgency=medium
-
-  * Add upstream-fix-build.patch. Can be dropped in 16.12.2
-
- -- Rik Mills <rikmills@kubuntu.org>  Thu, 16 Feb 2017 19:24:33 +0000
-
-konsole (4:16.12.1-0ubuntu1) zesty; urgency=medium
-
-  [ José Manuel Santamaría Lema ]
-  * Update Vcs-Git fields to use https:// instead of git://
-
-  [ Clive Johnston ]
-  * Fixing lintian-overrides
-
-  [ Rik Mills ]
-  * New upstream release (16.12.0)
-  * Update build deps to use new KF5 style names
-  * New upstream release (16.12.1)
-
- -- Rik Mills <rikmills@kubuntu.org>  Thu, 19 Jan 2017 16:18:18 +0000
 
 konsole (4:16.12.1-0neon) xenial; urgency=medium
 
@@ -285,30 +220,6 @@ konsole (4:16.08.0-0neon) xenial; urgency=medium
 
  -- Neon CI <neon@kde.org>  Wed, 17 Aug 2016 11:49:39 +0000
 
-konsole (4:16.04.3-0ubuntu1) yakkety; urgency=medium
-
-  [ Scarlett Clark ]
-  * New upstream release
-
-  [ Philip Muškovac ]
-  * Update the Vcs URLs now that the repositories are hosted on
-    Launchpad
-
-  [ Scarlett Clark ]
-  * New upstream bugfix release
-
-  [ Clive Johnston ]
-  * New upstream release (16.04.2)
-  * New upstream release (16.04.3)
-
-  [ Rik Mills ]
-  * Add and correct lintian overrides
-
-  [ José Manuel Santamaría Lema ]
-  * Update appstream files path.
-
- -- José Manuel Santamaría Lema <panfaust@gmail.com>  Fri, 30 Sep 2016 06:40:20 +0200
-
 konsole (4:16.04.3-0neon) xenial; urgency=medium
 
   * New release
@@ -364,26 +275,6 @@ konsole (4:16.04.0-0neon) xenial; urgency=medium
 
  -- Neon CI <neon@kde.org>  Mon, 09 May 2016 14:26:44 +0000
 
-konsole (4:15.12.3-0ubuntu1) xenial; urgency=medium
-
-  * New upstream bugfix release. 
-  * New upstream bugfix release
-
- -- Scarlett Clark <sgclark@kubuntu.org>  Thu, 14 Apr 2016 15:40:15 -0700
-
-konsole (4:15.12.1-1ubuntu1) xenial; urgency=medium
-
-  [ Clive Johnston ]
-  * New upstream release
-  * Merged with Debian 
-
-  [ Scarlett Clark ]
-  * Fix copyright file with a brief para stating no copyright claim
-    in public-domain entry to make lintain happy. 
-  * Fix merger. 
-
- -- Clive Johnston <clivejo@aol.com>  Wed, 09 Mar 2016 10:58:11 +0100
-
 konsole (4:15.12.1-1) experimental; urgency=medium
 
   * New upstream release (15.12.0).
@@ -408,25 +299,12 @@ konsole (4:15.08.2-1) unstable; urgency=medium
 
  -- Maximiliano Curia <maxy@debian.org>  Fri, 16 Oct 2015 08:07:03 +0200
 
-konsole (4:15.08.2-0ubuntu1) wily; urgency=medium
-
-  * Vivid backport
-  * New upstream release
-
- -- Scarlett Clark <sgclark@kubuntu.org>  Wed, 14 Oct 2015 12:38:42 +0100
-
 konsole (4:15.08.1-1) unstable; urgency=medium
 
   * New upstream release.
     - Drop restore_movable_tabs.diff, applied upstream.
 
  -- Felix Geyer <fgeyer@debian.org>  Thu, 17 Sep 2015 18:09:26 +0200
-
-konsole (4:15.08.1-0ubuntu1) wily; urgency=medium
-
-  * New upstream release (15.08.1)
-
- -- Clive Johnston <clivejo@aol.com>  Tue, 22 Sep 2015 17:14:09 +0100
 
 konsole (4:15.08.0-1) unstable; urgency=medium
 
@@ -436,24 +314,6 @@ konsole (4:15.08.0-1) unstable; urgency=medium
     - Cherry-pick upstream fix in restore_movable_tabs.diff
 
  -- Felix Geyer <fgeyer@debian.org>  Sat, 05 Sep 2015 10:05:51 +0200
-
-konsole (4:15.08.0-0ubuntu1) wily; urgency=medium
-
-  * new upstream release
-
- -- Clive Johnston <clivejo@aol.com>  Wed, 26 Aug 2015 17:33:35 +0100
-
-konsole (4:15.07.90-0ubuntu1) wily; urgency=medium
-
-  [ José Manuel Santamaría Lema ]
-  * Non-maintainer upload.
-  * Add rb123881_export_history_scroll.patch, fixes an FTBFS against
-    latest GCC 5.
-
-  [ Jonathan Riddell ]
-  * New upstream release
-
- -- Jonathan Riddell <jriddell@ubuntu.com>  Tue, 11 Aug 2015 22:23:53 +0200
 
 konsole (4:15.04.3-2) unstable; urgency=medium
 
@@ -486,18 +346,6 @@ konsole (4:15.04.3-1) experimental; urgency=medium
   * Improve konsole-kpart description.
 
  -- Lisandro Damián Nicanor Pérez Meyer <lisandro@debian.org>  Fri, 24 Jul 2015 19:04:35 -0300
-
-konsole (4:15.04.2-0ubuntu1) wily; urgency=medium
-
-  [ Scarlett Clark ]
-  * New upstream release
-  * New upstream release
-  * Vivid backport
-
-  [ Jonathan Riddell ]
-  * New upstream release
-
- -- Jonathan Riddell <jriddell@ubuntu.com>  Tue, 09 Jun 2015 19:15:37 +0200
 
 konsole (4:14.12.3-1) experimental; urgency=medium
 

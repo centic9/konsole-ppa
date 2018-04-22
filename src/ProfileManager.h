@@ -103,7 +103,7 @@ public:
      * SessionManager::createSession() to create a new session using
      * this profile.
      */
-    Profile::Ptr loadProfile(const QString &path);
+    Profile::Ptr loadProfile(const QString &shortPath);
 
     /**
      * Searches for available profiles on-disk and returns a list
@@ -245,6 +245,8 @@ protected Q_SLOTS:
 private Q_SLOTS:
 
 private:
+    Q_DISABLE_COPY(ProfileManager)
+
     // loads the mappings between shortcut key sequences and
     // profile paths
     void loadShortcuts();
@@ -308,6 +310,8 @@ public:
     }
 
 private:
+    Q_DISABLE_COPY(PopStackOnExit)
+
     QStack<T> &_stack;
     int _count;
 };

@@ -31,6 +31,7 @@
 #include <KLocalizedString>
 #include <KToggleAction>
 #include <KToggleFullScreenAction>
+#include <KWindowEffects>
 
 #include <QMenu>
 #include <QMenuBar>
@@ -98,6 +99,8 @@ MainWindow::MainWindow() :
             &Konsole::MainWindow::disconnectController);
     connect(_viewManager, &Konsole::ViewManager::viewPropertiesChanged,
             bookmarkHandler(), &Konsole::BookmarkHandler::setViews);
+    connect(_viewManager, &Konsole::ViewManager::blurSettingChanged,
+            this, &Konsole::MainWindow::setBlur);
 
     connect(_viewManager, &Konsole::ViewManager::updateWindowIcon, this,
             &Konsole::MainWindow::updateWindowIcon);
@@ -240,6 +243,8 @@ void MainWindow::activeViewChanged(SessionController *controller)
     Q_ASSERT(controller);
     _pluggedController = controller;
 
+    setBlur(ViewManager::profileHasBlurEnabled(SessionManager::instance()->sessionProfile(_pluggedController->session())));
+
     // listen for title changes from the current session
     connect(controller, &Konsole::SessionController::titleChanged, this,
             &Konsole::MainWindow::activeViewTitleChanged);
@@ -306,7 +311,6 @@ IncrementalSearchBar *MainWindow::searchBar() const
 void MainWindow::setupActions()
 {
     KActionCollection *collection = actionCollection();
-    QAction *menuAction = nullptr;
 
     // File Menu
     _newTabMenuAction = new KActionMenu(QIcon::fromTheme(QStringLiteral("tab-new")),
@@ -318,7 +322,7 @@ void MainWindow::setupActions()
     collection->addAction(QStringLiteral("new-tab"), _newTabMenuAction);
     collection->setShortcutsConfigurable(_newTabMenuAction, true);
 
-    menuAction = collection->addAction(QStringLiteral("clone-tab"));
+    QAction* menuAction = collection->addAction(QStringLiteral("clone-tab"));
     menuAction->setIcon(QIcon::fromTheme(QStringLiteral("tab-duplicate")));
     menuAction->setText(i18nc("@action:inmenu", "&Clone Tab"));
     collection->setDefaultShortcut(menuAction, QKeySequence());
@@ -877,12 +881,23 @@ void MainWindow::configureNotifications()
     KNotifyConfigWidget::configure(this);
 }
 
+void MainWindow::setBlur(bool blur)
+{
+    if (_pluggedController == nullptr) {
+        return;
+    }
+
+    if (!_pluggedController->isKonsolePart()) {
+        KWindowEffects::enableBlurBehind(winId(), blur);
+    }
+}
+
 void MainWindow::setMenuBarInitialVisibility(bool visible)
 {
     _menuBarInitialVisibility = visible;
 }
 
-void MainWindow::showEvent(QShowEvent *aEvent)
+void MainWindow::showEvent(QShowEvent *event)
 {
     // Make sure the 'initial' visibility is applied only once.
     if (!_menuBarInitialVisibilityApplied) {
@@ -899,7 +914,7 @@ void MainWindow::showEvent(QShowEvent *aEvent)
     }
 
     // Call parent method
-    KXmlGuiWindow::showEvent(aEvent);
+    KXmlGuiWindow::showEvent(event);
 }
 
 bool MainWindow::focusNextPrevChild(bool)

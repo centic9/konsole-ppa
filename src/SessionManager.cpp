@@ -26,7 +26,6 @@
 
 // Qt
 #include <QStringList>
-#include <QSignalMapper>
 #include <QTextCodec>
 
 // KDE
@@ -38,16 +37,12 @@
 #include "ProfileManager.h"
 #include "History.h"
 #include "Enumeration.h"
+#include "TerminalDisplay.h"
 
 using namespace Konsole;
 
 SessionManager::SessionManager()
 {
-    //map finished() signals from sessions
-    _sessionMapper = new QSignalMapper(this);
-    connect(_sessionMapper, static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped),
-            this, &Konsole::SessionManager::sessionTerminated);
-
     ProfileManager *profileMananger = ProfileManager::instance();
     connect(profileMananger, &Konsole::ProfileManager::profileChanged, this,
             &Konsole::SessionManager::profileChanged);
@@ -107,9 +102,10 @@ Session *SessionManager::createSession(Profile::Ptr profile)
             &Konsole::SessionManager::sessionProfileCommandReceived);
 
     //ask for notification when session dies
-    _sessionMapper->setMapping(session, session);
-    connect(session, &Konsole::Session::finished, _sessionMapper,
-            static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+    connect(session, &Konsole::Session::finished, this,
+            [this, session]() {
+                sessionTerminated(session);
+            });
 
     //add session to active list
     _sessions << session;
@@ -123,10 +119,8 @@ void SessionManager::profileChanged(Profile::Ptr profile)
     applyProfile(profile, true);
 }
 
-void SessionManager::sessionTerminated(QObject *sessionObject)
+void SessionManager::sessionTerminated(Session *session)
 {
-    Session *session = qobject_cast<Session *>(sessionObject);
-
     Q_ASSERT(session);
 
     _sessions.removeAll(session);
@@ -218,11 +212,13 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr profile,
     }
 
     // Tab formats
-    if (apply.shouldApply(Profile::LocalTabTitleFormat)) {
+    // Preserve tab title changes, made by the user, when applying profile
+    // changes or previewing color schemes
+    if (apply.shouldApply(Profile::LocalTabTitleFormat) && !session->isTabTitleSetByUser()) {
         session->setTabTitleFormat(Session::LocalTabTitle,
                                    profile->localTabTitleFormat());
     }
-    if (apply.shouldApply(Profile::RemoteTabTitleFormat)) {
+    if (apply.shouldApply(Profile::RemoteTabTitleFormat) && !session->isTabTitleSetByUser()) {
         session->setTabTitleFormat(Session::RemoteTabTitle,
                                    profile->remoteTabTitleFormat());
     }
@@ -270,6 +266,17 @@ void SessionManager::sessionProfileCommandReceived(const QString &text)
     Session *session = qobject_cast<Session *>(sender());
     Q_ASSERT(session);
 
+    // store the font for each view if zoom was applied so that they can
+    // be restored after applying the new profile
+    QHash<TerminalDisplay *, QFont> zoomFontSizes;
+
+    foreach (TerminalDisplay *view, session->views()) {
+        const QFont &viewCurFont = view->getVTFont();
+        if (viewCurFont != _sessionProfiles[session]->font()) {
+            zoomFontSizes.insert(view, viewCurFont);
+        }
+    }
+
     ProfileCommandParser parser;
     QHash<Profile::Property, QVariant> changes = parser.parse(text);
 
@@ -290,6 +297,14 @@ void SessionManager::sessionProfileCommandReceived(const QString &text)
     _sessionProfiles[session] = newProfile;
     applyProfile(newProfile, true);
     emit sessionUpdated(session);
+
+    if (!zoomFontSizes.isEmpty()) {
+        QHashIterator<TerminalDisplay *, QFont> it(zoomFontSizes);
+        while (it.hasNext()) {
+            it.next();
+            it.key()->setVTFont(it.value());
+        }
+    }
 }
 
 void SessionManager::saveSessions(KConfig *config)

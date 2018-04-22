@@ -55,8 +55,8 @@ class ProfileGroup;
  */
 class KONSOLEPRIVATE_EXPORT Profile : public QSharedData
 {
-    friend class KDE4ProfileReader;
-    friend class KDE4ProfileWriter;
+    friend class ProfileReader;
+    friend class ProfileWriter;
     friend class ProfileGroup;
 
 public:
@@ -205,6 +205,16 @@ public:
         CtrlRequiredForDrag,
         /** (bool) If true, automatically copy selected text into the clipboard */
         AutoCopySelectedText,
+        /** (bool) The QMimeData object used when copying text always
+         * has the plain/text MIME set and if this is @c true then the
+         * text/html MIME is set too in that object i.e. the copied
+         * text will include formatting, font faces, colors... etc; users
+         * can paste the text as HTML (default) or as plain/text by using
+         * e.g. the "Paste Special" functionality in LibreOffice.
+         */
+        CopyTextAsHTML,
+        /** (bool) If true, leading spaces are trimmed in selected text */
+        TrimLeadingSpacesInSelectedText,
         /** (bool) If true, trailing spaces are trimmed in selected text */
         TrimTrailingSpacesInSelectedText,
         /** (bool) If true, then dropped URLs will be pasted as text without asking */
@@ -317,14 +327,14 @@ public:
      * the parent's value for @p property will be returned.
      */
     template<class T>
-    T property(Property property) const;
+    T property(Property p) const;
 
     /** Sets the value of the specified @p property to @p value. */
-    virtual void setProperty(Property property, const QVariant &value);
+    virtual void setProperty(Property p, const QVariant &value);
     /** Returns true if the specified property has been set in this Profile
      * instance.
      */
-    virtual bool isPropertySet(Property property) const;
+    virtual bool isPropertySet(Property p) const;
 
     /** Returns a map of the properties set in this Profile instance. */
     virtual QHash<Property, QVariant> setProperties() const;
@@ -604,7 +614,7 @@ private:
     static void fillTableWithDefaultNames();
 
     // returns true if the property can be inherited
-    static bool canInheritProperty(Property property);
+    static bool canInheritProperty(Property p);
 
     QHash<Property, QVariant> _propertyValues;
     Ptr _parent;
@@ -625,24 +635,24 @@ private:
     static const PropertyInfo DefaultPropertyNames[];
 };
 
-inline bool Profile::canInheritProperty(Property aProperty)
+inline bool Profile::canInheritProperty(Property p)
 {
-    return aProperty != Name && aProperty != Path;
+    return p != Name && p != Path;
 }
 
 template<class T>
-inline T Profile::property(Property aProperty) const
+inline T Profile::property(Property p) const
 {
-    return property<QVariant>(aProperty).value<T>();
+    return property<QVariant>(p).value<T>();
 }
 
 template<>
-inline QVariant Profile::property(Property aProperty) const
+inline QVariant Profile::property(Property p) const
 {
-    if (_propertyValues.contains(aProperty)) {
-        return _propertyValues[aProperty];
-    } else if (_parent && canInheritProperty(aProperty)) {
-        return _parent->property<QVariant>(aProperty);
+    if (_propertyValues.contains(p)) {
+        return _propertyValues[p];
+    } else if (_parent && canInheritProperty(p)) {
+        return _parent->property<QVariant>(p);
     } else {
         return QVariant();
     }
@@ -667,7 +677,7 @@ public:
     typedef QExplicitlySharedDataPointer<ProfileGroup> Ptr;
 
     /** Construct a new profile group, which is hidden by default. */
-    explicit ProfileGroup(Profile::Ptr parent = Profile::Ptr());
+    explicit ProfileGroup(Profile::Ptr profileParent = Profile::Ptr());
 
     /** Add a profile to the group.  Calling setProperty() will update this
      * profile.  When creating a group, add the profiles to the group then
@@ -708,9 +718,11 @@ public:
     /** Sets the value of @p property in each of the group's profiles to
      * @p value.
      */
-    void setProperty(Property property, const QVariant &value) Q_DECL_OVERRIDE;
+    void setProperty(Property p, const QVariant &value) Q_DECL_OVERRIDE;
 
 private:
+    Q_DISABLE_COPY(ProfileGroup)
+
     QList<Profile::Ptr> _profiles;
 };
 inline ProfileGroup::ProfileGroup(Profile::Ptr profileParent) :
