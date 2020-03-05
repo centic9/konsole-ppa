@@ -27,6 +27,7 @@ using namespace Konsole;
 
 ScreenWindow::ScreenWindow(Screen *screen, QObject *parent) :
     QObject(parent),
+    _screen(nullptr),
     _windowBuffer(nullptr),
     _windowBufferSize(0),
     _bufferNeedsUpdate(true),
@@ -299,7 +300,7 @@ QRect ScreenWindow::scrollRegion() const
     if (atEndOfOutput() && equalToScreenSize) {
         return _screen->lastScrolledRegion();
     } else {
-        return QRect(0, 0, windowColumns(), windowLines());
+        return {0, 0, windowColumns(), windowLines()};
     }
 }
 

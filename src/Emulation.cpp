@@ -39,7 +39,7 @@ Emulation::Emulation() :
     _codec(nullptr),
     _decoder(nullptr),
     _keyTranslator(nullptr),
-    _usesMouse(false),
+    _usesMouseTracking(false),
     _bracketedPasteMode(false),
     _bulkTimer1(new QTimer(this)),
     _bulkTimer2(new QTimer(this)),
@@ -54,20 +54,20 @@ Emulation::Emulation() :
     QObject::connect(&_bulkTimer2, &QTimer::timeout, this, &Konsole::Emulation::showBulk);
 
     // listen for mouse status changes
-    connect(this, &Konsole::Emulation::programUsesMouseChanged, this,
-            &Konsole::Emulation::usesMouseChanged);
+    connect(this, &Konsole::Emulation::programRequestsMouseTracking, this,
+            &Konsole::Emulation::setUsesMouseTracking);
     connect(this, &Konsole::Emulation::programBracketedPasteModeChanged, this,
             &Konsole::Emulation::bracketedPasteModeChanged);
 }
 
-bool Emulation::programUsesMouse() const
+bool Emulation::programUsesMouseTracking() const
 {
-    return _usesMouse;
+    return _usesMouseTracking;
 }
 
-void Emulation::usesMouseChanged(bool usesMouse)
+void Emulation::setUsesMouseTracking(bool usesMouseTracking)
 {
-    _usesMouse = usesMouse;
+    _usesMouseTracking = usesMouseTracking;
 }
 
 bool Emulation::programBracketedPasteMode() const
@@ -188,7 +188,7 @@ QString Emulation::keyBindings() const
 
 // process application unicode input to terminal
 // this is a trivial scanner
-void Emulation::receiveChar(int c)
+void Emulation::receiveChar(uint c)
 {
     c &= 0xff;
     switch (c) {
@@ -208,7 +208,7 @@ void Emulation::receiveChar(int c)
         emit stateSet(NOTIFYBELL);
         break;
     default:
-        _currentScreen->displayCharacter(static_cast<unsigned short int>(c));
+        _currentScreen->displayCharacter(c);
         break;
     }
 }
@@ -240,11 +240,11 @@ void Emulation::receiveData(const char *text, int length)
 
     bufferedUpdate();
 
-    QString unicodeText = _decoder->toUnicode(text, length);
+    QVector<uint> unicodeText = _decoder->toUnicode(text, length).toUcs4();
 
     //send characters to terminal emulator
     for (auto &&i : unicodeText) {
-        receiveChar(i.unicode());
+        receiveChar(i);
     }
 
     //look for z-modem indicator
@@ -342,5 +342,5 @@ void Emulation::setImageSize(int lines, int columns)
 
 QSize Emulation::imageSize() const
 {
-    return QSize(_currentScreen->getColumns(), _currentScreen->getLines());
+    return {_currentScreen->getColumns(), _currentScreen->getLines()};
 }

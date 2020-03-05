@@ -53,8 +53,6 @@ public:
     void map();
     //un-mmaps the file
     void unmap();
-    //returns true if the file is mmap'ed
-    bool isMapped() const;
 
 private:
     qint64 _length;
@@ -126,7 +124,7 @@ protected:
 class KONSOLEPRIVATE_EXPORT HistoryScrollFile : public HistoryScroll
 {
 public:
-    explicit HistoryScrollFile(const QString &logFileName);
+    explicit HistoryScrollFile();
     ~HistoryScrollFile() Q_DECL_OVERRIDE;
 
     int  getLines() Q_DECL_OVERRIDE;
@@ -306,7 +304,7 @@ protected:
     CompactHistoryBlockList &_blockListRef;
     CharacterFormat *_formatArray;
     quint16 _length;
-    quint16 *_text;
+    uint    *_text;
     quint16 _formatLength;
     bool _wrapped;
 };
@@ -316,7 +314,7 @@ class KONSOLEPRIVATE_EXPORT CompactHistoryScroll : public HistoryScroll
     typedef QList<CompactHistoryLine *> HistoryArray;
 
 public:
-    explicit CompactHistoryScroll(unsigned int maxNbLines = 1000);
+    explicit CompactHistoryScroll(unsigned int maxLineCount = 1000);
     ~CompactHistoryScroll() Q_DECL_OVERRIDE;
 
     int  getLines() Q_DECL_OVERRIDE;
@@ -386,15 +384,12 @@ public:
 class KONSOLEPRIVATE_EXPORT HistoryTypeFile : public HistoryType
 {
 public:
-    explicit HistoryTypeFile(const QString &fileName = QString());
+    explicit HistoryTypeFile();
 
     bool isEnabled() const Q_DECL_OVERRIDE;
     int maximumLineCount() const Q_DECL_OVERRIDE;
 
     HistoryScroll *scroll(HistoryScroll *) const Q_DECL_OVERRIDE;
-
-protected:
-    QString _fileName;
 };
 
 class KONSOLEPRIVATE_EXPORT CompactHistoryType : public HistoryType

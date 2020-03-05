@@ -25,7 +25,6 @@
 #include <QFileInfo>
 #include <QCompleter>
 #include <QFileSystemModel>
-#include <QUrl>
 #include <QIcon>
 #include <QFileDialog>
 #include <QImageReader>
@@ -42,7 +41,6 @@
 #include "ui_ColorSchemeEditor.h"
 #include "ColorScheme.h"
 #include "CharacterColor.h"
-#include "Shortcut_p.h"
 
 using namespace Konsole;
 
@@ -55,8 +53,8 @@ const int COLOR_COLUMN = 1;          // column 1 : actual colors
 const int INTENSE_COLOR_COLUMN = 2;  // column 2 : intense colors
 const int FAINT_COLOR_COLUMN = 3;    // column 2 : faint colors
 
-ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
-    QDialog(aParent),
+ColorSchemeEditor::ColorSchemeEditor(QWidget *parent) :
+    QDialog(parent),
     _isNewScheme(false),
     _ui(nullptr),
     _colors(nullptr)
@@ -87,7 +85,7 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *aParent) :
 
     // transparency slider
     QFontMetrics metrics(font());
-    _ui->transparencyPercentLabel->setMinimumWidth(metrics.width(QStringLiteral("100%")));
+    _ui->transparencyPercentLabel->setMinimumWidth(metrics.boundingRect(QStringLiteral("100%")).width());
 
     connect(_ui->transparencySlider, &QSlider::valueChanged, this,
             &Konsole::ColorSchemeEditor::setTransparencyPercentLabel);
@@ -202,10 +200,10 @@ void ColorSchemeEditor::selectWallpaper()
     // Get supported image formats and convert to QString for getOpenFileName()
     const QList<QByteArray> mimeTypes = QImageReader::supportedImageFormats();
     QString fileFormats = QStringLiteral("(");
-    Q_FOREACH (const QByteArray &mime, mimeTypes) {
+    for (const QByteArray &mime : mimeTypes) {
         fileFormats += QStringLiteral("*.%1 ").arg(QLatin1String(mime));
     }
-    fileFormats += QLatin1String(")");
+    fileFormats += QLatin1Char(')');
 
     const QString fileName = QFileDialog::getOpenFileName(this,
                                                           i18nc("@title:window",
@@ -258,7 +256,7 @@ void ColorSchemeEditor::setBlur(bool blur)
 
 void ColorSchemeEditor::setRandomizedBackgroundColor(bool randomized)
 {
-    _colors->setRandomizedBackgroundColor(randomized);
+    _colors->setColorRandomization(randomized);
 }
 
 void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
@@ -291,7 +289,7 @@ void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
     _ui->blurCheckBox->setChecked(scheme->blur());
 
     // randomized background color checkbox
-    _ui->randomizedBackgroundCheck->setChecked(scheme->randomizedBackgroundColor());
+    _ui->randomizedBackgroundCheck->setChecked(scheme->isColorRandomizationEnabled());
 
     // wallpaper stuff
     _ui->wallpaperPath->setText(scheme->wallpaper()->path());

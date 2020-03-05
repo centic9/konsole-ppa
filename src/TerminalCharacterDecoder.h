@@ -27,6 +27,7 @@
 
 // Konsole
 #include "Character.h"
+#include "Profile.h"
 #include "konsoleprivate_export.h"
 
 class QTextStream;
@@ -81,21 +82,11 @@ public:
      */
     void setLeadingWhitespace(bool enable);
     /**
-     * Returns whether leading whitespace at the end of lines is included
-     * in the output.
-     */
-    bool leadingWhitespace() const;
-    /**
      * Set whether trailing whitespace at the end of lines should be included
      * in the output.
      * Defaults to true.
      */
     void setTrailingWhitespace(bool enable);
-    /**
-     * Returns whether trailing whitespace at the end of lines is included
-     * in the output.
-     */
-    bool trailingWhitespace() const;
     /**
      * Returns of character positions in the output stream
      * at which new lines where added.  Returns an empty if setTrackLinePositions() is false or if
@@ -129,13 +120,7 @@ public:
     /**
      * Constructs an HTML decoder using a default black-on-white color scheme.
      */
-    HTMLDecoder();
-
-    /**
-     * Sets the color table which the decoder uses to produce the HTML color codes in its
-     * output
-     */
-    void setColorTable(const ColorEntry *table);
+    explicit HTMLDecoder(const Profile::Ptr &profile = Profile::Ptr());
 
     void decodeLine(const Character * const characters, int count,
                     LineProperty properties) Q_DECL_OVERRIDE;
@@ -148,7 +133,8 @@ private:
     void closeSpan(QString &text);
 
     QTextStream *_output;
-    const ColorEntry *_colorTable;
+    Profile::Ptr _profile;
+    ColorEntry _colorTable[TABLE_COLORS];
     bool _innerSpanOpen;
     RenditionFlags _lastRendition;
     CharacterColor _lastForeColor;

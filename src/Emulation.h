@@ -29,6 +29,7 @@
 #include <QTimer>
 
 // Konsole
+#include "Enumeration.h"
 #include "konsoleprivate_export.h"
 
 class QKeyEvent;
@@ -208,13 +209,15 @@ public:
     virtual void reset() = 0;
 
     /**
-     * Returns true if the active terminal program wants
-     * mouse input events.
+     * Returns true if the active terminal program is interested in Mouse
+     * Tracking events.
      *
-     * The programUsesMouseChanged() signal is emitted when this
-     * changes.
+     * The programRequestsMouseTracking() signal is emitted when a program
+     * indicates it's interested in Mouse Tracking events.
+     *
+     * See MODE_Mouse100{0,1,2,3} in Vt102Emulation.
      */
-    bool programUsesMouse() const;
+    bool programUsesMouseTracking() const;
 
     bool programBracketedPasteMode() const;
 
@@ -316,13 +319,18 @@ Q_SIGNALS:
     void changeTabTextColorRequest(int color);
 
     /**
-     * This is emitted when the program running in the shell indicates whether or
-     * not it is interested in mouse events.
+     * This is emitted when the program (typically editors and other full-screen
+     * applications, ones that take up the whole terminal display), running in
+     * the terminal indicates whether or not it is interested in Mouse Tracking
+     * events. This is an XTerm extension, for more information have a look at:
+     * http://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Mouse-Tracking
      *
-     * @param usesMouse This will be true if the program wants to be informed about
-     * mouse events or false otherwise.
+     * @param usesMouseTracking This will be true if the program is interested
+     * in Mouse Tracking events or false otherwise.
      */
-    void programUsesMouseChanged(bool usesMouse);
+    void programRequestsMouseTracking(bool usesMouseTracking);
+
+    void enableAlternateScrolling(bool enable);
 
     void programBracketedPasteModeChanged(bool bracketedPasteMode);
 
@@ -341,38 +349,36 @@ Q_SIGNALS:
     void outputChanged();
 
     /**
-     * Emitted when the program running in the terminal wishes to update the
-     * session's title.  This also allows terminal programs to customize other
-     * aspects of the terminal emulation display.
+     * Emitted when the program running in the terminal wishes to update
+     * certain session attributes. This allows terminal programs to customize
+     * certain aspects of the terminal emulation display.
      *
      * This signal is emitted when the escape sequence "\033]ARG;VALUE\007"
-     * is received in the input string, where ARG is a number specifying what
-     * should change and VALUE is a string specifying the new value.
+     * is received in an input string, where ARG is a number specifying
+     * what should be changed and VALUE is a string specifying the new value.
      *
-     * TODO:  The name of this method is not very accurate since this method
-     * is used to perform a whole range of tasks besides just setting
-     * the user-title of the session.
-     *
-     * @param title Specifies what to change.
+     * @param attribute Specifies which session attribute to change:
      * <ul>
-     * <li>0 - Set window icon text and session title to @p newTitle</li>
-     * <li>1 - Set window icon text to @p newTitle</li>
-     * <li>2 - Set session title to @p newTitle</li>
-     * <li>11 - Set the session's default background color to @p newTitle,
-     *         where @p newTitle can be an HTML-style string ("#RRGGBB") or a named
-     *         color (eg 'red', 'blue').
-     *         See http://doc.trolltech.com/4.2/qcolor.html#setNamedColor for more
-     *         details.
+     * <li> 0  - Set window icon text and session title to @p newValue</li>
+     * <li> 1  - Set window icon text to @p newValue</li>
+     * <li> 2  - Set session title to @p newValue</li>
+     * <li> 11 - Set the session's default background color to @p newValue,
+     *      where @p newValue can be an HTML-style string ("#RRGGBB") or a
+     *      named color (e.g. 'red', 'blue'). For more details see:
+     *      https://doc.qt.io/qt-5/qcolor.html#setNamedColor
      * </li>
-     * <li>31 - Supposedly treats @p newTitle as a URL and opens it (NOT IMPLEMENTED)</li>
-     * <li>32 - Sets the icon associated with the session.  @p newTitle is the name
-     *    of the icon to use, which can be the name of any icon in the current KDE icon
-     *    theme (eg: 'konsole', 'kate', 'folder_home')</li>
+     * <li> 31 - Supposedly treats @p newValue as a URL and opens it (NOT
+     *      IMPLEMENTED)
+     * </li>
+     * <li> 32 - Sets the icon associated with the session. @p newValue
+     *      is the name of the icon to use, which can be the name of any
+     *      icon in the current KDE icon theme (eg: 'konsole', 'kate',
+     *      'folder_home')
+     * </li>
      * </ul>
-     * @param newTitle Specifies the new title
+     * @param newValue Specifies the new value of the session attribute
      */
-
-    void titleChanged(int title, const QString &newTitle);
+    void sessionAttributeChanged(int attribute, const QString &newValue);
 
     /**
      * Emitted when the terminal emulator's size has changed
@@ -427,6 +433,19 @@ Q_SIGNALS:
      */
     void sessionAttributeRequest(int id);
 
+    /**
+     * Emitted when Set Cursor Style (DECSCUSR) escape sequences are sent
+     * to the terminal.
+     * @p shape cursor shape
+     * @p isBlinking if true, the cursor will be set to blink
+    */
+    void setCursorStyleRequest(Enum::CursorShapeEnum shape = Enum::BlockCursor, bool isBlinking = false);
+    /**
+     * Emitted when reset() is called to reset the cursor style to the
+     * current profile cursor shape and blinking settings.
+    */
+    void resetCursorStyleRequest();
+
 protected:
     virtual void setMode(int mode) = 0;
     virtual void resetMode(int mode) = 0;
@@ -435,7 +454,7 @@ protected:
      * Processes an incoming character.  See receiveData()
      * @p c A unicode character code.
      */
-    virtual void receiveChar(int c);
+    virtual void receiveChar(uint c);
 
     /**
      * Sets the active screen.  The terminal has two screens, primary and alternate.
@@ -488,14 +507,14 @@ private Q_SLOTS:
     // view
     void showBulk();
 
-    void usesMouseChanged(bool usesMouse);
+    void setUsesMouseTracking(bool usesMouseTracking);
 
     void bracketedPasteModeChanged(bool bracketedPasteMode);
 
 private:
     Q_DISABLE_COPY(Emulation)
 
-    bool _usesMouse;
+    bool _usesMouseTracking;
     bool _bracketedPasteMode;
     QTimer _bulkTimer1;
     QTimer _bulkTimer2;

@@ -27,7 +27,6 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
-#include <QFile>
 #include <QMimeDatabase>
 #include <QString>
 #include <QTextStream>
@@ -40,7 +39,6 @@
 // Konsole
 #include "Session.h"
 #include "TerminalCharacterDecoder.h"
-#include "konsole_wcwidth.h"
 
 using namespace Konsole;
 
@@ -191,15 +189,16 @@ Filter::Filter() :
 
 Filter::~Filter()
 {
-    QListIterator<HotSpot *> iter(_hotspotList);
-    while (iter.hasNext()) {
-        delete iter.next();
-    }
+    reset();
 }
 
 void Filter::reset()
 {
     _hotspots.clear();
+    QListIterator<HotSpot *> iter(_hotspotList);
+    while (iter.hasNext()) {
+        delete iter.next();
+    }
     _hotspotList.clear();
 }
 
@@ -225,7 +224,7 @@ void Filter::getLineColumn(int position, int &startLine, int &startColumn)
 
         if (_linePositions->value(i) <= position && position < nextLine) {
             startLine = i;
-            startColumn = string_width(buffer()->mid(_linePositions->value(i),
+            startColumn = Character::stringWidth(buffer()->mid(_linePositions->value(i),
                                                      position - _linePositions->value(i)));
             return;
         }
@@ -251,11 +250,6 @@ void Filter::addHotSpot(HotSpot *spot)
 QList<Filter::HotSpot *> Filter::hotSpots() const
 {
     return _hotspotList;
-}
-
-QList<Filter::HotSpot *> Filter::hotSpotsAtLine(int line) const
-{
-    return _hotspots.values(line);
 }
 
 Filter::HotSpot *Filter::hotSpotAt(int line, int column) const
@@ -527,7 +521,7 @@ QList<QAction *> UrlFilter::HotSpot::actions()
 RegExpFilter::HotSpot *FileFilter::newHotSpot(int startLine, int startColumn, int endLine,
                                               int endColumn, const QStringList &capturedTexts)
 {
-    if (_session == nullptr) {
+    if (_session.isNull()) {
         qCDebug(KonsoleDebug) << "Trying to create new hot spot without session!";
         return nullptr;
     }
@@ -568,15 +562,15 @@ void FileFilter::HotSpot::activate(QObject *)
     new KRun(QUrl::fromLocalFile(_filePath), QApplication::activeWindow());
 }
 
-static QString createFileRegex(const QStringList &patterns, const QString &filePattern, const QString pathPattern)
+static QString createFileRegex(const QStringList &patterns, const QString &filePattern, const QString &pathPattern)
 {
     QStringList suffixes = patterns.filter(QRegularExpression(QStringLiteral("^\\*") + filePattern + QStringLiteral("$")));
     QStringList prefixes = patterns.filter(QRegularExpression(QStringLiteral("^") + filePattern + QStringLiteral("+\\*$")));
     QStringList fullNames = patterns.filter(QRegularExpression(QStringLiteral("^") + filePattern + QStringLiteral("$")));
 
-    suffixes.replaceInStrings(QStringLiteral("*"), QStringLiteral(""));
+    suffixes.replaceInStrings(QStringLiteral("*"), QString());
     suffixes.replaceInStrings(QStringLiteral("."), QStringLiteral("\\."));
-    prefixes.replaceInStrings(QStringLiteral("*"), QStringLiteral(""));
+    prefixes.replaceInStrings(QStringLiteral("*"), QString());
     prefixes.replaceInStrings(QStringLiteral("."), QStringLiteral("\\."));
 
     return QString(

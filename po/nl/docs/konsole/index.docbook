@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % Dutch "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -65,13 +77,20 @@
 >&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->2018-03-10</date>
+>2019-06-16</date>
 <releaseinfo
->Applications 18.04</releaseinfo>
+>Applications 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -191,6 +210,13 @@
 >Profielen beheren...</guimenuitem
 ></menuchoice
 ></para
+></listitem>
+
+<listitem
+><para
+>Schakel naar de pagina <guibutton
+>Profielen</guibutton
+>.</para
 ></listitem>
 
 <listitem
@@ -411,8 +437,7 @@
 <title
 >Slepen en neerzetten</title>
 <para
->Als u een bestand, map of &URL; op een venster van &konsole;, laat vallen verschijnt er een contextmenu met deze acties: </para
->  
+>Als u een bestand, map of &URL; op een venster van &konsole;, laat vallen verschijnt er een contextmenu met deze acties: </para>
 <screenshot>
 <screeninfo
 >Contextmenu bij slepen en neerzetten</screeninfo>
@@ -1068,14 +1093,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1084,7 +1109,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1203,7 +1228,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1310,7 +1335,7 @@ Various search improvements
 > <guimenu
 >Beeld</guimenu
 ><guimenuitem
->Tabblad losmaken</guimenuitem
+>Huidig tabblad losmaken</guimenuitem
 ></menuchoice>
 </term>
 <listitem
@@ -1320,6 +1345,29 @@ Various search improvements
 </para
 ><para
 >Het afsluiten van het vorige &konsole;-venster zal geen effect hebben op het nieuw aangemaakte venster. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Beeld</guimenu
+><guimenuitem
+>Huidige beeld losmaken</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Het huidige gesplitste beeld wordt in een apart venster geopend</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1428,6 +1476,30 @@ Various search improvements
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Beeld</guimenu
+><guimenuitem
+>Tekengrootte resetten</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>De tekengrootte van tekst resetten naar de standaard van het profiel</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1593,9 +1665,10 @@ Various search improvements
 ><action
 >Opent de bladwijzerbewerker</action
 ></para>
-
 <note
 ><para
+>Het programma keditbookmarks moet geïnstalleerd zijn om dit menu-item te laten verschijnen.</para>
+<para
 >U kunt de bladwijzerbewerker gebruiken om handmatig URL-adressen toe te voegen. Op dit moment accepteert &konsole; het volgende: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1909,6 +1982,10 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 >%u : gebruikersnaam</para
+></listitem>
+<listitem
+><para
+>%B : Bourne-prompt-"sigil" van gebruiker ($ = normale gebruiker, # = superuser)</para
 ></listitem>
 <listitem
 ><para
@@ -2311,7 +2388,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->Voor meer informatie bezoekt u <ulink url="http://api.kde.org/4.14-api/appications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Voor meer informatie bezoekt u <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >&konsole; API Reference</ulink
 >. </para>
 </listitem>
@@ -2484,9 +2561,409 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->Voor meer informatie, bezoek dan <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Voor meer informatie, bezoek dan <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >&DBus;-tutorial (Engels)</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Toetsenbindingen</title>
+
+<sect1>
+<title
+>Hoe &konsole; toetsenbindingen gebruikt</title>
+
+<sect2 id="intro">
+<title
+>Inleiding</title>
+<para
+>&konsole; gebruikt *.keytab bestanden om toetscombinaties te vertalen in besturingstekens en escape sequences die verzonden worden naar de shell of naar interactieve programma's (typisch programma's die de Alternate Screen-buffer gebruiken, &eg; <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>) die draaien in de shell.</para>
+
+<para
+>Gebruikers kunnen de instellingen voor bindingen van toetsen aanpassen in &konsole; door de toetsenbindingenbewerker te gebruiken. Een toetscombinatie kan geconfigureerd worden om een specifieke control of escape sequence naar de terminal te sturen.</para>
+
+<para
+>U kunt de toetsenbindingenbewerker openen vanuit het menu-item <menuchoice
+><guimenu
+>Instellingen</guimenu
+><guimenuitem
+>Huidig profiel bewerken</guimenuitem
+></menuchoice
+> en gaan naar het tabblad <guilabel
+>Toetsenbord</guilabel
+>. Hier zijn in een lijst de schema's van toetsenbindingen die met &konsole; meekomen.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Toetscombinaties en modi</title>
+
+<para
+>Toetscombinaties volgen het patroon: <programlisting
+>Toets (+|-) modi</programlisting>
+</para>
+
+<para
+>bijvoorbeeld: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Toetsnamen zijn gedefinieerd in het bestand qnamespace.h header, met het voorvoegsel <quote
+>Qt::Key_</quote
+> verwijderd, voor een lijst met toetsnamen bekijk de <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>opsomming Qt::Key in de &Qt;-documentatie</ulink
+>.</para>
+
+<para
+>Een <quote
+>+</quote
+> die aan een modusnaam vooraf gaat betekent dat modus is <emphasis
+>ingesteld</emphasis
+>; voor een modificatietoets, wat betekent dat het is ingedrukt, terwijl voor alle andere modi het betekent dat een specifieke modus actief is. Bijvoorbeeld <quote
+>+Ctrl</quote
+> dat de toestcombinatie alleen zal werken als de &Ctrl;-toets is ingedrukt.</para>
+
+<para
+>Een <quote
+>-</quote
+> die aan een modusnaam vooraf gaat betekent dat modus is <emphasis
+>gereset</emphasis
+>; in de basis betekent dit het tegenovergestelde van <quote
+>+</quote
+> vooraf aan een modusnaam, dus voor een modificatietoets betekent dat de toets niet is ingedrukt, terwijl voor alle andere modi het betekent dat de specifieke modus inactief is. Bijvoorbeeld <quote
+>-Ctrl</quote
+> betekent dat de toetscombinatie alleen zal werken als de &Ctrl;-toets <emphasis
+>niet</emphasis
+> is ingedrukt.</para>
+
+<note>
+<para
+>Als een modusnaam niet aanwezig is in een toetscombinatie, wordt zijn status genegeerd.</para>
+</note>
+
+<para
+>De ondersteunde toetsenbindingsmodi staan hieronder in een lijst:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>Eén of meer van deze modi kunnen gebruikt worden in een toetscombinatie, als elk van hen is gezet, gebruikt de toetscombinatie die modificatietoets, respectievelijk; en omgekeerd als het een reset is</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Als deze modus is gezet gebruikt de toetscombinatie elke modificatietoets (elk van de vorige drie modificatietoetsen); en omgekeerd als het een reset is</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Als deze modus is gezet zal &konsole; ANSI escape- en controlsequences verzenden</para>
+<para
+>Als deze modus gereset is zal &konsole; VT52 escape en control sequences verzenden</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Als deze modus is ingesteld zal de toetscombinatie alleen interactieve programma's beïnvloeden die de Alternate Screen-buffer gebruiken</para>
+<para
+>Als deze modus is gereset zal de toetscombinatie alleen de terminal beïnvloeden wanneer het de normale schermbuffer gebruikt</para>
+
+<note>
+<para
+>&konsole; maakt gebruik van twee schermbuffers:</para>
+<itemizedlist>
+<listitem>
+<para
+>De normale schermbuffer (standaard): stelt u in staat om terug te schuiven om vorige regels uitvoer te bekijken, dit is de standaard buffer die u gewoonlijk gebruikt om commando's uit te voeren... &etc;</para>
+</listitem>
+<listitem>
+<para
+>De Alternate Screen-buffer: de terminal schakelt naar deze buffer wanneer u een interactief programma (&eg; <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+>... &etc;) gebruikt</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Toetsenbordje</term>
+<listitem>
+<para
+>Als deze modus is ingesteld gebruikt de toetscombinatie een toets op het toetsenbordje (Nummertoetsenbordje). Deze modus is nuttig om te onderscheid te maken tussen toetsen op het toetsenbord en toetsen op het toetsenbordje. Wanneer bijvoorbeeld Num Lock <emphasis
+>aan</emphasis
+> is kunt u twee aparte toestcombinaties configureren, een die de toets met label <quote
+>1</quote
+> op het toetsenbord heeft (gewoonlijk onder de toets <keycap
+>F1</keycap
+>) en de ander die de toets met label <quote
+>1</quote
+> heeft op het toetsenbordje. Hetzelfde concept is van toepassing wanneer Num Lock is <emphasis
+>uit</emphasis
+> voor de toetsen End, Home, pijltjestoetsen ...etc oo het toetsenbordje</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Deze modus implementeert de VT100 <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>Cursor Keys Mode (DECCKM)</ulink
+>. Het bestuurt de escape sequences die elke Cursor-toets (<keycap
+>Omhoog</keycap
+>, <keycap
+>Omlaag</keycap
+>, <keycap
+>Rechts</keycap
+>, <keycap
+>Links</keycap
+>) verstuurt, afhankelijk van of deze modus is gezet of gereset</para>
+<para
+>Standaard volgt &konsole; het XTerm-gedrag voor behandeling van de toetsen <keycap
+>Home</keycap
+> en <keycap
+>End</keycap
+> als cursor-toetsen met betrekking op DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Als deze modus is gezet zal de toetscombinatie alleen werken wanneer het toetsenbordje zich in Application Modus (DECKPAM) bevindt</para>
+<para
+>Als deze modus gereset is zal de toetscombinatie alleen werken wanneer het toetsenbordje in numerieke modus (DECKPNM) is</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Nieuwe regel</term>
+<listitem>
+<para
+>Als deze modus is gezet zal de toets <keycap
+>Return</keycap
+> (Enter) op het toetsenbord zowel Carriage Return "\r" als New Line "\n" stuurtekens verzenden</para>
+<para
+>Als deze modus is gereset zal de toets <keycap
+>Return</keycap
+> alleen een Carriage Return "\r" verzenden</para>
+<para
+>Hetzelfde is van toepassing op de toets <keycap
+>Enter</keycap
+> op het toetsenbordje</para>
+<para
+>Deze modus emuleert de <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>LNM - Line Feed/New Line Mode</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Merk op dat elke combinatie van Toets en Modi (gezet/gereset) uniek moet zijn. Bekijk de volgende twee regels:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>&konsole; zal de kleine letter <quote
+>a</quote
+> regel <emphasis
+>niet</emphasis
+> accepteren, u moet een <quote
+>-Shift</quote
+> aan die regel toevoegen om deze te laten werken.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>Het uitvoerveld</title>
+
+<para
+>In het uitvoerveld kunt u de escape sequences of control tekens toevoegen die u wilt dat &konsole; naar de terminal verzend wanneer de bijbehorende toetscombinatie wordt ingedrukt.</para>
+
+<para
+>U kunt ook elke van de volgende sleutelwoorden gebruiken, elk van dezen heeft een speciale betekenis in &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : schuif één regel omhoog in de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : schuif één pagina omhoog in de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : schuif één regel omlaag in de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : schuif één pagina omlaag in de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : schuif omhoog naar het begin van de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : schuif omlaag naar het eind van de schuifbuffer van de shell-geschiedenis</para
+></listitem>
+</itemizedlist>
+
+<para
+>U kunt ook tekenreeksen gebruiken met C-string syntaxis; U zou de volgende escapes sequences kunnen gebruiken:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Backslash</para
+></listitem>
+<listitem
+><para
+>\" : Aanhalingsteken</para
+></listitem>
+<listitem
+><para
+>\t : Tab</para
+></listitem>
+<listitem
+><para
+>\r : Carriage Return</para
+></listitem>
+<listitem
+><para
+>\n : Nieuwe-regel</para
+></listitem>
+<listitem
+><para
+>\b : Backspace</para
+></listitem>
+<listitem>
+<para
+>\xHH : waar HH twee hex-tekens zijn</para>
+<tip>
+<para
+>Dit kan gebruikt worden om ASCII control tekens te verzenden, &eg; <quote
+>\x00</quote
+> wat het NUL teken is</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Andere systeembronnen</title>
+<para
+>Er zijn andere systeembronnen die toetsenbindingen kunnen beïnvloeden:</para>
+<itemizedlist>
+<listitem>
+<para
+>Kijk ook in de database <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> of <ulink url="man:termcap(5)"
+>termcap</ulink
+> voor de verwachte escape sequences en control tekens die elke toetscombinatie verondersteld wordt te verzenden.</para>
+</listitem>
+<listitem>
+<para
+>Het is waarschijnlijk dat uw systeem andere toetsenborddatabases heeft die ook gesynchroniseerd moeten worden, (&eg; <ulink url="man:bash(1)"
+>/etc/inputrc en readline</ulink
+> voor de <application
+>BASH-shell</application
+>) omdat ze de werking (interacties) binden aan toetscombinaties.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Verdere leesstof</title>
+<para
+>Voor meer informatie over escape sequences en control tekens, bekijk de volgende documentatie:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>De VT100 gebruikersgids</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>De VT102 gebruikersgids</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>De uitgebreide en onmisbare documentatie <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>XTerm Control Sequences</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2502,7 +2979,7 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->Voor meer informatie, lees <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
+>Voor meer informatie, lees <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
 >&Qt; stijlbladen</ulink
 > </para>
 
@@ -2781,8 +3258,7 @@ CommonDirNames=naam1,naam2,naam3...
 >SGML</acronym
 > door &Mike.McBride; en &Lauri.Watts;</para>
 
-&meld.fouten;&vertaling.niels;&vertaling.bram;&vertaling.tijmen;&nagelezen.rinse;&nagelezen.antoon;&vertaling.kristof; 
-&underFDL; &underGPL; </chapter>
+&meld.fouten;&vertaling.niels;&vertaling.bram;&vertaling.tijmen;&nagelezen.rinse;&nagelezen.antoon;&vertaling.kristof; &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title
@@ -2793,31 +3269,31 @@ CommonDirNames=naam1,naam2,naam3...
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole"
+><ulink url="https://userbase.kde.org/Konsole"
 >De website van &konsole; op &kde;'s UserBase</ulink
 >&nbsp;</para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >De homepage van &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >De mailinglijst van &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; op FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; op &Solaris;</ulink
 ></para
 ></listitem>

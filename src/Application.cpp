@@ -21,6 +21,7 @@
 #include "Application.h"
 
 // Qt
+#include <QApplication>
 #include <QHashIterator>
 #include <QFileInfo>
 #include <QDir>
@@ -40,8 +41,9 @@
 #include "ShellCommand.h"
 #include "KonsoleSettings.h"
 #include "ViewManager.h"
-#include "SessionController.h"
 #include "WindowSystemInfo.h"
+#include "ViewContainer.h"
+#include "TerminalDisplay.h"
 
 using namespace Konsole;
 
@@ -55,73 +57,71 @@ Application::Application(QSharedPointer<QCommandLineParser> parser,
 
 void Application::populateCommandLineParser(QCommandLineParser *parser)
 {
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("profile"),
-                                         i18nc("@info:shell",
-                                               "Name of profile to use for new Konsole instance"),
-                                         QStringLiteral("name")));
-    parser->addOption(QCommandLineOption(QStringList(QStringLiteral("fallback-profile")),
-                                         i18nc("@info:shell",
-                                               "Use the internal FALLBACK profile")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("workdir"),
-                                         i18nc("@info:shell",
-                                               "Set the initial working directory of the new tab or"
-                                               " window to 'dir'"),
-                                         QStringLiteral("dir")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("hold")
-                                                       << QStringLiteral("noclose"),
-                                         i18nc("@info:shell",
-                                               "Do not close the initial session automatically when it"
-                                               " ends.")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("new-tab"),
-                                         i18nc("@info:shell",
-                                               "Create a new tab in an existing window rather than"
-                                               " creating a new window")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("tabs-from-file"),
-                                         i18nc("@info:shell",
-                                               "Create tabs as specified in given tabs configuration"
-                                               " file"),
-                                         QStringLiteral("file")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("background-mode"),
-                                         i18nc("@info:shell",
-                                               "Start Konsole in the background and bring to the front"
-                                               " when Ctrl+Shift+F12 (by default) is pressed")));
-    // --nofork is a compatibility alias for separate
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("separate")
-                                                       << QStringLiteral("nofork"),
-                                         i18nc("@info:shell", "Run in a separate process")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("show-menubar"),
-                                         i18nc("@info:shell",
-                                               "Show the menubar, overriding the default setting")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("hide-menubar"),
-                                         i18nc("@info:shell",
-                                               "Hide the menubar, overriding the default setting")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("show-tabbar"),
-                                         i18nc("@info:shell",
-                                               "Show the tabbar, overriding the default setting")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("hide-tabbar"),
-                                         i18nc("@info:shell",
-                                               "Hide the tabbar, overriding the default setting")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("fullscreen"),
-                                         i18nc("@info:shell", "Start Konsole in fullscreen mode")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("notransparency"),
-                                         i18nc("@info:shell",
-                                               "Disable transparent backgrounds, even if the system"
-                                               " supports them.")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("list-profiles"),
-                                         i18nc("@info:shell", "List the available profiles")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("list-profile-properties"),
-                                         i18nc("@info:shell",
-                                               "List all the profile properties names and their type"
-                                               " (for use with -p)")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("p"),
-                                         i18nc("@info:shell",
-                                               "Change the value of a profile property."),
-                                         QStringLiteral("property=value")));
-    parser->addOption(QCommandLineOption(QStringList() << QStringLiteral("e"),
-                                         i18nc("@info:shell",
-                                               "Command to execute. This option will catch all following"
-                                               " arguments, so use it as the last option."),
-                                         QStringLiteral("cmd")));
+    auto options = QVector<QCommandLineOption> {
+        { { QStringLiteral("profile") },
+            i18nc("@info:shell", "Name of profile to use for new Konsole instance"),
+            QStringLiteral("name")
+        },
+        { { QStringLiteral("fallback-profile") },
+            i18nc("@info:shell", "Use the internal FALLBACK profile")
+        },
+        { { QStringLiteral("workdir") },
+            i18nc("@info:shell", "Set the initial working directory of the new tab or window to 'dir'"),
+            QStringLiteral("dir")
+        },
+        { { QStringLiteral("hold"), QStringLiteral("noclose") },
+           i18nc("@info:shell", "Do not close the initial session automatically when it ends.")
+        },
+        {  {QStringLiteral("new-tab") },
+            i18nc("@info:shell", "Create a new tab in an existing window rather than creating a new window")
+        },
+        { { QStringLiteral("tabs-from-file") },
+            i18nc("@info:shell","Create tabs as specified in given tabs configuration"" file"),
+            QStringLiteral("file")
+        },
+        { { QStringLiteral("background-mode") },
+            i18nc("@info:shell", "Start Konsole in the background and bring to the front when Ctrl+Shift+F12 (by default) is pressed")
+        },
+        { { QStringLiteral("separate"), QStringLiteral("nofork") },
+            i18nc("@info:shell", "Run in a separate process")
+        },
+        { { QStringLiteral("show-menubar") },
+            i18nc("@info:shell", "Show the menubar, overriding the default setting")
+        },
+        { { QStringLiteral("hide-menubar") },
+            i18nc("@info:shell", "Hide the menubar, overriding the default setting")
+        },
+        { { QStringLiteral("show-tabbar") },
+            i18nc("@info:shell", "Show the tabbar, overriding the default setting")
+        },
+        { { QStringLiteral("hide-tabbar") },
+            i18nc("@info:shell", "Hide the tabbar, overriding the default setting")
+        },
+        { { QStringLiteral("fullscreen") },
+            i18nc("@info:shell", "Start Konsole in fullscreen mode")
+        },
+        { { QStringLiteral("notransparency") },
+            i18nc("@info:shell", "Disable transparent backgrounds, even if the system supports them.")
+        },
+        { { QStringLiteral("list-profiles") },
+            i18nc("@info:shell", "List the available profiles")
+        },
+        { { QStringLiteral("list-profile-properties") },
+            i18nc("@info:shell", "List all the profile properties names and their type (for use with -p)")
+        },
+        { { QStringLiteral("p") },
+            i18nc("@info:shell", "Change the value of a profile property."),
+            QStringLiteral("property=value")
+        },
+        { { QStringLiteral("e") },
+            i18nc("@info:shell", "Command to execute. This option will catch all following arguments, so use it as the last option."),
+            QStringLiteral("cmd")
+        }
+    };
+    foreach(const auto& option, options) {
+        parser->addOption(option);
+    }
+
     parser->addPositionalArgument(QStringLiteral("[args]"),
                                   i18nc("@info:shell", "Arguments passed to command"));
 
@@ -132,16 +132,16 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
     // the title and overriding whatever is set elsewhere.
     // https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=532029
     // https://www.debian.org/doc/debian-policy/ch-customized-programs.html#s11.8.3
-    auto titleOption = QCommandLineOption(QStringList() << QStringLiteral("T"),
+    auto titleOption = QCommandLineOption({ QStringLiteral("T") },
                                           QStringLiteral("Debian policy compatibility, not used"),
                                           QStringLiteral("value"));
-    titleOption.setHidden(true);
+    titleOption.setFlags(QCommandLineOption::HiddenFromHelp);
     parser->addOption(titleOption);
 }
 
 QStringList Application::getCustomCommand(QStringList &args)
 {
-    int i = args.indexOf(QStringLiteral("-e"));
+    int i = args.indexOf(QLatin1String("-e"));
     QStringList customCommand;
     if ((0 < i) && (i < (args.size() - 1))) {
         // -e was specified with at least one extra argument
@@ -169,32 +169,32 @@ MainWindow *Application::newMainWindow()
 
     connect(window, &Konsole::MainWindow::newWindowRequest, this,
             &Konsole::Application::createWindow);
-    connect(window, &Konsole::MainWindow::viewDetached, this, &Konsole::Application::detachView);
+    connect(window, &Konsole::MainWindow::terminalsDetached, this, &Konsole::Application::detachTerminals);
 
     return window;
 }
 
-void Application::createWindow(Profile::Ptr profile, const QString &directory)
+void Application::createWindow(const Profile::Ptr &profile, const QString &directory)
 {
     MainWindow *window = newMainWindow();
     window->createSession(profile, directory);
     finalizeNewMainWindow(window);
 }
 
-void Application::detachView(Session *session)
+void Application::detachTerminals(ViewSplitter *splitter,const QHash<TerminalDisplay*, Session*>& sessionsMap)
 {
+    MainWindow *currentWindow = qobject_cast<MainWindow*>(sender());
     MainWindow *window = newMainWindow();
-    window->createView(session);
+    ViewManager *manager = window->viewManager();
 
-    // When detaching a view, the size of the new window should equal the
-    // size of the source window
-    Session *newsession = window->viewManager()->activeViewController()->session();
-    newsession->setSize(session->size());
-    window->adjustSize();
-    // Since user is dragging and dropping, move dnd window to where
-    // the user has the cursor (correct multiple monitor setups).
-    window->move(QCursor::pos());
+    foreach(TerminalDisplay* terminal, splitter->findChildren<TerminalDisplay*>()) {
+        manager->attachView(terminal, sessionsMap[terminal]);
+    }
+    manager->activeContainer()->addSplitter(splitter);
+
     window->show();
+    window->resize(currentWindow->width(), currentWindow->height());
+    window->move(QCursor::pos());
 }
 
 int Application::newInstance()
@@ -269,17 +269,19 @@ int Application::newInstance()
  *
  * ;; is the token separator
  * # at the beginning of line results in line being ignored.
- * supported tokens are title, command and profile.
+ * supported tokens: title, command, profile and workdir
  *
  * Note that the title is static and the tab will close when the
  * command is complete (do not use --noclose).  You can start new tabs.
  *
- * Examples:
-title: This is the title;; command: ssh jupiter
+ * Example below will create 6 tabs as listed and a 7th default tab
+title: This is the title;; command: ssh localhost
+title: This is the title;; command: ssh localhost;; profile: Shell
 title: Top this!;; command: top
+title: mc this!;; command: mc;; workdir: /tmp
 #this line is comment
-command: ssh  earth
-profile: Zsh
+command: ssh localhost
+profile: Shell
 */
 bool Application::processTabsFromFileArgs(MainWindow *window)
 {
@@ -308,8 +310,8 @@ bool Application::processTabsFromFileArgs(MainWindow *window)
             lineTokens[key] = value;
         }
         // should contain at least one of 'command' and 'profile'
-        if (lineTokens.contains(QStringLiteral("command"))
-            || lineTokens.contains(QStringLiteral("profile"))) {
+        if (lineTokens.contains(QLatin1String("command"))
+            || lineTokens.contains(QLatin1String("profile"))) {
             createTabFromArgs(window, lineTokens);
             sessions++;
         } else {
@@ -422,17 +424,11 @@ MainWindow *Application::processWindowArgs(bool &createdNewMainWindow)
         if (m_parser->isSet(QStringLiteral("fullscreen"))) {
             window->viewFullScreen(true);
         }
-
-        // override default tabbbar visibility
-        // FIXME: remove those magic number
-        // see ViewContainer::NavigationVisibility
         if (m_parser->isSet(QStringLiteral("show-tabbar"))) {
-            // always show
-            window->setNavigationVisibility(0);
+            window->viewManager()->setNavigationVisibility(ViewManager::AlwaysShowNavigation);
         }
-        if (m_parser->isSet(QStringLiteral("hide-tabbar"))) {
-            // never show
-            window->setNavigationVisibility(2);
+        else if (m_parser->isSet(QStringLiteral("hide-tabbar"))) {
+            window->viewManager()->setNavigationVisibility(ViewManager::AlwaysHideNavigation);
         }
     }
     return window;

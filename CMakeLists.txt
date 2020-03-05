@@ -1,21 +1,36 @@
 # Konsole project
 
 # KDE Application Version, managed by release script
-set (KDE_APPLICATIONS_VERSION_MAJOR "18")
-set (KDE_APPLICATIONS_VERSION_MINOR "04")
-set (KDE_APPLICATIONS_VERSION_MICRO "0")
+set (KDE_APPLICATIONS_VERSION_MAJOR "19")
+set (KDE_APPLICATIONS_VERSION_MINOR "12")
+set (KDE_APPLICATIONS_VERSION_MICRO "3")
 set (KDE_APPLICATIONS_VERSION "${KDE_APPLICATIONS_VERSION_MAJOR}.${KDE_APPLICATIONS_VERSION_MINOR}.${KDE_APPLICATIONS_VERSION_MICRO}")
 
 # minimal requirements
 cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
-set (QT_MIN_VERSION "5.6.0")
+# Qt 5.9 LTS EOL May 2020
+set (QT_MIN_VERSION "5.9.0")
+
+# The exact version required is not known ATM
 set (KF5_MIN_VERSION "5.6.0")
 
 # Release script will create bugzilla versions
 project(konsole VERSION ${KDE_APPLICATIONS_VERSION})
 
-find_package(ECM 1.6.0 REQUIRED NO_MODULE)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+find_program(CCACHE_FOUND "ccache")
+set(CCACHE_SUPPORT ON CACHE BOOL "Enable ccache support")
+if (CCACHE_FOUND AND CCACHE_SUPPORT)
+  if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" # GNU is GNU GCC
+      OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    # without this compiler messages in `make` backend would be uncolored
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fdiagnostics-color=auto")
+  endif()
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "ccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK "ccache")
+endif()
+
+find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
@@ -49,7 +64,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED
 )
 
 find_package(KF5DocTools ${KF5_MIN_VERSION})
-set_package_properties(KF5DocTools PROPERTIES DESCRIPTION 
+set_package_properties(KF5DocTools PROPERTIES DESCRIPTION
     "Tools to generate documentation"
     TYPE OPTIONAL
 )
@@ -60,12 +75,13 @@ if(NOT APPLE)
 endif()
 set(HAVE_X11 ${X11_FOUND})
 
+# FIXME: Fix code to allow this
+#add_definitions(-DQT_NO_FOREACH)
+
 # See above includes for defaults
 add_definitions(
   -DQT_STRICT_ITERATORS
   -DQT_NO_URL_CAST_FROM_STRING
-  -DQT_USE_FAST_CONCATENATION
-  -Wno-deprecated-declarations
 )
 
 set(CMAKE_CXX_STANDARD 11)
@@ -81,9 +97,13 @@ if (KF5DocTools_FOUND)
     add_subdirectory( doc/manual )
 endif()
 
-### -DKONSOLE_BUILD_FONTEMBEDDER=TRUE or -DKONSOLE_GENERATE_LINEFONT=TRUE
-if(KONSOLE_BUILD_FONTEMBEDDER OR KONSOLE_GENERATE_LINEFONT)
-    add_subdirectory( tools )
+add_subdirectory( tools )
+
+
+if (${ECM_VERSION} STRGREATER "5.58.0")
+    install( FILES konsole.categories DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR} )
+else()
+    install( FILES konsole.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
 endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)

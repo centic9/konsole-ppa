@@ -2,18 +2,15 @@
 
 add_definitions(-DTRANSLATION_DOMAIN=\"konsole\")
 
-### Too many crashes/issues with detaching on MacOSX
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(ENABLE_DETACHING 0)
-else()
-  set(ENABLE_DETACHING 1)
-endif()
-
 ### Handle DragonFlyBSD here instead of using __DragonFly__
 IF(${CMAKE_SYSTEM_NAME} MATCHES "DragonFly")
   set(HAVE_OS_DRAGONFLYBSD 1)
 else()
   set(HAVE_OS_DRAGONFLYBSD 0)
+endif()
+
+IF(NOT (${KF5_VERSION} VERSION_LESS "5.60.0"))
+    set(USE_TERMINALINTERFACEV2 1)
 endif()
 
 include(CheckIncludeFiles)
@@ -32,9 +29,8 @@ endif()
 ### Security concerns about sendText and runCommand dbus methods being public
 option(REMOVE_SENDTEXT_RUNCOMMAND_DBUS_METHODS "Konsole: remove sendText and runCommand dbus methods" OFF)
 
-### Font Embedder and LineFont.h
-option(KONSOLE_BUILD_FONTEMBEDDER "Konsole: build fontembedder executable" OFF)
-option(KONSOLE_GENERATE_LINEFONT "Konsole: regenerate LineFont file" OFF)
+### Development tools
+option(KONSOLE_BUILD_UNI2CHARACTERWIDTH "Konsole: build uni2characterwidth executable" OFF)
 
 ### Konsole source files shared between embedded terminal and main application
 # qdbuscpp2xml -m  Session.h -o org.kde.konsole.Session.xml
@@ -55,13 +51,17 @@ qt5_add_dbus_adaptor(windowadaptors_SRCS
 
 set(konsoleprivate_SRCS ${sessionadaptors_SRCS}
                         ${windowadaptors_SRCS}
+                        hsluv.c
                         BookmarkHandler.cpp
+                        BookmarkMenu.cpp
                         ColorScheme.cpp
                         ColorSchemeManager.cpp
                         ColorSchemeEditor.cpp
                         CopyInputDialog.cpp
                         EditProfileDialog.cpp
+                        FontDialog.cpp
                         Emulation.cpp
+                        DetachableTabBar.cpp
                         Filter.cpp
                         History.cpp
                         HistorySizeDialog.cpp
@@ -79,6 +79,8 @@ set(konsoleprivate_SRCS ${sessionadaptors_SRCS}
                         Pty.cpp
                         RenameTabDialog.cpp
                         RenameTabWidget.cpp
+                        SaveHistoryTask.cpp
+                        SearchHistoryTask.cpp
                         Screen.cpp
                         ScreenWindow.cpp
                         ScrollState.cpp
@@ -86,22 +88,24 @@ set(konsoleprivate_SRCS ${sessionadaptors_SRCS}
                         SessionController.cpp
                         SessionManager.cpp
                         SessionListModel.cpp
+                        SessionTask.cpp
                         ShellCommand.cpp
                         TabTitleFormatButton.cpp
                         TerminalCharacterDecoder.cpp
                         ExtendedCharTable.cpp
                         TerminalDisplay.cpp
                         TerminalDisplayAccessible.cpp
+                        TerminalHeaderBar.cpp
+                        LineBlockCharacters.cpp
                         ViewContainer.cpp
-                        ViewContainerTabBar.cpp
                         ViewManager.cpp
                         ViewProperties.cpp
                         ViewSplitter.cpp
                         Vt102Emulation.cpp
                         ZModemDialog.cpp
                         PrintOptions.cpp
-                        konsole_wcwidth.cpp
                         WindowSystemInfo.cpp
+                        CharacterWidth.cpp
                         ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Window.xml
                         ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Session.xml)
 
@@ -136,14 +140,20 @@ endif()
 
 ki18n_wrap_ui(konsoleprivate_SRCS ColorSchemeEditor.ui
                                 CopyInputDialog.ui
-                                EditProfileDialog.ui
+                                EditProfileGeneralPage.ui
+                                EditProfileTabsPage.ui
+                                EditProfileAppearancePage.ui
+                                EditProfileScrollingPage.ui
+                                EditProfileKeyboardPage.ui
+                                EditProfileMousePage.ui
+                                EditProfileAdvancedPage.ui
                                 KeyBindingEditor.ui
                                 RenameTabDialog.ui
                                 RenameTabWidget.ui
                                 HistorySizeDialog.ui
                                 HistorySizeWidget.ui
                                 PrintOptions.ui
-                                settings/FileLocationSettings.ui
+                                settings/TemporaryFilesSettings.ui
                                 settings/GeneralSettings.ui
                                 settings/PartInfo.ui
                                 settings/ProfileSettings.ui
@@ -167,12 +177,12 @@ set(konsole_KDEINIT_SRCS
    Application.cpp
    MainWindow.cpp
    main.cpp
-   settings/FileLocationSettings.cpp
+   settings/ConfigurationDialog.cpp
+   settings/TemporaryFilesSettings.cpp
    settings/GeneralSettings.cpp
    settings/ProfileSettings.cpp
    settings/TabBarSettings.cpp)
 
-kconfig_add_kcfg_files(konsole_KDEINIT_SRCS settings/KonsoleSettings.kcfgc)
 
 # Sets the icon on Windows and OSX
 file(GLOB ICONS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/../data/icons/*.png")
@@ -195,7 +205,7 @@ if(APPLE)
         MACOSX_BUNDLE_LONG_VERSION_STRING "Konsole ${KDE_APPLICATIONS_VERSION}"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${KDE_APPLICATIONS_VERSION_MAJOR}.${KDE_APPLICATIONS_VERSION_MINOR}"
         MACOSX_BUNDLE_BUNDLE_VERSION "${KDE_APPLICATIONS_VERSION}"
-        MACOSX_BUNDLE_COPYRIGHT "1997-2016 The Konsole Developers")
+        MACOSX_BUNDLE_COPYRIGHT "1997-2020 The Konsole Developers")
 endif()
 
 install(TARGETS kdeinit_konsole konsole
@@ -206,14 +216,10 @@ install(TARGETS kdeinit_konsole konsole
 set(konsolepart_PART_SRCS Part.cpp
     settings/PartInfo.cpp
     settings/ProfileSettings.cpp)
-kconfig_add_kcfg_files(konsolepart_PART_SRCS settings/KonsoleSettings.kcfgc)
 add_library(konsolepart MODULE ${konsolepart_PART_SRCS})
 generate_export_header(konsolepart BASE_NAME konsole)
 kcoreaddons_desktop_to_json(konsolepart ../desktop/konsolepart.desktop)
 set_target_properties(konsolepart PROPERTIES DEFINE_SYMBOL KONSOLE_PART)
 target_link_libraries(konsolepart KF5::Parts KF5::XmlGui konsoleprivate)
 install(TARGETS konsolepart  DESTINATION ${KDE_INSTALL_PLUGINDIR})
-
-### konsoleprofile command-line tool
-install(PROGRAMS konsoleprofile DESTINATION ${KDE_INSTALL_BINDIR})
 

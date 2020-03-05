@@ -29,13 +29,13 @@
 
 // Konsole
 #include "Profile.h"
+#include "ViewSplitter.h"
 
 class QAction;
 class KActionMenu;
 class KToggleAction;
 
 namespace Konsole {
-class IncrementalSearchBar;
 class ViewManager;
 class ViewProperties;
 class Session;
@@ -88,11 +88,6 @@ public:
     Session *createSSHSession(Profile::Ptr profile, const QUrl &url);
 
     /**
-     * create view for the specified session
-     */
-    void createView(Session *session);
-
-    /**
      * Helper method to make this window get input focus
      */
     void setFocus();
@@ -102,13 +97,13 @@ public:
      */
     void setMenuBarInitialVisibility(bool visible);
 
-    void setNavigationVisibility(int visibility);
-    void setNavigationPosition(int position);
-    void setNavigationStyleSheet(const QString &styleSheet);
-    void setNavigationStyleSheetFromFile(const QUrl &styleSheetFile);
-    void setNavigationBehavior(int behavior);
-    void setNavigationTabWidthExpanding(bool expand);
-    void setShowQuickButtons(bool show);
+
+    /**
+     * @brief Set the frameless state
+     *
+     * @param frameless If true, no titlebar or frame is displayed.
+     */
+    void setRemoveWindowTitleBarAndFrame(bool frameless);
 
 Q_SIGNALS:
 
@@ -122,16 +117,17 @@ Q_SIGNALS:
      * if the default working directory associated with the profile should
      * be used.
      */
-    void newWindowRequest(Profile::Ptr profile, const QString &directory);
+    void newWindowRequest(const Profile::Ptr &profile, const QString &directory);
 
     /**
      * Emitted when a view for one session is detached from this window
      */
-    void viewDetached(Session *session);
+    void terminalsDetached(ViewSplitter *splitter, QHash<TerminalDisplay*, Session*> sessionsMap);
 
 protected:
     // Reimplemented for internal reasons.
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *obj, QEvent *event) Q_DECL_OVERRIDE;
 
     // reimplemented from KMainWindow
     bool queryClose() Q_DECL_OVERRIDE;
@@ -149,9 +145,9 @@ private Q_SLOTS:
     void newWindow();
     void showManageProfilesDialog();
     void activateMenuBar();
-    void showSettingsDialog(const bool showProfilePage = false);
+    void showSettingsDialog(bool showProfilePage = false);
     void showShortcutsDialog();
-    void newFromProfile(Profile::Ptr profile);
+    void newFromProfile(const Profile::Ptr &profile);
     void activeViewChanged(SessionController *controller);
     void disconnectController(SessionController *controller);
     void activeViewTitleChanged(ViewProperties *);
@@ -180,16 +176,8 @@ private:
     void removeMenuAccelerators();
     void restoreMenuAccelerators();
     void setupActions();
-    void setupMainWidget();
     QString activeSessionDir() const;
-
-    /**
-     * Returns the search bar.
-     *
-     * This is a convenience method. The search bar is actually owned by
-     * ViewManager, or more precisely, by ViewContainer.
-     */
-    IncrementalSearchBar *searchBar() const;
+    void triggerAction(const QString &name) const;
 
     /**
      * Returns the bookmark handler associated with this window.

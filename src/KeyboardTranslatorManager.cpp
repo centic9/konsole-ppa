@@ -77,7 +77,20 @@ bool KeyboardTranslatorManager::deleteTranslator(const QString &name)
     }
 }
 
-QString KeyboardTranslatorManager::findTranslatorPath(const QString &name)
+bool KeyboardTranslatorManager::isTranslatorDeletable(const QString &name) const
+{
+    const QString &dir = QFileInfo(findTranslatorPath(name)).path();
+    return QFileInfo(dir).isWritable();
+}
+
+bool KeyboardTranslatorManager::isTranslatorResettable(const QString &name) const
+{
+    const QStringList &paths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QLatin1String("konsole/") + name + QLatin1String(".keytab"));
+
+    return (paths.count() > 1);
+}
+
+const QString KeyboardTranslatorManager::findTranslatorPath(const QString &name) const
 {
     return QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + name + QStringLiteral(".keytab"));
 }
@@ -89,9 +102,9 @@ void KeyboardTranslatorManager::findTranslators()
                                                        QStandardPaths::LocateDirectory);
     list.reserve(dirs.size());
 
-    Q_FOREACH (const QString &dir, dirs) {
+    for (const QString &dir : dirs) {
         const QStringList fileNames = QDir(dir).entryList(QStringList() << QStringLiteral("*.keytab"));
-        Q_FOREACH (const QString &file, fileNames) {
+        for (const QString &file : fileNames) {
             list.append(dir + QLatin1Char('/') + file);
         }
     }
@@ -204,7 +217,7 @@ const KeyboardTranslator *KeyboardTranslatorManager::defaultTranslator()
     return translator;
 }
 
-QStringList KeyboardTranslatorManager::allTranslators()
+const QStringList KeyboardTranslatorManager::allTranslators()
 {
     if (!_haveLoadedAll) {
         findTranslators();

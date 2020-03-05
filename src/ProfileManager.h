@@ -120,7 +120,7 @@ public:
      * Registers a new type of session.
      * The favorite status of the session ( as returned by isFavorite() ) is set to false by default.
      */
-    void addProfile(Profile::Ptr type);
+    void addProfile(const Profile::Ptr &profile);
 
     /**
      * Deletes the configuration file used to store a profile.
@@ -151,7 +151,7 @@ public:
     /**
      * Sets the @p profile as the default profile for creating new sessions
      */
-    void setDefaultProfile(Profile::Ptr profile);
+    void setDefaultProfile(const Profile::Ptr &profile);
 
     /**
      * Returns a Profile object describing the default profile
@@ -169,7 +169,7 @@ public:
      * Specifies whether a profile should be included in the user's
      * list of favorite profiles.
      */
-    void setFavorite(Profile::Ptr profile, bool favorite);
+    void setFavorite(const Profile::Ptr &profile, bool favorite);
 
     /**
      * Returns the set of the user's favorite profiles.
@@ -189,7 +189,7 @@ public:
     /**
      * Associates a shortcut with a particular profile.
      */
-    void setShortcut(Profile::Ptr profile, const QKeySequence &shortcut);
+    void setShortcut(Profile::Ptr profile, const QKeySequence &keySequence);
 
     /** Returns the shortcut associated with a particular profile. */
     QKeySequence shortcut(Profile::Ptr profile) const;
@@ -214,11 +214,11 @@ public:
 Q_SIGNALS:
 
     /** Emitted when a profile is added to the manager. */
-    void profileAdded(Profile::Ptr ptr);
+    void profileAdded(const Profile::Ptr &ptr);
     /** Emitted when a profile is removed from the manager. */
-    void profileRemoved(Profile::Ptr ptr);
+    void profileRemoved(const Profile::Ptr &ptr);
     /** Emitted when a profile's properties are modified. */
-    void profileChanged(Profile::Ptr ptr);
+    void profileChanged(const Profile::Ptr &ptr);
 
     /**
      * Emitted when the favorite status of a profile changes.
@@ -226,7 +226,7 @@ Q_SIGNALS:
      * @param profile The profile to change
      * @param favorite Specifies whether the profile is a favorite or not
      */
-    void favoriteStatusChanged(Profile::Ptr profile, bool favorite);
+    void favoriteStatusChanged(const Profile::Ptr &profile, bool favorite);
 
     /**
      * Emitted when the shortcut for a profile is changed.
@@ -234,7 +234,7 @@ Q_SIGNALS:
      * @param profile The profile whose status was changed
      * @param newShortcut The new shortcut key sequence for the profile
      */
-    void shortcutChanged(Profile::Ptr profile, const QKeySequence &newShortcut);
+    void shortcutChanged(const Profile::Ptr &profile, const QKeySequence &newShortcut);
 
 public Q_SLOTS:
     /** Saves settings (favorites, shortcuts, default profile etc.) to disk. */
@@ -268,7 +268,7 @@ private:
     // returns the path to which the profile was saved, which will
     // be the same as the path property of profile if valid or a newly generated path
     // otherwise
-    QString saveProfile(Profile::Ptr profile);
+    QString saveProfile(const Profile::Ptr &profile);
 
     QSet<Profile::Ptr> _profiles;  // list of all loaded profiles
     QSet<Profile::Ptr> _favorites; // list of favorite profiles
@@ -284,6 +284,10 @@ private:
         QString profilePath;
     };
     QMap<QKeySequence, ShortcutData> _shortcuts; // shortcut keys -> profile path
+
+    // finds out if it's a internal profile or an external one,
+    // fixing the path to point to the correct location for the profile.
+    QString normalizePath(const QString& path) const;
 };
 
 /**

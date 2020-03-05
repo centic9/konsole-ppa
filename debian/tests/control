@@ -1,5 +1,10 @@
 Tests: testsuite
-Depends: @, @builddeps@, build-essential,
-         xvfb, xauth, dbus,
-         kinit, plasma-framework, libgl1-mesa-dri
-Restrictions: build-needed, allow-stderr
+Depends: build-essential,
+         dbus,
+         kinit,
+         libgl1-mesa-dri,
+         plasma-framework,
+         xauth,
+         xvfb,
+         @,
+         @builddeps@,

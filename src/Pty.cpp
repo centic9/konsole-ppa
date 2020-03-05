@@ -25,7 +25,7 @@
 
 // System
 #include <termios.h>
-#include <signal.h>
+#include <csignal>
 
 // Qt
 #include <QStringList>
@@ -104,7 +104,7 @@ void Pty::setWindowSize(int columns, int lines)
 
 QSize Pty::windowSize() const
 {
-    return QSize(_windowColumns, _windowLines);
+    return {_windowColumns, _windowLines};
 }
 
 void Pty::setFlowControlEnabled(bool enable)

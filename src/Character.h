@@ -25,6 +25,10 @@
 
 // Konsole
 #include "CharacterColor.h"
+#include "CharacterWidth.h"
+
+// Qt
+#include <QVector>
 
 namespace Konsole {
 typedef unsigned char LineProperty;
@@ -50,20 +54,6 @@ const RenditionFlags RE_CONCEAL        = (1 << 9);
 const RenditionFlags RE_OVERLINE       = (1 << 10);
 
 /**
- * Unicode character in the range of U+2500 ~ U+257F are known as line
- * characters, or box-drawing characters. Currently, konsole draws those
- * characters itself, instead of using the glyph provided by the font.
- * Unfortunately, the triple and quadruple dash lines (┄┅┆┇┈┉┊┋) are too
- * detailed too be drawn cleanly at normal font scales without anti
- * -aliasing, so those are drawn as regular characters.
- */
-inline bool isSupportedLineChar(quint16 codePoint)
-{
-    return (codePoint & 0xFF80) == 0x2500 // Unicode block: Mathematical Symbols - Box Drawing
-           && !(0x2504 <= codePoint && codePoint <= 0x250B); // Triple and quadruple dash range
-}
-
-/**
  * A single character in the terminal which consists of a unicode character
  * value, foreground and background colors and a set of rendition attributes
  * which specify how it should be drawn.
@@ -82,7 +72,7 @@ public:
      * @param _real Indicate whether this character really exists, or exists
      *              simply as place holder.
      */
-    explicit inline Character(quint16 _c = ' ',
+    explicit inline Character(uint _c = ' ',
                               CharacterColor  _f = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR),
                               CharacterColor  _b = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR),
                               RenditionFlags  _r = DEFAULT_RENDITION,
@@ -99,7 +89,7 @@ public:
      * look up the unicode character sequence in the ExtendedCharTable used to
      * create the sequence.
      */
-    quint16 character;
+    uint character;
 
     /** A combination of RENDITION flags which specify options for drawing the character. */
     RenditionFlags rendition;
@@ -138,15 +128,6 @@ public:
      */
     friend bool operator !=(const Character &a, const Character &b);
 
-    inline bool isLineChar() const
-    {
-        if (rendition & RE_EXTENDED_CHAR) {
-            return false;
-        } else {
-            return isSupportedLineChar(character);
-        }
-    }
-
     inline bool isSpace() const
     {
         if (rendition & RE_EXTENDED_CHAR) {
@@ -154,6 +135,27 @@ public:
         } else {
             return QChar(character).isSpace();
         }
+    }
+
+    inline int width() const {
+        return width(character);
+    }
+
+    static int width(uint ucs4) {
+        return characterWidth(ucs4);
+    }
+
+    static int stringWidth(const uint *ucs4Str, int len) {
+        int w = 0;
+        for (int i = 0; i < len; ++i) {
+            w += width(ucs4Str[i]);
+        }
+        return w;
+    }
+
+    inline static int stringWidth(const QString &str) {
+        QVector<uint> ucs4Str = str.toUcs4();
+        return stringWidth(ucs4Str.constData(), ucs4Str.length());
     }
 };
 
