@@ -24,10 +24,13 @@
 
 #include <QWidget>
 #include <QPoint>
+#include "Session.h"
 
 class QLabel;
 class QToolButton;
 class QBoxLayout;
+class QSplitter;
+
 namespace Konsole {
     class TerminalDisplay;
     class ViewProperties;
@@ -38,25 +41,36 @@ public:
     // TODO: Verify if the terminalDisplay is needed, or some other thing like SessionController.
     explicit TerminalHeaderBar(QWidget *parent = nullptr);
     void finishHeaderSetup(ViewProperties *properties);
+    QSize minimumSizeHint() const override;
+    void applyVisibilitySettings();
+    QSplitter *getTopLevelSplitter();
 
-    void terminalFocusIn();
-    void terminalFocusOut();
+public Q_SLOTS:
+    void setFocusIndicatorState(bool focused);
+    /** Shows/hide notification status icon */
+    void updateNotification(ViewProperties *item, Konsole::Session::Notification notification, bool enabled);
+    /** Shows/hide special state status icon (copy input or read-only) */
+    void updateSpecialState(ViewProperties *item);
 
 protected:
-    void paintEvent(QPaintEvent* ev) override;
+    void paintEvent(QPaintEvent* paintEvent) override;
     void mousePressEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
     void mouseMoveEvent(QMouseEvent *ev) override;
+    void mouseDoubleClickEvent(QMouseEvent *ev) override;
 
 Q_SIGNALS:
     void requestToggleExpansion();
 
 private:
     QBoxLayout *m_boxLayout;
-    TerminalDisplay *m_terminalDisplay;
     QLabel *m_terminalTitle;
     QLabel *m_terminalIcon;
-    QLabel *m_terminalActivity; // Bell icon.
+    QLabel *m_statusIconReadOnly;
+    QLabel *m_statusIconCopyInput;
+    QLabel *m_statusIconSilence;
+    QLabel *m_statusIconActivity;
+    QLabel *m_statusIconBell;
     QToolButton *m_closeBtn;
     QToolButton *m_toggleExpandedMode;
     bool m_terminalIsFocused;

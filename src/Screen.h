@@ -32,6 +32,7 @@
 
 // Konsole
 #include "Character.h"
+#include "konsoleprivate_export.h"
 
 #define MODE_Origin    0
 #define MODE_Wrap      1
@@ -70,7 +71,7 @@ class HistoryScroll;
     using selectedText().  When getImage() is used to retrieve the visible image,
     characters which are part of the selection have their colors inverted.
 */
-class Screen
+class KONSOLEPRIVATE_EXPORT Screen
 {
 public:
     /* PlainText: Return plain text (default)
@@ -116,6 +117,16 @@ public:
      * The cursor will stop at the first column.
      */
     void cursorLeft(int n);
+    /**
+     * Moves cursor to beginning of the line by @p n lines down.
+     * The cursor will stop at the beginning of the line.
+     */
+    void cursorNextLine(int n);
+    /**
+     * Moves cursor to beginning of the line by @p n lines up.
+     * The cursor will stop at the beginning of the line.
+     */
+    void cursorPreviousLine(int n);
     /**
      * Move the cursor to the right by @p n columns.
      * The cursor will stop at the right-most column.
@@ -454,6 +465,9 @@ public:
     /** Clears the current selection */
     void clearSelection();
 
+    /** Return the selection state */
+    bool hasSelection() const;
+
     /**
       *  Returns true if the character at (@p x, @p y) is part of the
       *  current selection.
@@ -482,17 +496,6 @@ public:
      * @param toLine The last line in the history to retrieve
      */
     void writeLinesToStream(TerminalCharacterDecoder *decoder, int fromLine, int toLine) const;
-
-    /**
-     * Copies the selected characters, set using @see setSelBeginXY and @see setSelExtentXY
-     * into a stream.
-     *
-     * @param decoder A decoder which converts terminal characters into text.
-     * PlainTextDecoder is the most commonly used decoder which converts characters
-     * into plain text with no formatting.
-     * @param options See Screen::DecodingOptions
-     */
-    void writeSelectionToStream(TerminalCharacterDecoder *decoder, const DecodingOptions options) const;
 
     /**
      * Checks if the text between from and to is inside the current
@@ -649,6 +652,13 @@ private:
     // copies 'count' lines from the history buffer into 'dest',
     // starting from 'startLine', where 0 is the first line in the history
     void copyFromHistory(Character *dest, int startLine, int count) const;
+
+    // returns a buffer that can hold at most 'count' characters,
+    // where the number of reallocations and object reinitializations
+    // should be as minimal as possible
+    static Character *getCharacterBuffer(const int size);
+
+    int getLineLength(const int line) const;
 
     // screen image ----------------
     int _lines;

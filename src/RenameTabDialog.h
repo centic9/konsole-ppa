@@ -34,12 +34,14 @@ class RenameTabDialog : public QDialog
 
 public:
     explicit RenameTabDialog(QWidget *parent = nullptr);
-    ~RenameTabDialog() Q_DECL_OVERRIDE;
+    ~RenameTabDialog() override;
 
     QString tabTitleText() const;
     QString remoteTabTitleText() const;
+    QColor color() const;
     void setTabTitleText(const QString &);
     void setRemoteTabTitleText(const QString &);
+    void setColor(const QColor &);
 
     void focusTabTitleText();
     void focusRemoteTabTitleText();

@@ -49,6 +49,11 @@ void ScreenWindow::setScreen(Screen *screen)
 {
     Q_ASSERT(screen);
 
+    if (screen == _screen) {
+        return;
+    }
+
+    emit screenAboutToChange();
     _screen = screen;
 }
 
@@ -299,9 +304,8 @@ QRect ScreenWindow::scrollRegion() const
 
     if (atEndOfOutput() && equalToScreenSize) {
         return _screen->lastScrolledRegion();
-    } else {
-        return {0, 0, windowColumns(), windowLines()};
-    }
+    } 
+    return {0, 0, windowColumns(), windowLines()};
 }
 
 void ScreenWindow::notifyOutputChanged()

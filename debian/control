@@ -6,8 +6,9 @@ Uploaders: Sune Vuorela <sune@debian.org>,
            Modestas Vainius <modax@debian.org>,
            Maximiliano Curia <maxy@debian.org>,
 Build-Depends: cmake (>= 3.0~),
-               debhelper (>= 11),
+               debhelper-compat (= 13),
                extra-cmake-modules (>= 5.59.0~),
+               gettext,
                kinit-dev (>= 5.6.0~),
                libkf5bookmarks-dev (>= 5.6.0~),
                libkf5completion-dev (>= 5.6.0~),
@@ -34,11 +35,12 @@ Build-Depends: cmake (>= 3.0~),
                libkf5xmlgui-dev (>= 5.6.0~),
                libx11-dev,
                pkg-kde-tools (>= 0.15.16~),
-               qtbase5-dev (>= 5.9.0~),
-Standards-Version: 4.1.4
+               qtbase5-dev (>= 5.12.0~),
+Standards-Version: 4.5.0
+Rules-Requires-Root: no
 Homepage: http://www.kde.org/
-Vcs-Browser: https://code.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/konsole
-Vcs-Git: https://git.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/konsole
+Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/konsole
+Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/konsole.git
 
 Package: konsole
 Architecture: any
@@ -59,8 +61,8 @@ Description: X terminal emulator
 Package: konsole-kpart
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Breaks: konsole (<< 4:17.12.3-1~)
-Replaces: konsole (<< 4:17.12.3-1~)
+Breaks: konsole (<< 4:17.08.3~)
+Replaces: konsole (<< 4:17.08.3~)
 Description: Konsole plugin for Qt applications
  Konsole is a terminal emulator built on the KDE Platform. It can contain
  multiple terminal sessions inside one window using detachable tabs.
@@ -68,5 +70,5 @@ Description: Konsole plugin for Qt applications
  Konsole supports powerful terminal features, such as customizable schemes,
  saved sessions, and output monitoring.
  .
- This package provides the kpart needed by other appss to embedd konsole in
+ This package provides the kpart needed by other apps to embed konsole in
  them.

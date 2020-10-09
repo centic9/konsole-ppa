@@ -42,7 +42,6 @@
 #include "SessionManager.h"
 #include "ProfileManager.h"
 #include "ViewSplitter.h"
-#include "Enumeration.h"
 #include "ViewContainer.h"
 
 using namespace Konsole;
@@ -158,9 +157,6 @@ void ViewManager::setupActions()
     action->setText(i18nc("@action:inmenu", "Detach Current &Tab"));
     connect(action, &QAction::triggered, this, &ViewManager::detachActiveTab);
     _multiTabOnlyActions << action;
-    // Ctrl+Shift+D is not used as a shortcut by default because it is too close
-    // to Ctrl+D - which will terminate the session in many cases
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Qt::Key_L);
 
     // keyboard shortcut only actions
     action = new QAction(i18nc("@action Shortcut entry", "Next Tab"), this);
@@ -225,8 +221,10 @@ void ViewManager::setupActions()
     collection->setDefaultShortcut(action, Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
     connect(action, &QAction::triggered, this, &ViewManager::lastUsedViewReverse);
 
-    action = new QAction(i18nc("@action Shortcut entry", "Maximize current Terminal"), this);
-    collection->addAction(QStringLiteral("maximize-current-terminal"), action);
+    action = new QAction(i18nc("@action Shortcut entry", "Toggle maximize current view"), this);
+    action->setText(i18nc("@action:inmenu", "Toggle maximize current view"));
+    action->setIcon(QIcon::fromTheme(QStringLiteral("view-fullscreen")));
+    collection->addAction(QStringLiteral("toggle-maximize-current-view"), action);
     collection->setDefaultShortcut(action, Qt::CTRL + Qt::SHIFT + Qt::Key_E);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::toggleMaximizeCurrentTerminal);
     _multiSplitterOnlyActions << action;
@@ -236,20 +234,31 @@ void ViewManager::setupActions()
     collection->addAction(QStringLiteral("move-tab-to-right"), action);
     collection->setDefaultShortcut(action, Qt::CTRL + Qt::ALT + Qt::Key_Right);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::moveTabRight);
+    _multiTabOnlyActions << action;
     _viewContainer->addAction(action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Move tab to the left"), this);
     collection->addAction(QStringLiteral("move-tab-to-left"), action);
     collection->setDefaultShortcut(action, Qt::CTRL + Qt::ALT + Qt::Key_Left);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::moveTabLeft);
+    _multiTabOnlyActions << action;
     _viewContainer->addAction(action);
 
     // _viewSplitter->addAction(lastUsedViewReverseAction);
     const int SWITCH_TO_TAB_COUNT = 19;
-    for (int i = 0; i < SWITCH_TO_TAB_COUNT; i++) {
+    for (int i = 0; i < SWITCH_TO_TAB_COUNT; ++i) {
         action = new QAction(i18nc("@action Shortcut entry", "Switch to Tab %1", i + 1), this);
         connect(action, &QAction::triggered, this, [this, i]() { switchToView(i); });
         collection->addAction(QStringLiteral("switch-to-tab-%1").arg(i), action);
+        _multiTabOnlyActions << action;
+
+        // only add default shortcut bindings for the first 10 tabs, regardless of SWITCH_TO_TAB_COUNT
+        if (i < 9) {
+            collection->setDefaultShortcut(action, QStringLiteral("Alt+%1").arg(i + 1));
+        } else if (i == 9) {
+            // add shortcut for 10th tab
+            collection->setDefaultShortcut(action, Qt::ALT + Qt::Key_0);
+        }
     }
 
     connect(_viewContainer, &TabbedViewContainer::viewAdded, this, &ViewManager::toggleActionsBasedOnState);
@@ -261,7 +270,7 @@ void ViewManager::setupActions()
 
 void ViewManager::toggleActionsBasedOnState() {
     const int count = _viewContainer->count();
-    foreach(QAction *tabOnlyAction, _multiTabOnlyActions) {
+    for (QAction *tabOnlyAction : qAsConst(_multiTabOnlyActions)) {
         tabOnlyAction->setEnabled(count > 1);
     }
 
@@ -272,7 +281,7 @@ void ViewManager::toggleActionsBasedOnState() {
                 ->findChildren<TerminalDisplay*>()
                     .count();
 
-        foreach (QAction *action, _multiSplitterOnlyActions) {
+        for (QAction *action : qAsConst(_multiSplitterOnlyActions)) {
             action->setEnabled(splitCount > 1);
         }
     }
@@ -422,7 +431,8 @@ void ViewManager::detachTab(int tabIdx)
 QHash<TerminalDisplay*, Session*> ViewManager::forgetAll(ViewSplitter* splitter) {
     splitter->setParent(nullptr);
     QHash<TerminalDisplay*, Session*> detachedSessions;
-    foreach(TerminalDisplay* terminal, splitter->findChildren<TerminalDisplay*>()) {
+    const QList<TerminalDisplay *> displays = splitter->findChildren<TerminalDisplay*>();
+    for (TerminalDisplay *terminal : displays) {
         Session* session = forgetTerminal(terminal);
         detachedSessions[terminal] = session;
     }
@@ -523,7 +533,7 @@ void ViewManager::focusAnotherTerminal(ViewSplitter *toplevelSplitter)
     }
 }
 
-void ViewManager::viewActivated(TerminalDisplay *view)
+void ViewManager::activateView(TerminalDisplay *view)
 {
     Q_ASSERT(view != nullptr);
 
@@ -584,7 +594,7 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
     // create a new controller for the session, and ensure that this view manager
     // is notified when the view gains the focus
     auto controller = new SessionController(session, view, this);
-    connect(controller, &Konsole::SessionController::focused, this,
+    connect(controller, &Konsole::SessionController::viewFocused, this,
             &Konsole::ViewManager::controllerChanged);
     connect(session, &Konsole::Session::destroyed, controller,
             &Konsole::SessionController::deleteLater);
@@ -703,7 +713,7 @@ TabbedViewContainer *ViewManager::createContainer()
     connect(container, &Konsole::TabbedViewContainer::viewRemoved, this,
             &Konsole::ViewManager::viewDestroyed);
     connect(container, &Konsole::TabbedViewContainer::activeViewChanged, this,
-            &Konsole::ViewManager::viewActivated);
+            &Konsole::ViewManager::activateView);
 
     return container;
 }
@@ -755,7 +765,7 @@ ViewManager::NavigationMethod ViewManager::navigationMethod() const
 
 void ViewManager::containerViewsChanged(TabbedViewContainer *container)
 {
-    Q_UNUSED(container);
+    Q_UNUSED(container)
     // TODO: Verify that this is right.
     emit viewPropertiesChanged(viewProperties());
 }
@@ -826,7 +836,7 @@ void ViewManager::updateViewsForSession(Session *session)
     const Profile::Ptr profile = SessionManager::instance()->sessionProfile(session);
 
     const QList<TerminalDisplay *> sessionMapKeys = _sessionMap.keys(session);
-    foreach (TerminalDisplay *view, sessionMapKeys) {
+    for (TerminalDisplay *view : sessionMapKeys) {
         applyProfileToView(view, profile);
     }
 }
@@ -918,14 +928,14 @@ namespace {
 
 ViewSplitter *restoreSessionsSplitterRecurse(const QJsonObject& jsonSplitter, ViewManager *manager)
 {
-    auto splitterWidgets = jsonSplitter[QStringLiteral("Widgets")].toArray();
-    auto orientation = (jsonSplitter[QStringLiteral("Orientation")].toString() == QLatin1String("Horizontal"))
+    const QJsonArray splitterWidgets = jsonSplitter[QStringLiteral("Widgets")].toArray();
+    auto orientation = (jsonSplitter[QStringLiteral("Orientation")].toString() == QStringLiteral("Horizontal"))
         ? Qt::Horizontal : Qt::Vertical;
 
     auto *currentSplitter = new ViewSplitter();
     currentSplitter->setOrientation(orientation);
 
-    for (const auto& widgetJsonValue : splitterWidgets) {
+    for (const auto widgetJsonValue : splitterWidgets) {
         const auto widgetJsonObject = widgetJsonValue.toObject();
         const auto sessionIterator = widgetJsonObject.constFind(QStringLiteral("SessionRestoreId"));
 
@@ -960,7 +970,8 @@ void ViewManager::restoreSessions(const KConfigGroup &group)
     TerminalDisplay *display = nullptr;
 
     int tab = 1;
-    foreach (int id, ids) {
+    for (auto it = ids.cbegin(); it != ids.cend(); ++it) {
+        const int &id = *it;
         Session *session = SessionManager::instance()->idToSession(id);
 
         if (session == nullptr) {
@@ -1018,7 +1029,7 @@ QStringList ViewManager::sessionList()
 
 int ViewManager::currentSession()
 {
-    if (_pluggedController) {
+    if (_pluggedController != nullptr) {
         Q_ASSERT(_pluggedController->session() != nullptr);
         return _pluggedController->session()->sessionId();
     }
@@ -1074,6 +1085,16 @@ int ViewManager::newSession(const QString &profile, const QString &directory)
 QString ViewManager::defaultProfile()
 {
     return ProfileManager::instance()->defaultProfile()->name();
+}
+
+void ViewManager::setDefaultProfile(const QString &profileName)
+{
+    const QList<Profile::Ptr> profiles = ProfileManager::instance()->allProfiles();
+    for (const Profile::Ptr &profile : profiles) {
+        if (profile->name() == profileName) {
+            ProfileManager::instance()->setDefaultProfile(profile);
+        }
+    }
 }
 
 QStringList ViewManager::profileList()

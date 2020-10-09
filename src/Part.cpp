@@ -72,7 +72,8 @@ Part::Part(QWidget *parentWidget, QObject *parent, const QVariantList &) :
 
     setWidget(_viewManager->widget());
     actionCollection()->addAssociatedWidget(_viewManager->widget());
-    foreach (QAction *action, actionCollection()->actions()) {
+    const QList<QAction *> actionsList = actionCollection()->actions();
+    for (QAction *action : actionsList) {
         action->setShortcutContext(Qt::WidgetWithChildrenShortcut);
     }
 
@@ -110,9 +111,8 @@ Session *Part::activeSession() const
         Q_ASSERT(_viewManager->activeViewController()->session());
 
         return _viewManager->activeViewController()->session();
-    } else {
-        return nullptr;
-    }
+    } 
+    return nullptr;
 }
 
 void Part::startProgram(const QString &program, const QStringList &arguments)
@@ -132,11 +132,11 @@ void Part::startProgram(const QString &program, const QStringList &arguments)
     activeSession()->run();
 }
 
-void Part::openTeletype(int ptyMasterFd)
+void Part::openTeletype(int ptyMasterFd, bool runShell)
 {
     Q_ASSERT(activeSession());
 
-    activeSession()->openTeletype(ptyMasterFd);
+    activeSession()->openTeletype(ptyMasterFd, runShell);
 }
 
 void Part::showShellInDir(const QString &dir)
@@ -175,9 +175,8 @@ int Part::foregroundProcessId()
 
     if (activeSession()->isForegroundProcessActive()) {
         return activeSession()->foregroundProcessId();
-    } else {
-        return -1;
-    }
+    } 
+    return -1;
 }
 
 QString Part::foregroundProcessName()
@@ -186,9 +185,8 @@ QString Part::foregroundProcessName()
 
     if (activeSession()->isForegroundProcessActive()) {
         return activeSession()->foregroundProcessName();
-    } else {
-        return QString();
-    }
+    } 
+    return QString();
 }
 
 QString Part::currentWorkingDirectory() const
@@ -392,13 +390,15 @@ void Part::setMonitorSilenceEnabled(bool enabled)
 
     if (enabled) {
         activeSession()->setMonitorSilence(true);
-        connect(activeSession(), &Konsole::Session::stateChanged,
-                this, &Konsole::Part::sessionStateChanged,
+        connect(activeSession(), &Konsole::Session::notificationsChanged,
+                this, &Konsole::Part::notificationChanged,
                 Qt::UniqueConnection);
     } else {
         activeSession()->setMonitorSilence(false);
-        disconnect(activeSession(), &Konsole::Session::stateChanged,
-                   this, &Konsole::Part::sessionStateChanged);
+        if (!activeSession()->isMonitorActivity()) {
+            disconnect(activeSession(), &Konsole::Session::notificationsChanged,
+                       this, &Konsole::Part::notificationChanged);
+        }
     }
 }
 
@@ -408,14 +408,16 @@ void Part::setMonitorActivityEnabled(bool enabled)
 
     if (enabled) {
         activeSession()->setMonitorActivity(true);
-        connect(activeSession(), &Konsole::Session::stateChanged,
-                this, &Konsole::Part::sessionStateChanged,
+        connect(activeSession(), &Konsole::Session::notificationsChanged,
+                this, &Konsole::Part::notificationChanged,
                 Qt::UniqueConnection);
     } else {
         activeSession()->setMonitorActivity(false);
-        disconnect(activeSession(), &Konsole::Session::stateChanged,
-                   this,
-                   &Konsole::Part::sessionStateChanged);
+        if (!activeSession()->isMonitorSilence()) {
+            disconnect(activeSession(), &Konsole::Session::notificationsChanged,
+                       this,
+                       &Konsole::Part::notificationChanged);
+        }
     }
 }
 
@@ -424,11 +426,11 @@ bool Part::isBlurEnabled()
     return ViewManager::profileHasBlurEnabled(SessionManager::instance()->sessionProfile(activeSession()));
 }
 
-void Part::sessionStateChanged(int state)
+void Part::notificationChanged(Session::Notification notification, bool enabled)
 {
-    if (state == NOTIFYSILENCE) {
+    if (notification == Session::Notification::Silence && enabled) {
         emit silenceDetected();
-    } else if (state == NOTIFYACTIVITY) {
+    } else if (notification == Session::Notification::Activity && enabled) {
         emit activityDetected();
     }
 }

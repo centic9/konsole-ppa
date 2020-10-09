@@ -28,6 +28,8 @@
 #include "../Profile.h"
 #include "../ProfileWriter.h"
 
+#include <array>
+
 using namespace Konsole;
 
 void ProfileTest::testProfile()
@@ -43,9 +45,11 @@ void ProfileTest::testProfile()
     parent->setProperty(Profile::UseCustomCursorColor, true);
     QVERIFY(parent->useCustomCursorColor());
     QCOMPARE(parent->customCursorColor(), QColor());
+    QCOMPARE(parent->customCursorTextColor(), QColor());
     parent->setProperty(Profile::UseCustomCursorColor, false);
     QVERIFY(!parent->useCustomCursorColor());
     QCOMPARE(parent->customCursorColor(), QColor());
+    QCOMPARE(parent->customCursorTextColor(), QColor());
 
     // create a child profile
     Profile *child = new Profile(Profile::Ptr(parent));
@@ -130,7 +134,7 @@ void ProfileTest::testClone()
 void ProfileTest::testProfileGroup()
 {
     // create three new profiles
-    Profile::Ptr profile[3];
+    std::array<Profile::Ptr, 3> profile;
     for (auto &i : profile) {
         i = new Profile;
         QVERIFY(!i->asGroup());

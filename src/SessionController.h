@@ -34,6 +34,7 @@
 #include "ViewProperties.h"
 #include "Profile.h"
 #include "Enumeration.h"
+#include "Session.h"
 
 class QAction;
 class QTextCodec;
@@ -92,7 +93,7 @@ public:
      * Constructs a new SessionController which operates on @p session and @p view.
      */
     SessionController(Session *session, TerminalDisplay *view, QObject *parent);
-    ~SessionController() Q_DECL_OVERRIDE;
+    ~SessionController() override;
 
     /** Returns the session associated with this controller */
     QPointer<Session> session()
@@ -135,14 +136,11 @@ public:
     EditProfileDialog *profileDialogPointer();
 
     // reimplemented
-    QUrl url() const Q_DECL_OVERRIDE;
-    QString currentDir() const Q_DECL_OVERRIDE;
-    void rename() Q_DECL_OVERRIDE;
-    bool confirmClose() const Q_DECL_OVERRIDE;
+    QUrl url() const override;
+    QString currentDir() const override;
+    void rename() override;
+    bool confirmClose() const override;
     virtual bool confirmForceClose() const;
-
-    // Reimplemented to watch for events happening to the view
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
     /** Returns the set of all controllers that exist. */
     static QSet<SessionController *> allControllers()
@@ -153,6 +151,7 @@ public:
     /* Returns true if called within a KPart; false if called within Konsole. */
     bool isKonsolePart() const;
     bool isReadOnly() const;
+    bool isCopyInputActive() const;
 
 Q_SIGNALS:
     /**
@@ -160,7 +159,7 @@ Q_SIGNALS:
      * This can be used by other classes to plug the controller's actions into a window's
      * menus.
      */
-    void focused(SessionController *controller);
+    void viewFocused(SessionController *controller);
 
     void rawTitleChanged();
 
@@ -174,6 +173,11 @@ Q_SIGNALS:
      * Emitted when the user changes the tab title.
      */
     void tabRenamedByUser(bool renamed) const;
+
+    /**
+     * Emitted when the user changes the tab color.
+     */
+    void tabColoredByUser(bool set) const;
 
 public Q_SLOTS:
     /**
@@ -243,21 +247,23 @@ private Q_SLOTS:
     void clearHistoryAndReset();
     void monitorActivity(bool monitor);
     void monitorSilence(bool monitor);
+    void monitorProcessFinish(bool monitor);
     void renameSession();
     void switchProfile(const Profile::Ptr &profile);
     void handleWebShortcutAction();
     void configureWebShortcuts();
     void sendSignal(QAction *action);
+    void sendForegroundColor();
     void sendBackgroundColor();
     void toggleReadOnly();
 
     // other
     void setupSearchBar();
     void prepareSwitchProfileMenu();
-    void updateCodecAction();
+    void updateCodecAction(QTextCodec *codec);
     void showDisplayContextMenu(const QPoint &position);
     void movementKeyFromSearchBarReceived(QKeyEvent *event);
-    void sessionStateChanged(int state);
+    void sessionNotificationsChanged(Session::Notification notification, bool enabled);
     void sessionAttributeChanged();
     void sessionReadOnlyChanged();
     void searchTextChanged(const QString &text);
@@ -265,6 +271,7 @@ private Q_SLOTS:
 
     void updateFilterList(Profile::Ptr profile); // Called when the profile has changed, so we might need to change the list of filters
 
+    void viewFocusChangeHandler(bool focused);
     void interactionHandler();
     void snapshot(); // called periodically as the user types
     // to take a snapshot of the state of the
@@ -314,7 +321,6 @@ private:
 
     QIcon _sessionIcon;
     QString _sessionIconName;
-    int _previousState;
 
     RegExpFilter *_searchFilter;
     UrlFilter *_urlFilter;
@@ -339,8 +345,6 @@ private:
     bool _listenForScreenWindowUpdates;
     bool _preventClose;
 
-    bool _keepIconUntilInteraction;
-
     QString _selectedText;
 
     QAction *_showMenuAction;
@@ -355,6 +359,9 @@ private:
 
     QString _searchText;
     QPointer<IncrementalSearchBar> _searchBar;
+
+    QString _previousForegroundProcessName;
+    bool _monitorProcessFinish;
 };
 inline bool SessionController::isValid() const
 {

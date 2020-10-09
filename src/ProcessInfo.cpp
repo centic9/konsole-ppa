@@ -131,7 +131,13 @@ QSet<QString> ProcessInfo::commonDirNames()
     if (forTheFirstTime) {
         const KSharedConfigPtr &config = KSharedConfig::openConfig();
         const KConfigGroup &configGroup = config->group("ProcessInfo");
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+        // Need to make a local copy so the begin() and end() point to the same QList
+        const QStringList commonDirsList = configGroup.readEntry("CommonDirNames", QStringList());
+        _commonDirNames = QSet<QString>(commonDirsList.begin(), commonDirsList.end());
+#else
         _commonDirNames = QSet<QString>::fromList(configGroup.readEntry("CommonDirNames", QStringList()));
+#endif
 
         forTheFirstTime = false;
     }
@@ -141,7 +147,7 @@ QSet<QString> ProcessInfo::commonDirNames()
 
 QString ProcessInfo::formatShortDir(const QString &input) const
 {
-    if(input == QLatin1String("/")) {
+    if(input == QStringLiteral("/")) {
         return QStringLiteral("/");
     }
 
@@ -422,13 +428,13 @@ void UnixProcessInfo::readUserName()
 class LinuxProcessInfo : public UnixProcessInfo
 {
 public:
-    LinuxProcessInfo(int pid) :
+    explicit LinuxProcessInfo(int pid) :
         UnixProcessInfo(pid)
     {
     }
 
 protected:
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE
+    bool readCurrentDir(int pid) override
     {
         char path_buffer[MAXPATHLEN + 1];
         path_buffer[MAXPATHLEN] = 0;
@@ -447,7 +453,7 @@ protected:
     }
 
 private:
-    bool readProcInfo(int pid) Q_DECL_OVERRIDE
+    bool readProcInfo(int pid) override
     {
         // indicies of various fields within the process status file which
         // contain various information about the process
@@ -475,7 +481,11 @@ private:
                 }
             } while (!statusLine.isNull() && uidLine.isNull());
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+            uidStrings << uidLine.split(QLatin1Char('\t'), Qt::SkipEmptyParts);
+#else
             uidStrings << uidLine.split(QLatin1Char('\t'), QString::SkipEmptyParts);
+#endif
             // Must be 5 entries: 'Uid: %d %d %d %d' and
             // uid string must be less than 5 chars (uint)
             if (uidStrings.size() == 5) {
@@ -569,7 +579,7 @@ private:
         return ok;
     }
 
-    bool readArguments(int pid) Q_DECL_OVERRIDE
+    bool readArguments(int pid) override
     {
         // read command-line arguments file found at /proc/<pid>/cmdline
         // the expected format is a list of strings delimited by null characters,
@@ -582,7 +592,7 @@ private:
 
             const QStringList &argList = data.split(QLatin1Char('\0'));
 
-            foreach (const QString &entry, argList) {
+            for (const QString &entry : argList) {
                 if (!entry.isEmpty()) {
                     addArgument(entry);
                 }
@@ -599,13 +609,13 @@ private:
 class FreeBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    FreeBSDProcessInfo(int pid) :
+    explicit FreeBSDProcessInfo(int pid) :
         UnixProcessInfo(pid)
     {
     }
 
 protected:
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE
+    bool readCurrentDir(int pid) override
     {
 #if defined(HAVE_OS_DRAGONFLYBSD)
         char buf[PATH_MAX];
@@ -650,7 +660,7 @@ protected:
     }
 
 private:
-    bool readProcInfo(int pid) Q_DECL_OVERRIDE
+    bool readProcInfo(int pid) override
     {
         int managementInfoBase[4];
         size_t mibLength;
@@ -692,7 +702,7 @@ private:
         return true;
     }
 
-    bool readArguments(int pid) Q_DECL_OVERRIDE
+    bool readArguments(int pid) override
     {
         char args[ARG_MAX];
         int managementInfoBase[4];
@@ -709,8 +719,8 @@ private:
         }
 
         // len holds the length of the string
-        QString qargs = QString::fromLocal8Bit(args, len);
-        foreach (const QString &value, qargs.split(QLatin1Char('\u0000'))) {
+        const QStringList argurments = QString::fromLocal8Bit(args, len).split(QLatin1Char('\u0000'));
+        for (const QString &value : argurments) {
             if (!value.isEmpty()) {
                 addArgument(value);
             }
@@ -724,13 +734,13 @@ private:
 class OpenBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    OpenBSDProcessInfo(int pid) :
+    explicit OpenBSDProcessInfo(int pid) :
         UnixProcessInfo(pid)
     {
     }
 
 protected:
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE
+    bool readCurrentDir(int pid) override
     {
         char buf[PATH_MAX];
         int managementInfoBase[3];
@@ -751,7 +761,7 @@ protected:
     }
 
 private:
-    bool readProcInfo(int pid) Q_DECL_OVERRIDE
+    bool readProcInfo(int pid) override
     {
         int managementInfoBase[6];
         size_t mibLength;
@@ -821,7 +831,7 @@ private:
         return (char **)buf;
     }
 
-    bool readArguments(int pid) Q_DECL_OVERRIDE
+    bool readArguments(int pid) override
     {
         char **argv;
 
@@ -842,13 +852,13 @@ private:
 class MacProcessInfo : public UnixProcessInfo
 {
 public:
-    MacProcessInfo(int pid) :
+    explicit MacProcessInfo(int pid) :
         UnixProcessInfo(pid)
     {
     }
 
 protected:
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE
+    bool readCurrentDir(int pid) override
     {
         struct proc_vnodepathinfo vpi;
         const int nb = proc_pidinfo(pid, PROC_PIDVNODEPATHINFO, 0, &vpi, sizeof(vpi));
@@ -860,7 +870,7 @@ protected:
     }
 
 private:
-    bool readProcInfo(int pid) Q_DECL_OVERRIDE
+    bool readProcInfo(int pid) override
     {
         int managementInfoBase[4];
         size_t mibLength;
@@ -921,9 +931,9 @@ private:
         return true;
     }
 
-    bool readArguments(int pid) Q_DECL_OVERRIDE
+    bool readArguments(int pid) override
     {
-        Q_UNUSED(pid);
+        Q_UNUSED(pid)
         return false;
     }
 };
@@ -943,7 +953,7 @@ private:
 class SolarisProcessInfo : public UnixProcessInfo
 {
 public:
-    SolarisProcessInfo(int pid) :
+    explicit SolarisProcessInfo(int pid) :
         UnixProcessInfo(pid)
     {
     }
@@ -951,7 +961,7 @@ public:
 protected:
     // FIXME: This will have the same issues as BKO 251351; the Linux
     // version uses readlink.
-    bool readCurrentDir(int pid) Q_DECL_OVERRIDE
+    bool readCurrentDir(int pid) override
     {
         QFileInfo info(QString("/proc/%1/path/cwd").arg(pid));
         const bool readable = info.isReadable();
@@ -971,7 +981,7 @@ protected:
     }
 
 private:
-    bool readProcInfo(int pid) Q_DECL_OVERRIDE
+    bool readProcInfo(int pid) override
     {
         QFile psinfo(QString("/proc/%1/psinfo").arg(pid));
         if (psinfo.open(QIODevice::ReadOnly)) {
@@ -992,7 +1002,7 @@ private:
         return true;
     }
 
-    bool readArguments(int /*pid*/) Q_DECL_OVERRIDE
+    bool readArguments(int /*pid*/) override
     {
         // Handled in readProcInfo()
         return false;

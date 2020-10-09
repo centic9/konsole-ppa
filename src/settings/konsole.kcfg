@@ -40,6 +40,28 @@
       <default>false</default>
     </entry>
   </group>
+  <group name="ThumbnailsSettings">
+      <entry name="ThumbnailSize" type="Int">
+        <label>Thumbnail Width</label>
+        <tooltip>Sets the width of the thumbnail</tooltip>
+        <default>250</default>
+      </entry>
+     <entry name="ThumbnailShift" type="Bool">
+        <label>Use Shift to display a thumbnail</label>
+        <tooltip>Use Shift to display a thumbnail</tooltip>
+        <default>false</default>
+      </entry>
+     <entry name="ThumbnailAlt" type="Bool">
+        <label>Use Alt to display a thumbnail</label>
+        <tooltip>Use Alt to display a thumbnail</tooltip>
+        <default>false</default>
+      </entry>
+     <entry name="ThumbnailCtrl" type="Bool">
+        <label>Use Ctrl to display a thumbnail</label>
+        <tooltip>Use Ctrl to display a thumbnail</tooltip>
+        <default>false</default>
+      </entry>
+  </group>
   <group name="SearchSettings">
     <entry name="SearchCaseSensitive" type="Bool">
       <label>Search is case sensitive</label>
@@ -59,6 +81,26 @@
       <label>Search backwards</label>
       <tooltip>Sets whether search should start from the bottom</tooltip>
       <default>true</default>
+    </entry>
+  </group>
+  <group name="SplitView">
+    <entry name="SplitViewVisibility" type="Enum">
+      <label>Control the visibility of the whole tab bar</label>
+      <choices>
+        <choice name="AlwaysShowSplitHeader" />
+        <choice name="ShowSplitHeaderWhenNeeded" />
+        <choice name="AlwaysHideSplitHeader" />
+      </choices>
+      <default>ShowTabBarWhenNeeded</default>
+    </entry>
+    <entry name="SplitDragHandleSize" type="Enum">
+        <label>Control the size of the handle between panels</label>
+        <choices>
+            <choice name="SplitDragHandleSmall"/>
+            <choice name="SplitDragHandleMedium"/>
+            <choice name="SplitDragHandleLarge"/>
+        </choices>
+        <default>SplitDragHandleSmall</default>
     </entry>
   </group>
   <group name="TabBar">

@@ -41,7 +41,7 @@
 <holder>&Jonathan.Singer;</holder>
 </copyright>
 <copyright>
-    <year>2005</year><year>2008</year><year>2009</year><year>2010</year><year>2011</year><year>2014</year><year>2016</year><year>2017</year><year>2018</year>
+    <year>2005</year><year>2008</year><year>2009</year><year>2010</year><year>2011</year><year>2014</year><year>2016</year><year>2017</year><year>2018</year><year>2020</year>
 <holder>&Kurt.Hindenburg;</holder>
 </copyright>
 
@@ -52,8 +52,8 @@
 
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2019-06-16</date>
-<releaseinfo>Applications 19.08</releaseinfo>
+<date>2020-07-02</date>
+<releaseinfo>Applications 20.08</releaseinfo>
 
 <abstract><para>&konsole; is &kde;'s terminal emulator.</para></abstract>
 
@@ -576,10 +576,10 @@ signal</option></userinput>.</para></listitem>
 <term><menuchoice>
 <shortcut><keycombo
  action="simul">&Ctrl;&Alt;<keycap>S</keycap></keycombo></shortcut>
-<guimenu>Edit</guimenu><guimenuitem>Rename Tab...</guimenuitem></menuchoice></term>
+<guimenu>Edit</guimenu><guimenuitem>Configure Tab Settings...</guimenuitem></menuchoice></term>
 <listitem><para><action>Opens a dialog box allowing you to change
-the name of the current tab</action>
-(<link linkend="rename-tab-dialog">more info</link>)
+the name format, the remote tab title format and the color of the current tab</action>
+(<link linkend="configure-tab-settings-dialog">more info</link>)
 </para></listitem>
 </varlistentry>
 
@@ -762,6 +762,17 @@ activity</action>
 Upon any activity, an info icon will appear on the session's tab.
 The type of alerts can be changed through
 <menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure Notifications</guimenuitem><guimenuitem>Activity in monitored session</guimenuitem></menuchoice>.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<guimenu>View</guimenu><guimenuitem>Monitor for
+Process Finishing</guimenuitem></menuchoice></term>
+<listitem><para><action>Toggles the monitoring of the current tab for
+the process finishing</action>.
+</para><para>
+If checked, upon finishing the current process, &konsole; will show a notification <guilabel>The process '<replaceable>name of the process</replaceable>' has finished running in session '<replaceable>name of the session</replaceable>'</guilabel>.
 </para></listitem>
 </varlistentry>
 
@@ -968,14 +979,57 @@ Notifications...</guimenuitem></menuchoice></term>
 <term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
 &konsole;...</guimenuitem></menuchoice></term>
 <listitem><para><action>Opens the &konsole; settings editor</action></para>
-<para>This dialog has options influencing the appearance and behaviour of the
-<guilabel>Tab Bar</guilabel> and general options for the &konsole; window.
-</para></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+<para>
+    This dialog has options influencing the appearance and behaviour of the &konsole; window.
+</para>
+<itemizedlist>
+    <listitem>
+        <para>
+            The <guilabel>General</guilabel> page allows configuring the menubar visibility,
+            remembering the &konsole; window size, running all &konsole; windows in a single process,
+            enabling menu accelerators, showing window title on the titlebar, removing window titlebar and frame.
+            It is also possible to configure the search case sensitivity, usage of the regular expression,
+            highlighting all matches, and the search direction (<guilabel>Search backwards</guilabel> is the default).
+            The <guilabel>General</guilabel> page is also the place where you can <guibutton>Enable all "Don't Ask Again" messages</guibutton>
+            again if they were switched off before.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            The <guilabel>Profiles</guilabel> page is meant for creating and handling <link linkend="profiles">profiles</link>.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            Using the <guilabel>Tab Bar/Splitters</guilabel> page you can configure the visibility and
+            placement of tab bar, define tabs behavior and fine-tune the tab buttons options. It is possible to configure if you want to
+            <guilabel>Show 'New Tab' button</guilabel> and <guilabel>Expand individual tab widths to full window</guilabel>
+            or configure <guilabel>Use user-defined stylesheet</guilabel>. The <guilabel>Behavior</guilabel> tab can
+            be used to define the place for the new tabs (<guilabel>At the end</guilabel> or <guilabel>After current tab</guilabel>)
+            and closing of tabs with a &MMB; click.
+        </para>
+        <para>
+            It is also possible to configure visibility of the split headers (<guilabel>When needed</guilabel> (default), <guilabel>Always</guilabel>, or <guilabel>Never</guilabel>) and define the drag handle size for splits (<guilabel>Small</guilabel> (default), <guilabel>Medium</guilabel>, or <guilabel>Large</guilabel>) using the <guilabel>Splits</guilabel> tab of this configuration page.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            The <guilabel>Temporary Files</guilabel> page is used to define the <link linkend="scrollback">scrollback</link> file location.
+        </para>
+    </listitem>
+    <listitem>
+        <para>
+            The <guilabel>Thumbnails</guilabel> page can be used to define the thumbnail size and activation options
+            (you can choose the activation control key from &Shift;, &Alt;, and &Ctrl;).
+        </para>
+        <note>
+            <para>
+                To use the thumbnails feature showing image thumbnails in popups when hovering image items with the mouse pointer, you should enable file underlining for your current profile: <menuchoice><guimenu>Settings</guimenu><guimenuitem>Edit Current Profile...</guimenuitem><guimenuitem>Mouse</guimenuitem><guimenuitem>Miscellaneous</guimenuitem><guimenuitem>Underline files</guimenuitem></menuchoice>.
+            </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -984,7 +1038,7 @@ When the window title from current session is emtpy, fallback to using
 <sect2 id="help-menu">
 <title>Help Menu</title>
 <para>&konsole; has the some of the common &kde; <guimenu>Help</guimenu>
-menu items, for more information read the section about the <ulink url="help:/fundamentals/ui.html#menus-help">Help Menu</ulink>
+menu items, for more information read the section about the <ulink url="help:/fundamentals/menus.html#menus-help">Help Menu</ulink>
 of the &kde; Fundamentals.
 </para><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
 </sect2>
@@ -994,14 +1048,14 @@ of the &kde; Fundamentals.
 <sect1 id="console-dialogs">
 <title>&konsole; Dialogs</title>
 
-<sect2 id="rename-tab-dialog">
-<title>Rename Tab Dialog</title>
+<sect2 id="configure-tab-settings-dialog">
+<title>Configure Tab Settings Dialog</title>
 
-<para>The name of the current tab can be changed from this dialog.
+<para>The name format, the remote tab title format, and the color of the current tab can be changed from this dialog.
 The dialog can be displayed via the menu, the shortcut <keycombo
  action="simul">&Ctrl;&Alt;<keycap>S</keycap></keycombo> or by
 double-clicking on the tab in the tab bar.
-These changes can be made permanent by editing the current profile.
+These changes are temporary and can be made permanent by editing the current profile.
 </para>
 
 <para>
@@ -1509,7 +1563,7 @@ Space+Ctrl
 <listitem>
 <para>\xHH : where HH are two hex digits</para>
 <tip>
-<para>This can be used to send ASCII control characters, &eg; <quote>\x00</quote> which is the NUL character</para>
+<para>This can be used to send &ASCII; control characters, &eg; <quote>\x00</quote> which is the NUL character</para>
 </tip>
 </listitem>
 </itemizedlist>

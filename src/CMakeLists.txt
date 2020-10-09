@@ -85,6 +85,7 @@ set(konsoleprivate_SRCS ${sessionadaptors_SRCS}
                         ScreenWindow.cpp
                         ScrollState.cpp
                         Session.cpp
+                        SessionGroup.cpp
                         SessionController.cpp
                         SessionManager.cpp
                         SessionListModel.cpp
@@ -157,7 +158,8 @@ ki18n_wrap_ui(konsoleprivate_SRCS ColorSchemeEditor.ui
                                 settings/GeneralSettings.ui
                                 settings/PartInfo.ui
                                 settings/ProfileSettings.ui
-                                settings/TabBarSettings.ui)
+                                settings/TabBarSettings.ui
+                                settings/ThumbnailsSettings.ui)
 
 # add the resource files for the ui files
 qt5_add_resources( konsoleprivate_SRCS ../desktop/konsole.qrc)
@@ -181,7 +183,9 @@ set(konsole_KDEINIT_SRCS
    settings/TemporaryFilesSettings.cpp
    settings/GeneralSettings.cpp
    settings/ProfileSettings.cpp
-   settings/TabBarSettings.cpp)
+   settings/TabBarSettings.cpp
+   settings/ThumbnailsSettings.cpp
+)
 
 
 # Sets the icon on Windows and OSX
@@ -202,9 +206,9 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "Konsole"
         MACOSX_BUNDLE_DISPLAY_NAME "Konsole"
         MACOSX_BUNDLE_INFO_STRING "Konsole, the KDE terminal emulator"
-        MACOSX_BUNDLE_LONG_VERSION_STRING "Konsole ${KDE_APPLICATIONS_VERSION}"
-        MACOSX_BUNDLE_SHORT_VERSION_STRING "${KDE_APPLICATIONS_VERSION_MAJOR}.${KDE_APPLICATIONS_VERSION_MINOR}"
-        MACOSX_BUNDLE_BUNDLE_VERSION "${KDE_APPLICATIONS_VERSION}"
+        MACOSX_BUNDLE_LONG_VERSION_STRING "Konsole ${RELEASE_SERVICE_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${RELEASE_SERVICE_VERSION}"
         MACOSX_BUNDLE_COPYRIGHT "1997-2020 The Konsole Developers")
 endif()
 

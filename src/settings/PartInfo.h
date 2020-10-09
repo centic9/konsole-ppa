@@ -15,7 +15,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program. If not, see http://www.gnu.org/licenses/.
+  along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 #ifndef PARTINFO_H
@@ -30,7 +30,7 @@ class PartInfoSettings : public QWidget, private Ui::PartInfoSettings
 
 public:
     explicit PartInfoSettings(QWidget *parent = nullptr);
-    ~PartInfoSettings() Q_DECL_OVERRIDE;
+    ~PartInfoSettings() override;
 };
 }
 

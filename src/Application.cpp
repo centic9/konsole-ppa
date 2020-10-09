@@ -57,7 +57,7 @@ Application::Application(QSharedPointer<QCommandLineParser> parser,
 
 void Application::populateCommandLineParser(QCommandLineParser *parser)
 {
-    auto options = QVector<QCommandLineOption> {
+    const auto options = QVector<QCommandLineOption> {
         { { QStringLiteral("profile") },
             i18nc("@info:shell", "Name of profile to use for new Konsole instance"),
             QStringLiteral("name")
@@ -118,7 +118,7 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
             QStringLiteral("cmd")
         }
     };
-    foreach(const auto& option, options) {
+    for (const auto &option : options) {
         parser->addOption(option);
     }
 
@@ -141,7 +141,7 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
 
 QStringList Application::getCustomCommand(QStringList &args)
 {
-    int i = args.indexOf(QLatin1String("-e"));
+    int i = args.indexOf(QStringLiteral("-e"));
     QStringList customCommand;
     if ((0 < i) && (i < (args.size() - 1))) {
         // -e was specified with at least one extra argument
@@ -183,11 +183,12 @@ void Application::createWindow(const Profile::Ptr &profile, const QString &direc
 
 void Application::detachTerminals(ViewSplitter *splitter,const QHash<TerminalDisplay*, Session*>& sessionsMap)
 {
-    MainWindow *currentWindow = qobject_cast<MainWindow*>(sender());
+    auto *currentWindow = qobject_cast<MainWindow*>(sender());
     MainWindow *window = newMainWindow();
     ViewManager *manager = window->viewManager();
 
-    foreach(TerminalDisplay* terminal, splitter->findChildren<TerminalDisplay*>()) {
+    const QList<TerminalDisplay *> displays = splitter->findChildren<TerminalDisplay *>();
+    for (TerminalDisplay* terminal : displays) {
         manager->attachView(terminal, sessionsMap[terminal]);
     }
     manager->activeContainer()->addSplitter(splitter);
@@ -258,7 +259,9 @@ int Application::newInstance()
         if (createdNewMainWindow) {
             finalizeNewMainWindow(window);
         } else {
+            window->setWindowState(window->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
             window->show();
+            window->activateWindow();
         }
     }
 
@@ -302,7 +305,11 @@ bool Application::processTabsFromFileArgs(MainWindow *window)
         }
 
         QHash<QString, QString> lineTokens;
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+        QStringList lineParts = lineString.split(QStringLiteral(";;"), Qt::SkipEmptyParts);
+#else
         QStringList lineParts = lineString.split(QStringLiteral(";;"), QString::SkipEmptyParts);
+#endif
 
         for (int i = 0; i < lineParts.size(); ++i) {
             QString key = lineParts.at(i).section(QLatin1Char(':'), 0, 0).trimmed().toLower();
@@ -310,8 +317,8 @@ bool Application::processTabsFromFileArgs(MainWindow *window)
             lineTokens[key] = value;
         }
         // should contain at least one of 'command' and 'profile'
-        if (lineTokens.contains(QLatin1String("command"))
-            || lineTokens.contains(QLatin1String("profile"))) {
+        if (lineTokens.contains(QStringLiteral("command"))
+            || lineTokens.contains(QStringLiteral("profile"))) {
             createTabFromArgs(window, lineTokens);
             sessions++;
         } else {
@@ -335,6 +342,7 @@ void Application::createTabFromArgs(MainWindow *window, const QHash<QString, QSt
     const QString &command = tokens[QStringLiteral("command")];
     const QString &profile = tokens[QStringLiteral("profile")];
     const QString &workdir = tokens[QStringLiteral("workdir")];
+    const QColor &color = tokens[QStringLiteral("tabcolor")];
 
     Profile::Ptr baseProfile;
     if (!profile.isEmpty()) {
@@ -361,6 +369,12 @@ void Application::createTabFromArgs(MainWindow *window, const QHash<QString, QSt
     if (!title.isEmpty()) {
         newProfile->setProperty(Profile::LocalTabTitleFormat, title);
         newProfile->setProperty(Profile::RemoteTabTitleFormat, title);
+        shouldUseNewProfile = true;
+    }
+
+    // For tab color support
+    if (color.isValid()) {
+        newProfile->setProperty(Profile::TabColor, color);
         shouldUseNewProfile = true;
     }
 
@@ -472,9 +486,9 @@ bool Application::processHelpArgs()
 
 void Application::listAvailableProfiles()
 {
-    QStringList paths = ProfileManager::instance()->availableProfilePaths();
+    const QStringList paths = ProfileManager::instance()->availableProfilePaths();
 
-    foreach (const QString &path, paths) {
+    for (const QString &path : paths) {
         QFileInfo info(path);
         printf("%s\n", info.completeBaseName().toLocal8Bit().constData());
     }
@@ -485,7 +499,7 @@ void Application::listProfilePropertyInfo()
     Profile::Ptr tempProfile = ProfileManager::instance()->defaultProfile();
     const QStringList names = tempProfile->propertiesInfoList();
 
-    foreach (const QString &name, names) {
+    for (const QString &name : names) {
         printf("%s\n", name.toLocal8Bit().constData());
     }
 }
@@ -505,7 +519,7 @@ Profile::Ptr Application::processProfileChangeArgs(Profile::Ptr baseProfile)
 
     // temporary changes to profile options specified on the command line
     const QStringList profileProperties = m_parser->values(QStringLiteral("p"));
-    foreach (const QString &value, profileProperties) {
+    for (const QString &value : profileProperties) {
         ProfileCommandParser parser;
 
         QHashIterator<Profile::Property, QVariant> iter(parser.parse(value));
@@ -542,9 +556,8 @@ Profile::Ptr Application::processProfileChangeArgs(Profile::Ptr baseProfile)
 
     if (shouldUseNewProfile) {
         return newProfile;
-    } else {
-        return baseProfile;
     }
+    return baseProfile;
 }
 
 void Application::startBackgroundMode(MainWindow *window)

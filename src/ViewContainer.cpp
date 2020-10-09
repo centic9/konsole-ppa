@@ -93,12 +93,15 @@ TabbedViewContainer::TabbedViewContainer(ViewManager *connectedViewManager, QWid
         this, [this]{ emit newViewRequest(); });
     connect(this, &TabbedViewContainer::currentChanged, this, &TabbedViewContainer::currentTabChanged);
 
+    connect(this, &TabbedViewContainer::setColor, tabBarWidget, &DetachableTabBar::setColor);
+    connect(this, &TabbedViewContainer::removeColor, tabBarWidget, &DetachableTabBar::removeColor);
+
     // The context menu of tab bar
     _contextPopupMenu = new QMenu(tabBar());
     connect(_contextPopupMenu, &QMenu::aboutToHide, this, [this]() {
         // Remove the read-only action when the popup closes
         for (auto &action : _contextPopupMenu->actions()) {
-            if (action->objectName() == QLatin1String("view-readonly")) {
+            if (action->objectName() == QStringLiteral("view-readonly")) {
                 _contextPopupMenu->removeAction(action);
                 break;
             }
@@ -116,7 +119,7 @@ TabbedViewContainer::TabbedViewContainer(ViewManager *connectedViewManager, QWid
 
     auto editAction = _contextPopupMenu->addAction(
         QIcon::fromTheme(QStringLiteral("edit-rename")),
-        i18nc("@action:inmenu", "&Rename Tab..."), this,
+        i18nc("@action:inmenu", "&Current Tab Settings..."), this,
         [this]{ renameTab(_contextMenuTabIndex); }
     );
     editAction->setObjectName(QStringLiteral("edit-rename"));
@@ -163,7 +166,8 @@ void TabbedViewContainer::moveTabToWindow(int index, QWidget *window)
 
     QHash<TerminalDisplay*, Session*> sessionsMap = _connectedViewManager->forgetAll(splitter);
 
-    foreach(TerminalDisplay* terminal, splitter->findChildren<TerminalDisplay*>()) {
+    const QList<TerminalDisplay *> displays = splitter->findChildren<TerminalDisplay*>();
+    for (TerminalDisplay *terminal : displays) {
         manager->attachView(terminal, sessionsMap[terminal]);
     }
     auto container = manager->activeContainer();
@@ -265,9 +269,14 @@ void TabbedViewContainer::moveActiveView(MoveDirection direction)
 }
 
 void TabbedViewContainer::terminalDisplayDropped(TerminalDisplay *terminalDisplay) {
-    Session* terminalSession = terminalDisplay->sessionController()->session();
-    terminalDisplay->sessionController()->deleteLater();
-    connectedViewManager()->attachView(terminalDisplay, terminalSession);
+    if (terminalDisplay->sessionController()->parent() != connectedViewManager()) {
+        // Terminal from another window - recreate SessionController for current ViewManager
+        disconnectTerminalDisplay(terminalDisplay);
+        Session* terminalSession = terminalDisplay->sessionController()->session();
+        terminalDisplay->sessionController()->deleteLater();
+        connectedViewManager()->attachView(terminalDisplay, terminalSession);
+        connectTerminalDisplay(terminalDisplay);
+    }
 }
 
 QSize TabbedViewContainer::sizeHint() const
@@ -307,22 +316,19 @@ QSize TabbedViewContainer::sizeHint() const
 }
 
 void TabbedViewContainer::addSplitter(ViewSplitter *viewSplitter, int index) {
-    if (index == -1) {
-       index = addTab(viewSplitter, QString());
-    } else {
-        insertTab(index, viewSplitter, QString());
-    }
+    index = insertTab(index, viewSplitter, QString());
     connect(viewSplitter, &ViewSplitter::destroyed, this, &TabbedViewContainer::viewDestroyed);
 
     disconnect(viewSplitter, &ViewSplitter::terminalDisplayDropped, nullptr, nullptr);
     connect(viewSplitter, &ViewSplitter::terminalDisplayDropped, this, &TabbedViewContainer::terminalDisplayDropped);
 
-    auto terminalDisplays = viewSplitter->findChildren<TerminalDisplay*>();
-    foreach(TerminalDisplay* terminal, terminalDisplays) {
+    const auto terminalDisplays = viewSplitter->findChildren<TerminalDisplay*>();
+    for (TerminalDisplay *terminal : terminalDisplays) {
         connectTerminalDisplay(terminal);
     }
     if (terminalDisplays.count() > 0) {
         updateTitle(qobject_cast<ViewProperties*>(terminalDisplays.at(0)->sessionController()));
+        updateColor(qobject_cast<ViewProperties*>(terminalDisplays.at(0)->sessionController()));
     }
     setCurrentIndex(index);
 }
@@ -333,11 +339,7 @@ void TabbedViewContainer::addView(TerminalDisplay *view)
     viewSplitter->addTerminalDisplay(view, Qt::Horizontal);
     auto item = view->sessionController();
     int index = _newTabBehavior == PutNewTabAfterCurrentTab ? currentIndex() + 1 : -1;
-    if (index == -1) {
-       index = addTab(viewSplitter, item->icon(), item->title());
-    } else {
-        insertTab(index, viewSplitter, item->icon(), item->title());
-    }
+    index = insertTab(index, viewSplitter, item->icon(), item->title());
 
     connectTerminalDisplay(view);
     connect(viewSplitter, &ViewSplitter::destroyed, this, &TabbedViewContainer::viewDestroyed);
@@ -357,33 +359,35 @@ void TabbedViewContainer::splitView(TerminalDisplay *view, Qt::Orientation orien
 void TabbedViewContainer::connectTerminalDisplay(TerminalDisplay *display)
 {
     auto item = display->sessionController();
-    connect(item, &Konsole::SessionController::focused, this,
-        &Konsole::TabbedViewContainer::currentSessionControllerChanged);
+    connect(item, &Konsole::SessionController::viewFocused, this,
+            &Konsole::TabbedViewContainer::currentSessionControllerChanged);
 
     connect(item, &Konsole::ViewProperties::titleChanged, this,
             &Konsole::TabbedViewContainer::updateTitle);
+
+    connect(item, &Konsole::ViewProperties::colorChanged, this,
+            &Konsole::TabbedViewContainer::updateColor);
 
     connect(item, &Konsole::ViewProperties::iconChanged, this,
             &Konsole::TabbedViewContainer::updateIcon);
 
     connect(item, &Konsole::ViewProperties::activity, this,
             &Konsole::TabbedViewContainer::updateActivity);
+
+    connect(item, &Konsole::ViewProperties::notificationChanged, this,
+            &Konsole::TabbedViewContainer::updateNotification);
+
+    connect(item, &Konsole::ViewProperties::readOnlyChanged, this,
+            &Konsole::TabbedViewContainer::updateSpecialState);
+
+    connect(item, &Konsole::ViewProperties::copyInputChanged, this,
+            &Konsole::TabbedViewContainer::updateSpecialState);
 }
 
 void TabbedViewContainer::disconnectTerminalDisplay(TerminalDisplay *display)
 {
     auto item = display->sessionController();
-    disconnect(item, &Konsole::SessionController::focused, this,
-        &Konsole::TabbedViewContainer::currentSessionControllerChanged);
-
-    disconnect(item, &Konsole::ViewProperties::titleChanged, this,
-            &Konsole::TabbedViewContainer::updateTitle);
-
-    disconnect(item, &Konsole::ViewProperties::iconChanged, this,
-            &Konsole::TabbedViewContainer::updateIcon);
-
-    disconnect(item, &Konsole::ViewProperties::activity, this,
-            &Konsole::TabbedViewContainer::updateActivity);
+    item->disconnect(this);
 }
 
 void TabbedViewContainer::viewDestroyed(QObject *view)
@@ -393,11 +397,12 @@ void TabbedViewContainer::viewDestroyed(QObject *view)
 
     removeTab(idx);
     forgetView(widget);
+    _tabIconState.remove(widget);
 }
 
 void TabbedViewContainer::forgetView(ViewSplitter *view)
 {
-    Q_UNUSED(view);
+    Q_UNUSED(view)
     if (count() == 0) {
         emit empty(this);
     }
@@ -470,36 +475,11 @@ void TabbedViewContainer::openTabContextMenu(const QPoint &point)
     //TODO: add a countChanged signal so we can remove this for.
     // Detaching in mac causes crashes.
     for(auto action : _contextPopupMenu->actions()) {
-        if (action->objectName() == QLatin1String("tab-detach")) {
+        if (action->objectName() == QStringLiteral("tab-detach")) {
             action->setEnabled(count() > 1);
         }
     }
 
-    /* This needs to nove away fro the tab or to lock every thing inside of it.
-     * for now, disable.
-     * */
-    //
-    // Add the read-only action
-#if 0
-    auto sessionController = terminalAt(_contextMenuTabIndex)->sessionController();
-
-    if (sessionController != nullptr) {
-        auto collection = sessionController->actionCollection();
-        auto readonlyAction = collection->action(QStringLiteral("view-readonly"));
-        if (readonlyAction != nullptr) {
-            const auto readonlyActions = _contextPopupMenu->actions();
-            _contextPopupMenu->insertAction(readonlyActions.last(), readonlyAction);
-        }
-
-        // Disable tab rename
-        for (auto &action : _contextPopupMenu->actions()) {
-            if (action->objectName() == QLatin1String("edit-rename")) {
-                action->setEnabled(!sessionController->isReadOnly());
-                break;
-            }
-        }
-    }
-#endif
     _contextPopupMenu->exec(tabBar()->mapToGlobal(point));
 }
 
@@ -510,6 +490,8 @@ void TabbedViewContainer::currentTabChanged(int index)
         auto view = splitview->activeTerminalDisplay();
         emit activeViewChanged(view);
         setTabActivity(index, false);
+        _tabIconState[splitview].notification = Session::NoNotification;
+        updateIcon(view->sessionController());
     } else {
         deleteLater();
     }
@@ -540,6 +522,78 @@ void TabbedViewContainer::setTabActivity(int index, bool activity)
     }
 }
 
+void TabbedViewContainer::updateTitle(ViewProperties *item)
+{
+    auto controller = qobject_cast<SessionController*>(item);
+    auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
+    if (controller->view() != topLevelSplitter->activeTerminalDisplay()) {
+        return;
+    }
+    const int index = indexOf(topLevelSplitter);
+    QString tabText = item->title();
+
+    setTabToolTip(index, tabText);
+
+    // To avoid having & replaced with _ (shortcut indicator)
+    tabText.replace(QLatin1Char('&'), QLatin1String("&&"));
+    setTabText(index, tabText);
+}
+
+void TabbedViewContainer::updateColor(ViewProperties *item)
+{
+    auto controller = qobject_cast<SessionController *>(item);
+    auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
+    const int index = indexOf(topLevelSplitter);
+
+    emit setColor(index, item->color());
+}
+
+void TabbedViewContainer::updateIcon(ViewProperties *item)
+{
+    auto controller = qobject_cast<SessionController *>(item);
+    auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
+    const int index = indexOf(topLevelSplitter);
+    const auto &state = _tabIconState[topLevelSplitter];
+
+    // Tab icon priority (from highest to lowest):
+    //
+    // 1. Latest Notification
+    //    - Inactive tab: Latest notification from any view in a tab. Removed
+    //      when tab is activated.
+    //    - Active tab: Latest notification from focused view. Removed when
+    //      focus changes or when the Session clears its notifications
+    // 2. Copy input or read-only indicator when all views in the tab have
+    //    the status
+    // 3. Active view icon
+
+    QIcon icon;
+    if (state.notification != Session::NoNotification) {
+        switch(state.notification) {
+        case Session::Bell:
+            icon = QIcon::fromTheme(QLatin1String("notifications"));
+            break;
+        case Session::Activity:
+            icon = QIcon::fromTheme(QLatin1String("dialog-information"));
+            break;
+        case Session::Silence:
+            icon = QIcon::fromTheme(QLatin1String("system-suspend"));
+            break;
+        default:
+            break;
+        }
+    } else if (state.broadcast) {
+        icon = QIcon::fromTheme(QLatin1String("irc-voice"));
+    } else if (state.readOnly) {
+        icon = QIcon::fromTheme(QLatin1String("object-locked"));
+    } else {
+        icon = item->icon();
+    }
+
+    if (tabIcon(index).name() != icon.name()) {
+        setTabIcon(index, icon);
+    }
+}
+
 void TabbedViewContainer::updateActivity(ViewProperties *item)
 {
     auto controller = qobject_cast<SessionController*>(item);
@@ -551,34 +605,61 @@ void TabbedViewContainer::updateActivity(ViewProperties *item)
     }
 }
 
-void TabbedViewContainer::currentSessionControllerChanged(SessionController *controller)
+void TabbedViewContainer::updateNotification(ViewProperties *item, Session::Notification notification, bool enabled)
 {
-    updateTitle(qobject_cast<ViewProperties*>(controller));
+    auto controller = qobject_cast<SessionController*>(item);
+    auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
+    const int index = indexOf(topLevelSplitter);
+    auto &state = _tabIconState[topLevelSplitter];
+
+    if (enabled && (index != currentIndex() || controller->view()->hasCompositeFocus())) {
+        state.notification = notification;
+        updateIcon(item);
+    } else if (!enabled && controller->view()->hasCompositeFocus()) {
+        state.notification = Session::NoNotification;
+        updateIcon(item);
+    }
 }
 
-void TabbedViewContainer::updateTitle(ViewProperties *item)
+void TabbedViewContainer::updateSpecialState(ViewProperties *item)
 {
     auto controller = qobject_cast<SessionController*>(item);
     auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
 
-    const int index = indexOf(topLevelSplitter);
-    QString tabText = item->title();
-
-    setTabToolTip(index, tabText);
-
-    // To avoid having & replaced with _ (shortcut indicator)
-    tabText.replace(QLatin1Char('&'), QLatin1String("&&"));
-    setTabText(index, tabText);
+    auto &state = _tabIconState[topLevelSplitter];
+    state.readOnly = true;
+    state.broadcast = true;
+    const auto displays = topLevelSplitter->findChildren<TerminalDisplay*>();
+    for (const auto display : displays) {
+        if (!display->sessionController()->isReadOnly()) {
+            state.readOnly = false;
+        }
+        if (!display->sessionController()->isCopyInputActive()) {
+            state.broadcast = false;
+        }
+    }
+    updateIcon(item);
 }
 
-void TabbedViewContainer::updateIcon(ViewProperties *item)
+void TabbedViewContainer::currentSessionControllerChanged(SessionController *controller)
 {
-    auto controller = qobject_cast<SessionController*>(item);
-    const int index = indexOf(controller->view());
-    setTabIcon(index, item->icon());
+    auto topLevelSplitter = qobject_cast<ViewSplitter*>(controller->view()->parentWidget())->getToplevelSplitter();
+    const int index = indexOf(topLevelSplitter);
+
+    if (index == currentIndex()) {
+        // Active view changed in current tab - clear notifications
+        auto &state = _tabIconState[topLevelSplitter];
+        state.notification = Session::NoNotification;
+    }
+
+    updateTitle(qobject_cast<ViewProperties*>(controller));
+    updateColor(qobject_cast<ViewProperties*>(controller));
+    updateActivity(qobject_cast<ViewProperties*>(controller));
+    updateSpecialState(qobject_cast<ViewProperties*>(controller));
 }
 
 void TabbedViewContainer::closeTerminalTab(int idx) {
+    emit removeColor(idx);
     //TODO: This for should probably go to the ViewSplitter
     for (auto terminal : viewSplitterAt(idx)->findChildren<TerminalDisplay*>()) {
         terminal->sessionController()->closeSession();

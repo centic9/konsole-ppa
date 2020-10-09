@@ -42,30 +42,6 @@ class ScreenWindow;
 class TerminalCharacterDecoder;
 
 /**
- * This enum describes the available states which
- * the terminal emulation may be set to.
- *
- * These are the values used by Emulation::stateChanged()
- */
-enum {
-    /** The emulation is currently receiving user input. */
-    NOTIFYNORMAL = 0,
-    /**
-     * The terminal program has triggered a bell event
-     * to get the user's attention.
-     */
-    NOTIFYBELL = 1,
-    /**
-     * The emulation is currently receiving data from its
-     * terminal input.
-     */
-    NOTIFYACTIVITY = 2,
-
-    // unused here?
-    NOTIFYSILENCE = 3
-};
-
-/**
  * Base class for terminal emulation back-ends.
  *
  * The back-end is responsible for decoding an incoming character stream and
@@ -121,7 +97,7 @@ class KONSOLEPRIVATE_EXPORT Emulation : public QObject
 public:
     /** Constructs a new terminal emulation */
     Emulation();
-    ~Emulation() Q_DECL_OVERRIDE;
+    ~Emulation() override;
 
     /**
      * Creates a new window onto the output from this emulation.  The contents
@@ -266,14 +242,9 @@ public Q_SLOTS:
     void receiveData(const char *text, int length);
 
     /**
-     * Sends information about the focus lost event to the terminal.
+     * Sends information about the focus event to the terminal.
      */
-    virtual void focusLost() = 0;
-
-    /**
-     * Sends information about the focus gained event to the terminal.
-     */
-    virtual void focusGained() = 0;
+    virtual void focusChanged(bool focused) = 0;
 
 Q_SIGNALS:
 
@@ -294,12 +265,9 @@ Q_SIGNALS:
     void useUtf8Request(bool);
 
     /**
-     * Emitted when the activity state of the emulation is set.
-     *
-     * @param state The new activity state, one of NOTIFYNORMAL, NOTIFYACTIVITY
-     * or NOTIFYBELL
+     * Emitted when bell appeared
      */
-    void stateSet(int state);
+    void bell();
 
     /**
      * Emitted when the special sequence indicating the request for data
@@ -323,7 +291,7 @@ Q_SIGNALS:
      * applications, ones that take up the whole terminal display), running in
      * the terminal indicates whether or not it is interested in Mouse Tracking
      * events. This is an XTerm extension, for more information have a look at:
-     * http://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Mouse-Tracking
+     * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Mouse-Tracking
      *
      * @param usesMouseTracking This will be true if the program is interested
      * in Mouse Tracking events or false otherwise.

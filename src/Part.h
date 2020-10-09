@@ -28,6 +28,7 @@
 #include <QVariantList>
 
 // Konsole
+#include "Session.h"
 #include "config-konsole.h"
 
 class QStringList;
@@ -58,7 +59,7 @@ class Part : public KParts::ReadOnlyPart, public TerminalInterface
 public:
     /** Constructs a new Konsole part with the specified parent. */
     explicit Part(QWidget *parentWidget, QObject *parent, const QVariantList &);
-    ~Part() Q_DECL_OVERRIDE;
+    ~Part() override;
 
     /** Reimplemented from TerminalInterface. */
     void startProgram(const QString &program, const QStringList &arguments) override;
@@ -134,8 +135,11 @@ public Q_SLOTS:
      * or showShellInDir()
      *
      * @param ptyMasterFd The file descriptor of the pseudo-teletype (pty) master
+     * @param runShell When true (default, legacy), runs the teletype in a shell
+     * session environment. When false, the session is not run, so that the
+     * KPtyProcess can be standalone, which may be useful for interactive programs.
      */
-    void openTeletype(int ptyMasterFd);
+    void openTeletype(int ptyMasterFd, bool runShell = true);
 
     /**
      * Toggles monitoring for silence in the active session. If silence is detected,
@@ -199,8 +203,8 @@ Q_SIGNALS:
 
 protected:
     /** Reimplemented from KParts::PartBase. */
-    bool openFile() Q_DECL_OVERRIDE;
-    bool openUrl(const QUrl &url) Q_DECL_OVERRIDE;
+    bool openFile() override;
+    bool openUrl(const QUrl &url) override;
 
 private Q_SLOTS:
     void activeViewChanged(SessionController *controller);
@@ -208,7 +212,7 @@ private Q_SLOTS:
     void terminalExited();
     void newTab();
     void overrideTerminalShortcut(QKeyEvent *, bool &override);
-    void sessionStateChanged(int state);
+    void notificationChanged(Session::Notification notification, bool enabled);
 private:
     Session *activeSession() const;
 

@@ -32,7 +32,6 @@
 #include <QProxyStyle>
 #include <QStandardPaths>
 #include <QDir>
-#include <memory>
 
 // KDE
 #include <KAboutData>
@@ -92,10 +91,8 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
     // Check if any of the arguments makes it impossible to re-use an existing process.
     // We need to do this manually and before creating a QApplication, because
     // QApplication takes/removes the Qt specific arguments that are incompatible.
-    KDBusService::StartupOption startupOption = KDBusService::Unique;
-    if (shouldUseNewProcess(argc, argv)) {
-        startupOption = KDBusService::Multiple;
-    } else {
+    const bool needNewProcess = shouldUseNewProcess(argc, argv);
+    if (!needNewProcess) { // We need to avoid crashing
         needToDeleteQApplication = true;
     }
 
@@ -108,8 +105,7 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
     qputenv("QT_NO_GLIB", "1");
 #endif
 
-    // Allocate QApplication on the heap for the KDBusService workaround
-    auto app = std::unique_ptr<QApplication>(new QApplication(argc, argv));
+    auto app = new QApplication(argc, argv);
     app->setStyle(new MenuStyle());
 
 #if defined(Q_OS_LINUX) && (QT_VERSION < QT_VERSION_CHECK(5, 11, 2))
@@ -151,8 +147,6 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
 
     QSharedPointer<QCommandLineParser> parser(new QCommandLineParser);
     parser->setApplicationDescription(about.shortDescription());
-    parser->addHelpOption();
-    parser->addVersionOption();
     about.setupCommandLine(parser.data());
 
     QStringList args = app->arguments();
@@ -163,11 +157,16 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
     parser->process(args);
     about.processCommandLine(parser.data());
 
-    // Enable user to force multiple instances, unless a new tab is requested
-    if (!Konsole::KonsoleSettings::useSingleInstance()
-        && !parser->isSet(QStringLiteral("new-tab"))) {
-        startupOption = KDBusService::Multiple;
-    }
+
+    /// ! DON'T TOUCH THIS ! ///
+    const KDBusService::StartupOption startupOption = Konsole::KonsoleSettings::useSingleInstance() && !needNewProcess ?
+        KDBusService::Unique :
+        KDBusService::Multiple;
+    /// ! DON'T TOUCH THIS ! ///
+    // If you need to change something here, add your logic _at the bottom_ of
+    // shouldUseNewProcess(), after reading the explanations there for why you
+    // probably shouldn't.
+
 
     atexit(deleteQApplication);
     // Ensure that we only launch a new instance if we need to
@@ -194,9 +193,8 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
             if (!targetDir.exists()) {
                 QDir().mkpath(targetBasePath);
             }
-            QStringList fileNames = sourceDir.entryList(
-                QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-            foreach (const QString &fileName, fileNames) {
+            const QStringList fileNames = sourceDir.entryList(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+            for (const QString &fileName : fileNames) {
                 targetFilePath = targetBasePath + fileName;
                 if (!QFile::exists(targetFilePath)) {
                     QFile::copy(sourceBasePath + fileName, targetFilePath);
@@ -222,11 +220,15 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
         // 2. An invalid situation occurred
         const bool continueStarting = (konsoleApp.newInstance() != 0);
         if (!continueStarting) {
+            delete app;
             return 0;
         }
     }
 
+    // Since we've allocated the QApplication on the heap for the KDBusService workaround,
+    // we need to delete it manually before returning from main().
     int ret = app->exec();
+    delete app;
     return ret;
 }
 
@@ -257,7 +259,7 @@ bool shouldUseNewProcess(int argc, char *argv[])
     qtProblematicOptions << QStringLiteral("--display")
                          << QStringLiteral("--visual");
 #endif
-    foreach (const QString &option, qtProblematicOptions) {
+    for (const QString &option : qAsConst(qtProblematicOptions)) {
         if (arguments.contains(option)) {
             return true;
         }
@@ -271,7 +273,7 @@ bool shouldUseNewProcess(int argc, char *argv[])
     kdeProblematicOptions << QStringLiteral("--waitforwm");
 #endif
 
-    foreach (const QString &option, kdeProblematicOptions) {
+    for (const QString &option : qAsConst(kdeProblematicOptions)) {
         if (arguments.contains(option)) {
             return true;
         }
@@ -280,13 +282,13 @@ bool shouldUseNewProcess(int argc, char *argv[])
     // if users have explictly requested starting a new process
     // Support --nofork to retain argument compatibility with older
     // versions.
-    if (arguments.contains(QLatin1String("--separate"))
-        || arguments.contains(QLatin1String("--nofork"))) {
+    if (arguments.contains(QStringLiteral("--separate"))
+        || arguments.contains(QStringLiteral("--nofork"))) {
         return true;
     }
 
     // the only way to create new tab is to reuse existing Konsole process.
-    if (arguments.contains(QLatin1String("--new-tab"))) {
+    if (arguments.contains(QStringLiteral("--new-tab"))) {
         return false;
     }
 

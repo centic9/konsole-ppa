@@ -15,7 +15,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program. If not, see http://www.gnu.org/licenses/.
+  along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 #ifndef TABBARSETTINGS_H
@@ -30,7 +30,7 @@ class TabBarSettings : public QWidget, private Ui::TabBarSettings
 
 public:
     explicit TabBarSettings(QWidget *parent = nullptr);
-    ~TabBarSettings() Q_DECL_OVERRIDE;
+    ~TabBarSettings() override;
 };
 }
 

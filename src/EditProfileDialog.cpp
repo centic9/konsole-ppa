@@ -307,7 +307,7 @@ bool EditProfileDialog::isValidProfileName()
     const QList<Profile::Ptr> existingProfiles = ProfileManager::instance()->allProfiles();
     QStringList otherExistingProfileNames;
 
-    foreach(auto existingProfile, existingProfiles) {
+    for (const Profile::Ptr &existingProfile : existingProfiles) {
         if (existingProfile->name() != _profile->name()) {
             otherExistingProfileNames.append(existingProfile->name());
         }
@@ -404,7 +404,7 @@ const QString EditProfileDialog::currentColorSchemeName() const
 
 void EditProfileDialog::preparePage(KPageWidgetItem *current, KPageWidgetItem *before)
 {
-    Q_UNUSED(before);
+    Q_UNUSED(before)
     Q_ASSERT(current);
     Q_ASSERT(_pages.contains(current));
 
@@ -452,8 +452,8 @@ void EditProfileDialog::setupGeneralPage(const Profile::Ptr &profile)
     _generalUi->startInSameDirButton->setChecked(profile->startInCurrentSessionDir());
 
     // initial terminal size
-    const auto colsSuffix = ki18ncp("Suffix of the number of columns (N columns)", " column", " columns");
-    const auto rowsSuffix = ki18ncp("Suffix of the number of rows (N rows)", " row", " rows");
+    const auto colsSuffix = ki18ncp("Suffix of the number of columns (N columns). The leading space is needed to separate it from the number value.", " column", " columns");
+    const auto rowsSuffix = ki18ncp("Suffix of the number of rows (N rows). The leading space is needed to separate it from the number value.", " row", " rows");
     _generalUi->terminalColumnsEntry->setValue(profile->terminalColumns());
     _generalUi->terminalRowsEntry->setValue(profile->terminalRows());
     _generalUi->terminalColumnsEntry->setSuffix(colsSuffix);
@@ -507,7 +507,7 @@ void EditProfileDialog::showEnvironmentEditor()
     QString text = QInputDialog::getMultiLineText(this,
                                                   i18n("Edit Environment"),
                                                   i18n("One environment variable per line"),
-                                                  currentEnvironment.join(QLatin1Char('\n')),
+                                                  currentEnvironment.join(QStringLiteral("\n")),
                                                   &ok);
 
     QStringList newEnvironment;
@@ -528,11 +528,14 @@ void EditProfileDialog::setupTabsPage(const Profile::Ptr &profile)
     // tab title format
     _tabsUi->renameTabWidget->setTabTitleText(profile->localTabTitleFormat());
     _tabsUi->renameTabWidget->setRemoteTabTitleText(profile->remoteTabTitleFormat());
+    _tabsUi->renameTabWidget->setColor(profile->tabColor());
 
     connect(_tabsUi->renameTabWidget, &Konsole::RenameTabWidget::tabTitleFormatChanged, this,
             &Konsole::EditProfileDialog::tabTitleFormatChanged);
     connect(_tabsUi->renameTabWidget, &Konsole::RenameTabWidget::remoteTabTitleFormatChanged, this,
             &Konsole::EditProfileDialog::remoteTabTitleFormatChanged);
+    connect(_tabsUi->renameTabWidget, &Konsole::RenameTabWidget::tabColorChanged, this,
+            &Konsole::EditProfileDialog::tabColorChanged);
 
     // tab monitoring
     const int silenceSeconds = profile->silenceSeconds();
@@ -575,6 +578,11 @@ void EditProfileDialog::tabTitleFormatChanged(const QString &format)
 void EditProfileDialog::remoteTabTitleFormatChanged(const QString &format)
 {
     updateTempProfileProperty(Profile::RemoteTabTitleFormat, format);
+}
+
+void EditProfileDialog::tabColorChanged(const QColor &color)
+{
+    updateTempProfileProperty(Profile::TabColor, color);
 }
 
 void EditProfileDialog::silenceSecondsChanged(int seconds)
@@ -722,16 +730,12 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
     }
 
     _appearanceUi->customColorSelectButton->setColor(profile->customCursorColor());
+    _appearanceUi->customTextColorSelectButton->setColor(profile->customCursorTextColor());
 
     connect(_appearanceUi->customCursorColorButton, &QRadioButton::clicked, this, &Konsole::EditProfileDialog::customCursorColor);
     connect(_appearanceUi->autoCursorColorButton, &QRadioButton::clicked, this, &Konsole::EditProfileDialog::autoCursorColor);
     connect(_appearanceUi->customColorSelectButton, &KColorButton::changed, this, &Konsole::EditProfileDialog::customCursorColorChanged);
-
-    // Make radio buttons height equal
-    int cursorColorRadioHeight = qMax(_appearanceUi->autoCursorColorButton->minimumSizeHint().height(),
-                                      _appearanceUi->customColorSelectButton->minimumSizeHint().height());
-    _appearanceUi->autoCursorColorButton->setMinimumHeight(cursorColorRadioHeight);
-    _appearanceUi->customCursorColorButton->setMinimumHeight(cursorColorRadioHeight);
+    connect(_appearanceUi->customTextColorSelectButton, &KColorButton::changed, this, &Konsole::EditProfileDialog::customCursorTextColorChanged);
 
     const ButtonGroupOptions cursorShapeOptions = {
         _appearanceUi->cursorShape, // group
@@ -822,6 +826,15 @@ void EditProfileDialog::customCursorColorChanged(const QColor &color)
     _appearanceUi->customCursorColorButton->click();
 }
 
+void EditProfileDialog::customCursorTextColorChanged(const QColor &color)
+{
+    preview(Profile::CustomCursorTextColor, color);
+    updateTempProfileProperty(Profile::CustomCursorTextColor, color);
+
+    // ensure that custom cursor colors are enabled
+    _appearanceUi->customCursorColorButton->click();
+}
+
 void EditProfileDialog::terminalMarginChanged(int margin)
 {
     preview(Profile::TerminalMargin, margin);
@@ -866,9 +879,9 @@ void EditProfileDialog::updateColorSchemeList(const QString &selectedColorScheme
 
     QStandardItem *selectedItem = nullptr;
 
-    QList<const ColorScheme *> schemeList = ColorSchemeManager::instance()->allColorSchemes();
+   const QList<const ColorScheme *> schemeList = ColorSchemeManager::instance()->allColorSchemes();
 
-    foreach (const ColorScheme *scheme, schemeList) {
+    for (const ColorScheme *scheme : schemeList) {
         QStandardItem *item = new QStandardItem(scheme->description());
         item->setData(QVariant::fromValue(scheme), Qt::UserRole + 1);
         item->setData(QVariant::fromValue(_profile->font()), Qt::UserRole + 2);
@@ -1325,7 +1338,8 @@ void EditProfileDialog::enableIfNonEmptySelection(QWidget *widget, QItemSelectio
 void EditProfileDialog::updateTransparencyWarning()
 {
     // zero or one indexes can be selected
-    foreach (const QModelIndex &index, _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes()) {
+    const QModelIndexList selected = _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes();
+    for (const QModelIndex &index : selected) {
         bool needTransparency = index.data(Qt::UserRole + 1).value<const ColorScheme *>()->opacity() < 1.0;
 
         if (!needTransparency) {
@@ -1525,8 +1539,11 @@ void EditProfileDialog::setupButtonGroup(const ButtonGroupOptions &options, cons
         activeButton = options.buttons[0].button;
     }
     activeButton->setChecked(true);
-
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
+    connect(options.group, QOverload<int>::of(&QButtonGroup::idClicked),
+#else
     connect(options.group, QOverload<int>::of(&QButtonGroup::buttonClicked),
+#endif
             this, [this, options](int value) {
         if (options.preview) {
             preview(options.profileProperty, value);
@@ -1570,6 +1587,12 @@ void EditProfileDialog::setupScrollingPage(const Profile::Ptr &profile)
 
     setupRadio(pageamounts, scrollFullPage);
 
+
+    const auto options = QVector<BooleanOption>{
+        {_scrollingUi->highlightScrolledLinesButton, Profile::HighlightScrolledLines, SLOT(toggleHighlightScrolledLines(bool))}
+    };
+    setupCheckBoxes(options, profile);
+
     // signals and slots
     connect(_scrollingUi->historySizeWidget, &Konsole::HistorySizeWidget::historySizeChanged, this,
             &Konsole::EditProfileDialog::historySizeChanged);
@@ -1593,6 +1616,11 @@ void EditProfileDialog::scrollFullPage()
 void EditProfileDialog::scrollHalfPage()
 {
     updateTempProfileProperty(Profile::ScrollFullPage, Enum::ScrollPageHalf);
+}
+
+void EditProfileDialog::toggleHighlightScrolledLines(bool enable)
+{
+    updateTempProfileProperty(Profile::HighlightScrolledLines, enable);
 }
 
 void EditProfileDialog::setupMousePage(const Profile::Ptr &profile)
@@ -1711,6 +1739,7 @@ void EditProfileDialog::setupAdvancedPage(const Profile::Ptr &profile)
 
     // encoding options
     auto codecAction = new KCodecAction(this);
+    codecAction->setCurrentCodec(profile->defaultEncoding());
     _advancedUi->selectEncodingButton->setMenu(codecAction->menu());
     connect(codecAction,
             QOverload<QTextCodec *>::of(&KCodecAction::triggered), this,

@@ -29,6 +29,7 @@
 // Konsole
 #include "Profile.h"
 #include "ViewManager.h"
+#include "Session.h"
 
 // Qt
 class QPoint;
@@ -68,20 +69,29 @@ public:
      * subclasses, use object->deleteLater() to delete any widgets or other objects
      * instead of 'delete object'.
      */
-    ~TabbedViewContainer() Q_DECL_OVERRIDE;
+    ~TabbedViewContainer() override;
 
     /** Adds a new view to the container widget */
     void addView(TerminalDisplay *view);
-    void addSplitter(ViewSplitter *splitter, int index = -1);
+    void addSplitter(ViewSplitter *viewSplitter, int index = -1);
 
     /** splits the currently focused Splitter */
     void splitView(TerminalDisplay *view, Qt::Orientation orientation);
 
     void setTabActivity(int index, bool activity);
 
+    /** Sets tab title to item title if the view is active */
     void updateTitle(ViewProperties *item);
+    /** Sets tab color to item color if the view is active */
+    void updateColor(ViewProperties *item);
+    /** Sets tab icon to item icon if the view is active */
     void updateIcon(ViewProperties *item);
+    /** Sets tab activity status if the tab is not active */
     void updateActivity(ViewProperties *item);
+    /** Sets tab notification */
+    void updateNotification(ViewProperties *item, Konsole::Session::Notification notification, bool enabled);
+    /** Sets tab special state (copy input or read-only) */
+    void updateSpecialState(ViewProperties *item);
 
     /** Changes the active view to the next view */
     void activateNextView();
@@ -141,8 +151,8 @@ public:
      */
     ViewSplitter *viewSplitterAt(int index);
 
-    void connectTerminalDisplay(TerminalDisplay *view);
-    void disconnectTerminalDisplay(TerminalDisplay *view);
+    void connectTerminalDisplay(TerminalDisplay *display);
+    void disconnectTerminalDisplay(TerminalDisplay *display);
     void moveTabLeft();
     void moveTabRight();
 
@@ -197,11 +207,17 @@ Q_SIGNALS:
     /** detach the specific tab */
     void detachTab(int tabIdx);
 
+    /** set the color tab */
+    void setColor(int index, const QColor &color);
+
+    /** remve the color tab */
+    void removeColor(int idx);
+
 protected:
     // close tabs and unregister
     void closeTerminalTab(int idx);
 
-    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
+    void keyReleaseEvent(QKeyEvent *event) override;
 private Q_SLOTS:
     void viewDestroyed(QObject *view);
     void konsoleConfigChanged();
@@ -209,6 +225,19 @@ private Q_SLOTS:
 private:
     void forgetView(ViewSplitter *view);
 
+    struct TabIconState {
+        TabIconState(): readOnly(false), broadcast(false), notification(Session::NoNotification) {}
+
+        bool readOnly;
+        bool broadcast;
+        Session::Notification notification;
+
+        bool isAnyStateActive() const {
+            return readOnly || broadcast || (notification != Session::NoNotification);
+        }
+    };
+
+    QHash<const QWidget *, TabIconState> _tabIconState;
     ViewManager *_connectedViewManager;
     QMenu *_contextPopupMenu;
     QToolButton *_newTabButton;
