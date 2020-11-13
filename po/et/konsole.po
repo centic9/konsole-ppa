@@ -5,19 +5,20 @@
 # Hasso Tepper <hasso@estpak.ee>, 2002,2003.
 # Marek Laane <bald@smail.ee>, 2003-2009.
 # Marek Laane <bald@smail.ee>, 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2019, 2020.
+# Mihkel Tõnnov <mihhkel@gmail.com>, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-09-07 08:25+0200\n"
-"PO-Revision-Date: 2020-06-13 19:46+0300\n"
-"Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
-"Language-Team: Estonian <kde-et@lists.linux.ee>\n"
+"POT-Creation-Date: 2020-10-29 08:37+0100\n"
+"PO-Revision-Date: 2020-10-11 02:17+0200\n"
+"Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
+"Language-Team: Estonian <>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 20.08.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #, kde-format
@@ -1051,30 +1052,24 @@ msgid "Edit Profile \"%1\""
 msgstr "Profiili \"%1\" muutmine"
 
 #: EditProfileDialog.cpp:455
-#, fuzzy, kde-format
-#| msgctxt "Suffix of the number of columns (N columns)"
-#| msgid " column"
-#| msgid_plural " columns"
+#, kde-format
 msgctxt ""
 "Suffix of the number of columns (N columns). The leading space is needed to "
 "separate it from the number value."
 msgid " column"
 msgid_plural " columns"
-msgstr[0] "veerg"
-msgstr[1] "veergu"
+msgstr[0] " veerg"
+msgstr[1] " veergu"
 
 #: EditProfileDialog.cpp:456
-#, fuzzy, kde-format
-#| msgctxt "Suffix of the number of rows (N rows)"
-#| msgid " row"
-#| msgid_plural " rows"
+#, kde-format
 msgctxt ""
 "Suffix of the number of rows (N rows). The leading space is needed to "
 "separate it from the number value."
 msgid " row"
 msgid_plural " rows"
-msgstr[0] "rida"
-msgstr[1] "rida"
+msgstr[0] " rida"
+msgstr[1] " rida"
 
 #: EditProfileDialog.cpp:508
 #, kde-format
@@ -1440,13 +1435,13 @@ msgstr "Failide allajoonimine"
 #: EditProfileMousePage.ui:318
 #, kde-format
 msgid "Selected text will require control key plus click to drag."
-msgstr "Valitud tekst nõuab lohistamiseks klahvi Ctrl ja klõpsu."
+msgstr "Valitud tekst nõuab lohistamiseks Ctrl-klahvi ja klõpsu."
 
 #. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
 #: EditProfileMousePage.ui:321
 #, kde-format
 msgid "Require Ctrl key for drag && drop"
-msgstr "Klahvi Ctrl nõudmine lohistamiseks"
+msgstr "Ctrl-klahvi nõudmine lohistamiseks"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
 #: EditProfileMousePage.ui:328
@@ -1571,13 +1566,13 @@ msgstr "Peidetud"
 #: EditProfileScrollingPage.ui:217
 #, kde-format
 msgid "Highlighting:"
-msgstr ""
+msgstr "Esiletõstmine:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, highlightScrolledLinesButton)
 #: EditProfileScrollingPage.ui:227
 #, kde-format
 msgid "Highlight the lines coming into view"
-msgstr ""
+msgstr "Vaatevälja tulevate ridade esiletõstmine"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
 #: EditProfileTabsPage.ui:43
@@ -1624,10 +1619,9 @@ msgid "Copy Email Address"
 msgstr "Kopeeri e-posti aadress"
 
 #: Filter.cpp:606
-#, fuzzy, kde-format
-#| msgid "Copy options:"
+#, kde-format
 msgid "Copy Location"
-msgstr "Kopeerimise valikud:"
+msgstr "Kopeeri asukoht"
 
 #: Filter.cpp:620 Filter.cpp:638
 #, kde-format
@@ -2258,32 +2252,31 @@ msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "Selles aknas on avatud %1 terminali. Kas tõesti soovid väljuda?"
 
-#: MainWindow.cpp:757
+#: MainWindow.cpp:761
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Üldine"
 
-#: MainWindow.cpp:762 Part.cpp:330
+#: MainWindow.cpp:766 Part.cpp:330
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profiilid"
 
-#: MainWindow.cpp:767
-#, fuzzy, kde-format
-#| msgid "Tab Bar Options"
+#: MainWindow.cpp:771
+#, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
-msgstr "Kaardiriba valikud"
+msgstr "Kaardiriba ja poolitamine"
 
-#: MainWindow.cpp:772
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "Ajutised failid"
 
-#: MainWindow.cpp:777
+#: MainWindow.cpp:781
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -2339,10 +2332,9 @@ msgid "Profile #%1"
 msgstr "Profiil #%1"
 
 #: RenameTabDialog.cpp:38
-#, fuzzy, kde-format
-#| msgid "Default character encoding:"
+#, kde-format
 msgid "Current Tab Settings"
-msgstr "Vaikimisi kodeering:"
+msgstr "Aktiivse kaardi seadistused"
 
 #: RenameTabWidget.cpp:47
 #, kde-format
@@ -2593,10 +2585,9 @@ msgid "Open File Manager"
 msgstr "Ava failihaldur"
 
 #: SessionController.cpp:617
-#, fuzzy, kde-format
-#| msgid "&Copy"
+#, kde-format
 msgid "Copy"
-msgstr "&Kopeeri"
+msgstr "Kopeeri"
 
 #: SessionController.cpp:634
 #, kde-format
@@ -2665,10 +2656,9 @@ msgid "Read-only"
 msgstr "Kirjutuskaitstud"
 
 #: SessionController.cpp:728
-#, fuzzy, kde-format
-#| msgid "Default character encoding:"
+#, kde-format
 msgid "&Current Tab Settings..."
-msgstr "Vaikimisi kodeering:"
+msgstr "&Aktiivse kaardi seadistused ..."
 
 #: SessionController.cpp:734
 #, kde-format
@@ -2815,12 +2805,12 @@ msgstr ""
 msgid "Print Shell"
 msgstr "Shelli trükkimine"
 
-#: SessionController.cpp:1840
+#: SessionController.cpp:1851
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "Salvesta Zmodemi allalaadimine..."
 
-#: SessionController.cpp:1850
+#: SessionController.cpp:1861
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2830,13 +2820,13 @@ msgstr ""
 "<p>Tuvastati Zmodemi failiedastuse katse, kuid süsteemis ei leitud kõlbuliku "
 "Zmodemi tarkvara.</p><p>Võiksid paigaldada paketi 'rzsz' või 'lrzsz'.</p>"
 
-#: SessionController.cpp:1861
+#: SessionController.cpp:1872
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr "<p>Praegusel seansil on juba käsil Zmodemi failiedastus.</p>"
 
-#: SessionController.cpp:1871
+#: SessionController.cpp:1882
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2845,7 +2835,7 @@ msgstr ""
 "<p>Süsteemist ei leitud kõlblikku Zmodemi tarkvara.</p><p>Võiksid paigaldada "
 "paketi 'rzsz' või 'lrzsz'.</p>"
 
-#: SessionController.cpp:1877
+#: SessionController.cpp:1888
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Failide valimine ZModemiga üleslaadimiseks"
@@ -3090,10 +3080,9 @@ msgstr "Kogu kaardiriba nähtavuse kontrollimine"
 
 #. i18n: ectx: label, entry (SplitDragHandleSize), group (SplitView)
 #: settings/konsole.kcfg:97
-#, fuzzy, kde-format
-#| msgid "Control the visibility of the whole tab bar"
+#, kde-format
 msgid "Control the size of the handle between panels"
-msgstr "Kogu kaardiriba nähtavuse kontrollimine"
+msgstr "Paneelide vahele jäetava pideme suuruse määramine"
 
 #. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
 #: settings/konsole.kcfg:117
@@ -3443,45 +3432,39 @@ msgstr "Kaardi sulgemine keskklõpsuga"
 
 #. i18n: ectx: attribute (title), widget (QWidget, splitTab)
 #: settings/TabBarSettings.ui:377
-#, fuzzy, kde-format
-#| msgid "Split View"
+#, kde-format
 msgid "Splits"
-msgstr "Vaate poolitamine"
+msgstr "Poolitatud vaade"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings/TabBarSettings.ui:383
-#, fuzzy, kde-format
-#| msgid "Show menubar"
+#, kde-format
 msgid "Show Header:"
-msgstr "Menüüriba näitamine"
+msgstr "Päise näitamine:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, ShowSplitHeaderWhenNeeded)
 #: settings/TabBarSettings.ui:390
-#, fuzzy, kde-format
-#| msgid "When needed"
+#, kde-format
 msgctxt "@option:radio When needed show the split header"
 msgid "When needed"
 msgstr "Kui vaja"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysHideSplitHeader)
 #: settings/TabBarSettings.ui:400
-#, fuzzy, kde-format
-#| msgid "&Never"
+#, kde-format
 msgctxt "@option:radio Never show the split header"
 msgid "Never"
-msgstr "&Mitte kunagi"
+msgstr "Mitte kunagi"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: settings/TabBarSettings.ui:426
 #, kde-format
 msgid "Drag Handle Size:"
-msgstr ""
+msgstr "Lohistuspideme suurus:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleSmall)
 #: settings/TabBarSettings.ui:436
-#, fuzzy, kde-format
-#| msgctxt "@item:inrange Minimum Size"
-#| msgid "Small"
+#, kde-format
 msgctxt "@option:radio Small height/width of splitter widget"
 msgid "Small"
 msgstr "Väike"
@@ -3491,24 +3474,21 @@ msgstr "Väike"
 #, kde-format
 msgctxt "@option:radio Medium height/width of splitter widget"
 msgid "Medium"
-msgstr ""
+msgstr "Keskmine"
 
 #. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleLarge)
 #: settings/TabBarSettings.ui:456
-#, fuzzy, kde-format
-#| msgctxt "@item:inrange Maximum Size"
-#| msgid "Large"
+#, kde-format
 msgctxt "@option:radio Large height/width of splitter widget"
 msgid "Large"
 msgstr "Suur"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysShowSplitHeader)
 #: settings/TabBarSettings.ui:479
-#, fuzzy, kde-format
-#| msgid "Alwa&ys"
+#, kde-format
 msgctxt "@option:radio Always show the split header"
 msgid "Always"
-msgstr "Ala&ti"
+msgstr "Alati"
 
 #: settings/TemporaryFilesSettings.cpp:49
 #, kde-format
@@ -3668,59 +3648,59 @@ msgstr "Suurus: XXX x XXX"
 msgid "Size: %1 x %2"
 msgstr "Suurus: %1 x %2"
 
-#: TerminalDisplay.cpp:3289
+#: TerminalDisplay.cpp:3297
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
 msgstr[0] "Kas tõesti asetada %1 märk?"
 msgstr[1] "Kas tõesti asetada %1 märki?"
 
-#: TerminalDisplay.cpp:3292
+#: TerminalDisplay.cpp:3300
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Asetamise kinnitus"
 
-#: TerminalDisplay.cpp:3324
+#: TerminalDisplay.cpp:3332
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr "Teksti lõpp/katkestus: võib lõpetada aktiivse protsessi töö"
 
-#: TerminalDisplay.cpp:3325
+#: TerminalDisplay.cpp:3333
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr "Ülekande lõpp: võib väljuda aktiivsest protsessist"
 
-#: TerminalDisplay.cpp:3326
+#: TerminalDisplay.cpp:3334
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "Kell: püüab anda kuuldava hoiatuse"
 
-#: TerminalDisplay.cpp:3327
+#: TerminalDisplay.cpp:3335
 #, kde-format
 msgid "Backspace"
 msgstr "Kustutusklahv (Backspace)"
 
-#: TerminalDisplay.cpp:3328
+#: TerminalDisplay.cpp:3336
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr "Seadme juhtimine kolm/XOFF: väljundi peatamine"
 
-#: TerminalDisplay.cpp:3329
+#: TerminalDisplay.cpp:3337
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr "Asendamine/peatamine: võib peatada aktiivse protsessi"
 
-#: TerminalDisplay.cpp:3330
+#: TerminalDisplay.cpp:3338
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr "Escape: kasutatakse terminali oleku manipuleerimiseks"
 
-#: TerminalDisplay.cpp:3331
+#: TerminalDisplay.cpp:3339
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr "Failieraldaja/Väljumine: võib lõpetada aktiivse protsessi töö"
 
-#: TerminalDisplay.cpp:3353
+#: TerminalDisplay.cpp:3361
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
@@ -3729,31 +3709,31 @@ msgstr ""
 "Tekst, mida üritad asetada, sisaldab peidetud juhtmärke. Kas filtreerida "
 "need välja?"
 
-#: TerminalDisplay.cpp:3356
+#: TerminalDisplay.cpp:3364
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Asetamise kinnitus"
 
-#: TerminalDisplay.cpp:3358
+#: TerminalDisplay.cpp:3366
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "Aseta &ilma juhtmärkideta"
 
-#: TerminalDisplay.cpp:3361
+#: TerminalDisplay.cpp:3369
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "&Aseta kõik"
 
-#: TerminalDisplay.cpp:3364
+#: TerminalDisplay.cpp:3372
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "Loo&bu"
 
-#: TerminalDisplay.cpp:3615
+#: TerminalDisplay.cpp:3623
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3764,17 +3744,17 @@ msgstr ""
 "\">peatatud</a> kiirklahviga Ctrl+S. Taasalustamiseks vajuta <b>Ctrl+Q</b>.</"
 "qt>"
 
-#: TerminalDisplay.cpp:3656
+#: TerminalDisplay.cpp:3664
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "See terminal on kirjutuskaitstud."
 
-#: TerminalDisplay.cpp:3965
+#: TerminalDisplay.cpp:3973
 #, kde-format
 msgid "Change &Directory To"
 msgstr "Muu&da kataloogiks"
 
-#: TerminalDisplay.cpp:3997
+#: TerminalDisplay.cpp:4005
 #, kde-format
 msgid "&Paste Location"
 msgstr "Aseta asuko&ht"
@@ -3785,7 +3765,7 @@ msgctxt "@info:tooltip"
 msgid "Maximize terminal"
 msgstr "Terminali maksimeerimine"
 
-#: TerminalHeaderBar.cpp:106 TerminalHeaderBar.cpp:107
+#: TerminalHeaderBar.cpp:106
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close terminal"
@@ -3798,11 +3778,10 @@ msgid "&Detach Tab"
 msgstr "&Haagi kaart lahti"
 
 #: ViewContainer.cpp:122
-#, fuzzy, kde-format
-#| msgid "Default character encoding:"
+#, kde-format
 msgctxt "@action:inmenu"
 msgid "&Current Tab Settings..."
-msgstr "Vaikimisi kodeering:"
+msgstr "&Aktiivse kaardi seadistused ..."
 
 #: ViewContainer.cpp:129
 #, kde-format
@@ -3945,8 +3924,32 @@ msgstr ""
 "Klaviatuuri tõlgendaja puudub. Infot, mida on vaja klahvivajutuste "
 "teisendamiseks terminali saadetavateks märkideks, ei ole."
 
-#~ msgid "Open File"
-#~ msgstr "Ava fail"
+#, fuzzy
+#~| msgctxt "Name of the default/builtin profile"
+#~| msgid "Default"
+#~ msgid " (Default)"
+#~ msgstr "Vaikimisi"
+
+#, fuzzy
+#~| msgid "&Rename Tab..."
+#~ msgid "&Configure or Rename Tab..."
+#~ msgstr "Nimeta kaa&rt ümber..."
+
+#, fuzzy
+#~| msgid "Initial terminal size:"
+#~ msgid "Inactive Terminals:"
+#~ msgstr "Terminali algsuurus:"
+
+#, fuzzy
+#~| msgid "Allow blinking text"
+#~ msgid "Allowed link formats"
+#~ msgstr "Vilkuva teksti lubamine"
+
+#, fuzzy
+#~| msgid "&Rename Tab..."
+#~ msgctxt "@action:inmenu"
+#~ msgid "&Configure or Rename Tab..."
+#~ msgstr "Nimeta kaa&rt ümber..."
 
 #~ msgctxt "@title Preferences page name"
 #~ msgid "Tab Bar"
@@ -3955,19 +3958,12 @@ msgstr ""
 #~ msgid "Rename Tab"
 #~ msgstr "Kaardi ümbernimetamine"
 
-#~ msgid "&Rename Tab..."
-#~ msgstr "Nimeta kaa&rt ümber..."
-
 #~ msgctxt "@action:inmenu"
 #~ msgid "&Rename Tab..."
 #~ msgstr "Nimeta kaa&rt ümber..."
 
-#, fuzzy
-#~| msgctxt "@info:tooltip"
-#~| msgid "Maximize terminal"
-#~ msgctxt "@action Shortcut entry"
-#~ msgid "Maximize current Terminal"
-#~ msgstr "Terminali maksimeerimine"
+#~ msgid "Open File"
+#~ msgstr "Ava fail"
 
 #~ msgid "^S Scroll lock: Locks terminal output"
 #~ msgstr "^S kerimislukk: terminali väljund lukustatakse"
@@ -5204,3 +5200,13 @@ msgstr ""
 
 #~ msgid "Paper, Light"
 #~ msgstr "Hele paber"
+
+#~ msgid "&Rename Tab..."
+#~ msgstr "Nimeta kaa&rt ümber..."
+
+#, fuzzy
+#~| msgctxt "@info:tooltip"
+#~| msgid "Maximize terminal"
+#~ msgctxt "@action Shortcut entry"
+#~ msgid "Maximize current Terminal"
+#~ msgstr "Terminali maksimeerimine"

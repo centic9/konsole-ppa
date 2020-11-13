@@ -104,7 +104,6 @@ TerminalHeaderBar::TerminalHeaderBar(QWidget *parent)
     m_closeBtn = new QToolButton(this);
     m_closeBtn->setIcon(QIcon::fromTheme(QStringLiteral("tab-close")));
     m_closeBtn->setToolTip(i18nc("@info:tooltip", "Close terminal"));
-    m_closeBtn->setText(i18nc("@info:tooltip", "Close terminal"));
     m_closeBtn->setObjectName(QStringLiteral("close-terminal-button"));
     m_closeBtn->setAutoRaise(true);
 
@@ -183,6 +182,13 @@ void TerminalHeaderBar::updateSpecialState(ViewProperties *item)
     if (controller != nullptr) {
         m_statusIconReadOnly->setVisible(controller->isReadOnly());
         m_statusIconCopyInput->setVisible(controller->isCopyInputActive());
+    }
+}
+
+void TerminalHeaderBar::setExpandedMode(bool expand)
+{
+    if (m_toggleExpandedMode->isChecked() != expand) {
+        m_toggleExpandedMode->setChecked(expand);
     }
 }
 

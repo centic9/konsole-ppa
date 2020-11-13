@@ -1,14 +1,18 @@
-konsole (4:20.08.2-0ubuntu1) groovy; urgency=medium
+konsole (4:20.08.3-1) unstable; urgency=medium
 
-  * New upstream release (20.08.2)
+  * Team upload.
+  * New upstream release (20.08.3).
+  * Drop lintian override for tag postinst-must-call-ldconfig that was removed
+    from lintian.
+  * Review copyright information.
+  * Drop l10n migration rules, not required anymore after 2 stable releases.
+  * Build with hardening=+all build hardening flag.
+  * Borrow minimal upstream signing key from k3b.
+  * Refresh upstream metadata.
+  * Override lintian error that konsole.debug doesn’t contain debug
+    information.
 
- -- Rik Mills <rikmills@kde.org>  Fri, 09 Oct 2020 18:40:04 +0100
-
-konsole (4:20.08.1-0ubuntu1) groovy; urgency=medium
-
-  * New upstream release (20.08.1)
-
- -- Rik Mills <rikmills@kde.org>  Thu, 03 Sep 2020 13:57:06 +0100
+ -- Aurélien COUDERC <coucouf@debian.org>  Fri, 13 Nov 2020 23:42:55 +0100
 
 konsole (4:20.08.0-1) unstable; urgency=medium
 

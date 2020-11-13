@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
-l10npkgs_firstversion_ok := 4:16.04.3-6~
-include /usr/share/pkg-kde-tools/qt-kde-team/2/l10n-packages.mk
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 %:
 	dh $@ --with kf5
@@ -13,5 +13,6 @@ override_dh_auto_test:
 	# Disable dh_auto_test at build time
 	:
 
-override_dh_gencontrol: l10npkgs_firstversion_ok
-	dh_gencontrol
+execute_before_dh_lintian:
+	mkdir -p debian/.debhelper/konsole/dbgsym-root/usr/share/lintian/overrides/
+	cp debian/konsole-dbgsym.lintian-overrides debian/.debhelper/konsole/dbgsym-root/usr/share/lintian/overrides/konsole-dbgsym
