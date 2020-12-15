@@ -114,6 +114,8 @@ const Profile::PropertyInfo Profile::DefaultPropertyNames[] = {
     , { CtrlRequiredForDrag, "CtrlRequiredForDrag" , INTERACTION_GROUP , QVariant::Bool }
     , { DropUrlsAsText , "DropUrlsAsText" , INTERACTION_GROUP , QVariant::Bool }
     , { AutoCopySelectedText , "AutoCopySelectedText" , INTERACTION_GROUP , QVariant::Bool }
+    , { CopyTextAsHTML , "CopyTextAsHTML" , INTERACTION_GROUP , QVariant::Bool }
+    , { TrimLeadingSpacesInSelectedText , "TrimLeadingSpacesInSelectedText" , INTERACTION_GROUP , QVariant::Bool }
     , { TrimTrailingSpacesInSelectedText , "TrimTrailingSpacesInSelectedText" , INTERACTION_GROUP , QVariant::Bool }
     , { PasteFromSelectionEnabled , "PasteFromSelectionEnabled" , INTERACTION_GROUP , QVariant::Bool }
     , { PasteFromClipboardEnabled , "PasteFromClipboardEnabled" , INTERACTION_GROUP , QVariant::Bool }
@@ -123,7 +125,7 @@ const Profile::PropertyInfo Profile::DefaultPropertyNames[] = {
     // Encoding
     , { DefaultEncoding , "DefaultEncoding" , ENCODING_GROUP , QVariant::String }
 
-    , { (Property)0 , nullptr , nullptr, QVariant::Invalid }
+    , { static_cast<Profile::Property>(0) , nullptr , nullptr, QVariant::Invalid }
 };
 
 QHash<QString, Profile::PropertyInfo> Profile::PropertyInfoByName;
@@ -133,8 +135,9 @@ void Profile::fillTableWithDefaultNames()
 {
     static bool filledDefaults = false;
 
-    if (filledDefaults)
+    if (filledDefaults) {
         return;
+    }
 
     const PropertyInfo* iter = DefaultPropertyNames;
     while (iter->name != nullptr) {
@@ -187,6 +190,8 @@ void Profile::useFallback()
     setProperty(OpenLinksByDirectClickEnabled, false);
     setProperty(CtrlRequiredForDrag, true);
     setProperty(AutoCopySelectedText, false);
+    setProperty(CopyTextAsHTML, true);
+    setProperty(TrimLeadingSpacesInSelectedText, false);
     setProperty(TrimTrailingSpacesInSelectedText, false);
     setProperty(DropUrlsAsText, false);
     setProperty(PasteFromSelectionEnabled, true);
@@ -266,13 +271,13 @@ QHash<Profile::Property, QVariant> Profile::setProperties() const
 {
     return _propertyValues;
 }
-void Profile::setProperty(Property property , const QVariant& value)
+void Profile::setProperty(Property p, const QVariant& value)
 {
-    _propertyValues.insert(property, value);
+    _propertyValues.insert(p, value);
 }
-bool Profile::isPropertySet(Property property) const
+bool Profile::isPropertySet(Property p) const
 {
-    return _propertyValues.contains(property);
+    return _propertyValues.contains(p);
 }
 
 Profile::Property Profile::lookupByName(const QString& name)
@@ -290,18 +295,19 @@ void Profile::registerProperty(const PropertyInfo& info)
 
     // only allow one property -> name map
     // (multiple name -> property mappings are allowed though)
-    if (!PropertyInfoByProperty.contains(info.property))
+    if (!PropertyInfoByProperty.contains(info.property)) {
         PropertyInfoByProperty.insert(info.property, info);
+    }
 }
 
 int Profile::menuIndexAsInt() const
 {
     bool ok;
     int index = menuIndex().toInt(&ok, 10);
-    if (ok)
+    if (ok) {
         return index;
-    else
-        return 0;
+    }
+    return 0;
 }
 
 const QStringList Profile::propertiesInfoList() const
@@ -358,9 +364,9 @@ void ProfileGroup::updateValues()
         QVariant value;
         for (int i = 0; i < _profiles.count(); i++) {
             QVariant profileValue = _profiles[i]->property<QVariant>(properties->property);
-            if (value.isNull())
+            if (value.isNull()) {
                 value = profileValue;
-            else if (value != profileValue) {
+            } else if (value != profileValue) {
                 value = QVariant();
                 break;
             }
@@ -369,14 +375,15 @@ void ProfileGroup::updateValues()
         properties++;
     }
 }
-void ProfileGroup::setProperty(Property property, const QVariant& value)
+void ProfileGroup::setProperty(Property p, const QVariant& value)
 {
-    if (_profiles.count() > 1 && !canInheritProperty(property))
+    if (_profiles.count() > 1 && !canInheritProperty(p)) {
         return;
+    }
 
-    Profile::setProperty(property, value);
+    Profile::setProperty(p, value);
     foreach(Profile::Ptr profile, _profiles) {
-        profile->setProperty(property, value);
+        profile->setProperty(p, value);
     }
 }
 

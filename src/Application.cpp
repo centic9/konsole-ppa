@@ -29,6 +29,7 @@
 
 // KDE
 #include <KActionCollection>
+#include <KGlobalAccel>
 #include <KLocalizedString>
 
 // Konsole
@@ -134,15 +135,13 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
     auto titleOption = QCommandLineOption(QStringList() << QStringLiteral("T"),
                                           QStringLiteral("Debian policy compatibility, not used"),
                                           QStringLiteral("value"));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
     titleOption.setHidden(true);
-#endif
     parser->addOption(titleOption);
 }
 
 QStringList Application::getCustomCommand(QStringList &args)
 {
-    int i = args.indexOf(QLatin1String("-e"));
+    int i = args.indexOf(QStringLiteral("-e"));
     QStringList customCommand;
     if ((0 < i) && (i < (args.size() - 1))) {
         // -e was specified with at least one extra argument
@@ -509,7 +508,8 @@ Profile::Ptr Application::processProfileChangeArgs(Profile::Ptr baseProfile)
     }
 
     // temporary changes to profile options specified on the command line
-    foreach (const QString &value, m_parser->values(QLatin1String("p"))) {
+    const QStringList profileProperties = m_parser->values(QStringLiteral("p"));
+    foreach (const QString &value, profileProperties) {
         ProfileCommandParser parser;
 
         QHashIterator<Profile::Property, QVariant> iter(parser.parse(value));
@@ -557,15 +557,13 @@ void Application::startBackgroundMode(MainWindow *window)
         return;
     }
 
-/* FIXME: This doesn't work ATM - leave in here so I dont' forget about it
     KActionCollection* collection = window->actionCollection();
-    QAction * action = collection->addAction("toggle-background-window");
-    action->setObjectName(QLatin1String("Konsole Background Mode"));
-    action->setText(i18n("Toggle Background Window"));
-    action->setGlobalShortcut(QKeySequence(Konsole::ACCEL + Qt::SHIFT + Qt::Key_F12)));
-
+    QAction* action = collection->addAction(QStringLiteral("toggle-background-window"));
+    action->setObjectName(QStringLiteral("Konsole Background Mode"));
+    action->setText(i18nc("@item", "Toggle Background Window"));
+    KGlobalAccel::self()->setGlobalShortcut(action, QKeySequence(Konsole::ACCEL + Qt::SHIFT + Qt::Key_F12));
     connect(action, &QAction::triggered, this, &Application::toggleBackgroundInstance);
-*/
+
     _backgroundInstance = window;
 }
 

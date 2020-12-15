@@ -37,6 +37,7 @@
 #include <KColorScheme>
 #include <KColorUtils>
 #include <KLocalizedString>
+#include <KActionCollection>
 #include <QMenu>
 
 // Konsole
@@ -46,6 +47,7 @@
 #include "ProfileList.h"
 #include "ViewManager.h"
 #include "KonsoleSettings.h"
+#include "SessionController.h"
 
 // TODO Perhaps move everything which is Konsole-specific into different files
 
@@ -167,9 +169,9 @@ void ViewContainer::addView(QWidget *view, ViewProperties *item, int index)
     emit viewAdded(view, item);
 }
 
-void ViewContainer::viewDestroyed(QObject *object)
+void ViewContainer::viewDestroyed(QObject *view)
 {
-    QWidget *widget = qobject_cast<QWidget *>(object);
+    QWidget *widget = qobject_cast<QWidget *>(view);
     forgetView(widget);
 }
 
@@ -256,11 +258,11 @@ void ViewContainer::activatePreviousView()
     setActiveView(_views.at(index));
 }
 
-ViewProperties *ViewContainer::viewProperties(QWidget *widget) const
+ViewProperties *ViewContainer::viewProperties(QWidget *view) const
 {
-    Q_ASSERT(_navigation.contains(widget));
+    Q_ASSERT(_navigation.contains(view));
 
-    return _navigation[widget];
+    return _navigation[view];
 }
 
 QList<QWidget *> ViewContainer::widgetsForItem(ViewProperties *item) const
@@ -300,6 +302,15 @@ TabbedViewContainer::TabbedViewContainer(NavigationPosition position,
 
     // The context menu of tab bar
     _contextPopupMenu = new QMenu(_tabBar);
+    connect(_contextPopupMenu, &QMenu::aboutToHide, this, [this]() {
+        // Remove the read-only action when the popup closes
+        for (auto &action : _contextPopupMenu->actions()) {
+            if (action->objectName() == QStringLiteral("view-readonly")) {
+                _contextPopupMenu->removeAction(action);
+                break;
+            }
+        }
+    });
 
 #if defined(ENABLE_DETACHING)
     _contextPopupMenu->addAction(QIcon::fromTheme(QStringLiteral("tab-detach")),
@@ -310,13 +321,13 @@ TabbedViewContainer::TabbedViewContainer(NavigationPosition position,
     _contextPopupMenu->addAction(QIcon::fromTheme(QStringLiteral("edit-rename")),
                                  i18nc("@action:inmenu", "&Rename Tab..."), this,
                                  SLOT(tabContextMenuRenameTab()));
+    _contextPopupMenu->actions().last()->setObjectName(QStringLiteral("edit-rename"));
 
     _contextPopupMenu->addSeparator();
 
     _contextPopupMenu->addAction(QIcon::fromTheme(QStringLiteral("tab-close")),
                                  i18nc("@action:inmenu", "&Close Tab"), this,
                                  SLOT(tabContextMenuCloseTab()));
-
     // The 'new tab' and 'close tab' button
     _newTabButton = new QToolButton(_containerWidget);
     _newTabButton->setFocusPolicy(Qt::NoFocus);
@@ -497,11 +508,11 @@ TabbedViewContainer::~TabbedViewContainer()
     }
 }
 
-void TabbedViewContainer::startTabDrag(int tab)
+void TabbedViewContainer::startTabDrag(int index)
 {
     QPointer<QDrag> drag = new QDrag(_tabBar);
-    const QRect tabRect = _tabBar->tabRect(tab);
-    QPixmap tabPixmap = _tabBar->dragDropPixmap(tab);
+    const QRect tabRect = _tabBar->tabRect(index);
+    QPixmap tabPixmap = _tabBar->dragDropPixmap(index);
 
     drag->setPixmap(tabPixmap);
 
@@ -512,8 +523,8 @@ void TabbedViewContainer::startTabDrag(int tab)
 
     drag->setHotSpot(mappedPos);
 
-    const int id = viewProperties(views()[tab])->identifier();
-    QWidget *view = views()[tab];
+    const int id = viewProperties(views()[index])->identifier();
+    QWidget *view = views()[index];
     drag->setMimeData(ViewProperties::createMimeData(id));
 
     // start dragging
@@ -599,13 +610,13 @@ void TabbedViewContainer::renameTab(int index)
     viewProperties(views()[index])->rename();
 }
 
-void TabbedViewContainer::openTabContextMenu(const QPoint &pos)
+void TabbedViewContainer::openTabContextMenu(const QPoint &point)
 {
-    if (pos.isNull()) {
+    if (point.isNull()) {
         return;
     }
 
-    _contextMenuTabIndex = _tabBar->tabAt(pos);
+    _contextMenuTabIndex = _tabBar->tabAt(point);
     if (_contextMenuTabIndex < 0) {
         return;
     }
@@ -617,7 +628,26 @@ void TabbedViewContainer::openTabContextMenu(const QPoint &pos)
     detachAction->setEnabled(_tabBar->count() > 1);
 #endif
 
-    _contextPopupMenu->exec(_tabBar->mapToGlobal(pos));
+    // Add the read-only action
+    SessionController *sessionController = qobject_cast<SessionController*>(viewProperties(views()[_contextMenuTabIndex]));
+    if (sessionController != nullptr) {
+        auto collection = sessionController->actionCollection();
+        auto readonlyAction = collection->action(QStringLiteral("view-readonly"));
+        if (readonlyAction != nullptr) {
+            const auto readonlyActions = _contextPopupMenu->actions();
+            _contextPopupMenu->insertAction(readonlyActions.last(), readonlyAction);
+        }
+
+        // Disable tab rename
+        for (auto *action : _contextPopupMenu->actions()) {
+            if (action->objectName() == QStringLiteral("edit-rename")) {
+                action->setEnabled(!sessionController->isReadOnly());
+                break;
+            }
+        }
+    }
+
+    _contextPopupMenu->exec(_tabBar->mapToGlobal(point));
 }
 
 void TabbedViewContainer::tabContextMenuCloseTab()

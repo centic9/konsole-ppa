@@ -57,7 +57,7 @@ public:
      * other sessions.  This session is displayed grayed out in the list
      * and cannot be unchecked.
      */
-    void setMasterSession(Session *master);
+    void setMasterSession(Session *session);
     /** See setMasterSession() */
     Session *masterSession() const;
 
@@ -78,6 +78,8 @@ private Q_SLOTS:
     }
 
 private:
+    Q_DISABLE_COPY(CopyInputDialog)
+
     // Checks or unchecks selected sessions.  If there are no
     // selected items then all sessions are checked or unchecked
     void setSelectionChecked(bool checked);

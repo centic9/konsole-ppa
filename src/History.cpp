@@ -112,6 +112,11 @@ HistoryFile::HistoryFile() :
     if (_tmpFile.open()) {
         _tmpFile.setAutoRemove(true);
     }
+    // Force Qt to use named files so I don't waste hours trying to find
+    // these files again.  Perhaps investigate if there are any downsides
+    // to doing this.
+    // https://bugreports.qt.io/browse/QTBUG-66577
+    Q_UNUSED(_tmpFile.fileName());
 }
 
 HistoryFile::~HistoryFile()
@@ -144,8 +149,9 @@ void HistoryFile::unmap()
 {
     Q_ASSERT(_fileMap != nullptr);
 
-    if (_tmpFile.unmap(_fileMap))
+    if (_tmpFile.unmap(_fileMap)) {
         _fileMap = nullptr;
+    }
 
     Q_ASSERT(_fileMap == nullptr);
 
@@ -162,8 +168,9 @@ void HistoryFile::add(const char *buffer, qint64 count)
         unmap();
     }
 
-    if (_readWriteBalance < INT_MAX)
+    if (_readWriteBalance < INT_MAX) {
         _readWriteBalance++;
+    }
 
     qint64 rc = 0;
 
@@ -191,8 +198,9 @@ void HistoryFile::get(char *buffer, qint64 size, qint64 loc)
     //If there are many more get() calls compared with add()
     //calls (decided by using MAP_THRESHOLD) then mmap the log
     //file to improve performance.
-    if (_readWriteBalance > INT_MIN)
+    if (_readWriteBalance > INT_MIN) {
         _readWriteBalance--;
+    }
     if ((_fileMap == nullptr) && _readWriteBalance < MAP_THRESHOLD) {
         map();
     }
@@ -270,7 +278,7 @@ bool HistoryScrollFile::isWrappedLine(int lineno)
 {
     if (lineno >= 0 && lineno <= getLines()) {
         unsigned char flag = 0;
-        _lineflags.get((char *)&flag, sizeof(unsigned char),
+        _lineflags.get(reinterpret_cast<char *>(&flag), sizeof(unsigned char),
                        (lineno)*sizeof(unsigned char));
         return flag != 0u;
     }
@@ -283,8 +291,8 @@ qint64 HistoryScrollFile::startOfLine(int lineno)
         return 0;
     }
     if (lineno <= getLines()) {
-        qint64 res;
-        _index.get((char*)&res, sizeof(qint64), (lineno - 1)*sizeof(qint64));
+        qint64 res = 0;
+        _index.get(reinterpret_cast<char*>(&res), sizeof(qint64), (lineno - 1)*sizeof(qint64));
         return res;
     }
     return _cells.len();
@@ -292,20 +300,20 @@ qint64 HistoryScrollFile::startOfLine(int lineno)
 
 void HistoryScrollFile::getCells(int lineno, int colno, int count, Character res[])
 {
-    _cells.get((char*)res, count * sizeof(Character), startOfLine(lineno) + colno * sizeof(Character));
+    _cells.get(reinterpret_cast<char*>(res), count * sizeof(Character), startOfLine(lineno) + colno * sizeof(Character));
 }
 
 void HistoryScrollFile::addCells(const Character text[], int count)
 {
-    _cells.add((char*)text, count * sizeof(Character));
+    _cells.add(reinterpret_cast<const char*>(text), count * sizeof(Character));
 }
 
 void HistoryScrollFile::addLine(bool previousWrapped)
 {
     qint64 locn = _cells.len();
-    _index.add((char *)&locn, sizeof(qint64));
+    _index.add(reinterpret_cast<char *>(&locn), sizeof(qint64));
     unsigned char flags = previousWrapped ? 0x01 : 0x00;
-    _lineflags.add((char *)&flags, sizeof(char));
+    _lineflags.add(reinterpret_cast<char *>(&flags), sizeof(char));
 }
 
 // History Scroll None //////////////////////////////////////
@@ -443,9 +451,9 @@ CompactHistoryLine::CompactHistoryLine(const TextLine &line, CompactHistoryBlock
         }
 
         ////qDebug() << "number of different formats in string: " << _formatLength;
-        _formatArray = (CharacterFormat *)_blockListRef.allocate(sizeof(CharacterFormat) * _formatLength);
+        _formatArray = static_cast<CharacterFormat *>(_blockListRef.allocate(sizeof(CharacterFormat) * _formatLength));
         Q_ASSERT(_formatArray != nullptr);
-        _text = (quint16 *)_blockListRef.allocate(sizeof(quint16) * line.size());
+        _text = static_cast<quint16 *>(_blockListRef.allocate(sizeof(quint16) * line.size()));
         Q_ASSERT(_text != nullptr);
 
         _length = line.size();
@@ -577,7 +585,7 @@ void CompactHistoryScroll::getCells(int lineNumber, int startColumn, int count, 
     Q_ASSERT(lineNumber < _lines.size());
     CompactHistoryLine *line = _lines[lineNumber];
     Q_ASSERT(startColumn >= 0);
-    Q_ASSERT((unsigned int)startColumn <= line->getLength() - count);
+    Q_ASSERT(static_cast<unsigned int>(startColumn) <= line->getLength() - count);
     line->getCharacters(buffer, count, startColumn);
 }
 

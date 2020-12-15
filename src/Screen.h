@@ -73,6 +73,24 @@ class HistoryScroll;
 class Screen
 {
 public:
+    /* PlainText: Return plain text (default)
+     * ConvertToHtml: Specifies if returned text should have HTML tags.
+     * PreserveLineBreaks: Specifies whether new line characters should be
+     *      inserted into the returned text at the end of each terminal line.
+     * TrimLeadingWhitespace: Specifies whether leading spaces should be
+     *      trimmed in the returned text.
+     * TrimTrailingWhitespace: Specifies whether trailing spaces should be
+     *      trimmed in the returned text.
+     */
+    enum DecodingOption {
+        PlainText = 0x0,
+        ConvertToHtml = 0x1,
+        PreserveLineBreaks = 0x2,
+        TrimLeadingWhitespace = 0x4,
+        TrimTrailingWhitespace = 0x8
+    };
+    Q_DECLARE_FLAGS(DecodingOptions, DecodingOption)
+
     /** Construct a new screen image of size @p lines by @p columns. */
     Screen(int lines, int columns);
     ~Screen();
@@ -112,10 +130,10 @@ public:
     /**
      * Sets the margins for scrolling the screen.
      *
-     * @param topLine The top line of the new scrolling margin.
-     * @param bottomLine The bottom line of the new scrolling margin.
+     * @param top The top line of the new scrolling margin.
+     * @param bot The bottom line of the new scrolling margin.
      */
-    void setMargins(int topLine, int bottomLine);
+    void setMargins(int top, int bot);
     /** Returns the top line of the scrolling region. */
     int topMargin() const;
     /** Returns the bottom line of the scrolling region. */
@@ -203,6 +221,11 @@ public:
      */
     void insertChars(int n);
     /**
+     * Repeat the preceding graphic character @n times, including SPACE.
+     * If @n is 0 then the character is repeated once.
+     */
+    void repeatChars(int n);
+    /**
      * Removes @p n lines beginning from the current cursor position.
      * The position of the cursor is not altered.
      * If @p n is 0 then one line is removed.
@@ -219,19 +242,19 @@ public:
     /**  Sets or removes a tab stop at the cursor's current column. */
     void changeTabStop(bool set);
 
-    /** Resets (clears) the specified screen @p mode. */
-    void resetMode(int mode);
-    /** Sets (enables) the specified screen @p mode. */
-    void setMode(int mode);
+    /** Resets (clears) the specified screen @p m. */
+    void resetMode(int m);
+    /** Sets (enables) the specified screen @p m. */
+    void setMode(int m);
     /**
-     * Saves the state of the specified screen @p mode.  It can be restored
+     * Saves the state of the specified screen @p m.  It can be restored
      * using restoreMode()
      */
-    void saveMode(int mode);
-    /** Restores the state of a screen @p mode saved by calling saveMode() */
-    void restoreMode(int mode);
-    /** Returns whether the specified screen @p mode is enabled or not .*/
-    bool getMode(int mode) const;
+    void saveMode(int m);
+    /** Restores the state of a screen @p m saved by calling saveMode() */
+    void restoreMode(int m);
+    /** Returns whether the specified screen @p me is enabled or not .*/
+    bool getMode(int m) const;
 
     /**
      * Saves the current position and appearance (text color and style) of the cursor.
@@ -402,19 +425,19 @@ public:
     /**
      * Sets the start of the selection.
      *
-     * @param column The column index of the first character in the selection.
-     * @param line The line index of the first character in the selection.
+     * @param x The column index of the first character in the selection.
+     * @param y The line index of the first character in the selection.
      * @param blockSelectionMode True if the selection is in column mode.
      */
-    void setSelectionStart(const int column, const int line, const bool blockSelectionMode);
+    void setSelectionStart(const int x, const int y, const bool blockSelectionMode);
 
     /**
      * Sets the end of the current selection.
      *
-     * @param column The column index of the last character in the selection.
-     * @param line The line index of the last character in the selection.
+     * @param x The column index of the last character in the selection.
+     * @param y The line index of the last character in the selection.
      */
-    void setSelectionEnd(const int column, const int line);
+    void setSelectionEnd(const int x, const int y);
 
     /**
      * Retrieves the start of the selection or the cursor position if there
@@ -432,34 +455,24 @@ public:
     void clearSelection();
 
     /**
-      *  Returns true if the character at (@p column, @p line) is part of the
+      *  Returns true if the character at (@p x, @p y) is part of the
       *  current selection.
       */
-    bool isSelected(const int column, const int line) const;
+    bool isSelected(const int x, const int y) const;
 
     /**
      * Convenience method.  Returns the currently selected text.
-     * @param preserveLineBreaks Specifies whether new line characters should
-     * be inserted into the returned text at the end of each terminal line.
-     * @param trimTrailingSpaces Specifies whether trailing spaces should be
-     * trimmed in the returned text.
-     * @param html Specifies if returned text should have HTML tags.
+     * @param options See Screen::DecodingOptions
      */
-    QString selectedText(bool preserveLineBreaks, bool trimTrailingSpaces = false,
-                         bool html = false) const;
+    QString selectedText(const DecodingOptions options) const;
 
     /**
      * Convenience method.  Returns the text between two indices.
      * @param startIndex Specifies the starting text index
      * @param endIndex Specifies the ending text index
-     * @param preserveLineBreaks Specifies whether new line characters should
-     * be inserted into the returned text at the end of each terminal line.
-     * @param trimTrailingSpaces Specifies whether trailing spaces should be
-     * trimmed in the returned text.
-     * @param html Specifies if returned text should have HTML tags.
+     * @param options See Screen::DecodingOptions
      */
-    QString text(int startIndex, int endIndex, bool preserveLineBreaks,
-                 bool trimTrailingSpaces = false, bool html = false) const;
+    QString text(int startIndex, int endIndex, const DecodingOptions options) const;
 
     /**
      * Copies part of the output to a stream.
@@ -477,13 +490,9 @@ public:
      * @param decoder A decoder which converts terminal characters into text.
      * PlainTextDecoder is the most commonly used decoder which converts characters
      * into plain text with no formatting.
-     * @param preserveLineBreaks Specifies whether new line characters should
-     * be inserted into the returned text at the end of each terminal line.
-     * @param trimTrailingSpaces Specifies whether trailing spaces should be
-     * trimmed in the returned text.
+     * @param options See Screen::DecodingOptions
      */
-    void writeSelectionToStream(TerminalCharacterDecoder *decoder, bool
-                                preserveLineBreaks = true, bool trimTrailingSpaces = false) const;
+    void writeSelectionToStream(TerminalCharacterDecoder *decoder, const Konsole::Screen::DecodingOptions options) const;
 
     /**
      * Checks if the text between from and to is inside the current
@@ -601,8 +610,7 @@ private:
     //decoder - a decoder which converts terminal characters (an Character array) into text
     //appendNewLine - if true a new line character (\n) is appended to the end of the line
     int  copyLineToStream(int line, int start, int count, TerminalCharacterDecoder *decoder,
-                          bool appendNewLine, bool preserveLineBreaks,
-                          bool trimTrailingSpaces) const;
+                          bool appendNewLine, const Konsole::Screen::DecodingOptions options) const;
 
     //fills a section of the screen image with the character 'c'
     //the parameters are specified as offsets from the start of the screen image.
@@ -615,10 +623,10 @@ private:
     //
     //NOTE: moveImage() can only move whole lines
     void moveImage(int dest, int sourceBegin, int sourceEnd);
-    // scroll up 'i' lines in current region, clearing the bottom 'i' lines
-    void scrollUp(int from, int i);
-    // scroll down 'i' lines in current region, clearing the top 'i' lines
-    void scrollDown(int from, int i);
+    // scroll up 'n' lines in current region, clearing the bottom 'n' lines
+    void scrollUp(int from, int n);
+    // scroll down 'n' lines in current region, clearing the top 'n' lines
+    void scrollDown(int from, int n);
 
     //when we handle scroll commands, we need to know which screenwindow will scroll
     TerminalDisplay *_currentTerminalDisplay;
@@ -634,7 +642,7 @@ private:
     // copies text from 'startIndex' to 'endIndex' to a stream
     // startIndex and endIndex are positions generated using the loc(x,y) macro
     void writeToStream(TerminalCharacterDecoder *decoder, int startIndex, int endIndex,
-                       bool preserveLineBreaks = true, bool trimTrailingSpaces = false) const;
+                       const Konsole::Screen::DecodingOptions options) const;
     // copies 'count' lines from the screen buffer into 'dest',
     // starting from 'startLine', where 0 is the first line in the screen buffer
     void copyFromScreen(Character *dest, int startLine, int count) const;
@@ -714,7 +722,14 @@ private:
 
     // last position where we added a character
     int _lastPos;
+
+    // used in REP (repeating char)
+    unsigned short _lastDrawnChar;
 };
+
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(Konsole::Screen::DecodingOptions)
+
 
 #endif // SCREEN_H

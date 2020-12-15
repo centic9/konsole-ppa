@@ -29,7 +29,6 @@
 #include "Profile.h"
 #include "ViewContainer.h"
 
-class QSignalMapper;
 class KActionCollection;
 class KConfigGroup;
 
@@ -180,6 +179,11 @@ public:
         return _sessionMap.values();
     }
 
+    /**
+     * Returns whether the @p profile has the blur setting enabled
+     */
+    static bool profileHasBlurEnabled(const Profile::Ptr profile);
+
 Q_SIGNALS:
     /** Emitted when the last view is removed from the view manager */
     void empty();
@@ -222,6 +226,8 @@ Q_SIGNALS:
      */
     void setMenuBarVisibleRequest(bool);
     void updateWindowIcon();
+
+    void blurSettingChanged(bool);
 
     /** Requests creation of a new view with the default profile. */
     void newViewRequest();
@@ -309,7 +315,7 @@ private Q_SLOTS:
     // views associated with the session
     void sessionFinished();
     // called when one view has been destroyed
-    void viewDestroyed(QWidget *widget);
+    void viewDestroyed(QWidget *view);
 
     // controller detects when an associated view is given the focus
     // and emits a signal.  ViewManager listens for that signal
@@ -334,7 +340,7 @@ private Q_SLOTS:
 
     // called when the views in a container owned by this view manager
     // changes
-    void containerViewsChanged(QObject *container);
+    void containerViewsChanged(ViewContainer *container);
 
     // called when a profile changes
     void profileChanged(Profile::Ptr profile);
@@ -359,9 +365,11 @@ private Q_SLOTS:
 
     void detachView(ViewContainer *container, QWidget *view);
 
-    void closeTabFromContainer(ViewContainer *container, QWidget *view);
+    void closeTabFromContainer(ViewContainer *container, QWidget *tab);
 
 private:
+    Q_DISABLE_COPY(ViewManager)
+
     void createView(Session *session, ViewContainer *container, int index);
     static const ColorScheme *colorSchemeForProfile(const Profile::Ptr profile);
 
@@ -386,7 +394,7 @@ private:
     // creates a new controller for a session/display pair which provides the menu
     // actions associated with that view, and exposes basic information
     // about the session ( such as title and associated icon ) to the display.
-    SessionController *createController(Session *session, TerminalDisplay *display);
+    SessionController *createController(Session *session, TerminalDisplay *view);
 
 private:
     QPointer<ViewSplitter> _viewSplitter;
@@ -395,7 +403,6 @@ private:
     QHash<TerminalDisplay *, Session *> _sessionMap;
 
     KActionCollection *_actionCollection;
-    QSignalMapper *_containerSignalMapper;
 
     NavigationMethod _navigationMethod;
 

@@ -35,6 +35,9 @@ using namespace Konsole;
 
 CopyInputDialog::CopyInputDialog(QWidget *parent) :
     QDialog(parent)
+    , _ui(nullptr)
+    , _model(nullptr)
+    , _masterSession(nullptr)
 {
     setWindowTitle(i18n("Copy Input"));
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
@@ -44,7 +47,6 @@ CopyInputDialog::CopyInputDialog(QWidget *parent) :
     mainLayout->addWidget(mainWidget);
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
     okButton->setDefault(true);
-    okButton->setShortcut(Konsole::ACCEL | Qt::Key_Return);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &CopyInputDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &CopyInputDialog::reject);
     mainLayout->addWidget(buttonBox);
@@ -145,6 +147,8 @@ void CopyInputDialog::setRowChecked(int row, bool checked)
 
 CheckableSessionModel::CheckableSessionModel(QObject *parent) :
     SessionListModel(parent),
+    _checkedSessions(QSet<Session *>()),
+    _fixedSessions(QSet<Session *>()),
     _checkColumn(0)
 {
 }

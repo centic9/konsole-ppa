@@ -85,13 +85,6 @@ public Q_SLOTS:
     void createSession(const QString &profileName = QString(),
                        const QString &directory = QString());
 
-    /**
-     * Returns a list of names of all available profiles
-     *
-     * This is highly experimental. Do not use it at the moment
-     */
-    QStringList profileNameList() const;
-
     void showManageProfilesDialog(QWidget* parent);
 
     /**
@@ -139,6 +132,13 @@ public Q_SLOTS:
     * @param enabled Whether to enable or disable monitoring for activity.
     * */
     void setMonitorActivityEnabled(bool enabled);
+
+    /**
+     * Returns the status of the blur of the current profile.
+     *
+     * @return True if blur is enabled for the current active Konsole color profile.
+     * */
+    bool isBlurEnabled();
 
 Q_SIGNALS:
     /**

@@ -123,6 +123,8 @@ set(konsole_LIBS
                  KF5::Pty
                  KF5::KIOWidgets
                  KF5::DBusAddons
+                 KF5::GlobalAccel
+                 KF5::NewStuff
 )
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")

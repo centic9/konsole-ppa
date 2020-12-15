@@ -173,6 +173,10 @@ public:
         return _allControllers;
     }
 
+    /* Returns true if called within a KPart; false if called within Konsole. */
+    bool isKonsolePart() const;
+    bool isReadOnly() const;
+
 Q_SIGNALS:
     /**
      * Emitted when the view associated with the controller is focused.
@@ -188,6 +192,11 @@ Q_SIGNALS:
      * the controller is changed.
      */
     void currentDirectoryChanged(const QString &dir);
+
+    /**
+     * Emitted when the user changes the tab title.
+     */
+    void tabRenamedByUser(bool renamed) const;
 
 public Q_SLOTS:
     /**
@@ -257,6 +266,7 @@ private Q_SLOTS:
     void configureWebShortcuts();
     void sendSignal(QAction *action);
     void sendBackgroundColor();
+    void toggleReadOnly();
 
     // other
     void prepareSwitchProfileMenu();
@@ -265,6 +275,7 @@ private Q_SLOTS:
     void movementKeyFromSearchBarReceived(QKeyEvent *event);
     void sessionStateChanged(int state);
     void sessionTitleChanged();
+    void sessionReadOnlyChanged();
     void searchTextChanged(const QString &text);
     void searchCompleted(bool success);
     void searchClosed(); // called when the user clicks on the
@@ -289,14 +300,13 @@ private Q_SLOTS:
     void zmodemDownload();
     void zmodemUpload();
 
-    /* Returns true if called within a KPart; false if called within Konsole. */
-    bool isKonsolePart() const;
-
     // update actions related with selected text
     void updateCopyAction(const QString &selectedText);
     void updateWebSearchMenu();
 
 private:
+    Q_DISABLE_COPY(SessionController)
+
     // begins the search
     // text - pattern to search for
     // direction - value from SearchHistoryTask::SearchDirection enum to specify
@@ -312,6 +322,7 @@ private:
 
 private:
     void updateSessionIcon();
+    void updateReadOnlyActionStates();
 
     QPointer<Session> _session;
     QPointer<TerminalDisplay> _view;
@@ -492,7 +503,7 @@ public:
     void addScreenWindow(Session *session, ScreenWindow *searchWindow);
 
     /** Sets the regular expression which is searched for when execute() is called */
-    void setRegExp(const QRegularExpression &regExp);
+    void setRegExp(const QRegularExpression &expression);
     /** Returns the regular expression which is searched for when execute() is called */
     QRegularExpression regExp() const;
 
@@ -502,7 +513,7 @@ public:
     Enum::SearchDirection searchDirection() const;
 
     /** The line from which the search will be done **/
-    void setStartLine(int startLine);
+    void setStartLine(int line);
 
     /**
      * Performs a search through the session's history, starting at the position

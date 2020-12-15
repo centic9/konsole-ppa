@@ -49,13 +49,15 @@ public:
     void load();
 
     /** Returns true if wallpaper available and drawn */
-    bool draw(QPainter &painter, const QRect &rect, qreal opacity = 1.0);
+    bool draw(QPainter &painter, const QRect rect, qreal opacity = 1.0);
 
     bool isNull() const;
 
     QString path() const;
 
 private:
+    Q_DISABLE_COPY(ColorSchemeWallpaper)
+
     QString _path;
     QPixmap *_picture;
 };
@@ -75,6 +77,7 @@ public:
      */
     ColorScheme();
     ColorScheme(const ColorScheme &other);
+    ColorScheme& operator=(const ColorScheme &other) = delete;
     ~ColorScheme();
 
     /** Sets the descriptive name of the color scheme. */
@@ -150,6 +153,17 @@ public:
      */
     qreal opacity() const;
 
+    /**
+     * Enables blur behind the transparent window
+     *
+     * Defaults to false.
+     */
+    void setBlur(bool blur);
+    /**
+     * Returns whether blur is enabled for this color scheme, see setBlur()
+     */
+    bool blur() const;
+
     void setWallpaper(const QString &path);
 
     ColorSchemeWallpaper::Ptr wallpaper() const;
@@ -218,6 +232,9 @@ private:
     RandomizationRange *_randomTable;
 
     qreal _opacity;
+
+    // enables blur behind the terminal window
+    bool _blur;
 
     ColorSchemeWallpaper::Ptr _wallpaper;
 

@@ -23,7 +23,6 @@
 #include <config-konsole.h>
 
 // Qt
-#include <QSignalMapper>
 #include <QStringList>
 #include <QAction>
 
@@ -54,7 +53,6 @@ ViewManager::ViewManager(QObject *parent, KActionCollection *collection) :
     QObject(parent),
     _viewSplitter(nullptr),
     _actionCollection(collection),
-    _containerSignalMapper(new QSignalMapper(this)),
     _navigationMethod(TabbedNavigation),
     _navigationVisibility(ViewContainer::AlwaysShowNavigation),
     _navigationPosition(ViewContainer::NavigationPositionTop),
@@ -85,11 +83,6 @@ ViewManager::ViewManager(QObject *parent, KActionCollection *collection) :
             this, &Konsole::ViewManager::empty);
     connect(_viewSplitter.data(), &Konsole::ViewSplitter::empty, this,
             &Konsole::ViewManager::empty);
-
-    // listen for addition or removal of views from associated containers
-    connect(_containerSignalMapper,
-            static_cast<void (QSignalMapper::*)(QObject *)>(&QSignalMapper::mapped),
-            this, &Konsole::ViewManager::containerViewsChanged);
 
     // listen for profile changes
     connect(ProfileManager::instance(), &Konsole::ProfileManager::profileChanged,
@@ -230,14 +223,13 @@ void ViewManager::setupActions()
 
     // Switch to tab N shortcuts
     const int SWITCH_TO_TAB_COUNT = 19;
-    auto switchToTabMapper = new QSignalMapper(this);
-    connect(switchToTabMapper, static_cast<void (QSignalMapper::*)(int)>(&QSignalMapper::mapped),
-            this, &Konsole::ViewManager::switchToView);
     for (int i = 0; i < SWITCH_TO_TAB_COUNT; i++) {
         QAction *switchToTabAction = new QAction(i18nc("@action Shortcut entry", "Switch to Tab %1", i + 1), this);
-        switchToTabMapper->setMapping(switchToTabAction, i);
-        connect(switchToTabAction, &QAction::triggered, switchToTabMapper,
-                static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
+
+        connect(switchToTabAction, &QAction::triggered, this,
+           [this, i]() {
+               switchToView(i);
+           });
         collection->addAction(QStringLiteral("switch-to-tab-%1").arg(i), switchToTabAction);
     }
 
@@ -370,19 +362,24 @@ void ViewManager::detachActiveView()
     detachView(container, container->activeView());
 }
 
-void ViewManager::detachView(ViewContainer *container, QWidget *widgetView)
+void ViewManager::detachView(ViewContainer *container, QWidget *view)
 {
 #if !defined(ENABLE_DETACHING)
     return;
 #endif
 
-    TerminalDisplay *viewToDetach = qobject_cast<TerminalDisplay *>(widgetView);
+    TerminalDisplay *viewToDetach = qobject_cast<TerminalDisplay *>(view);
 
     if (viewToDetach == nullptr) {
         return;
     }
 
-    emit viewDetached(_sessionMap[viewToDetach]);
+    // BR390736 - some instances are sending invalid session to viewDetached()
+    Session *sessionToDetach = _sessionMap[viewToDetach];
+    if (sessionToDetach == nullptr) {
+        return;
+    }
+    emit viewDetached(sessionToDetach);
 
     _sessionMap.remove(viewToDetach);
 
@@ -420,9 +417,12 @@ void ViewManager::sessionFinished()
         }
     }
 
-    // This is needed to remove this controller from factory() in
-    // order to prevent BUG: 185466 - disappearing menu popup
-    if (_pluggedController != nullptr) {
+    // Only remove the controller from factory() if it's actually controlling
+    // the session from the sender.
+    // This fixes BUG: 348478 - messed up menus after a detached tab is closed
+    if ((_pluggedController != nullptr) && (_pluggedController->session() == session)) {
+        // This is needed to remove this controller from factory() in
+        // order to prevent BUG: 185466 - disappearing menu popup
         emit unplugController(_pluggedController);
     }
 }
@@ -686,11 +686,15 @@ ViewContainer *ViewManager::createContainer()
     }
 
     // connect signals and slots
-    connect(container, &Konsole::ViewContainer::viewAdded, _containerSignalMapper,
-            static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
-    connect(container, &Konsole::ViewContainer::viewRemoved, _containerSignalMapper,
-            static_cast<void (QSignalMapper::*)()>(&QSignalMapper::map));
-    _containerSignalMapper->setMapping(container, container);
+    connect(container, &Konsole::ViewContainer::viewAdded, this,
+           [this, container]() {
+               containerViewsChanged(container);
+           });
+
+    connect(container, &Konsole::ViewContainer::viewRemoved, this,
+           [this, container]() {
+               containerViewsChanged(container);
+           });
 
     connect(container,
             static_cast<void (ViewContainer::*)()>(&Konsole::ViewContainer::newViewRequest), this,
@@ -709,7 +713,7 @@ ViewContainer *ViewManager::createContainer()
     return container;
 }
 
-void ViewManager::containerMoveViewRequest(int index, int id, bool &moved,
+void ViewManager::containerMoveViewRequest(int index, int id, bool &success,
                                            TabbedViewContainer *sourceTabbedContainer)
 {
     ViewContainer *container = qobject_cast<ViewContainer *>(sender());
@@ -737,7 +741,7 @@ void ViewManager::containerMoveViewRequest(int index, int id, bool &moved,
 
     createView(controller->session(), container, index);
     controller->session()->refresh();
-    moved = true;
+    success = true;
 }
 
 void ViewManager::setNavigationMethod(NavigationMethod method)
@@ -808,7 +812,7 @@ ViewManager::NavigationMethod ViewManager::navigationMethod() const
     return _navigationMethod;
 }
 
-void ViewManager::containerViewsChanged(QObject *container)
+void ViewManager::containerViewsChanged(ViewContainer *container)
 {
     if ((_viewSplitter != nullptr) && container == _viewSplitter->activeContainer()) {
         emit viewPropertiesChanged(viewProperties());
@@ -861,6 +865,11 @@ const ColorScheme *ViewManager::colorSchemeForProfile(const Profile::Ptr profile
     return colorScheme;
 }
 
+bool ViewManager::profileHasBlurEnabled(const Profile::Ptr profile)
+{
+    return colorSchemeForProfile(profile)->blur();
+}
+
 void ViewManager::applyProfileToView(TerminalDisplay *view, const Profile::Ptr profile)
 {
     Q_ASSERT(profile);
@@ -874,6 +883,8 @@ void ViewManager::applyProfileToView(TerminalDisplay *view, const Profile::Ptr p
     view->setColorTable(table);
     view->setOpacity(colorScheme->opacity());
     view->setWallpaper(colorScheme->wallpaper());
+
+    emit blurSettingChanged(colorScheme->blur());
 
     // load font
     view->setAntialias(profile->antiAliasFonts());
@@ -910,6 +921,7 @@ void ViewManager::applyProfileToView(TerminalDisplay *view, const Profile::Ptr p
     view->setDropUrlsAsText(profile->property<bool>(Profile::DropUrlsAsText));
     view->setBidiEnabled(profile->bidiRenderingEnabled());
     view->setLineSpacing(profile->lineSpacing());
+    view->setTrimLeadingSpaces(profile->property<bool>(Profile::TrimLeadingSpacesInSelectedText));
     view->setTrimTrailingSpaces(profile->property<bool>(Profile::TrimTrailingSpacesInSelectedText));
 
     view->setOpenLinksByDirectClick(profile->property<bool>(Profile::OpenLinksByDirectClickEnabled));
@@ -922,6 +934,8 @@ void ViewManager::applyProfileToView(TerminalDisplay *view, const Profile::Ptr p
     } else if (middleClickPasteMode == Enum::PasteFromClipboard) {
         view->setMiddleClickPasteMode(Enum::PasteFromClipboard);
     }
+
+    view->setCopyTextAsHTML(profile->property<bool>(Profile::CopyTextAsHTML));
 
     // margin/center
     view->setMargin(profile->property<int>(Profile::TerminalMargin));

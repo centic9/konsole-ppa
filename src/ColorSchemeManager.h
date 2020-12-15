@@ -2,6 +2,7 @@
     This source file is part of Konsole, a terminal emulator.
 
     Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    Copyright 2018 by Harald Sitter <sitter@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -88,21 +89,45 @@ public:
     /** Returns the global color scheme manager instance. */
     static ColorSchemeManager *instance();
 
-private:
+    /**
+     * Returns @c true if a colorscheme with @p name exists both under
+     * the user's home dir location, and a system-wide location
+     */
+    bool canResetColorScheme(const QString &name);
+
+    /**
+     * Returns @c true if a colorscheme with @p name exists under the
+     * user's home dir location, and hence can be deleted
+     */
+    bool isColorSchemeDeletable(const QString &name);
+
     // loads a color scheme from a KDE 4+ .colorscheme file
-    bool loadColorScheme(const QString &path);
+    bool loadColorScheme(const QString &filePath);
+
+    // unloads a color scheme by it's file path (doesn't delete!)
+    bool unloadColorScheme(const QString &filePath);
+
+    // @returns the scheme name of a given file or a null string if the file is
+    //   no theme
+    static QString colorSchemeNameFromPath(const QString &path);
+
+private:
     // returns a list of paths of color schemes in the KDE 4+ .colorscheme file format
     QStringList listColorSchemes();
     // loads all of the color schemes
     void loadAllColorSchemes();
     // finds the path of a color scheme
     QString findColorSchemePath(const QString &name) const;
+    // @returns whether a path is a valid color scheme name
+    static bool pathIsColorScheme(const QString &path);
 
     QHash<QString, const ColorScheme *> _colorSchemes;
 
     bool _haveLoadedAll;
 
     static const ColorScheme _defaultColorScheme;
+
+    Q_DISABLE_COPY(ColorSchemeManager)
 };
 }
 

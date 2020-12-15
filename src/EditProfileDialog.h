@@ -1,5 +1,6 @@
 /*
     Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    Copyright 2018 by Harald Sitter <sitter@kde.org>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,11 +23,12 @@
 
 // Qt
 #include <QAbstractItemDelegate>
+#include <QDialog>
 #include <QHash>
 #include <QPointer>
 
 // KDE
-#include <QDialog>
+#include <KNS3/Entry>
 
 // Konsole
 #include "Profile.h"
@@ -91,6 +93,8 @@ public Q_SLOTS:
     // reimplemented
     void reject() Q_DECL_OVERRIDE;
 
+    void apply();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
@@ -105,12 +109,12 @@ private Q_SLOTS:
     void selectInitialDir();
     void selectIcon();
 
-    void profileNameChanged(const QString &text);
-    void initialDirChanged(const QString &text);
+    void profileNameChanged(const QString &name);
+    void initialDirChanged(const QString &dir);
     void startInSameDir(bool);
-    void commandChanged(const QString &text);
-    void tabTitleFormatChanged(const QString &text);
-    void remoteTabTitleFormatChanged(const QString &text);
+    void commandChanged(const QString &command);
+    void tabTitleFormatChanged(const QString &format);
+    void remoteTabTitleFormatChanged(const QString &format);
 
     void terminalColumnsEntryChanged(int);
     void terminalRowsEntryChanged(int);
@@ -130,6 +134,15 @@ private Q_SLOTS:
     void editColorScheme();
     void saveColorScheme(const ColorScheme &scheme, bool isNewScheme);
     void removeColorScheme();
+    void gotNewColorSchemes(const KNS3::Entry::List &changedEntries);
+
+    /**
+     * Deletes the selected colorscheme from the user's home dir location
+     * so that the original one from the system-wide location can be used
+     * instead
+     */
+    void resetColorScheme();
+
     void colorSchemeSelected();
     void previewColorScheme(const QModelIndex &index);
     void fontSelected(const QFont &);
@@ -160,6 +173,8 @@ private Q_SLOTS:
     void toggleCtrlRequiredForDrag(bool);
     void toggleDropUrlsAsText(bool);
     void toggleCopyTextToClipboard(bool);
+    void toggleCopyTextAsHTML(bool);
+    void toggleTrimLeadingSpacesInSelectedText(bool);
     void toggleTrimTrailingSpacesInSelectedText(bool);
     void pasteFromX11Selection();
     void pasteFromClipboard();
@@ -185,6 +200,8 @@ private Q_SLOTS:
     void delayedPreviewActivate();
 
 private:
+    Q_DISABLE_COPY(EditProfileDialog)
+
     // initialize various pages of the dialog
     void setupGeneralPage(const Profile::Ptr profile);
     void setupTabsPage(const Profile::Ptr profile);
@@ -194,14 +211,20 @@ private:
     void setupAdvancedPage(const Profile::Ptr profile);
     void setupMousePage(const Profile::Ptr info);
 
-    void updateColorSchemeList(bool selectCurrentScheme = false);
+    // Returns the name of the colorScheme used in the current profile
+    const QString currentColorSchemeName() const;
+
+    // select @p selectedColorSchemeName after the changes are saved
+    // in the colorScheme editor
+    void updateColorSchemeList(const QString &selectedColorSchemeName = QString());
+
     void updateColorSchemeButtons();
     void updateKeyBindingsList(bool selectCurrentTranslator = false);
     void updateKeyBindingsButtons();
 
     void showColorSchemeEditor(bool isNewScheme);
     void closeColorSchemeEditor();
-    void showKeyBindingEditor(bool newTranslator);
+    void showKeyBindingEditor(bool isNewTranslator);
 
     void preview(int property, const QVariant &value);
     void delayedPreview(int property, const QVariant &value);
@@ -239,6 +262,13 @@ private:
         const char *slot;
     };
     void setupCheckBoxes(BooleanOption *options, const Profile::Ptr profile);
+
+    // returns false if:
+    // - the profile name is empty
+    // - the name matches the name of an already existing profile
+    // - the existing profile config file is read-only
+    // otherwise returns true.
+    bool isValidProfileName();
 
     Ui::EditProfileDialog *_ui;
     Profile::Ptr _tempProfile;

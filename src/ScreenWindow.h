@@ -27,9 +27,9 @@
 
 // Konsole
 #include "Character.h"
+#include "Screen.h"
 
 namespace Konsole {
-class Screen;
 
 /**
  * Provides a window onto a section of a terminal screen.  A terminal widget can then render
@@ -62,7 +62,7 @@ public:
      * to notify the window when the associated screen has changed and synchronize selection updates
      * between all views on a session.
      */
-    explicit ScreenWindow(Screen *screen, QObject *parent = 0);
+    explicit ScreenWindow(Screen *screen, QObject *parent = nullptr);
     ~ScreenWindow() Q_DECL_OVERRIDE;
 
     /** Sets the screen which this window looks onto */
@@ -227,12 +227,9 @@ public:
     /**
      * Returns the text which is currently selected.
      *
-     * @param preserveLineBreaks See Screen::selectedText()
-     * @param trimTrailingSpaces See Screen::selectedText()
-     * @param html Specifies if returned text should have HTML tags.
+     * @param options See Screen::DecodingOptions
      */
-    QString selectedText(bool preserveLineBreaks, bool trimTrailingSpaces = false,
-                         bool html = false) const;
+    QString selectedText(const Konsole::Screen::DecodingOptions options) const;
 
 public Q_SLOTS:
     /**
@@ -261,6 +258,8 @@ Q_SIGNALS:
     void selectionChanged();
 
 private:
+    Q_DISABLE_COPY(ScreenWindow)
+
     int endWindowLine() const;
     void fillUnusedArea();
 
