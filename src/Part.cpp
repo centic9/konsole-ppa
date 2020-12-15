@@ -24,6 +24,7 @@
 #include <QStringList>
 #include <QDir>
 #include <QKeyEvent>
+#include <QMetaEnum>
 #include <QUrl>
 
 // KDE
@@ -42,6 +43,7 @@
 #include "ProfileManager.h"
 #include "TerminalDisplay.h"
 #include "ViewManager.h"
+#include "ViewContainer.h"
 #include "KonsoleSettings.h"
 #include "settings/PartInfo.h"
 #include "settings/ProfileSettings.h"
@@ -64,9 +66,7 @@ Part::Part(QWidget *parentWidget, QObject *parent, const QVariantList &) :
     connect(_viewManager, &Konsole::ViewManager::activeViewChanged, this,
             &Konsole::Part::activeViewChanged);
     connect(_viewManager, &Konsole::ViewManager::empty, this, &Konsole::Part::terminalExited);
-    connect(_viewManager,
-            static_cast<void (ViewManager::*)()>(&Konsole::ViewManager::newViewRequest), this,
-            &Konsole::Part::newTab);
+    connect(_viewManager, &Konsole::ViewManager::newViewRequest, this, &Konsole::Part::newTab);
 
     _viewManager->widget()->setParent(parentWidget);
 
@@ -198,6 +198,50 @@ QString Part::currentWorkingDirectory() const
     return activeSession()->currentWorkingDirectory();
 }
 
+#ifdef USE_TERMINALINTERFACEV2
+QVariant Part::profileProperty(const QString &profileProperty) const
+{
+    const auto metaEnum = QMetaEnum::fromType<Profile::Property>();
+    const auto value = metaEnum.keyToValue(profileProperty.toStdString().c_str());
+
+    if (value == -1) {
+        return QString();
+    }
+
+    const auto p = static_cast<Profile::Property>(value);
+    return SessionManager::instance()->sessionProfile(activeSession())->property<QVariant>(p);
+}
+
+QStringList Part::availableProfiles() const
+{
+    return ProfileManager::instance()->availableProfileNames();
+}
+
+QString Part::currentProfileName() const
+{
+    return SessionManager::instance()->sessionProfile(activeSession())->name();
+}
+
+bool Part::setCurrentProfile(const QString &profileName)
+{
+
+    Profile::Ptr profile;
+    for(auto p : ProfileManager::instance()->allProfiles()) {
+        if (p->name() == profileName) {
+            profile = p;
+            break;
+        }
+    }
+
+    if (!profile) {
+        profile = ProfileManager::instance()->loadProfile(profileName);
+    }
+
+    SessionManager::instance()->setSessionProfile(activeSession(), profile);
+    return currentProfileName() == profileName;
+}
+#endif
+
 void Part::createSession(const QString &profileName, const QString &directory)
 {
     Profile::Ptr profile = ProfileManager::instance()->defaultProfile();
@@ -214,7 +258,8 @@ void Part::createSession(const QString &profileName, const QString &directory)
         session->setInitialWorkingDirectory(directory);
     }
 
-    _viewManager->createView(session);
+    auto newView = _viewManager->createView(session);
+    _viewManager->activeContainer()->addView(newView);
 }
 
 void Part::activeViewChanged(SessionController *controller)
@@ -245,9 +290,6 @@ void Part::activeViewChanged(SessionController *controller)
 
     disconnect(controller->view(), displaySignal, this, partSlot);
     connect(controller->view(), displaySignal, this, partSlot);
-
-    // set the current session's search bar
-    controller->setSearchBar(_viewManager->searchBar());
 
     _pluggedController = controller;
 }

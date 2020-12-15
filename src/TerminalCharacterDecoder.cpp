@@ -26,9 +26,10 @@
 #include <QTextStream>
 
 // Konsole
-#include "konsole_wcwidth.h"
 #include "ExtendedCharTable.h"
 #include "ColorScheme.h"
+#include "ColorSchemeManager.h"
+#include "Profile.h"
 
 using namespace Konsole;
 PlainTextDecoder::PlainTextDecoder()
@@ -36,23 +37,16 @@ PlainTextDecoder::PlainTextDecoder()
     , _includeLeadingWhitespace(true)
     , _includeTrailingWhitespace(true)
     , _recordLinePositions(false)
+    , _linePositions(QList<int>())
 {
 }
 void PlainTextDecoder::setLeadingWhitespace(bool enable)
 {
     _includeLeadingWhitespace = enable;
 }
-bool PlainTextDecoder::leadingWhitespace() const
-{
-    return _includeLeadingWhitespace;
-}
 void PlainTextDecoder::setTrailingWhitespace(bool enable)
 {
     _includeTrailingWhitespace = enable;
-}
-bool PlainTextDecoder::trailingWhitespace() const
-{
-    return _includeTrailingWhitespace;
 }
 void PlainTextDecoder::begin(QTextStream* output)
 {
@@ -135,11 +129,11 @@ void PlainTextDecoder::decodeLine(const Character* const characters, int count, 
     for (int i = start; i < outputCount;) {
         if ((characters[i].rendition & RE_EXTENDED_CHAR) != 0) {
             ushort extendedCharLength = 0;
-            const ushort* chars = ExtendedCharTable::instance.lookupExtendedChar(characters[i].character, extendedCharLength);
+            const uint* chars = ExtendedCharTable::instance.lookupExtendedChar(characters[i].character, extendedCharLength);
             if (chars != nullptr) {
-                const QString s = QString::fromUtf16(chars, extendedCharLength);
+                const QString s = QString::fromUcs4(chars, extendedCharLength);
                 plainText.append(s);
-                i += qMax(1, string_width(s));
+                i += qMax(1, Character::stringWidth(s));
             } else {
                 ++i;
             }
@@ -152,8 +146,8 @@ void PlainTextDecoder::decodeLine(const Character* const characters, int count, 
             // lost in some situation. One typical example is copying the result
             // of `dialog --infobox "qwe" 10 10` .
             if (characters[i].isRealCharacter || i <= realCharacterGuard) {
-                plainText.append(QChar(characters[i].character));
-                i += qMax(1, konsole_wcwidth(characters[i].character));
+                plainText.append(QString::fromUcs4(&characters[i].character, 1));
+                i += qMax(1, characters[i].width());
             } else {
                 ++i;  // should we 'break' directly here?
             }
@@ -162,35 +156,75 @@ void PlainTextDecoder::decodeLine(const Character* const characters, int count, 
     *_output << plainText;
 }
 
-HTMLDecoder::HTMLDecoder() :
+HTMLDecoder::HTMLDecoder(const QExplicitlySharedDataPointer<Profile> &profile) :
     _output(nullptr)
-    , _colorTable(ColorScheme::defaultTable)
+    , _profile(profile)
     , _innerSpanOpen(false)
     , _lastRendition(DEFAULT_RENDITION)
+    , _lastForeColor(CharacterColor())
+    , _lastBackColor(CharacterColor())
 {
+    const ColorScheme *colorScheme = nullptr;
+
+    if (profile) {
+        colorScheme = ColorSchemeManager::instance()->findColorScheme(profile->colorScheme());
+
+        if (colorScheme == nullptr) {
+            colorScheme = ColorSchemeManager::instance()->defaultColorScheme();
+        }
+
+    }
+
+    if (colorScheme != nullptr) {
+        colorScheme->getColorTable(_colorTable);
+    } else {
+        for (int i = 0; i < TABLE_COLORS; i++) {
+            _colorTable[i] = ColorScheme::defaultTable[i];
+        }
+    }
 }
 
 void HTMLDecoder::begin(QTextStream* output)
 {
     _output = output;
 
-    QString text;
 
-    //open monospace span
-    openSpan(text, QStringLiteral("font-family:monospace"));
+    if (_profile) {
+        QString style;
 
-    *output << text;
+        QFont font = _profile->font();
+        style.append(QStringLiteral("font-family:'%1',monospace;").arg(font.family()));
+
+        // Prefer point size if set
+        if (font.pointSizeF() > 0) {
+            style.append(QStringLiteral("font-size:%1pt;").arg(font.pointSizeF()));
+        } else {
+            style.append(QStringLiteral("font-size:%1px;").arg(font.pixelSize()));
+        }
+
+
+        style.append(QStringLiteral("color:%1;").arg(_colorTable[DEFAULT_FORE_COLOR].name()));
+        style.append(QStringLiteral("background-color:%1;").arg(_colorTable[DEFAULT_BACK_COLOR].name()));
+
+        *output << QStringLiteral("<body style=\"%1\">").arg(style);
+    } else {
+        QString text;
+        openSpan(text, QStringLiteral("font-family:monospace"));
+        *output << text;
+    }
 }
 
 void HTMLDecoder::end()
 {
     Q_ASSERT(_output);
 
-    QString text;
-
-    closeSpan(text);
-
-    *_output << text;
+    if (_profile) {
+        *_output << QStringLiteral("</body>");
+    } else {
+        QString text;
+        closeSpan(text);
+        *_output << text;
+    }
 
     _output = nullptr;
 }
@@ -222,21 +256,18 @@ void HTMLDecoder::decodeLine(const Character* const characters, int count, LineP
             //build up style string
             QString style;
 
-            //colors - a color table must have been defined first
-            if (_colorTable != nullptr) {
-                bool useBold = (_lastRendition & RE_BOLD) != 0;
-                if (useBold) {
-                    style.append(QLatin1String("font-weight:bold;"));
-                }
-
-                if ((_lastRendition & RE_UNDERLINE) != 0) {
-                    style.append(QLatin1String("font-decoration:underline;"));
-                }
-
-                style.append(QStringLiteral("color:%1;").arg(_lastForeColor.color(_colorTable).name()));
-
-                style.append(QStringLiteral("background-color:%1;").arg(_lastBackColor.color(_colorTable).name()));
+            bool useBold = (_lastRendition & RE_BOLD) != 0;
+            if (useBold) {
+                style.append(QLatin1String("font-weight:bold;"));
             }
+
+            if ((_lastRendition & RE_UNDERLINE) != 0) {
+                style.append(QLatin1String("font-decoration:underline;"));
+            }
+
+            style.append(QStringLiteral("color:%1;").arg(_lastForeColor.color(_colorTable).name()));
+
+            style.append(QStringLiteral("background-color:%1;").arg(_lastBackColor.color(_colorTable).name()));
 
             //open the span with the current style
             openSpan(text, style);
@@ -254,9 +285,9 @@ void HTMLDecoder::decodeLine(const Character* const characters, int count, LineP
         if (spaceCount < 2) {
             if ((characters[i].rendition & RE_EXTENDED_CHAR) != 0) {
                 ushort extendedCharLength = 0;
-                const ushort* chars = ExtendedCharTable::instance.lookupExtendedChar(characters[i].character, extendedCharLength);
+                const uint* chars = ExtendedCharTable::instance.lookupExtendedChar(characters[i].character, extendedCharLength);
                 if (chars != nullptr) {
-                    text.append(QString::fromUtf16(chars, extendedCharLength));
+                    text.append(QString::fromUcs4(chars, extendedCharLength));
                 }
             } else {
                 //escape HTML tag characters and just display others as they are
@@ -297,9 +328,4 @@ void HTMLDecoder::openSpan(QString& text , const QString& style)
 void HTMLDecoder::closeSpan(QString& text)
 {
     text.append(QLatin1String("</span>"));
-}
-
-void HTMLDecoder::setColorTable(const ColorEntry* table)
-{
-    _colorTable = table;
 }

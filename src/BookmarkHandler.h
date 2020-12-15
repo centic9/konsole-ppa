@@ -27,13 +27,11 @@
 // KDE
 #include <KBookmarkManager>
 
-#include <QUrl>
-
 // Konsole
 #include "konsoleprivate_export.h"
 
 class QMenu;
-class KBookmarkMenu;
+class QUrl;
 class KActionCollection;
 
 namespace Konsole {
@@ -70,8 +68,8 @@ public:
     QString currentTitle() const Q_DECL_OVERRIDE;
     QString currentIcon() const Q_DECL_OVERRIDE;
     bool enableOption(BookmarkOption option) const Q_DECL_OVERRIDE;
-    bool supportsTabs() const Q_DECL_OVERRIDE;
     QList<KBookmarkOwner::FutureBookmark> currentBookmarkList() const Q_DECL_OVERRIDE;
+    bool supportsTabs() const Q_DECL_OVERRIDE;
     void openFolderinTabs(const KBookmarkGroup &group) Q_DECL_OVERRIDE;
 
     /**
@@ -121,7 +119,6 @@ private:
     QString iconForView(ViewProperties *view) const;
 
     QMenu *_menu;
-    KBookmarkMenu *_bookmarkMenu;
     QString _file;
     bool _toplevel;
     ViewProperties *_activeView;

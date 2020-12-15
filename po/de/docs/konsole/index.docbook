@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % German "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -93,17 +105,24 @@
 >&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->2018-03-10</date>
+>2019-06-16</date>
 <releaseinfo
->Anwendungen 18.04</releaseinfo>
+>Anwendungen 19.08</releaseinfo>
 
 <abstract
 ><para
->&konsole; ist der Terminal-Emulator für KDE.</para
+>&konsole; ist der Terminal-Emulator für &kde;.</para
 ></abstract>
 
 <keywordset>
@@ -219,6 +238,13 @@
 >Profile verwalten ...</guimenuitem
 ></menuchoice
 ></para
+></listitem>
+
+<listitem
+><para
+>Gehen Sie zur Seite <guibutton
+>Profile</guibutton
+>.</para
 ></listitem>
 
 <listitem
@@ -439,8 +465,7 @@
 <title
 >Ziehen und Ablegen</title>
 <para
->Wenn Sie eine Datei, einen Ordner oder eine &URL; in ein &konsole;-Fenster ziehen und dort ablegen, erscheint ein Kontextmenü mit folgenden Aktionen: </para
->  
+>Wenn Sie eine Datei, einen Ordner oder eine &URL; in ein &konsole;-Fenster ziehen und dort ablegen, erscheint ein Kontextmenü mit folgenden Aktionen: </para>
 <screenshot>
 <screeninfo
 >Kontextmenü für Ziehen und Ablegen</screeninfo>
@@ -1092,14 +1117,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1108,7 +1133,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1227,7 +1252,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1328,7 +1353,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1344,6 +1369,29 @@ Various search improvements
 </para
 ><para
 >Das Beenden des vorherigen &konsole;-Fensters wird die neue, nun eigenständige Sitzung nicht beeinträchtigen (sie wird nicht geschlossen). </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Aktuelle Ansicht verselbständigen</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Öffnet das aktuelle geteilte Ansicht in einem neuen, eigenständigen Fenster.</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1452,6 +1500,30 @@ Various search improvements
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Schriftgröße zurücksetzen</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Setzt die Schriftgröße auf die Voreinstellung des Profils zurück.</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1617,9 +1689,10 @@ Various search improvements
 ><action
 >Öffnet den Lesezeichen-Editor.</action
 ></para>
-
 <note
 ><para
+>Das Programm keditbookmarks muss installiert sein, damit dieser Menüeintrag angezeigt wird.</para>
+<para
 >Sie können den Lesezeichen-Editor verwenden, um manuell URLs einzutragen. Die folgenden werden von &konsole; unterstützt: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1933,6 +2006,10 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 >%u : Benutzername</para
+></listitem>
+<listitem
+><para
+>%B: Benutzerzeichen der Bourne-Eingabeaufforderung ($ = Normaler Benutzer, # = Systemverwalter)</para
 ></listitem>
 <listitem
 ><para
@@ -2333,7 +2410,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->Weitere Informationen finden Sie in der <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Weitere Informationen finden Sie in der <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >API-Referenz zu &konsole;</ulink
 >. </para>
 </listitem>
@@ -2504,9 +2581,411 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->Weiterführende Informationen finden Sie auf der Webseite <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Weiterführende Informationen finden Sie auf der Webseite <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >&DBus;-Anleitung</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Terminal-Tastenzuordnungen</title>
+
+<sect1>
+<title
+>Wie &konsole; Tastenzuordnungen verwendet</title>
+
+<sect2 id="intro">
+<title
+>Einführung</title>
+<para
+>&konsole; benutzt <filename  class="extension"
+>*.keytab</filename
+>-Dateien, um Tastenkombinationen in Steuerzeichen und Escape-Sequenzen zu übersetzen. die an die Shell oder interaktive Programme gesendet werden. Diese Programme wie &eg; <application
+>vim</application
+>, <application
+>less</application
+> oder <application
+>screen</application
+>, die in der Shell ausgeführt werden, benutzen typischerweise den alternativen Bildschirmpuffer.</para>
+
+<para
+>Benutzer können die Tastenzuordnungen in &konsole; mit einem Editor anpassen. Eine Tastenkombination kann so eingestellt werden, dass sie eine bestimmte Steuer- oder Escape-Sequenz an das Terminal sendet.</para>
+
+<para
+>Sie finden den Editor für Tastenzuordnungen im Menüeintrag <menuchoice
+><guimenu
+>Einstellungen</guimenu
+><guimenuitem
+>Aktuelles Profil bearbeiten</guimenuitem
+></menuchoice
+> auf der Karteikarte <guilabel
+>Tastatur</guilabel
+>. Hier werden die Standard-Tastaturschemata von &konsole; aufgeführt.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Tastenkombinationen und Modi</title>
+
+<para
+>Tastenkombinationen haben folgendes Format: <programlisting
+>Taste (+|-) Modi</programlisting>
+</para>
+
+<para
+>Zum Beispiel: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Namen der Tasten sind in der Datei <filename
+>qnamespace.h</filename
+> definiert, dabei wird das Präfix <quote
+>Qt::Key_</quote
+> entfernt. Eine Liste dieser Tastennamen finden Sie in der &Qt;-Dokumentation auf der Seite <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>Qt::Key enumeration</ulink
+>.</para>
+
+<para
+>Ein <quote
+>+</quote
+> vor dem Namen des Modus bedeutet, dass er <emphasis
+>aktiv</emphasis
+> ist. Eine Modifizierer-Taste muss für diesen Zustand gedrückt sein, während in allen andern Modi dieser bestimmte Modus aktiv sein muss.. <quote
+>+Ctrl</quote
+> bedeutet zum Beispiel, dass die Tastenkombination nur dann funktioniert, wenn auch die Taste &Ctrl; gedrückt ist.</para>
+
+<para
+>Ein <quote
+>-</quote
+> vor dem Namen des Modus bedeutet, dass er <emphasis
+>nicht</emphasis
+> aktiv ist. Das hat den umgekehrten Effekt wie ein <quote
+>+</quote
+> vor dem Namen des Modus. Bei einer Modifizierer-Taste bedeutet das. dass die Taste nicht gedrückt ist, während in allen anderen Modi dieser bestimmte Modus nicht aktiviert ist. <quote
+>-Ctrl</quote
+> bedeutet zum Beispiel, dass die Tastenkombinationennur funktioniert, wenn die Taste &Ctrl; <emphasis
+>nicht</emphasis
+> gedrückt ist.</para>
+
+<note>
+<para
+>Fehlt der Name eines Modus in einer Tastenkombination, wird der Status des Modus ignoriert.</para>
+</note>
+
+<para
+>Die unterstützten Modi für Tastenzuordnungen sind im folgenden aufgeführt:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>Mehr als einer dieser Modi kann in einer Tastenkombination verwendet werden. Ist einer dieser Modi aktiv, verwendet die Tastenkombination die Modifizierer-Taste und umgekehrt</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, benutzt die Tastenkombination jede Modifizierer-Taste wie die drei vorher genannten Modifizierer-Tasten und umgekehrt, wenn der Modus nicht aktiv ist.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, dann sendet &konsole; ANSI-Escape- und Steuerzeichen</para>
+<para
+>Ist dieser Modus nicht aktiv, dann sendet  &konsole; VT52-Escape- und Steuerzeichen</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, beeinflusst die Tastenkombination nur interaktive Programme, die den alternativen Bildschirmpuffer verwenden</para>
+<para
+>Ist dieser Modus nicht aktiv, beeinflusst die Tastenkombination nur das Terminal, wenn der normale Bildschirmpuffer verwendet wird</para>
+
+<note>
+<para
+>&konsole; verwendet zwei Bildschirmpuffer:</para>
+<itemizedlist>
+<listitem>
+<para
+>Der normale Bildschirmpuffer als Voreinstellung: Erlaubt das Blättern zurück im Verlauf, um vorherige Zeilen der Ausgabe anzuzeigen. Dies ist der Standardpuffer, den Sie normalerweise bei der Ausführung von Befehlen benutzen</para>
+</listitem>
+<listitem>
+<para
+>Der alternative Bildschirmpuffer: Das Terminal wechselt zu diesem Puffer, wenn Sie interaktive Programme wie &eg; <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+> &etc; ausführen</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>KeyPad</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, benutzt diese Tastenkombination eine Taste auf der Zahlentastatur. In diesem Modus kann zwischen Tasten auf der normalen Tastatur  und Tasten auf der Zahlentastatur unterschieden werden. Wenn zum Beispiel die Zahlen-Feststelltaste <emphasis
+>eingeschaltet</emphasis
+> ist, können Sie zwei getrennte Tastenkombinationen einstellen, eine mit der Taste <quote
+>1</quote
+> auf der Tastatur, normalerweise unter der Taste <keycap
+>F1</keycap
+> und eine andere mit der Taste <quote
+>1</quote
+> auf der Zahlentastatur. Wenn die Zahlen-Feststelltaste <emphasis
+>ausgeschaltet</emphasis
+> ist, funktioniert das auch für die Tasten Ende, Pos 1 sowie die Cursor-Tasten &etc; auf der Tastatur.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Dieser Modus implementiert den VT100-Modus <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>Cursor-Tasten (DECCKM)</ulink
+>. Dies kontrolliert die Escape-Sequenzen, die  jede Cursor-Taste wie <keycap
+>Up</keycap
+>, <keycap
+>Down</keycap
+>, <keycap
+>Right</keycap
+>, <keycap
+>Left</keycap
+> sendet, abhängig ob dieser Modus aktiv oder nicht aktiv ist</para>
+<para
+>In der Voreinstellung verhält sich &konsole; wie XTerm bei der Behandlung der Tasten <keycap
+>Home</keycap
+> and <keycap
+>End</keycap
+> als Cursor-Tasten unter Beachtung von DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, funktionieren die Tastenkombination nur, wenn die Tastatur im Programm-Modus (DECKPAM) ist</para>
+<para
+>Ist dieser Modus aktiv, funktionieren die Tastenkombination nur, wenn die Tastatur im numerischen Modus (DECKPNM) ist</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NewLine</term>
+<listitem>
+<para
+>Ist dieser Modus aktiv, dann sendet die Taste <keycap
+>Return</keycap
+> (Enter = Eingabe) auf der Tastatur sowohl die Steuerzeichen für den Wagenrücklauf „\r“ und auch das Steuerzeichen „\n“ für eine neue Zeile</para>
+<para
+>Ist dieser Modus nicht aktiv, dann sendet die Taste <keycap
+>Return</keycap
+> nur das Zeichen für den Wagenrücklauf „\r“</para>
+<para
+>Das gleiche trifft für die Taste &Enter; auf der Tastatur zu</para>
+<para
+>Dieser Modus emuliert den <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>LNM - Line Feed/New Line Modus</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Jede Kombination von Tasten und Modi (aktiv/nicht aktiv) muss eindeutig sein. Betrachten Sie zum Beispiel folgende zwei Regeln:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>&konsole; akzeptiert die Regel für den Kleinbuchstaben  <quote
+>a</quote
+> <emphasis
+>nicht</emphasis
+>, Sie müssen <quote
+>-Shift</quote
+> zu dieser Regel hinzufügen, damit sie funktioniert.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>Das Feld Ausgabe</title>
+
+<para
+>Im Ausgabe-Feld können Sie Escape-Sequenzen oder Steuerzeichen hinzufügen, die &konsole; an das Terminal sendet, wenn die zugehörige Tastenkombination gedrückt wird.</para>
+
+<para
+>Außerdem können Sie jedes der folgenden Schlüsselwörter benutzen, jedes hat eine besondere Bedeutung in &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine: Geht eine Zeile nach oben im Verlaufspeicher der Shell</para
+></listitem>
+<listitem
+><para
+>scrollUpPage: Geht eine Seite nach oben im Verlaufspeicher der Shell</para
+></listitem>
+<listitem
+><para
+>scrollDownLine: Geht eine Zeile nach unten im Verlaufspeicher der Shell</para
+></listitem>
+<listitem
+><para
+>scrollDownPage: Geht eine Seite nach unten im Verlaufspeicher der Shell</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop: Geht zum Anfang des Verlaufspeichers der Shell</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom: Geht zum Ende des Verlaufspeichers der Shell</para
+></listitem>
+</itemizedlist>
+
+<para
+>Sie könne auch Zeichenketten mit der C-Syntax benutzen. Daher können Sie folgende Escape-Sequenzen verwenden:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Backslash (Rückwärtsschrägstrich)</para
+></listitem>
+<listitem
+><para
+>\" : Doppeltes Anführungszeichen</para
+></listitem>
+<listitem
+><para
+>\t: Tabulator</para
+></listitem>
+<listitem
+><para
+>\r: Wagenrücklauf</para
+></listitem>
+<listitem
+><para
+>\n: Neue Zeile</para
+></listitem>
+<listitem
+><para
+>\b: Rücktaste</para
+></listitem>
+<listitem>
+<para
+>\xHH : Dabei sind HH zwei hexadezimale  Ziffern</para>
+<tip>
+<para
+>Damit können Sie ASCII-Steuerzeichen wie &eg; <quote
+>\x00</quote
+> = Zeichen NUL senden</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Andere System-Ressourcen</title>
+<para
+>Es gibt noch weitere System-Ressourcen, die die Tastenzuordnungen im Terminal beeinflussen können:</para>
+<itemizedlist>
+<listitem>
+<para
+>In den Datenbanken <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> or <ulink url="man:termcap(5)"
+>termcap</ulink
+> finden Sie die erwarteten Escape-Sequenzen und Steuerzeichen, die jede Tastenkombination senden sollte.</para>
+</listitem>
+<listitem>
+<para
+>Wahrscheinlich gibt es auf Ihren System andere Tastatur-Datenbanken, die auch abgeglichen werden müssen, wie &eg;<ulink url="man:bash(1)"
+>/etc/inputrc und readline</ulink
+> für die <application
+>Bash</application
+>-Shell, da sie die Interaktionen von Tastenkombinationen beeinflussen.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Weiterführende Lektüre</title>
+<para
+>Weitere Informationen zu Escape-Sequenzen und Steuerzeichen finden Sie in den folgenden Dokumentationen:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>Das Benutzerhandbuch zu VT100</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>Das Benutzerhandbuch zu VT102</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>Die umfassende und unverzichtbare Dokumentation <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>XTerm Control Sequences</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2522,7 +3001,7 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 > verwendet werden. </para>
 <para
->Weitere Informationen finden Sie auf der <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
+>Weitere Informationen finden Sie auf der <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
 >&Qt;-Projektseite für Stilvorlagen</ulink
 >. </para>
 
@@ -2817,31 +3296,31 @@ CommonDirNames=name1,name2,name3...
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole"
+><ulink url="https://userbase.kde.org/Konsole"
 >&konsole;s Webseite auf &kde;s UserBase</ulink
 >&nbsp;</para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >&konsole;s Webseite</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >&konsole;s Mailingliste</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; auf FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; auf &Solaris;</ulink
 ></para
 ></listitem>

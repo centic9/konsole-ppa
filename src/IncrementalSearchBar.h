@@ -138,7 +138,6 @@ Q_SIGNALS:
 protected:
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-
 public Q_SLOTS:
     void clearLineEdit();
 
@@ -157,7 +156,6 @@ private:
     QToolButton *_findNextButton;
     QToolButton *_findPreviousButton;
     QToolButton *_searchFromButton;
-
     QTimer *_searchTimer;
 };
 }

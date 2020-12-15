@@ -23,13 +23,18 @@
 #define VIEWSPLITTER_H
 
 // Qt
-#include <QList>
 #include <QSplitter>
 
-class QFocusEvent;
+// Konsole
+#include "konsoleprivate_export.h"
+
+class QDragMoveEvent;
+class QDragEnterEvent;
+class QDropEvent;
+class QDragLeaveEvent;
 
 namespace Konsole {
-class ViewContainer;
+class TerminalDisplay;
 
 /**
  * A splitter which holds a number of ViewContainer objects and allows
@@ -43,19 +48,19 @@ class ViewContainer;
  * insert a new view container.
  * Containers can only be removed from the hierarchy by deleting them.
  */
-class ViewSplitter : public QSplitter
+class KONSOLEPRIVATE_EXPORT ViewSplitter : public QSplitter
 {
     Q_OBJECT
 
 public:
     explicit ViewSplitter(QWidget *parent = nullptr);
-
+    enum class AddBehavior {AddBefore, AddAfter};
     /**
      * Locates the child ViewSplitter widget which currently has the focus
      * and inserts the container into it.
      *
-     * @param container The container to insert
-     * @param orientation Specifies whether the view should be split
+     * @param terminalDisplay The container to insert
+     * @param containerOrientation Specifies whether the view should be split
      *                    horizontally or vertically.  If the orientation
      *                    is the same as the ViewSplitter into which the
      *                    container is to be inserted, or if the splitter
@@ -64,11 +69,10 @@ public:
      *                    is different, then a new child splitter
      *                    will be created, into which the container will
      *                    be inserted.
+     * @param behavior Specifies whether to add new terminal after current
+     *                 tab or at end.
      */
-    void addContainer(ViewContainer *container, Qt::Orientation orientation);
-
-    /** Removes a container from the splitter.  The container is not deleted. */
-    void removeContainer(ViewContainer *container);
+    void addTerminalDisplay(TerminalDisplay* terminalDisplay, Qt::Orientation containerOrientation, AddBehavior behavior = AddBehavior::AddAfter);
 
     /** Returns the child ViewSplitter widget which currently has the focus */
     ViewSplitter *activeSplitter();
@@ -81,28 +85,19 @@ public:
      * which currently has the focus.
      *
      * To find the currently active container, use
-     * mySplitter->activeSplitter()->activeContainer() where mySplitter
-     * is the ViewSplitter widget at the top of the hierarchy.
+     * mySplitter->activeSplitter()->activeTerminalDisplay() where
+     * mySplitter is the ViewSplitter widget at the top of the hierarchy.
      */
-    ViewContainer *activeContainer() const;
+    TerminalDisplay *activeTerminalDisplay() const;
 
-    /**
-     * Gives the focus to the active view in the specified container
+    /** Makes the current TerminalDisplay expanded to 100% of the view
      */
-    void setActiveContainer(ViewContainer *container);
+    void toggleMaximizeCurrentTerminal();
 
-    /**
-     * Returns a list of the containers held by this splitter
-     */
-    QList<ViewContainer *> containers() const
-    {
-        return _containers;
-    }
+    void handleMinimizeMaximize(bool maximize);
 
-    /**
-     * Gives the focus to the active view in the next container
-     */
-    void activateNextContainer();
+    /** returns the splitter that has no splitter as a parent. */
+    ViewSplitter *getToplevelSplitter();
 
     /**
      * Changes the size of the specified @p container by a given @p percentage.
@@ -113,76 +108,39 @@ public:
      * The sizes of the remaining containers are increased or decreased
      * uniformly to maintain the width of the splitter.
      */
-    void adjustContainerSize(ViewContainer *container, int percentage);
+    void adjustActiveTerminalDisplaySize(int percentage);
 
-    /**
-     * Gives the focus to the active view in the previous container
-     */
-    void activatePreviousContainer();
+    void focusUp();
+    void focusDown();
+    void focusLeft();
+    void focusRight();
 
-    /**
-     * Specifies whether the view may be split recursively.
-     *
-     * If this is false, all containers will be placed into the same
-     * top-level splitter.  Adding a container with an orientation
-     * which is different to that specified when adding the previous
-     * containers will change the orientation for all dividers
-     * between containers.
-     *
-     * If this is true, adding a container to the view splitter with
-     * an orientation different to the orientation of the previous
-     * area will result in the previously active container being
-     * replaced with a new splitter containing the active container
-     * and the newly added container.
-     */
-    void setRecursiveSplitting(bool recursive);
+    void handleFocusDirection(Qt::Orientation orientation, int direction);
 
-    /**
-     * Returns whether the view may be split recursively.
-     * See setRecursiveSplitting()
-     */
-    bool recursiveSplitting() const;
-
-Q_SIGNALS:
-    /** Signal emitted when the last child widget is removed from the splitter */
-    void empty(ViewSplitter *splitter);
-
-    /**
-     * Signal emitted when the containers held by this splitter become empty, this
-     * differs from the empty() signal which is only emitted when all of the containers
-     * are deleted.  This signal is emitted even if there are still container widgets.
-     *
-     * TODO: This does not yet work recursively (ie. when splitters inside splitters have empty containers)
-     */
-    void allContainersEmpty();
+    void childEvent(QChildEvent* event) override;
+    bool terminalMaximized() const { return m_terminalMaximized; }
 
 protected:
-    //virtual void focusEvent(QFocusEvent* event);
+    void dragEnterEvent(QDragEnterEvent *ev) override;
+    void dragMoveEvent(QDragMoveEvent *ev) override;
+    void dragLeaveEvent(QDragLeaveEvent * event) override;
+    void dropEvent(QDropEvent *ev) override;
+
+Q_SIGNALS:
+    void terminalDisplayDropped(TerminalDisplay *terminalDisplay);
 
 private:
-    // Adds container to splitter's internal list and
-    // connects signals and slots
-    void registerContainer(ViewContainer *container);
-    // Removes container from splitter's internal list and
-    // removes signals and slots
-    void unregisterContainer(ViewContainer *container);
+    /** recursively walks the object tree looking for Splitters and
+     * TerminalDisplays, hidding the ones that should be hidden.
+     * If a terminal display is not hidden in a subtree, we cannot
+     * hide the whole tree.
+     *
+     * @p currentTerminalDisplay the only terminal display that will still be visible.
+     */
+    bool hideRecurse(TerminalDisplay *currentTerminalDisplay);
 
     void updateSizes();
-
-private Q_SLOTS:
-    // Called to indicate that a child ViewContainer has been deleted
-    void containerDestroyed(ViewContainer *container);
-
-    // Called to indicate that a child ViewContainer is empty
-    void containerEmpty(ViewContainer *container);
-
-    // Called to indicate that a child ViewSplitter is empty
-    // (ie. all child widgets have been deleted)
-    void childEmpty(ViewSplitter *splitter);
-
-private:
-    QList<ViewContainer *> _containers;
-    bool _recursiveSplitting;
+    bool m_terminalMaximized = false;
 };
 }
 #endif //VIEWSPLITTER_H

@@ -24,32 +24,22 @@
 
 // Qt
 #include <QObject>
-#include <QPointer>
-#include <QHash>
-#include <QList>
+#include <QTabWidget>
 
 // Konsole
 #include "Profile.h"
+#include "ViewManager.h"
 
-class QStackedWidget;
-class QWidget;
-class QHBoxLayout;
-class QVBoxLayout;
-
-// TabbedViewContainer
 // Qt
 class QPoint;
 class QToolButton;
 class QMenu;
-class QDropEvent;
-
-// KDE
-class QMenu;
 
 namespace Konsole {
-class IncrementalSearchBar;
 class ViewProperties;
+class ViewManager;
 class TabbedViewContainer;
+
 /**
  * An interface for container widgets which can hold one or more views.
  *
@@ -60,152 +50,38 @@ class TabbedViewContainer;
  * to actually add or remove view widgets from the container widget, as well
  * as updating any navigation aids.
  */
-class ViewContainer : public QObject
+class KONSOLEPRIVATE_EXPORT TabbedViewContainer : public QTabWidget
 {
     Q_OBJECT
 
 public:
     /**
-     * This enum describes the options for positioning the
-     * container's navigation widget.
-     */
-    enum NavigationPosition {
-        /** Position the navigation widget above the views. */
-        NavigationPositionTop,
-        /** Position the navigation widget below the views. */
-        NavigationPositionBottom,
-        /** Position the navigation widget to the left of the views. */
-        NavigationPositionLeft,
-        /** Position the navigation widget to the right of the views. */
-        NavigationPositionRight
-    };
-
-    /**
      * Constructs a new view container with the specified parent.
      *
-     * @param position The initial position of the navigation widget
+     * @param connectedViewManager Connect the new view to this manager
      * @param parent The parent object of the container
      */
-    ViewContainer(NavigationPosition position, QObject *parent);
+    TabbedViewContainer(ViewManager *connectedViewManager, QWidget *parent);
 
     /**
      * Called when the ViewContainer is destroyed.  When reimplementing this in
      * subclasses, use object->deleteLater() to delete any widgets or other objects
      * instead of 'delete object'.
      */
-    ~ViewContainer() Q_DECL_OVERRIDE;
-
-    /** Returns the widget which contains the view widgets */
-    virtual QWidget *containerWidget() const = 0;
-
-    /**
-     * This enum describes the options for showing or hiding the
-     * container's navigation widget.
-     */
-    enum NavigationVisibility {
-        /** Always show the navigation widget. */
-        AlwaysShowNavigation,
-        /** Show the navigation widget only when the container has more than one view. */
-        ShowNavigationAsNeeded,
-        /** Always hide the navigation widget. */
-        AlwaysHideNavigation
-    };
-    /*
-     * Sets the visibility of the view container's navigation widget.
-     *
-     * The ViewContainer sub-class is responsible for ensuring that this
-     * setting is respected as views are added or removed from the
-     * container.
-     *
-     * ViewContainer sub-classes should reimplement the
-     * navigationVisibilityChanged() method to respond to changes
-     * of this property.
-     */
-    void setNavigationVisibility(NavigationVisibility mode);
-    /**
-     * Returns the current mode for controlling the visibility of the
-     * the view container's navigation widget.
-     */
-    NavigationVisibility navigationVisibility() const;
-
-    /**
-     * Sets the position of the navigation widget with
-     * respect to the main content area.
-     *
-     * Depending on the ViewContainer subclass, not all
-     * positions from the NavigationPosition enum may be
-     * supported.  A list of supported positions can be
-     * obtained by calling supportedNavigationPositions()
-     *
-     * ViewContainer sub-classes should re-implement the
-     * navigationPositionChanged() method to respond
-     * to changes of this property.
-     */
-    void setNavigationPosition(NavigationPosition position);
-
-    /**
-     * Returns the position of the navigation widget with
-     * respect to the main content area.
-     */
-    NavigationPosition navigationPosition() const;
-
-    /**
-     * Set whether tab width are expanding
-     */
-    void setNavigationTabWidthExpanding(bool expand);
-
-    /**
-     * Returns the list of supported navigation positions.
-     * The supported positions will depend upon the type of the
-     * navigation widget used by the ViewContainer subclass.
-     *
-     * The base implementation returns one item, NavigationPositionTop
-     */
-    virtual QList<NavigationPosition> supportedNavigationPositions() const;
-
-    /** Sets the navigation text mode
-     *  If mode is true, use the width of the title; otherwise use the
-     *  default width calculations.
-     */
-    void setNavigationTextMode(bool mode);
-
-    /** Sets the stylesheet for visual appearance
-     *
-     * The default implementation does nothing.
-     */
-    virtual void setStyleSheet(const QString &styleSheet)
-    {
-        Q_UNUSED(styleSheet);
-    }
+    ~TabbedViewContainer() Q_DECL_OVERRIDE;
 
     /** Adds a new view to the container widget */
-    void addView(QWidget *view, ViewProperties *navigationItem, int index = -1);
+    void addView(TerminalDisplay *view);
+    void addSplitter(ViewSplitter *splitter, int index = -1);
 
-    /** Removes a view from the container */
-    void removeView(QWidget *view);
+    /** splits the currently focused Splitter */
+    void splitView(TerminalDisplay *view, Qt::Orientation orientation);
 
-    /** Returns the ViewProperties instance associated with a particular view in the container */
-    ViewProperties *viewProperties(QWidget *view) const;
+    void setTabActivity(int index, bool activity);
 
-    /** Returns a list of the contained views */
-    const QList<QWidget *> views() const;
-
-    /**
-     * Returns the view which currently has the focus or 0 if none
-     * of the child views have the focus.
-     */
-    virtual QWidget *activeView() const = 0;
-
-    /**
-     * Changes the focus to the specified view and updates
-     * navigation aids to reflect the change.
-     */
-    virtual void setActiveView(QWidget *widget) = 0;
-
-    /**
-     * @return the search widget for this view
-     */
-    IncrementalSearchBar *searchBar();
+    void updateTitle(ViewProperties *item);
+    void updateIcon(ViewProperties *item);
+    void updateActivity(ViewProperties *item);
 
     /** Changes the active view to the next view */
     void activateNextView();
@@ -216,6 +92,10 @@ public:
     /** Changes the active view to the last view */
     void activateLastView();
 
+    void setCss(const QString& styleSheet = QString());
+    void setCssFromFile(const QUrl& url);
+
+    ViewSplitter *activeViewSplitter();
     /**
      * This enum describes the directions
      * in which views can be re-arranged within the container
@@ -237,251 +117,107 @@ public:
      */
     void moveActiveView(MoveDirection direction);
 
-    /** Enum describing extra UI features which can be
-     * provided by the container. */
-    enum Feature {
-        /** Provides a button which can be clicked to create new views quickly.
-         * When the button is clicked, a newViewRequest() signal is emitted. */
-        QuickNewView = 1,
-        /** Provides a button which can be clicked to close views quickly. */
-        QuickCloseView = 2
-    };
-    Q_DECLARE_FLAGS(Features, Feature)
-    /**
-     * Sets which additional features are enabled in this container.
-     * The default implementation does thing.  Sub-classes should re-implement this
-     * to hide or show the relevant parts of their UI
-     */
-    virtual void setFeatures(Features features);
-    /** Returns a bitwise-OR of enabled extra UI features.  See setFeatures() */
-    Features features() const;
-    /** Returns a bitwise-OR of supported extra UI features.  The default
-     * implementation returns 0 (no extra features) */
-    virtual Features supportedFeatures() const
-    {
-        return nullptr;
-    }
-
     /** Sets the menu to be shown when the new view button is clicked.
      * Only valid if the QuickNewView feature is enabled.
      * The default implementation does nothing. */
-    virtual void setNewViewMenu(QMenu *menu)
-    {
-        Q_UNUSED(menu);
-    }
+    // TODO: Reenable this later.
+    //    void setNewViewMenu(QMenu *menu);
+    void renameTab(int index);
+    ViewManager *connectedViewManager();
+    void currentTabChanged(int index);
+    void closeCurrentTab();
+    void wheelScrolled(int delta);
+    void currentSessionControllerChanged(SessionController *controller);
+    void tabDoubleClicked(int index);
+    void openTabContextMenu(const QPoint &point);
+    void setNavigationVisibility(ViewManager::NavigationVisibility navigationVisibility);
+    void moveTabToWindow(int index, QWidget *window);
+
+    void toggleMaximizeCurrentTerminal();
+    /* return the widget(int index) casted to TerminalDisplay*
+     *
+     * The only thing that this class holds are TerminalDisplays, so
+     * this is the only thing that should be used to retrieve widgets.
+     */
+    ViewSplitter *viewSplitterAt(int index);
+
+    void connectTerminalDisplay(TerminalDisplay *view);
+    void disconnectTerminalDisplay(TerminalDisplay *view);
+    void moveTabLeft();
+    void moveTabRight();
+
+    /**
+     * This enum describes where newly created tab should be placed.
+     */
+    enum NewTabBehavior {
+        /** Put newly created tab at the end. */
+        PutNewTabAtTheEnd = 0,
+        /** Put newly created tab right after current tab. */
+        PutNewTabAfterCurrentTab = 1
+    };
+
+    void setNavigationBehavior(int behavior);
+    void terminalDisplayDropped(TerminalDisplay* terminalDisplay);
+
+    QSize sizeHint() const override;
 
 Q_SIGNALS:
-    /** Emitted when the container is deleted */
-    void destroyed(ViewContainer *container);
-
     /** Emitted when the container has no more children */
-    void empty(ViewContainer *container);
+    void empty(TabbedViewContainer *container);
 
     /** Emitted when the user requests to open a new view */
     void newViewRequest();
 
     /** Requests creation of a new view, with the selected profile. */
-    void newViewRequest(Profile::Ptr);
+    void newViewWithProfileRequest(const Profile::Ptr&);
+
+    /** a terminalDisplay was dropped in a child Splitter */
 
     /**
      * Emitted when the user requests to move a view from another container
      * into this container.  If 'success' is set to true by a connected slot
      * then the original view will be removed.
      *
-     * @param index Index at which to insert the new view in the container or -1
-     * to append it.  This index should be passed to addView() when the new view
-     * has been created.
-     * @param id The identifier of the view.
-     * @param success The slot handling this signal should set this to true if the
-     * new view was successfully created.
-     * @param sourceContainer Initial move event Tabbed view container.
+     * @param index Index at which to insert the new view in the container
+     * or -1 to append it.  This index should be passed to addView() when
+     * the new view has been created.
+     * @param sessionControllerId The identifier of the view.
      */
-    void moveViewRequest(int index, int id, bool &success, TabbedViewContainer *sourceContainer);
+    void moveViewRequest(int index, int sessionControllerId);
 
     /** Emitted when the active view changes */
-    void activeViewChanged(QWidget *view);
+    void activeViewChanged(TerminalDisplay *view);
 
     /** Emitted when a view is added to the container. */
-    void viewAdded(QWidget *view, ViewProperties *properties);
+    void viewAdded(TerminalDisplay *view);
 
     /** Emitted when a view is removed from the container. */
-    void viewRemoved(QWidget *view);
+    void viewRemoved(TerminalDisplay *view);
+
+    /** detach the specific tab */
+    void detachTab(int tabIdx);
 
 protected:
-    /**
-     * Performs the task of adding the view widget
-     * to the container widget.
-     */
-    virtual void addViewWidget(QWidget *view, int index) = 0;
-    /**
-     * Performs the task of removing the view widget
-     * from the container widget.
-     */
-    virtual void removeViewWidget(QWidget *view) = 0;
+    // close tabs and unregister
+    void closeTerminalTab(int idx);
 
-    /**
-     * Called when the navigation display mode changes.
-     * See setNavigationVisibility
-     */
-    virtual void navigationVisibilityChanged(NavigationVisibility)
-    {
-    }
-
-    /**
-     * Called when the navigation tab width expanding option changes.
-     * See setNavigationTabWidthExpanding
-     */
-    virtual void navigationTabWidthExpandingChanged(bool)
-    {
-    }
-
-    /**
-     * Called when the navigation position changes to re-layout
-     * the container and place the navigation widget in the
-     * specified position.
-     */
-    virtual void navigationPositionChanged(NavigationPosition)
-    {
-    }
-
-    virtual void navigationTextModeChanged(bool)
-    {
-    }
-
-    /** Returns the widgets which are associated with a particular navigation item */
-    QList<QWidget *> widgetsForItem(ViewProperties *item) const;
-
-    /**
-     * Rearranges the order of widgets in the container.
-     *
-     * @param fromIndex Current index of the widget to move
-     * @param toIndex New index for the widget
-     */
-    virtual void moveViewWidget(int fromIndex, int toIndex);
-
+    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 private Q_SLOTS:
     void viewDestroyed(QObject *view);
-    void searchBarDestroyed();
+    void konsoleConfigChanged();
 
 private:
-    Q_DISABLE_COPY(ViewContainer)
+    void forgetView(ViewSplitter *view);
 
-    void forgetView(QWidget *view);
-
-    NavigationVisibility _navigationVisibility;
-    NavigationPosition _navigationPosition;
-    QList<QWidget *> _views;
-    QHash<QWidget *, ViewProperties *> _navigation;
-    Features _features;
-    IncrementalSearchBar *_searchBar;
-};
-Q_DECLARE_OPERATORS_FOR_FLAGS(ViewContainer::Features)
-
-class ViewContainerTabBar;
-class ViewManager;
-
-/**
- * An alternative tabbed view container which uses a QTabBar and QStackedWidget
- * combination for navigation instead of QTabWidget
- */
-class TabbedViewContainer : public ViewContainer
-{
-    Q_OBJECT
-
-public:
-    /**
-     * Constructs a new tabbed view container.  Supported positions
-     * are NavigationPositionTop and NavigationPositionBottom.
-     */
-    TabbedViewContainer(NavigationPosition position, ViewManager *connectedViewManager,
-                        QObject *parent);
-    ~TabbedViewContainer() Q_DECL_OVERRIDE;
-
-    QWidget *containerWidget() const Q_DECL_OVERRIDE;
-    QWidget *activeView() const Q_DECL_OVERRIDE;
-    void setActiveView(QWidget *view) Q_DECL_OVERRIDE;
-    QList<NavigationPosition> supportedNavigationPositions() const Q_DECL_OVERRIDE;
-    void setFeatures(Features features) Q_DECL_OVERRIDE;
-    Features supportedFeatures() const Q_DECL_OVERRIDE;
-    void setNewViewMenu(QMenu *menu) Q_DECL_OVERRIDE;
-    void setStyleSheet(const QString &styleSheet) Q_DECL_OVERRIDE;
-
-    // return associated view manager
-    ViewManager *connectedViewManager();
-
-protected:
-    void addViewWidget(QWidget *view, int index) Q_DECL_OVERRIDE;
-    void removeViewWidget(QWidget *view) Q_DECL_OVERRIDE;
-    void navigationVisibilityChanged(NavigationVisibility mode) Q_DECL_OVERRIDE;
-    void navigationPositionChanged(NavigationPosition position) Q_DECL_OVERRIDE;
-    void navigationTabWidthExpandingChanged(bool expand) Q_DECL_OVERRIDE;
-    void navigationTextModeChanged(bool useTextWidth) Q_DECL_OVERRIDE;
-    void moveViewWidget(int fromIndex, int toIndex) Q_DECL_OVERRIDE;
-
-private Q_SLOTS:
-    void updateTitle(ViewProperties *item);
-    void updateIcon(ViewProperties *item);
-    void updateActivity(ViewProperties *item);
-    void currentTabChanged(int index);
-    void closeCurrentTab();
-    void wheelScrolled(int delta);
-
-    void tabDoubleClicked(int index);
-    void openTabContextMenu(const QPoint &point);
-    void tabContextMenuCloseTab();
-    void tabContextMenuRenameTab();
-    void tabContextMenuDetachTab();
-    void startTabDrag(int index);
-    void querySourceIndex(const QDropEvent *event, int &sourceIndex);
-    void onMoveViewRequest(int index, const QDropEvent *event, bool &success,
-                           TabbedViewContainer *sourceTabbedContainer);
-
-Q_SIGNALS:
-    void detachTab(ViewContainer *self, QWidget *activeView);
-    void closeTab(ViewContainer *self, QWidget *activeView);
-
-private:
-    Q_DISABLE_COPY(TabbedViewContainer)
-
-    void dynamicTabBarVisibility();
-    void setTabBarVisible(bool visible);
-    void setTabActivity(int index, bool activity);
-    void renameTab(int index);
-    void updateVisibilityOfQuickButtons();
-    void widgetRemoved(int index);
-
-    ViewContainerTabBar *_tabBar;
-    QPointer<QStackedWidget> _stackWidget;
-    QPointer<QWidget> _containerWidget;
     ViewManager *_connectedViewManager;
-    QVBoxLayout *_layout;
-    QHBoxLayout *_tabBarLayout;
+    QMenu *_contextPopupMenu;
     QToolButton *_newTabButton;
     QToolButton *_closeTabButton;
     int _contextMenuTabIndex;
-    QMenu *_contextPopupMenu;
+    ViewManager::NavigationVisibility _navigationVisibility;
+    NewTabBehavior _newTabBehavior;
 };
 
-/** A plain view container with no navigation display */
-class StackedViewContainer : public ViewContainer
-{
-    Q_OBJECT
 
-public:
-    explicit StackedViewContainer(QObject *parent);
-    ~StackedViewContainer() Q_DECL_OVERRIDE;
-
-    QWidget *containerWidget() const Q_DECL_OVERRIDE;
-    QWidget *activeView() const Q_DECL_OVERRIDE;
-    void setActiveView(QWidget *view) Q_DECL_OVERRIDE;
-
-protected:
-    void addViewWidget(QWidget *view, int index) Q_DECL_OVERRIDE;
-    void removeViewWidget(QWidget *view) Q_DECL_OVERRIDE;
-
-private:
-    QPointer<QWidget> _containerWidget;
-    QPointer<QStackedWidget> _stackWidget;
-};
 }
 #endif //VIEWCONTAINER_H

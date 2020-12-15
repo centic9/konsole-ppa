@@ -67,6 +67,7 @@ const Profile::PropertyInfo Profile::DefaultPropertyNames[] = {
     , { LocalTabTitleFormat , "tabtitle" , nullptr , QVariant::String }
     , { RemoteTabTitleFormat , "RemoteTabTitleFormat" , GENERAL_GROUP , QVariant::String }
     , { ShowTerminalSizeHint , "ShowTerminalSizeHint" , GENERAL_GROUP , QVariant::Bool }
+    , { DimWhenInactive , "DimWhenInactive" , GENERAL_GROUP , QVariant::Bool }
     , { StartInCurrentSessionDir , "StartInCurrentSessionDir" , GENERAL_GROUP , QVariant::Bool }
     , { SilenceSeconds, "SilenceSeconds" , GENERAL_GROUP , QVariant::Int }
     , { TerminalColumns, "TerminalColumns" , GENERAL_GROUP , QVariant::Int }
@@ -94,6 +95,7 @@ const Profile::PropertyInfo Profile::DefaultPropertyNames[] = {
 
     // Terminal Features
     , { UrlHintsModifiers , "UrlHintsModifiers" , TERMINAL_GROUP , QVariant::Int }
+    , { ReverseUrlHints , "ReverseUrlHints" , TERMINAL_GROUP , QVariant::Bool }
     , { BlinkingTextEnabled , "BlinkingTextEnabled" , TERMINAL_GROUP , QVariant::Bool }
     , { FlowControlEnabled , "FlowControlEnabled" , TERMINAL_GROUP , QVariant::Bool }
     , { BidiRenderingEnabled , "BidiRenderingEnabled" , TERMINAL_GROUP , QVariant::Bool }
@@ -121,6 +123,7 @@ const Profile::PropertyInfo Profile::DefaultPropertyNames[] = {
     , { PasteFromClipboardEnabled , "PasteFromClipboardEnabled" , INTERACTION_GROUP , QVariant::Bool }
     , { MiddleClickPasteMode, "MiddleClickPasteMode" , INTERACTION_GROUP , QVariant::Int }
     , { MouseWheelZoomEnabled, "MouseWheelZoomEnabled", INTERACTION_GROUP, QVariant::Bool }
+    , { AlternateScrolling, "AlternateScrolling", INTERACTION_GROUP, QVariant::Bool }
 
     // Encoding
     , { DefaultEncoding , "DefaultEncoding" , ENCODING_GROUP , QVariant::String }
@@ -164,6 +167,7 @@ void Profile::useFallback()
     setProperty(LocalTabTitleFormat, QStringLiteral("%d : %n"));
     setProperty(RemoteTabTitleFormat, QStringLiteral("(%u) %H"));
     setProperty(ShowTerminalSizeHint, true);
+    setProperty(DimWhenInactive, false);
     setProperty(StartInCurrentSessionDir, true);
     setProperty(MenuIndex, QStringLiteral("0"));
     setProperty(SilenceSeconds, 10);
@@ -172,9 +176,10 @@ void Profile::useFallback()
     setProperty(TerminalMargin, 1);
     setProperty(TerminalCenter, false);
     setProperty(MouseWheelZoomEnabled, true);
+    setProperty(AlternateScrolling, true);
 
     setProperty(KeyBindings, QStringLiteral("default"));
-    setProperty(ColorScheme, QStringLiteral("Linux")); //use DarkPastels when is start support blue ncurses UI properly
+    setProperty(ColorScheme, QStringLiteral("Breeze"));
     setProperty(Font, QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     setProperty(HistoryMode, Enum::FixedSizeHistory);
@@ -184,6 +189,7 @@ void Profile::useFallback()
 
     setProperty(FlowControlEnabled, true);
     setProperty(UrlHintsModifiers, 0);
+    setProperty(ReverseUrlHints, false);
     setProperty(BlinkingTextEnabled, true);
     setProperty(UnderlineLinksEnabled, true);
     setProperty(UnderlineFilesEnabled, false);
@@ -193,7 +199,7 @@ void Profile::useFallback()
     setProperty(CopyTextAsHTML, true);
     setProperty(TrimLeadingSpacesInSelectedText, false);
     setProperty(TrimTrailingSpacesInSelectedText, false);
-    setProperty(DropUrlsAsText, false);
+    setProperty(DropUrlsAsText, true);
     setProperty(PasteFromSelectionEnabled, true);
     setProperty(PasteFromClipboardEnabled, false);
     setProperty(MiddleClickPasteMode, Enum::PasteFromX11Selection);
@@ -217,7 +223,7 @@ void Profile::useFallback()
     // Fallback should not be shown in menus
     setHidden(true);
 }
-Profile::Profile(Profile::Ptr parent)
+Profile::Profile(const Profile::Ptr &parent)
     : _propertyValues(QHash<Property, QVariant>())
     , _parent(parent)
     , _hidden(false)
@@ -254,7 +260,7 @@ void Profile::setHidden(bool hidden)
     _hidden = hidden;
 }
 
-void Profile::setParent(Profile::Ptr parent)
+void Profile::setParent(const Profile::Ptr &parent)
 {
     _parent = parent;
 }

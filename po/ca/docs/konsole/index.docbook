@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % Catalan  "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -58,18 +70,27 @@
 ><year
 >2016</year
 ><year
->2017</year>
+>2017</year
+><year
+>2018</year>
 <holder
 >&Kurt.Hindenburg;</holder>
+</copyright>
+
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
 </copyright>
 
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->2017-01-28</date>
+>16 de juny de 2019</date>
 <releaseinfo
->Applications 17.04</releaseinfo>
+>Aplicacions 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -154,7 +175,7 @@
 <title
 >Perfils</title>
 <para
->Els perfils permeten a l'usuari ràpida i fàcilment automatitzar l'execució d'ordres comuns. Com exemples es poden incloure: <itemizedlist>
+>Els perfils permeten a l'usuari ràpida i fàcilment automatitzar l'execució d'ordres comuns. Com a exemples es poden incloure: <itemizedlist>
 <listitem
 ><para
 >ssh en una altra màquina.</para
@@ -193,6 +214,13 @@
 
 <listitem
 ><para
+>Alterna a la pàgina <guibutton
+>Perfils</guibutton
+>.</para
+></listitem>
+
+<listitem
+><para
 >Feu clic sobre el botó <guibutton
 >Perfil nou...</guibutton
 >.</para
@@ -207,7 +235,7 @@
 
 <listitem
 ><para
->Introduïu una ordre de la mateixa manera en que ho faríeu si obríssiu un nou terminal i escriviu l'ordre. Per al nostre primer exemple, escriviu <userinput
+>Introduïu una ordre de la mateixa manera en què ho faríeu si obríssiu un nou terminal i escriviu l'ordre. Per al nostre primer exemple, escriviu <userinput
 ><command
 >ssh</command
 > <replaceable
@@ -269,7 +297,7 @@
 >Tots els clics amb el &BER; s'envien a l'aplicació amb suport per a l'ús del ratolí executada en el &konsole;. Si una aplicació pot reaccionar als clics del ratolí, el &konsole; ho indicarà mostrant una fletxa de cursor. Si no, mostrarà un cursor amb forma de I (una barra).</para>
 
 <para
->Mantenint premut el &BER; i arrossegant el punter per la pantalla amb una aplicació sense suport de l'ús del ratolí seleccionareu una regió del text. Mentre s'arrossega el punter, el text marcat es mostrarà ressaltat per a que es vegi millor. Seleccioneu <guimenuitem
+>Mantenint premut el &BER; i arrossegant el punter per la pantalla amb una aplicació sense suport de l'ús del ratolí seleccionareu una regió del text. Mentre s'arrossega el punter, el text marcat es mostrarà ressaltat perquè es vegi millor. Seleccioneu <guimenuitem
 >Copia</guimenuitem
 > des del menú <guimenu
 >Edita</guimenu
@@ -304,11 +332,11 @@
 
 <listitem
 ><para
->Prement el &BMR; s'enganxarà el text actual en el porta-retalls. Mantenint premuda la tecla &Ctrl; mentre es prem el &BMR; s'enganxarà el text i s'afegirà una línia nova. El qual és convenient per a executar una ordre enganxada amb rapidesa, però pot ser perillós, de manera que s'ha d'utilitzar amb precaució. </para>
+>Prement el &BMR; s'enganxarà el text actual en el porta-retalls. Mantenint premuda la tecla &Ctrl; mentre es prem el &BMR; s'enganxarà el text i s'afegirà una línia nova. El qual és còmode per a executar una ordre enganxada amb rapidesa, però pot ser perillós, de manera que s'ha d'utilitzar amb precaució. </para>
 
 <note
 ><para
->Si teniu un ratolí amb tan sols dos botons, al prémer ambdós a la vegada s'emularà el &BMR; d'un ratolí amb tres botons.</para
+>Si teniu un ratolí amb tan sols dos botons, en prémer ambdós a la vegada s'emularà el &BMR; d'un ratolí amb tres botons.</para
 ></note>
 
 <para
@@ -397,7 +425,7 @@
 </itemizedlist>
 
 <para
->En una aplicació amb suport de ratolí, prémer la tecla &Maj; a la vegada que el &BDR; per a que aparegui el menú emergent. </para>
+>En una aplicació amb suport de ratolí, prémer la tecla &Maj; a la vegada que el &BDR; perquè aparegui el menú emergent. </para>
 
 </listitem>
 </varlistentry>
@@ -409,8 +437,7 @@
 <title
 >Arrossegar i deixar</title>
 <para
->Si arrossegueu un fitxer, carpeta o &URL; sobre una finestra del &konsole;, apareixerà un menú contextual amb les següents accions: </para
->  
+>Si arrossegueu un fitxer, carpeta o &URL; sobre una finestra del &konsole;, apareixerà un menú contextual amb les següents accions: </para>
 <screenshot>
 <screeninfo
 >Menú contextual «Arrossega i deixa»</screeninfo>
@@ -1066,14 +1093,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1082,7 +1109,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1096,7 +1123,7 @@ Various search improvements
 > <guimenu
 >Edita</guimenu
 ><guimenuitem
->Cerca següent</guimenuitem
+>Cerca la següent</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1119,7 +1146,7 @@ Various search improvements
 > <guimenu
 >Edita</guimenu
 ><guimenuitem
->Cerca anterior</guimenuitem
+>Cerca l'anterior</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1201,7 +1228,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Maj;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1302,7 +1329,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Maj;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1317,7 +1344,30 @@ Various search improvements
 >Obre la pestanya actual en una finestra a part.</action>
 </para
 ><para
->Sortir de la finestra anterior del &konsole; no afectarà a la finestra que s'acaba de crear. </para
+>Sortir de la finestra anterior del &konsole; no afectarà la finestra que s'acaba de crear. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Maj;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualitza</guimenu
+><guimenuitem
+>Separa la vista actual</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Obre la vista dividida actual en una finestra a part.</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1390,6 +1440,23 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Visualitza</guimenu
+><guimenuitem
+>Només de lectura</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Alterna la sessió a només de lectura: no s'acceptarà cap entrada, arrossegar i deixar anar estarà inhabilitat. </action
+></para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;<keycap
@@ -1409,6 +1476,30 @@ Various search improvements
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>O</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualitza</guimenu
+><guimenuitem
+>Reinicia la mida del tipus de lletra</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Reinicia la mida del tipus de lletra del text al valor del perfil predeterminat.</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1574,9 +1665,10 @@ Various search improvements
 ><action
 >Obre l'editor de les adreces d'interès.</action
 ></para>
-
 <note
 ><para
+>El programa keditbookmarks haurà d'estar instal·lat perquè aparegui aquest element del menú.</para>
+<para
 >Podeu utilitzar l'editor d'adreces d'interès per afegir manualment els &URL;. Actualment el &konsole; accepta els següents: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1890,6 +1982,10 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 >%u : nom d'usuari</para
+></listitem>
+<listitem
+><para
+>%B : secretisme de l'indicatiu de Bourne de l'usuari ($ = usuari normal, # = superusuari)</para
 ></listitem>
 <listitem
 ><para
@@ -2292,7 +2388,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->Per a més informació, visiteu la <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Per a més informació, visiteu la <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >&konsole; API Reference</ulink
 >. </para>
 </listitem>
@@ -2351,7 +2447,7 @@ When the window title from current session is emtpy, fallback to using
 >El &konsole; té suport per a nombrosos mètodes que es poden utilitzar amb &DBus;. </para>
 <para
 >Hi ha dues maneres d'utilitzar la interfície de &DBus;: L'&IGU; de les &Qt; és <application
->dbusviewer</application
+>qdbusviewer</application
 > i la línia d'ordres <application
 >qdbus</application
 >. </para>
@@ -2465,9 +2561,409 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->Per a més informació, si us plau, visiteu <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Per a més informació, si us plau, visiteu <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >La guia d'aprenentatge de &DBus;</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Vinculació de les tecles amb la terminal</title>
+
+<sect1>
+<title
+>Com utilitzar la vinculació de tecles al &konsole;</title>
+
+<sect2 id="intro">
+<title
+>Introducció</title>
+<para
+>El &konsole; utilitza fitxers *.keytab per a traduir les combinacions de tecles en caràcters de control i seqüències d'escapament que s'envien a l'intèrpret d'ordres o a programes interactius (generalment programes que utilitzen la memòria intermèdia d'una pantalla alternativa, &pex;, <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>) executant-se a l'intèrpret d'ordres.</para>
+
+<para
+>Els usuaris poden personalitzar els ajustaments dels vincles de tecla al &konsole; utilitzant l'Editor per a la vinculació de tecles. Es pot configurar una combinació de tecles per enviar un control específic o una seqüència d'escapament al terminal.</para>
+
+<para
+>Podeu obrir l'Editor per a la vinculació de tecles des de l'entrada del menú <menuchoice
+><guimenu
+>Arranjament</guimenu
+><guimenuitem
+>Edita el perfil actual...</guimenuitem
+></menuchoice
+>, i anant a la pestanya <guilabel
+>Teclat</guilabel
+>. Allà hi ha els esquemes de vinculació de tecles que per omissió apareixen al &konsole;.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Combinacions de tecles i modes</title>
+
+<para
+>Les combinacions de tecles segueixen el patró: <programlisting
+>Tecla (+|-) modes</programlisting>
+</para>
+
+<para
+>per exemple: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Els noms de les tecles es defineixen en el fitxer de capçalera qnamespace.h, amb el prefix <quote
+>Qt::Key_</quote
+> suprimit, per a una llista dels noms de tecla, consulteu l'<ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>enumeració de Qt::Key a la documentació de les &Qt;</ulink
+>.</para>
+
+<para
+>Un signe de <quote
+>+</quote
+> precedint un nom de mode, voldrà dir que aquest mode està <emphasis
+>establert</emphasis
+>; per a una tecla modificadora, això vol dir que s'ha de prémer, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està en vigor (&ead;, actiu). Per exemple, <quote
+>+Ctrl</quote
+> vol dir que la combinació de tecles només funcionarà si es prem la tecla &Ctrl;.</para>
+
+<para
+>Un signe de <quote
+>-</quote
+> precedint un nom de mode, voldrà dir que aquest mode es <emphasis
+>reinicia</emphasis
+>; bàsicament, això és tot el contrari de posar <quote
+>+</quote
+> abans d'un nom de mode, de manera que per a una tecla modificadora això voldrà dir que no s'ha de prémer la tecla, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està inactiu. Per exemple, <quote
+>-Ctrl</quote
+> voldrà dir que la combinació de tecles només funcionarà si <emphasis
+>no</emphasis
+> es prem la tecla &Ctrl;.</para>
+
+<note>
+<para
+>Si el nom d'un mode no està present en una combinació de tecles, s'ignorarà el seu estat.</para>
+</note>
+
+<para
+>Els modes admesos per a les vinculacions de tecles es llisten a continuació:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>Es poden utilitzar un o més d'aquests modes en una combinació de tecles, si s'estableix algun d'ells, la combinació de tecles utilitzarà aquesta tecla modificadora, respectivament; i viceversa si es reinicia</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Si aquest mode és estableix, la combinació de tecles utilitzarà qualsevol tecla modificadora (qualsevol de les tres tecles modificadores anteriors); i viceversa si es reinicia</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Si aquest mode és estableix, el &konsole; enviarà seqüències d'escapament i de control ANSI</para>
+<para
+>Si es reinicia amb aquest mode, el &konsole; enviarà seqüències d'escapament i de control VT52</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Si aquest mode és estableix, la combinació de tecles només afectarà els programes interactius que utilitzen la memòria intermèdia d'una pantalla alternativa</para>
+<para
+>Si es reinicia amb aquest mode, la combinació de tecles només afectarà la terminal quan s'utilitzi la memòria intermèdia d'una pantalla normal</para>
+
+<note>
+<para
+>El &konsole; utilitza dues memòries intermèdies de pantalla:</para>
+<itemizedlist>
+<listitem>
+<para
+>La memòria intermèdia d'una pantalla normal (per omissió): permet desplaçar-vos per veure les línies anteriors de la sortida, aquest és la memòria intermèdia predeterminada que normalment feu servir per executar ordres, &etc;</para>
+</listitem>
+<listitem>
+<para
+>La memòria intermèdia d'una pantalla alternativa: la terminal canviarà a aquesta memòria intermèdia quan executeu un programa interactiu (&pex;, <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+>, &etc;)</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>KeyPad</term>
+<listitem>
+<para
+>Si aquest mode és estableix, la combinació de tecles utilitzarà una tecla en el teclat numèric. Aquest mode és útil per a distingir entre les tecles del teclat i les tecles del teclat numèric. Per exemple, quan Bloq Núm està <emphasis
+>actiu</emphasis
+>, podeu configurar dues combinacions de tecles separades, una amb la tecla <quote
+>1</quote
+> del teclat (normalment sota la tecla <keycap
+>F1</keycap
+>) i l'altra amb la tecla <quote
+>1</quote
+> del teclat numèric. El mateix concepte s'aplica quan Bloq Núm està <emphasis
+>desactivat</emphasis
+> per a les tecles Fi, Inici, tecles del cursor, &etc; al teclat numèric</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Aquest mode implementa el <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>Mode de tecles del cursor (DECCKM)</ulink
+> de VT100. Controla les seqüències d'escapament que s'envia per a cada tecla del cursor (<keycap
+>Fletxa amunt</keycap
+>, <keycap
+>Fletxa avall</keycap
+>, <keycap
+>Fletxa dreta</keycap
+>, <keycap
+>Fletxa esquerra</keycap
+>), depenent de si aquest mode està establert o reiniciat</para>
+<para
+>Per omissió, el &konsole; segueix el comportament de XTerm de tractar les tecles <keycap
+>Inici</keycap
+> i <keycap
+>Fi</keycap
+> com a tecles de cursor respecte a DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Si aquest mode és estableix, la combinació de tecles només funcionarà quan el teclat numèric es trobi en el mode d'aplicació (DECKPAM)</para>
+<para
+>Si aquest mode és reinicia, la combinació de tecles només funcionarà quan el teclat numèric es trobi en el mode numèric (DECKPNM)</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NewLine</term>
+<listitem>
+<para
+>Si aquest mode és estableix, la tecla <keycap
+>Retorn</keycap
+> del teclat numèric enviarà tant el retorn de carro «\r» com els caràcters de control de línia nova «\n»</para>
+<para
+>Si aquest mode és reinicia, la tecla <keycap
+>Retorn</keycap
+> només enviarà un retorn de carro «\r»</para>
+<para
+>El mateix s'aplica a la tecla <keycap
+>Retorn</keycap
+> del teclat numèric</para>
+<para
+>Aquest mode emula el <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>LNM - Mode salt de línia/línia nova</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Tingueu en compte que cada combinació de tecles i els modes (estableix/reinicia) haurà de ser única. Per exemple, considereu les dues regles següents:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>El &konsole; <emphasis
+>no</emphasis
+> acceptarà la regla amb la lletra petita <quote
+>a</quote
+>, haureu d'afegir un <quote
+>-Shift</quote
+> a aquesta regla perquè funcioni.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>El camp de sortida</title>
+
+<para
+>Al camp de sortida hi podeu afegir les seqüències d'escapament o caràcters de control que voleu que el &konsole; enviï al terminal quan es premi la combinació de tecles associada.</para>
+
+<para
+>També podeu utilitzar qualsevol de les paraules clau següents, cadascuna de les quals té un significat especial al &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : desplaça una línia amunt al cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : desplaça una pàgina amunt al cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : desplaça una línia avall al cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : desplaça una pàgina avall al cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : desplaça amunt fins al començament del cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : desplaça avall fins al final del cau de desplaçament de l'historial de l'intèrpret d'ordres</para
+></listitem>
+</itemizedlist>
+
+<para
+>També podeu utilitzar cadenes amb sintaxi de cadena C; podeu utilitzar les següents seqüències d'escapada:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escapada</para
+></listitem>
+<listitem
+><para
+>\\ : Barra inversa</para
+></listitem>
+<listitem
+><para
+>\" : Cometes</para
+></listitem>
+<listitem
+><para
+>\t : Tabulació</para
+></listitem>
+<listitem
+><para
+>\r : Retorn de carro</para
+></listitem>
+<listitem
+><para
+>\n : Línia nova</para
+></listitem>
+<listitem
+><para
+>\b : Retrocés</para
+></listitem>
+<listitem>
+<para
+>\xHH : on HH són dos dígits hexadecimals</para>
+<tip>
+<para
+>Això es pot utilitzar per enviar caràcters de control ASCII, &pex;, <quote
+>\x00</quote
+> és el caràcter NUL</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Altres recursos del sistema</title>
+<para
+>Hi ha altres recursos del sistema que poden afectar les vinculacions de tecles amb la terminal:</para>
+<itemizedlist>
+<listitem>
+<para
+>Consulteu la base de dades <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> o <ulink url="man:termcap(5)"
+>termcap</ulink
+> per a les seqüències d'escapament i els caràcters de control esperats que se suposa que envia cada combinació de tecles.</para>
+</listitem>
+<listitem>
+<para
+>És probable que el vostre sistema tingui altres bases de dades de teclat que també calgui sincronitzar, (&pex;, <ulink url="man:bash(1)"
+>/etc/inputrc i readline</ulink
+> per a l'intèrpret d'ordres <application
+>BASH</application
+>), ja que afecten les operacions (interaccions) lligades amb les combinacions de tecles.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Informació relacionada</title>
+<para
+>Per obtenir més informació sobre les seqüències d'escapament i els caràcters de control, consulteu la documentació següent:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>La guia d'usuari per a VT100</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>La guia d'usuari per a VT102</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>L'entenedora i indispensable documentació <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>Seqüències de control de XTerm</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2483,7 +2979,7 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->Per a més informació, considereu llegir la <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
+>Per a més informació, considereu llegir la <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
 >pàgina pels fulls d'estil de les &Qt;</ulink
 > </para>
 
@@ -2557,7 +3053,7 @@ QTabBar::tab {
 
 <chapter id="faqtips">
 <title
->Sabíeu que? Qüestions comuns i més</title>
+>Sabíeu que? Qüestions comunes i més</title>
 
 <sect1 id="didyouknow">
 <title
@@ -2662,7 +3158,7 @@ CommonDirNames=nom1,nom2,nom3...
 
 <sect1 id="commonissues">
 <title
->Qüestions comuns</title>
+>Qüestions comunes</title>
 <itemizedlist>
 
 <listitem>
@@ -2675,7 +3171,7 @@ CommonDirNames=nom1,nom2,nom3...
 
 <listitem
 ><para
->Des del KDE4 totes les pestanyes utilitzen el mateix identificador de procés. Això té l'efecte secundari que si el procés d'una pestanya té problemes, totes les altres també en poden tenir. </para>
+>Des del KDE 4 totes les pestanyes utilitzen el mateix identificador de procés. Això té l'efecte secundari que si el procés d'una pestanya té problemes, totes les altres també en poden tenir. </para>
 <para
 >Això és més notori quan una ordre que es connecta a un dispositiu extern o un sistema (ssh, nfs) té problemes. </para
 ></listitem>
@@ -2684,7 +3180,7 @@ CommonDirNames=nom1,nom2,nom3...
 ><para
 >El &konsole; tracta als arguments després de l'opció <option
 >-e</option
-> com una ordre i els executa directament, en lloc d'analitzar-los i, possiblement, dividir-los en sub-ordres per a la seva execució. Això és diferent de xterm. </para>
+> com una ordre i els executa directament, en lloc d'analitzar-los i, possiblement, dividir-los en subordres per a la seva execució. Això és diferent de xterm. </para>
 
 <para>
     <itemizedlist mark='opencircle'>
@@ -2722,7 +3218,7 @@ CommonDirNames=nom1,nom2,nom3...
 ><para
 >L'opció <option
 >--new-tab</option
-> de vegades es comporta de forma estranya. Pot crear una finestra nova, o una pestanya nova en una altra finestra existent del &konsole;, en lloc de a la finestra del &konsole; actual. </para>
+> de vegades es comporta de forma estranya. Pot crear una finestra nova, o una pestanya nova en una altra finestra existent del &konsole;, en lloc de la finestra del &konsole; actual. </para>
 <para
 >Aquest comportament és estrany, però no és necessàriament erroni. Aquesta opció intenta tornar a utilitzar les finestres existents del &konsole;, però no totes les finestres del &konsole; són reutilitzables. Totes les finestres del &konsole; obertes a través del &krunner; són reutilitzables, mentre que la majoria de les finestres del &konsole; obertes des de la línia d'ordres no ho són. </para>
 </listitem>
@@ -2762,8 +3258,7 @@ CommonDirNames=nom1,nom2,nom3...
 
 <para
 >Traductor/Revisor de la documentació: &credits.Antoni.Bella;</para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title
@@ -2780,25 +3275,25 @@ CommonDirNames=nom1,nom2,nom3...
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >Pàgina web del &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >Llista de correu del &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >El &kde; a FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >El &kde; a &Solaris;</ulink
 ></para
 ></listitem>

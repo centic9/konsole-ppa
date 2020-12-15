@@ -20,13 +20,22 @@
 // Own
 #include "DBusTest.h"
 #include "../Session.h"
-#include <KProcess>
+#include "../Profile.h"
+#include "../ProfileWriter.h"
+
+// Qt
+#include <QProcess>
+#include <QSignalSpy>
+#include <QRandomGenerator>
+#include <QStandardPaths>
 
 using namespace Konsole;
 
 /* Exec a new Konsole and grab its dbus */
 void DBusTest::initTestCase()
 {
+    qRegisterMetaType<QProcess::ExitStatus>();
+
     const QString interfaceName = QStringLiteral("org.kde.konsole");
     QDBusConnectionInterface *bus = nullptr;
     QStringList konsoleServices;
@@ -49,19 +58,34 @@ void DBusTest::initTestCase()
         }
     }
 
+    // Create test profile
+    auto profile = Profile::Ptr(new Profile());
+    auto profileWriter = new ProfileWriter();
+
+    do {
+        _testProfileName = QStringLiteral("konsole-dbus-test-profile-%1")
+                                   .arg(QRandomGenerator::global()->generate());
+        profile->setProperty(Profile::UntranslatedName, _testProfileName);
+        profile->setProperty(Profile::Name, _testProfileName);
+        _testProfilePath = profileWriter->getPath(profile);
+    } while (QFile::exists(_testProfilePath));
+    _testProfileEnv = QStringLiteral("TEST_PROFILE=%1").arg(_testProfileName);
+    profile->setProperty(Profile::Environment, QStringList(_testProfileEnv));
+    // %D = Current Directory (Long) - hacky way to check current directory
+    profile->setProperty(Profile::LocalTabTitleFormat, QStringLiteral("%D"));
+    profileWriter->writeProfile(_testProfilePath, profile);
+
     // Create a new Konsole with a separate process id
-    int pid = KProcess::startDetached(QStringLiteral("konsole"),
-                                      QStringList(QStringLiteral("--separate")));
-    if (pid == 0) {
+    _process = new QProcess;
+    _process->setProcessChannelMode(QProcess::ForwardedChannels);
+    _process->start(QStringLiteral("konsole"), QStringList(QStringLiteral("--separate")));
+
+    if (!_process->waitForStarted()) {
         QFAIL(QStringLiteral("Unable to exec a new Konsole").toLatin1().data());
     }
 
     // Wait for above Konsole to finish starting
-#if defined(HAVE_USLEEP)
-    usleep(5 * 1000);
-#else
-    sleep(5);
-#endif
+    QThread::sleep(5);
 
     serviceReply = bus->registeredServiceNames();
     QVERIFY2(serviceReply.isValid(), "SessionBus interfaces not available");
@@ -91,18 +115,27 @@ void DBusTest::initTestCase()
  */
 void DBusTest::cleanupTestCase()
 {
+    // Remove test profile
+    QFile::remove(_testProfilePath);
+
     // Need to take care of when user has CloseAllTabs=False otherwise
     // they will get a popup dialog when we try to close this.
+    QSignalSpy quitSpy(_process, SIGNAL(finished(int,QProcess::ExitStatus)));
 
+    // Do not use QWidget::close(), as it shows question popup when
+    // CloseAllTabs is set to false (default).
     QDBusInterface iface(_interfaceName,
-                         QStringLiteral("/konsole/MainWindow_1"),
-                         QStringLiteral("org.qtproject.Qt.QWidget"));
+                         QStringLiteral("/MainApplication"),
+                         QStringLiteral("org.qtproject.Qt.QCoreApplication"));
     QVERIFY2(iface.isValid(), "Unable to get a dbus interface to Konsole!");
 
-    QDBusReply<void> instanceReply = iface.call(QStringLiteral("close"));
+    QDBusReply<void> instanceReply = iface.call(QStringLiteral("quit"));
     if (!instanceReply.isValid()) {
         QFAIL(QStringLiteral("Unable to close Konsole: %1").arg(instanceReply.error().message()).toLatin1().data());
     }
+    quitSpy.wait();
+    _process->kill();
+    _process->deleteLater();
 }
 
 void DBusTest::testSessions()
@@ -206,7 +239,7 @@ void DBusTest::testSessions()
 
     //****************** Test is/set title
     // TODO: Consider checking what is in Profile
-    stringReply = iface.call(QStringLiteral("title"), Session::LocalTabTitle);
+    stringReply = iface.call(QStringLiteral("title"), Session::NameRole);
     QVERIFY(stringReply.isValid());
 
     // set title to,  what title should be
@@ -219,14 +252,122 @@ void DBusTest::testSessions()
     QMapIterator<QString, QString> i(titleMap);
     while (i.hasNext()) {
         i.next();
-        voidReply = iface.call(QStringLiteral("setTitle"), Session::LocalTabTitle, i.key());
+        voidReply = iface.call(QStringLiteral("setTitle"), Session::NameRole, i.key());
         QVERIFY(voidReply.isValid());
 
-        stringReply = iface.call(QStringLiteral("title"), Session::LocalTabTitle);
+        stringReply = iface.call(QStringLiteral("title"), Session::NameRole);
         QVERIFY(stringReply.isValid());
 
         QCOMPARE(stringReply.value(), i.value());
     }
+}
+
+void DBusTest::testWindows()
+{
+    // Tested functions:
+    // [+] int sessionCount();
+    // [+] QStringList sessionList();
+    // [+] int currentSession();
+    // [+] void setCurrentSession(int sessionId);
+    // [+] int newSession();
+    // [+] int newSession(const QString &profile);
+    // [+] int newSession(const QString &profile, const QString &directory);
+    // [ ] QString defaultProfile();
+    // [ ] QStringList profileList();
+    // [ ] void nextSession();
+    // [ ] void prevSession();
+    // [ ] void moveSessionLeft();
+    // [ ] void moveSessionRight();
+    // [ ] void setTabWidthToText(bool);
+
+    QDBusReply<int> intReply;
+    QDBusReply<QStringList> listReply;
+    QDBusReply<void> voidReply;
+    QDBusReply<QString> stringReply;
+
+    int sessionCount = -1;
+    int initialSessionId = -1;
+
+    QDBusInterface iface(_interfaceName,
+                         QStringLiteral("/Windows/1"),
+                         QStringLiteral("org.kde.konsole.Window"));
+    QVERIFY(iface.isValid());
+
+    intReply = iface.call(QStringLiteral("sessionCount"));
+    QVERIFY(intReply.isValid());
+    sessionCount = intReply.value();
+    QVERIFY(sessionCount > 0);
+
+    intReply = iface.call(QStringLiteral("currentSession"));
+    QVERIFY(intReply.isValid());
+    initialSessionId = intReply.value();
+
+    intReply = iface.call(QStringLiteral("newSession"));
+    QVERIFY(intReply.isValid());
+    ++sessionCount;
+    int newSessionId = intReply.value();
+    QVERIFY(newSessionId != initialSessionId);
+
+    listReply = iface.call(QStringLiteral("sessionList"));
+    QVERIFY(listReply.isValid());
+
+    QStringList sessions = listReply.value();
+    QVERIFY(sessions.contains(QString::number(initialSessionId)));
+    QVERIFY(sessions.contains(QString::number(newSessionId)));
+    QVERIFY(sessions.size() == sessionCount);
+
+    intReply = iface.call(QStringLiteral("newSession"), _testProfileName);
+    QVERIFY(intReply.isValid());
+    ++sessionCount;
+    newSessionId = intReply.value();
+    QVERIFY(newSessionId != initialSessionId);
+    {
+        QDBusInterface sessionIface(_interfaceName,
+                             QStringLiteral("/Sessions/%1").arg(newSessionId),
+                             QStringLiteral("org.kde.konsole.Session"));
+        QVERIFY(iface.isValid());
+
+        listReply = sessionIface.call(QStringLiteral("environment"));
+        QVERIFY(listReply.isValid());
+        QStringList env = listReply.value();
+        QVERIFY(env.contains(_testProfileEnv));
+    }
+
+    const auto tempDirectories = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+    const QString sessionDirectory = tempDirectories.size() > 0 ? tempDirectories.constFirst() : QStringLiteral("/");
+    intReply = iface.call(QStringLiteral("newSession"), _testProfileName, sessionDirectory);
+    QVERIFY(intReply.isValid());
+    ++sessionCount;
+    newSessionId = intReply.value();
+    QVERIFY(newSessionId != initialSessionId);
+    {
+        QDBusInterface sessionIface(_interfaceName,
+                             QStringLiteral("/Sessions/%1").arg(newSessionId),
+                             QStringLiteral("org.kde.konsole.Session"));
+        QVERIFY(iface.isValid());
+
+        listReply = sessionIface.call(QStringLiteral("environment"));
+        QVERIFY(listReply.isValid());
+        QStringList env = listReply.value();
+        QVERIFY(env.contains(_testProfileEnv));
+
+        // Apparently there's no function for checking CWD.
+        // The profile uses "%D" as title format, so check the title
+        stringReply = sessionIface.call(QStringLiteral("title"), Session::DisplayedTitleRole);
+        QVERIFY(stringReply.isValid());
+        QVERIFY(QDir(stringReply.value()) == QDir(sessionDirectory));
+    }
+
+    voidReply = iface.call(QStringLiteral("setCurrentSession"), initialSessionId);
+    QVERIFY(voidReply.isValid());
+
+    intReply = iface.call(QStringLiteral("currentSession"));
+    QVERIFY(intReply.isValid());
+    QVERIFY(intReply.value() == initialSessionId);
+
+    intReply = iface.call(QStringLiteral("sessionCount"));
+    QVERIFY(intReply.isValid());
+    QVERIFY(intReply.value() == sessionCount);
 }
 
 QTEST_MAIN(DBusTest)

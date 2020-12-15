@@ -20,14 +20,19 @@
 // Own
 #include "Application.h"
 #include "MainWindow.h"
-#include "config-konsole.h" //krazy:exclude=includes
+#include "config-konsole.h"
 #include "KonsoleSettings.h"
+#include "ViewManager.h"
+#include "ViewContainer.h"
 
 // OS specific
 #include <qplatformdefs.h>
+#include <QApplication>
 #include <QCommandLineParser>
+#include <QProxyStyle>
 #include <QStandardPaths>
 #include <QDir>
+#include <memory>
 
 // KDE
 #include <KAboutData>
@@ -60,11 +65,30 @@ void deleteQApplication()
     }
 }
 
+// This override resolves following problem: since some qt version if
+// XDG_CURRENT_DESKTOP ≠ kde, then pressing and immediately releasing Alt
+// key makes focus get stuck in QMenu.
+// Upstream report: https://bugreports.qt.io/browse/QTBUG-77355
+class MenuStyle : public QProxyStyle {
+public:
+    int styleHint(const StyleHint stylehint,
+                  const QStyleOption *opt,
+                  const QWidget *widget,
+                  QStyleHintReturn *returnData) const override {
+        return (stylehint == QStyle::SH_MenuBar_AltKeyNavigation)
+            ? 0 : QProxyStyle::styleHint(stylehint, opt, widget, returnData);
+    }
+};
+
 // ***
 // Entry point into the Konsole terminal application.
 // ***
 extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
 {
+    // enable high dpi support
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+
     // Check if any of the arguments makes it impossible to re-use an existing process.
     // We need to do this manually and before creating a QApplication, because
     // QApplication takes/removes the Qt specific arguments that are incompatible.
@@ -75,10 +99,26 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
         needToDeleteQApplication = true;
     }
 
-    auto app = new QApplication(argc, argv);
+#if defined(Q_OS_LINUX) && (QT_VERSION < QT_VERSION_CHECK(5, 11, 2))
+    // Workaround for https://bugreports.qt.io/browse/QTBUG-48344
+    // See also https://bugs.kde.org/show_bug.cgi?id=230184
+    // The Qt glib event loop doesn't let timers deliver events if there are a
+    // lot of other events.
+    const QByteArray qtUseGLibOld = qgetenv("QT_NO_GLIB");
+    qputenv("QT_NO_GLIB", "1");
+#endif
 
-    // enable high dpi support
-    app->setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    // Allocate QApplication on the heap for the KDBusService workaround
+    auto app = std::unique_ptr<QApplication>(new QApplication(argc, argv));
+    app->setStyle(new MenuStyle());
+
+#if defined(Q_OS_LINUX) && (QT_VERSION < QT_VERSION_CHECK(5, 11, 2))
+    if (qtUseGLibOld.isNull()) {
+        qunsetenv("QT_NO_GLIB");
+    } else {
+        qputenv("QT_NO_GLIB", qtUseGLibOld);
+    }
+#endif
 
 #if defined(Q_OS_MACOS)
     // this ensures that Ctrl and Meta are not swapped, so CTRL-C and friends
@@ -91,6 +131,8 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
     app->setAttribute(Qt::AA_DontUseNativeMenuBar);
 #endif
 
+    app->setWindowIcon(QIcon::fromTheme(QStringLiteral("utilities-terminal")));
+
     KLocalizedString::setApplicationDomain("konsole");
 
     KAboutData about(QStringLiteral("konsole"),
@@ -98,8 +140,8 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
                      QStringLiteral(KONSOLE_VERSION),
                      i18nc("@title", "Terminal emulator"),
                      KAboutLicense::GPL_V2,
-                     i18nc("@info:credit", "(c) 1997-2017, The Konsole Developers"),
-                     QStringLiteral(),
+                     i18nc("@info:credit", "(c) 1997-2020, The Konsole Developers"),
+                     QString(),
                      QStringLiteral("https://konsole.kde.org/"));
     fillAboutData(about);
 
@@ -177,18 +219,14 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
     } else {
         // Do not finish starting Konsole due to:
         // 1. An argument was given to just printed info
-        // 2. An invalid situation ocurred
+        // 2. An invalid situation occurred
         const bool continueStarting = (konsoleApp.newInstance() != 0);
         if (!continueStarting) {
-            delete app;
             return 0;
         }
     }
 
-    // Since we've allocated the QApplication on the heap for the KDBusService workaround,
-    // we need to delete it manually before returning from main().
     int ret = app->exec();
-    delete app;
     return ret;
 }
 
@@ -242,13 +280,13 @@ bool shouldUseNewProcess(int argc, char *argv[])
     // if users have explictly requested starting a new process
     // Support --nofork to retain argument compatibility with older
     // versions.
-    if (arguments.contains(QStringLiteral("--separate"))
-        || arguments.contains(QStringLiteral("--nofork"))) {
+    if (arguments.contains(QLatin1String("--separate"))
+        || arguments.contains(QLatin1String("--nofork"))) {
         return true;
     }
 
     // the only way to create new tab is to reuse existing Konsole process.
-    if (arguments.contains(QStringLiteral("--new-tab"))) {
+    if (arguments.contains(QLatin1String("--new-tab"))) {
         return false;
     }
 
@@ -268,7 +306,6 @@ bool shouldUseNewProcess(int argc, char *argv[])
 
 void fillAboutData(KAboutData &aboutData)
 {
-    aboutData.setProgramIconName(QStringLiteral("utilities-terminal"));
     aboutData.setOrganizationDomain("kde.org");
 
     aboutData.addAuthor(i18nc("@info:credit", "Kurt Hindenburg"),
@@ -350,7 +387,18 @@ void fillAboutData(KAboutData &aboutData)
 void restoreSession(Application &app)
 {
     int n = 1;
+
     while (KMainWindow::canBeRestored(n)) {
-        app.newMainWindow()->restore(n++);
+        auto mainWindow = app.newMainWindow();
+        mainWindow->restore(n++);
+        mainWindow->viewManager()->toggleActionsBasedOnState();
+        mainWindow->show();
+
+        // TODO: HACK without the code below the sessions would be `uninitialized`
+        // and the tabs wouldn't display the correct information.
+        auto tabbedContainer = qobject_cast<Konsole::TabbedViewContainer*>(mainWindow->centralWidget());
+        for(int i = 0; i < tabbedContainer->count(); i++) {
+            tabbedContainer->setCurrentIndex(i);
+        }
     }
 }

@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % Ukrainian "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -79,13 +91,20 @@
 >&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->10 березня 2018 року</date>
+>16 червня 2019 року</date>
 <releaseinfo
->Програми 18.04</releaseinfo>
+>Програми 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -205,6 +224,13 @@
 >Керування профілями...</guimenuitem
 > </menuchoice
 ></para
+></listitem>
+
+<listitem
+><para
+>Перейдіть на сторінку <guibutton
+>Профілі</guibutton
+>.</para
 ></listitem>
 
 <listitem
@@ -425,8 +451,7 @@
 <title
 >Перетягування зі скиданням</title>
 <para
->Якщо ви перетягнете піктограму файла, теки або позначку адреси до вікна &konsole;, програма покаже меню з такими пунктами дій: </para
->  
+>Якщо ви перетягнете піктограму файла, теки або позначку адреси до вікна &konsole;, програма покаже меню з такими пунктами дій: </para>
 <screenshot>
 <screeninfo
 >Контекстне меню перетягування зі скиданням</screeninfo>
@@ -1082,14 +1107,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1098,7 +1123,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1217,7 +1242,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1318,7 +1343,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1334,6 +1359,29 @@ Various search improvements
 </para
 ><para
 >Завершення роботи у попередньому вікні &konsole; не вплине на нове створене вікно. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Перегляд</guimenu
+><guimenuitem
+>Відокремити поточну панель</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Відкриває поточну розділену панель у окремому вікні</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1444,6 +1492,30 @@ Various search improvements
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Перегляд</guimenu
+><guimenuitem
+>Відновити розмір шрифту</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Відновлює типовий для профілю розмір шрифту тексту</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1609,9 +1681,10 @@ Various search improvements
 ><action
 >Відкриває редактор закладок</action
 ></para>
-
 <note
 ><para
+>Щоб ви могли скористатися цим пунктом меню, слід встановити програму keditbookmarks.</para>
+<para
 >Щоб вручну додати адреси URL, ви можете скористатися редактором закладок. Поточна версія &konsole; підтримує такі адреси: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1927,6 +2000,10 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 >%u : користувач</para
+></listitem>
+<listitem
+><para
+>%B : символ запиту до користувача ($ = звичайний користувач, # = суперкористувач)</para
 ></listitem>
 <listitem
 ><para
@@ -2329,7 +2406,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->Щоб дізнатися більше, будь ласка, зверніться до <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Щоб дізнатися більше, будь ласка, зверніться до <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >довідника з програмного інтерфейсу &konsole;</ulink
 >. </para>
 </listitem>
@@ -2502,9 +2579,407 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->Докладніші відомості можна знайти у <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Докладніші відомості можна знайти у <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >підручнику з &DBus;</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Прив'язки до клавіш у терміналі</title>
+
+<sect1>
+<title
+>Як у &konsole; використовуються прив'язки клавіш</title>
+
+<sect2 id="intro">
+<title
+>Вступ</title>
+<para
+>Для перетворення комбінацій клавіш на керівні символи, які надсилаються до командної оболонки або до інтерактивних програм (типово, програм, які використовують альтернативний буфер системи, зокрема <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>), які запущено у командній оболонці, &konsole; використовує файли *.keytab.</para>
+
+<para
+>Користувачі можуть налаштовувати параметри прив'язки клавіш у &konsole; за допомогою редактора прив'язок клавіш. Можна налаштувати комбінацію клавіш для надсилання певної керівної послідовності символів до термінала.</para>
+
+<para
+>Відкрити редактор прив'язок клавіатури можна за допомогою пункту меню <menuchoice
+><guimenu
+>Параметри</guimenu
+><guimenuitem
+>Редагувати поточний профіль</guimenuitem
+></menuchoice
+>. Далі, слід перейти на вкладку <guilabel
+>Клавіатура</guilabel
+>. Там буде показано схеми прив'язки клавіш, які типово постачаються разом із &konsole;.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Комбінації клавіш і режими</title>
+
+<para
+>Комбінації клавіш записуються у такому форматі: <programlisting
+>Клавіша (+|-) Режими</programlisting>
+</para>
+
+<para
+>Приклади: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Назви клавіш визначаються у файлів заголовків qnamespace.h. Достатньо лише вилучити префікс <quote
+>Qt::Key_</quote
+>. Список назв клавіш також наведено у <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>документації до Qt::Key бібліотеки &Qt;</ulink
+>.</para>
+
+<para
+>Додавання <quote
+>+</quote
+> перед назвою режиму означає, що цей режим <emphasis
+>встановлено</emphasis
+>; для клавіші-модифікатора це означає, що клавішу натиснуто, а для усіх інших режимів це означає, що режиму увімкнено (тобто активовано). Наприклад, <quote
+>+Ctrl</quote
+> означає, що комбінація клавіш працюватиме, лише якщо натиснуто клавішу &Ctrl;.</para>
+
+<para
+>Додавання <quote
+>-</quote
+> перед назвою режиму означає, що цей режим <emphasis
+>скинуто</emphasis
+>; загалом, це протилежність до додавання <quote
+>+</quote
+> перед назвою режиму. Отже, для клавіші-модифікатора це означає, що клавішу не натиснуто, а для усіх інших режимів це означає, що відповідний режим є неактивним. Наприклад, <quote
+>-Ctrl</quote
+> означає, що комбінація клавіш працюватиме, лише якщо клавішу &Ctrl; <emphasis
+>не</emphasis
+> натиснуто.</para>
+
+<note>
+<para
+>Якщо у записі комбінації клавіш не вказано режим, її стан ігнорується.</para>
+</note>
+
+<para
+>Нижче наведено список підтримуваних режимів прив'язки клавіш:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>У комбінації клавіш можна використовувати один або декілька цих режимів. Якщо встановлено будь-який з цих режимів, у комбінації клавіш використовуватиметься відповідна клавіша-модифікатор. Якщо ж режим скинуто, клавіша у комбінації не використовуватиметься.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Якщо цей режим встановлено, комбінація клавіш використовуватиме будь-яку клавішу-модифікатор (будь-яку з попередніх трьох клавіш-модифікаторів); і навпаки, якщо режим скинуто.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Якщо встановлено цей режим, &konsole; надсилатиме керівні послідовності ANSI.</para>
+<para
+>Якщо цей режим скинуто, &konsole; надсилатиме керівні послідовності VT52.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Якщо встановлено цей режим, комбінація клавіш працюватиме лише у інтерактивних програмах, які використовують альтернативний буфер.</para>
+<para
+>Якщо скинуто цей режим, комбінація клавіш працюватиме у терміналі, лише якщо у ньому використано звичайний буфер.</para>
+
+<note>
+<para
+>У &konsole; використовується два буфери даних:</para>
+<itemizedlist>
+<listitem>
+<para
+>Звичайний буфер (типовий): надає вам змогу гортати журнал для перегляду попередніх рядків виведення; це типовий буфер, яким ви зазвичай користуєтеся для виконання команд тощо.</para>
+</listitem>
+<listitem>
+<para
+>Альтернативний буфер: термінал перемикається на цей буфер, коли ви запускаєте інтерактивну програму (наприклад, <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+> тощо)</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>KeyPad</term>
+<listitem>
+<para
+>Якщо встановлено цей режим, комбінація клавіш використовує клавішу із цифрової панелі (бічної панелі клавіатури). Цей режим корисний для розрізнення клавіш на основному блоці клавіатури і клавіш на цифровій панелі. Наприклад, якщо Num Lock <emphasis
+>увімкнено</emphasis
+>, ви можете налаштувати дві окремі комбінації клавіш: одну з використанням клавіші із написом <quote
+>1</quote
+> на основному блоці клавіатури (зазвичай, цю клавішу розташовано під клавішею <keycap
+>F1</keycap
+>) та іншу з використанням клавіші із написом <quote
+>1</quote
+> на цифровому блоці. Те саме стосується випадку, коли Num Lock <emphasis
+>вимкнено</emphasis
+>, і клавіш End, Home, клавіш із стрілками на цифровому блоці.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Цей режим реалізує <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>режим клавіш курсора (DECCKM)</ulink
+> VT100. Він керує керівними послідовностями, які надсилають клавіші керування курсором (<keycap
+>↑</keycap
+>, <keycap
+>↓</keycap
+>, <keycap
+>→</keycap
+>, <keycap
+>←</keycap
+>), залежно від того, встановлено чи скинуто цей режим.</para>
+<para
+>Типово, &konsole; працює як XTerm у обробці клавіш <keycap
+>Home</keycap
+> і <keycap
+>End</keycap
+> як клавіш керування курсором із урахуванням DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Якщо встановлено цей режим, комбінація клавіш працюватиме, лише якщо цифрова панель перебуває у режимі застосування (DECKPAM).</para>
+<para
+>Якщо скинуто цей режим, комбінація клавіш працюватиме, лише якщо цифрова панель перебуває у цифровому режимі (DECKPNM).</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NewLine</term>
+<listitem>
+<para
+>Якщо встановлено цей режим, клавіша <keycap
+>Return</keycap
+> (Enter) на основній клавіатурі надсилатиме і символ повернення каретки, «\r», і символ нового рядка, «\n».</para>
+<para
+>Якщо цей режим скинуто, клавіша <keycap
+>Return</keycap
+> надсилатиме лише символ повернення каретки «\r»</para>
+<para
+>Те саме стосується клавіші &Enter; на цифровій панелі</para>
+<para
+>Цей режим імітує <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>LNM — режим заповнення рядка/нового рядка</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Зауважте, що комбінації клавіш і режимів (встановлення і скидання) не повинні повторюватися. Наприклад, розгляньмо такі два правила:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>&konsole; <emphasis
+>не</emphasis
+> прийме правило із малою літерою <quote
+>a</quote
+>. Щоб правило працювало, слід додати до нього <quote
+>-Shift</quote
+>.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>Поле виведення</title>
+
+<para
+>У полі виведення ви можете додати керівні послідовності або символи, які &konsole; має надсилати до термінала, коли натиснуто відповідну комбінацію клавіш.</para>
+
+<para
+>Ви також можете скористатися будь-яким із вказаних нижче ключових слів, кожне з яких має особливе значення у &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : гортати вгору на один рядок у буфері журналу командної оболонки</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : гортати вгору на одну сторінку у буфері журналу командної оболонки</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : гортати вниз на один рядок у буфері журналу командної оболонки</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : гортати вниз на одну сторінку у буфері журналу командної оболонки</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : гортати вгору до початку буфера журналу командної оболонки</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : гортати вниз до кінця буфера журналу командної оболонки</para
+></listitem>
+</itemizedlist>
+
+<para
+>Ви також можете користуватися рядками у синтаксисі рядків C. Зокрема, можна скористатися такими керівними послідовностями:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Зворотна риска</para
+></listitem>
+<listitem
+><para
+>\" : Подвійні лапки</para
+></listitem>
+<listitem
+><para
+>\t : Tab</para
+></listitem>
+<listitem
+><para
+>\r : повернення каретки</para
+></listitem>
+<listitem
+><para
+>\n : новий рядок</para
+></listitem>
+<listitem
+><para
+>\b : витирання символу ліворуч</para
+></listitem>
+<listitem>
+<para
+>\xHH : де HH — дві шістнадцяткові цифри</para>
+<tip>
+<para
+>Цим можна скористатися для надсилання керівних символів у ASCII, зокрема <quote
+>\x00</quote
+> — NUL-символу</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Інші системні ресурси</title>
+<para
+>Прив'язки клавіш у терміналі можуть стосуватися інших системних ресурсів:</para>
+<itemizedlist>
+<listitem>
+<para
+>Зверніться до бази даних <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> або <ulink url="man:termcap(5)"
+>termcap</ulink
+>, щоб дізнатися більше про очікувані керівні послідовності і символи, які можна надсилати за допомогою комбінацій клавіш.</para>
+</listitem>
+<listitem>
+<para
+>Ймовірно, у вашій системі можуть бути інші бази даних клавіш, які також можна синхронізувати (наприклад, <ulink url="man:bash(1)"
+>/etc/inputrc та readline</ulink
+> для оболонки <application
+>BASH</application
+>), оскільки вони впливають на дії (взаємодії), пов'язані із комбінацією клавіш.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Інформація для подальшого ознайомлення</title>
+<para
+>Щоб дізнатися більше про керівні послідовності та символи, ознайомтеся із такими ресурсами документації:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>Підручник користувача VT100</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>Підручник користувача VT102</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>Повна і необхідна документація щодо <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>керівних послідовностей XTerm</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2520,8 +2995,8 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->Докладніший опис можна знайти на <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
->сторінці Проекту &Qt; щодо таблиць стилів</ulink
+>Докладніший опис можна знайти на <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
+>сторінці Проєкту &Qt; щодо таблиць стилів</ulink
 > </para>
 
 <para
@@ -2815,31 +3290,31 @@ CommonDirNames=назва1,назва2,назва3...
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole/uk"
+><ulink url="https://userbase.kde.org/Konsole/uk"
 >Домашня сторінка &konsole; на UserBase &kde;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >Домашня сторінка &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >Список листування, присвячений &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; у FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; у &Solaris;</ulink
 ></para
 ></listitem>

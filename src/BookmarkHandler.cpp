@@ -31,11 +31,11 @@
 
 // KDE
 #include <KShell>
-#include <KBookmarkMenu>
 #include <KBookmarkOwner>
 #include <KLocalizedString>
 
 // Konsole
+#include "BookmarkMenu.h"
 #include "ViewProperties.h"
 
 using namespace Konsole;
@@ -45,7 +45,6 @@ BookmarkHandler::BookmarkHandler(KActionCollection *collection, QMenu *menu, boo
     QObject(parent),
     KBookmarkOwner(),
     _menu(menu),
-    _bookmarkMenu(nullptr),
     _file(QString()),
     _toplevel(toplevel),
     _activeView(nullptr),
@@ -64,19 +63,14 @@ BookmarkHandler::BookmarkHandler(KActionCollection *collection, QMenu *menu, boo
     }
 
     KBookmarkManager *manager = KBookmarkManager::managerForFile(_file, QStringLiteral("konsole"));
-
     manager->setUpdate(true);
 
-    if (toplevel) {
-        _bookmarkMenu = new KBookmarkMenu(manager, this, _menu, collection);
-    } else {
-        _bookmarkMenu = new KBookmarkMenu(manager, this, _menu, nullptr);
-    }
+    BookmarkMenu *bookmarkMenu = new BookmarkMenu(manager, this, _menu, toplevel ? collection : nullptr);
+    bookmarkMenu->setParent(this);
 }
 
 BookmarkHandler::~BookmarkHandler()
 {
-    delete _bookmarkMenu;
 }
 
 void BookmarkHandler::openBookmark(const KBookmark &bm, Qt::MouseButtons, Qt::KeyboardModifiers)
@@ -93,9 +87,8 @@ bool BookmarkHandler::enableOption(BookmarkOption option) const
 {
     if (option == ShowAddBookmark || option == ShowEditBookmark) {
         return _toplevel;
-    } else {
-        return KBookmarkOwner::enableOption(option);
     }
+    return KBookmarkOwner::enableOption(option);
 }
 
 QUrl BookmarkHandler::currentUrl() const
@@ -107,9 +100,8 @@ QUrl BookmarkHandler::urlForView(ViewProperties *view) const
 {
     if (view != nullptr) {
         return view->url();
-    } else {
-        return QUrl();
     }
+    return {};
 }
 
 QString BookmarkHandler::currentTitle() const
@@ -127,14 +119,13 @@ QString BookmarkHandler::titleForView(ViewProperties *view) const
         path = QFileInfo(path).completeBaseName();
 
         return path;
-    } else if (!url.host().isEmpty()) {
+    }
+    if (!url.host().isEmpty()) {
         if (!url.userName().isEmpty()) {
             return i18nc("@item:inmenu The user's name and host they are connected to via ssh",
                          "%1 on %2", url.userName(), url.host());
-        } else {
-            return i18nc("@item:inmenu The host the user is connected to via ssh", "%1",
-                         url.host());
         }
+        return i18nc("@item:inmenu The host the user is connected to via ssh", "%1", url.host());
     }
 
     return url.toDisplayString();
@@ -149,14 +140,8 @@ QString BookmarkHandler::iconForView(ViewProperties *view) const
 {
     if (view != nullptr) {
         return view->icon().name();
-    } else {
-        return QString();
     }
-}
-
-bool BookmarkHandler::supportsTabs() const
-{
-    return true;
+    return {};
 }
 
 QList<KBookmarkOwner::FutureBookmark> BookmarkHandler::currentBookmarkList() const
@@ -169,6 +154,11 @@ QList<KBookmarkOwner::FutureBookmark> BookmarkHandler::currentBookmarkList() con
     }
 
     return list;
+}
+
+bool BookmarkHandler::supportsTabs() const
+{
+    return true;
 }
 
 void BookmarkHandler::setViews(const QList<ViewProperties *> &views)

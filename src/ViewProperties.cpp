@@ -23,10 +23,11 @@
 using Konsole::ViewProperties;
 
 QHash<int, ViewProperties *> ViewProperties::_viewProperties;
-QString ViewProperties::_mimeType = QStringLiteral("application/x-konsole-view-id");
 
 ViewProperties::ViewProperties(QObject *parent) :
     QObject(parent),
+    _icon(QIcon()),
+    _title(QString()),
     _identifier(0)
 {
 }

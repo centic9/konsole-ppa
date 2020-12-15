@@ -43,6 +43,41 @@ typedef QColor ColorEntry;
 #define INTENSITIES   3
 #define TABLE_COLORS  (INTENSITIES*BASE_COLORS)
 
+enum ColorTableIndex {
+    ColorFgIndex,
+    ColorBgIndex,
+    Color0Index,
+    Color1Index,
+    Color2Index,
+    Color3Index,
+    Color4Index,
+    Color5Index,
+    Color6Index,
+    Color7Index,
+
+    ColorFgIntenseIndex,
+    ColorBgIntenseIndex,
+    Color0IntenseIndex,
+    Color1IntenseIndex,
+    Color2IntenseIndex,
+    Color3IntenseIndex,
+    Color4IntenseIndex,
+    Color5IntenseIndex,
+    Color6IntenseIndex,
+    Color7IntenseIndex,
+
+    ColorFgFaintIndex,
+    ColorBgFaintIndex,
+    Color0FaintIndex,
+    Color1FaintIndex,
+    Color2FaintIndex,
+    Color3FaintIndex,
+    Color4FaintIndex,
+    Color5FaintIndex,
+    Color6FaintIndex,
+    Color7FaintIndex,
+};
+
 #define DEFAULT_FORE_COLOR 0
 #define DEFAULT_BACK_COLOR 1
 
@@ -123,6 +158,9 @@ public:
             _colorSpace = COLOR_SPACE_UNDEFINED;
         }
     }
+
+    quint8 colorSpace() { return _colorSpace; }
+    void termColor(int *u, int *v, int *w) { *u = _u; *v = _v; *w = _w; }
 
     /**
      * Returns true if this character color entry is valid.

@@ -21,11 +21,11 @@
 #define APPLICATION_H
 
 // Qt
-#include <QApplication>
 #include <QCommandLineParser>
 
 // Konsole
 #include "Profile.h"
+#include "ViewSplitter.h"
 
 namespace Konsole {
 class MainWindow;
@@ -68,8 +68,8 @@ public:
     MainWindow *newMainWindow();
 
 private Q_SLOTS:
-    void createWindow(Profile::Ptr profile, const QString &directory);
-    void detachView(Session *session);
+    void createWindow(const Profile::Ptr &profile, const QString &directory);
+    void detachTerminals(ViewSplitter *splitter, const QHash<TerminalDisplay*, Session*>& sessionsMap);
 
     void toggleBackgroundInstance();
 

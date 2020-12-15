@@ -33,6 +33,8 @@
 #include "ColorScheme.h"
 #include "Enumeration.h"
 #include "ScrollState.h"
+#include "Profile.h"
+#include "TerminalHeaderBar.h"
 
 class QDrag;
 class QDragEnterEvent;
@@ -46,13 +48,14 @@ class QScrollBar;
 class QShowEvent;
 class QHideEvent;
 class QTimerEvent;
-
 class KMessageWidget;
 
 namespace Konsole {
 class FilterChain;
 class TerminalImageFilterChain;
 class SessionController;
+class IncrementalSearchBar;
+
 /**
  * A widget which displays output from a terminal emulation and sends input keypresses and mouse activity
  * to the terminal.
@@ -70,6 +73,11 @@ public:
     /** Constructs a new terminal display widget with the specified parent. */
     explicit TerminalDisplay(QWidget *parent = nullptr);
     ~TerminalDisplay() Q_DECL_OVERRIDE;
+
+    void showDragTarget(const QPoint& pos);
+    void hideDragTarget();
+
+    void applyProfile(const Profile::Ptr& profile);
 
     /** Returns the terminal color palette used by the display. */
     const ColorEntry *colorTable() const;
@@ -90,17 +98,13 @@ public:
     void setOpacity(qreal opacity);
 
     /** Sets the background picture */
-    void setWallpaper(ColorSchemeWallpaper::Ptr p);
+    void setWallpaper(const ColorSchemeWallpaper::Ptr &p);
 
     /**
      * Specifies whether the terminal display has a vertical scroll bar, and if so whether it
      * is shown on the left or right side of the display.
      */
     void setScrollBarPosition(Enum::ScrollBarPositionEnum position);
-    Enum::ScrollBarPositionEnum scrollBarPosition() const
-    {
-        return _scrollbarLocation;
-    }
 
     /**
      * Sets the current position and range of the display's scroll bar.
@@ -112,7 +116,6 @@ public:
 
     void setScrollFullPage(bool fullPage);
     bool scrollFullPage() const;
-
     /**
      * Returns the display's filter chain.  When the image for the display is updated,
      * the text is passed through each filter in the chain.  Each filter can define
@@ -150,96 +153,9 @@ public:
 
     /** Specifies whether or not the cursor can blink. */
     void setBlinkingCursorEnabled(bool blink);
-    /** Returns true if the cursor is allowed to blink or false otherwise. */
-    bool blinkingCursorEnabled() const
-    {
-        return _allowBlinkingCursor;
-    }
 
     /** Specifies whether or not text can blink. */
     void setBlinkingTextEnabled(bool blink);
-
-    void setControlDrag(bool enable)
-    {
-        _ctrlRequiredForDrag = enable;
-    }
-
-    bool ctrlRequiredForDrag() const
-    {
-        return _ctrlRequiredForDrag;
-    }
-
-    void setDropUrlsAsText(bool enable)
-    {
-        _dropUrlsAsText = enable;
-    }
-
-    bool getDropUrlsAsText() const
-    {
-        return _dropUrlsAsText;
-    }
-
-    /** Sets how the text is selected when the user triple clicks within the display. */
-    void setTripleClickMode(Enum::TripleClickModeEnum mode)
-    {
-        _tripleClickMode = mode;
-    }
-
-    /** See setTripleClickSelectionMode() */
-    Enum::TripleClickModeEnum tripleClickMode() const
-    {
-        return _tripleClickMode;
-    }
-
-    /**
-     * Specifies whether links and email addresses should be opened when
-     * clicked with the mouse. Defaults to false.
-     */
-    void setOpenLinksByDirectClick(bool value)
-    {
-        _openLinksByDirectClick = value;
-    }
-
-    /**
-     * Returns true if links and email addresses should be opened when
-     * clicked with the mouse.
-     */
-    bool getOpenLinksByDirectClick() const
-    {
-        return _openLinksByDirectClick;
-    }
-
-    /**
-     * Sets whether leading spaces should be trimmed in selected text.
-     */
-    void setTrimLeadingSpaces(bool enabled)
-    {
-        _trimLeadingSpaces = enabled;
-    }
-
-    /**
-     * Returns true if leading spaces should be trimmed in selected text.
-     */
-    bool trimLeadingSpaces() const
-    {
-        return _trimLeadingSpaces;
-    }
-
-    /**
-     * Sets whether trailing spaces should be trimmed in selected text.
-     */
-    void setTrimTrailingSpaces(bool enabled)
-    {
-        _trimTrailingSpaces = enabled;
-    }
-
-    /**
-     * Returns true if trailing spaces should be trimmed in selected text.
-     */
-    bool trimTrailingSpaces() const
-    {
-        return _trimTrailingSpaces;
-    }
 
     void setLineSpacing(uint);
     uint lineSpacing() const;
@@ -262,6 +178,18 @@ public:
      * Returns the shape of the keyboard cursor.  See setKeyboardCursorShape()
      */
     Enum::CursorShapeEnum keyboardCursorShape() const;
+
+    /**
+     * Sets the Cursor Style (DECSCUSR) via escape sequences
+     * @p shape cursor shape
+     * @p isBlinking if true, the cursor will be set to blink
+    */
+    void setCursorStyle(Enum::CursorShapeEnum shape, bool isBlinking);
+    /**
+     * Resets the cursor style to the current profile cursor shape and
+     * blinking settings
+    */
+    void resetCursorStyle();
 
     /**
      * Sets the color used to draw the keyboard cursor.
@@ -342,16 +270,6 @@ public:
      * of a word ( in addition to letters and numbers ).
      */
     void setWordCharacters(const QString &wc);
-    /**
-     * Returns the characters which are considered part of a word for the
-     * purpose of selecting words in the display with the mouse.
-     *
-     * @see setWordCharacters()
-     */
-    QString wordCharacters() const
-    {
-        return _wordCharacters;
-    }
 
     /**
      * Sets the type of effect used to alert the user when a 'bell' occurs in the
@@ -372,37 +290,16 @@ public:
     /** Play a visual bell for prompt or warning. */
     void visualBell();
 
-    /**
-     * Specified whether zoom terminal on Ctrl+mousewheel  is enabled or not.
-     * Defaults to enabled.
-     */
-    void setMouseWheelZoom(bool value)
-    {
-        _mouseWheelZoom = value;
-    }
-
-    /**
-     * Returns the whether zoom terminal on Ctrl+mousewheel is enabled.
-     *
-     * See setMouseWheelZoom()
-     */
-    bool mouseWheelZoom()
-    {
-        return _mouseWheelZoom;
-    }
-
-    /**
-     * Reimplemented.  Has no effect.  Use setVTFont() to change the font
-     * used to draw characters in the display.
-     */
-    virtual void setFont(const QFont &);
-
     /** Returns the font used to draw characters in the display */
     QFont getVTFont()
     {
         return font();
     }
 
+    TerminalHeaderBar *headerBar() const
+    {
+        return _headerBar;
+    }
     /**
      * Sets the font used to draw the display.  Has no effect if @p font
      * is larger than the size of the display itself.
@@ -415,103 +312,8 @@ public:
     /** Decreases the font size */
     void decreaseFontSize();
 
-    /**
-     * Specified whether anti-aliasing of text in the terminal display
-     * is enabled or not.  Defaults to enabled.
-     */
-    void setAntialias(bool value)
-    {
-        _antialiasText = value;
-    }
-
-    /**
-     * Returns true if anti-aliasing of text in the terminal is enabled.
-     */
-    bool antialias() const
-    {
-        return _antialiasText;
-    }
-
-    /**
-     * Specifies whether characters with intense colors should be rendered
-     * as bold. Defaults to true.
-     */
-    void setBoldIntense(bool value)
-    {
-        _boldIntense = value;
-    }
-
-    /**
-     * Returns true if characters with intense colors are rendered in bold.
-     */
-    bool getBoldIntense() const
-    {
-        return _boldIntense;
-    }
-
-    /**
-     * Specifies whether line characters will be displayed using font instead
-     * of builtin code.
-     * as bold. Defaults to false.
-     */
-    void setUseFontLineCharacters(bool value)
-    {
-        _useFontLineCharacters = value;
-    }
-
-    /**
-     * Returns true if font line characters will be used.
-     */
-    bool getFontLineCharacters() const
-    {
-        return _useFontLineCharacters;
-    }
-
-    /**
-     * Sets whether or not the current height and width of the
-     * terminal in lines and columns is displayed whilst the widget
-     * is being resized.
-     */
-    void setShowTerminalSizeHint(bool on)
-    {
-        _showTerminalSizeHint = on;
-    }
-
-    /**
-     * Returns whether or not the current height and width of
-     * the terminal in lines and columns is displayed whilst the widget
-     * is being resized.
-     */
-    bool showTerminalSizeHint() const
-    {
-        return _showTerminalSizeHint;
-    }
-
-    /**
-     * Sets the status of the BiDi rendering inside the terminal display.
-     * Defaults to disabled.
-     */
-    void setBidiEnabled(bool set)
-    {
-        _bidiEnabled = set;
-    }
-
-    /**
-     * Returns the status of the BiDi rendering in this widget.
-     */
-    bool isBidiEnabled() const
-    {
-        return _bidiEnabled;
-    }
-
-    /**
-     * Sets the modifiers that shows URL hints when they are pressed
-     * Defaults to disabled.
-     */
-    void setUrlHintsModifiers(int modifiers)
-    {
-        _urlHintsModifiers = Qt::KeyboardModifiers(modifiers);
-    }
+    /** Reset the font size */
+    void resetFontSize();
 
     /**
      * Sets the terminal screen section which is displayed in this widget.
@@ -552,8 +354,11 @@ public:
         return _flowControlWarningEnabled;
     }
 
-    /** See setUsesMouse() */
-    bool usesMouse() const;
+    /** See setUsesMouseTracking() */
+    bool usesMouseTracking() const;
+
+    /** See setAlternateScrolling() */
+    bool alternateScrolling() const;
 
 public Q_SLOTS:
     /**
@@ -613,29 +418,30 @@ public Q_SLOTS:
     void outputSuspended(bool suspended);
 
     /**
-     * Sets whether the program whose output is being displayed in the view
-     * is interested in mouse events.
+     * Sets whether the program currently running in the terminal is interested
+     * in Mouse Tracking events.
      *
-     * If this is set to true, mouse signals will be emitted by the view when the user clicks, drags
-     * or otherwise moves the mouse inside the view.
-     * The user interaction needed to create selections will also change, and the user will be required
-     * to hold down the shift key to create a selection or perform other mouse activities inside the
-     * view area - since the program running in the terminal is being allowed to handle normal mouse
-     * events itself.
+     * When set to true, Konsole will send Mouse Tracking events.
      *
-     * @param on Set to true if the program running in the terminal is interested in mouse events
-     * or false otherwise.
+     * The user interaction needed to create text selections will change
+     * also, and the user will be required to hold down the Shift key to
+     * create a selection or perform other mouse activities inside the view
+     * area, since the program running in the terminal is being allowed
+     * to handle normal mouse events itself.
+     *
+     * @param on Set to true if the program running in the terminal is
+     * interested in Mouse Tracking events or false otherwise.
      */
-    void setUsesMouse(bool on);
+    void setUsesMouseTracking(bool on);
 
     /**
-     * Sets _isPrimaryScreen depending on which screen is currently in
-     * use, primary or alternate
-     *
-     * @param use Set to @c true if the primary screen is in use or to
-     * @c false otherwise (i.e. the alternate screen is in use)
+     * Sets the AlternateScrolling profile property which controls whether
+     * to emulate up/down key presses for mouse scroll wheel events.
+     * For more details, check the documentation of that property in the
+     * Profile header.
+     * Enabled by default.
      */
-    void usingPrimaryScreen(bool use);
+    void setAlternateScrolling(bool enable);
 
     void setBracketedPasteMode(bool on);
 
@@ -667,11 +473,28 @@ public Q_SLOTS:
      */
     void setCenterContents(bool enable);
 
+    /**
+     * Return the current color scheme
+     */
+    ColorScheme const *colorScheme() const
+    {
+        return _colorScheme;
+    }
+
+    Enum::ScrollBarPositionEnum scrollBarPosition() const
+    {
+        return _scrollbarLocation;
+    }
+
+    Qt::Edge droppedEdge() const {
+        return _overlayEdge;
+    }
+
     // Used to show/hide the message widget
     void updateReadOnlyState(bool readonly);
-
+    IncrementalSearchBar *searchBar() const;
 Q_SIGNALS:
-
+    void requestToggleExpansion();
     /**
      * Emitted when the user presses a key whilst the terminal widget has focus.
      */
@@ -689,8 +512,8 @@ Q_SIGNALS:
     void changedContentSizeSignal(int height, int width);
 
     /**
-     * Emitted when the user right clicks on the display, or right-clicks with the Shift
-     * key held down if usesMouse() is true.
+     * Emitted when the user right clicks on the display, or right-clicks
+     * with the Shift key held down if usesMouseTracking() is true.
      *
      * This can be used to display a context menu.
      */
@@ -713,17 +536,13 @@ Q_SIGNALS:
     void focusGained();
 
 protected:
+    // events
     bool event(QEvent *event) Q_DECL_OVERRIDE;
-
     void paintEvent(QPaintEvent *pe) Q_DECL_OVERRIDE;
-
     void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
     void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-
-    virtual void fontChange(const QFont &);
     void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
     void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
@@ -733,10 +552,11 @@ protected:
     void mousePressEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
-    virtual void extendSelection(const QPoint &position);
     void wheelEvent(QWheelEvent *ev) Q_DECL_OVERRIDE;
-
     bool focusNextPrevChild(bool next) Q_DECL_OVERRIDE;
+
+    void fontChange(const QFont &);
+    void extendSelection(const QPoint &position);
 
     // drag and drop
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
@@ -769,7 +589,7 @@ protected:
     void inputMethodEvent(QInputMethodEvent *event) Q_DECL_OVERRIDE;
     QVariant inputMethodQuery(Qt::InputMethodQuery query) const Q_DECL_OVERRIDE;
 
-    void updateScrollBarPalette();
+    void onColorsChanged();
 
 protected Q_SLOTS:
 
@@ -781,13 +601,6 @@ private Q_SLOTS:
 
     void swapFGBGColors();
     void viewScrolledByUser();
-
-    /**
-     * Called from the drag-and-drop popup. Causes the dropped URLs to be pasted as text.
-     */
-    void dropMenuPasteActionTriggered();
-
-    void dropMenuCdActionTriggered();
 
     void dismissOutputSuspendedMessage();
 
@@ -833,10 +646,12 @@ private:
 
     // maps an area in the character image to an area on the widget
     QRect imageToWidget(const QRect &imageArea) const;
+    QRect widgetToImage(const QRect &widgetArea) const;
 
     // maps a point on the widget to the position ( ie. line and column )
-    // of the character at that point.
-    void getCharacterPosition(const QPoint &widgetPoint, int &line, int &column) const;
+    // of the character at that point. When the edge is true, it maps to
+    // a character which left edge is closest to the point.
+    void getCharacterPosition(const QPoint &widgetPoint, int &line, int &column, bool edge) const;
 
     // the area where the preedit string for input methods will be draw
     QRect preeditRect() const;
@@ -867,6 +682,9 @@ private:
     // returns the position of the cursor in columns and lines
     QPoint cursorPosition() const;
 
+    // returns true if the cursor's position is on display.
+    bool isCursorOnDisplay() const;
+
     // redraws the cursor
     void updateCursor();
 
@@ -887,6 +705,8 @@ private:
     // Boilerplate setup for MessageWidget
     KMessageWidget* createMessageWidget(const QString &text);
 
+    int loc(int x, int y) const;
+
     // the window onto the terminal screen which this display
     // is currently showing.
     QPointer<ScreenWindow> _screenWindow;
@@ -900,9 +720,6 @@ private:
     int _fontWidth;      // width
     int _fontAscent;      // ascend
     bool _boldIntense;   // Whether intense colors should be rendered with bold font
-
-    int _leftMargin;    // offset
-    int _topMargin;    // offset
 
     int _lines;      // the number of lines that can be displayed in the widget
     int _columns;    // the number of columns that can be displayed in the widget
@@ -923,13 +740,14 @@ private:
     QVector<LineProperty> _lineProperties;
 
     ColorEntry _colorTable[TABLE_COLORS];
+
     uint _randomSeed;
 
     bool _resizing;
     bool _showTerminalSizeHint;
     bool _bidiEnabled;
-    bool _mouseMarks;
-    bool _isPrimaryScreen;
+    bool _usesMouseTracking;
+    bool _alternateScrolling;
     bool _bracketedPasteMode;
 
     QPoint _iPntSel;  // initial selection point
@@ -961,6 +779,7 @@ private:
 
     Qt::KeyboardModifiers _urlHintsModifiers;
     bool _showUrlHint;
+    bool _reverseUrlHints;
     bool _openLinksByDirectClick;     // Open URL and hosts by single mouse click
 
     bool _ctrlRequiredForDrag; // require Ctrl key for drag selected text
@@ -985,6 +804,7 @@ private:
 
     QRgb _blendColor;
 
+    ColorScheme const* _colorScheme;
     ColorSchemeWallpaper::Ptr _wallpaper;
 
     // list of filters currently applied to the display.  used for links and
@@ -1032,9 +852,16 @@ private:
 
     qreal _opacity;
 
-    ScrollState _scrollWheelState;
+    bool _dimWhenInactive;
 
+    ScrollState _scrollWheelState;
+    IncrementalSearchBar *_searchBar;
+    TerminalHeaderBar *_headerBar;
+    QRect _searchResultRect;
     friend class TerminalDisplayAccessible;
+
+    bool _drawOverlay;
+    Qt::Edge _overlayEdge;
 };
 
 class AutoScrollHandler : public QObject

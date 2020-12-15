@@ -35,7 +35,7 @@
 
 // Konsole
 #include "konsoleprivate_export.h"
-#include "config-konsole.h" //krazy:exclude=includes
+#include "config-konsole.h"
 #include "Shortcut_p.h"
 
 class QColor;
@@ -347,10 +347,11 @@ public:
     }
 
     /**
-      * Possible values of the @p what parameter for setUserTitle()
-      * See "Operating System Controls" section on http://rtfm.etla.org/xterm/ctlseq.html
+      * Possible values of the @p what parameter for setSessionAttribute().
+      * See the "Operating System Commands" section at:
+      * http://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Operating-System-Commands
       */
-    enum UserTitleChange {
+    enum SessionAttributes {
         IconNameAndWindowTitle = 0,
         IconName = 1,
         WindowTitle = 2,
@@ -375,6 +376,11 @@ public:
 
     bool isReadOnly() const;
     void setReadOnly(bool readOnly);
+
+    // Returns true if the current screen is the secondary/alternate one
+    // or false if it's the primary/normal buffer
+    bool isPrimaryScreen();
+    void tabTitleSetByUser(bool set);
 
 public Q_SLOTS:
 
@@ -430,14 +436,15 @@ public Q_SLOTS:
     bool closeInForceWay();
 
     /**
-     * Changes the session title or other customizable aspects of the terminal
-     * emulation display. For a list of what may be changed see the
-     * Emulation::titleChanged() signal.
+     * Changes one of certain session attributes in the terminal emulation
+     * display. For a list of what may be changed see the
+     * Emulation::sessionAttributeChanged() signal.
      *
-     * @param what The feature being changed.  Value is one of UserTitleChange
+     * @param what The session attribute being changed, it is one of the
+     * SessionAttributes enum
      * @param caption The text part of the terminal command
      */
-    void setUserTitle(int what, const QString &caption);
+    void setSessionAttribute(int what, const QString &caption);
 
     /**
      * Enables monitoring for activity in the session.
@@ -581,6 +588,16 @@ public Q_SLOTS:
      */
     Q_SCRIPTABLE int historySize() const;
 
+    /**
+     * Sets the current session's profile
+     */
+    Q_SCRIPTABLE void setProfile(const QString &profileName);
+
+    /**
+     * Returns the current session's profile name
+     */
+    Q_SCRIPTABLE QString profile();
+
 Q_SIGNALS:
 
     /** Emitted when the terminal process starts. */
@@ -591,8 +608,11 @@ Q_SIGNALS:
      */
     void finished();
 
-    /** Emitted when the session's title has changed. */
-    void titleChanged();
+    /**
+     * Emitted when one of certain session attributes has been changed.
+     * See setSessionAttribute().
+     */
+    void sessionAttributeChanged();
 
     /** Emitted when the session gets locked / unlocked. */
     void readOnlyChanged();
@@ -615,13 +635,6 @@ Q_SIGNALS:
     /** Emitted when a bell event occurs in the session. */
     void bellRequest(const QString &message);
 
-    /**
-     * Requests that the color the text for any tabs associated with
-     * this session should be changed;
-     *
-     * TODO: Document what the parameter does
-     */
-    void changeTabTextColorRequest(int);
 
     /**
      * Requests that the background color of views on this session
@@ -693,11 +706,6 @@ Q_SIGNALS:
      */
     void getBackgroundColor();
 
-    /**
-     * Relays the tabRenamedByUser signal from SessionController
-     */
-    void tabRenamedByUser(bool renamed) const;
-
 private Q_SLOTS:
     void done(int, QProcess::ExitStatus);
 
@@ -723,12 +731,18 @@ private Q_SLOTS:
     void updateFlowControlState(bool suspended);
     void updateWindowSize(int lines, int columns);
 
-    // signal relayer
+    // Relays the signal from Emulation and sets _isPrimaryScreen
     void onPrimaryScreenInUse(bool use);
 
     void sessionAttributeRequest(int id);
 
-    void tabTitleSetByUser(bool set);
+    /**
+     * Requests that the color the text for any tabs associated with
+     * this session should be changed;
+     *
+     * TODO: Document what the parameter does
+     */
+    void changeTabTextColor(int);
 
 private:
     Q_DISABLE_COPY(Session)
@@ -808,6 +822,8 @@ private:
 
     bool _readOnly;
     static int lastSessionId;
+
+    bool _isPrimaryScreen;
 };
 
 /**

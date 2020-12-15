@@ -45,27 +45,27 @@ using namespace Konsole;
 
 static bool profileIndexLessThan(const Profile::Ptr& p1, const Profile::Ptr& p2)
 {
-    return p1->menuIndexAsInt() <= p2->menuIndexAsInt();
+    return p1->menuIndexAsInt() < p2->menuIndexAsInt();
 }
 
 static bool profileNameLessThan(const Profile::Ptr& p1, const Profile::Ptr& p2)
 {
-    return QString::localeAwareCompare(p1->name(), p2->name()) <= 0;
+    return QString::localeAwareCompare(p1->name(), p2->name()) < 0;
 }
 
 static bool stringLessThan(const QString& p1, const QString& p2)
 {
-    return QString::localeAwareCompare(p1, p2) <= 0;
+    return QString::localeAwareCompare(p1, p2) < 0;
 }
 
 static void sortByIndexProfileList(QList<Profile::Ptr>& list)
 {
-    qStableSort(list.begin(), list.end(), profileIndexLessThan);
+    std::stable_sort(list.begin(), list.end(), profileIndexLessThan);
 }
 
 static void sortByNameProfileList(QList<Profile::Ptr>& list)
 {
-    qStableSort(list.begin(), list.end(), profileNameLessThan);
+    std::stable_sort(list.begin(), list.end(), profileNameLessThan);
 }
 
 ProfileManager::ProfileManager()
@@ -100,7 +100,7 @@ ProfileManager::ProfileManager()
     _defaultProfile = _fallbackProfile;
     if (!defaultProfileFileName.isEmpty()) {
         // load the default profile
-        const QString path = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + defaultProfileFileName);
+        const QString path = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QLatin1String("konsole/") + defaultProfileFileName);
 
         if (!path.isEmpty()) {
             Profile::Ptr profile = loadProfile(path);
@@ -146,7 +146,7 @@ Profile::Ptr ProfileManager::loadProfile(const QString& shortPath)
     if (fileInfo.suffix() != QLatin1String("profile")) {
         path.append(QLatin1String(".profile"));
     }
-    if (fileInfo.path().isEmpty() || fileInfo.path() == QLatin1String(".")) {
+    if (fileInfo.path().isEmpty() || fileInfo.path() == QLatin1Char('.')) {
         path.prepend(QLatin1String("konsole") + QDir::separator());
     }
 
@@ -181,20 +181,18 @@ Profile::Ptr ProfileManager::loadProfile(const QString& shortPath)
     }
 
     // load the profile
-    auto reader = new ProfileReader();
+    ProfileReader reader;
 
     Profile::Ptr newProfile = Profile::Ptr(new Profile(fallbackProfile()));
     newProfile->setProperty(Profile::Path, path);
 
     QString parentProfilePath;
-    bool result = reader->readProfile(path, newProfile, parentProfilePath);
+    bool result = reader.readProfile(path, newProfile, parentProfilePath);
 
     if (!parentProfilePath.isEmpty()) {
         Profile::Ptr parentProfile = loadProfile(parentProfilePath);
         newProfile->setParent(parentProfile);
     }
-
-    delete reader;
 
     if (!result) {
         qCDebug(KonsoleDebug) << "Could not load profile from " << path;
@@ -209,14 +207,13 @@ Profile::Ptr ProfileManager::loadProfile(const QString& shortPath)
 }
 QStringList ProfileManager::availableProfilePaths() const
 {
-    auto reader = new ProfileReader();
+    ProfileReader reader;
 
     QStringList paths;
-    paths += reader->findProfiles();
+    paths += reader.findProfiles();
 
-    qStableSort(paths.begin(), paths.end(), stringLessThan);
+    std::stable_sort(paths.begin(), paths.end(), stringLessThan);
 
-    delete reader;
     return paths;
 }
 
@@ -230,7 +227,7 @@ QStringList ProfileManager::availableProfileNames() const
         }
     }
 
-    qStableSort(names.begin(), names.end(), stringLessThan);
+    std::stable_sort(names.begin(), names.end(), stringLessThan);
 
     return names;
 }
@@ -338,17 +335,16 @@ Profile::Ptr ProfileManager::fallbackProfile() const
     return _fallbackProfile;
 }
 
-QString ProfileManager::saveProfile(Profile::Ptr profile)
+QString ProfileManager::saveProfile(const Profile::Ptr &profile)
 {
-    auto writer = new ProfileWriter();
+    ProfileWriter writer;
 
-    QString newPath = writer->getPath(profile);
+    QString newPath = writer.getPath(profile);
 
-    if (!writer->writeProfile(newPath, profile)) {
+    if (!writer.writeProfile(newPath, profile)) {
         KMessageBox::sorry(nullptr,
                            i18n("Konsole does not have permission to save this profile to %1", newPath));
     }
-    delete writer;
 
     return newPath;
 }
@@ -383,7 +379,7 @@ void ProfileManager::changeProfile(Profile::Ptr profile,
         QString newName;
         QString newTranslatedName;
         do {
-            newName = QStringLiteral("Profile ") + QString::number(nameSuffix);
+            newName = QLatin1String("Profile ") + QString::number(nameSuffix);
             newTranslatedName = i18nc("The default name of a profile", "Profile #%1", nameSuffix);
             // TODO: remove the # above and below - too many issues
             newTranslatedName.remove(QLatin1Char('#'));
@@ -456,7 +452,7 @@ void ProfileManager::changeProfile(Profile::Ptr profile,
     emit profileChanged(newProfile);
 }
 
-void ProfileManager::addProfile(Profile::Ptr profile)
+void ProfileManager::addProfile(const Profile::Ptr &profile)
 {
     if (_profiles.isEmpty()) {
         _defaultProfile = profile;
@@ -504,7 +500,7 @@ bool ProfileManager::deleteProfile(Profile::Ptr profile)
     return true;
 }
 
-void ProfileManager::setDefaultProfile(Profile::Ptr profile)
+void ProfileManager::setDefaultProfile(const Profile::Ptr &profile)
 {
     Q_ASSERT(_profiles.contains(profile));
 
@@ -514,10 +510,10 @@ void ProfileManager::setDefaultProfile(Profile::Ptr profile)
 void ProfileManager::saveDefaultProfile()
 {
     QString path = _defaultProfile->path();
-    auto writer = new ProfileWriter();
+    ProfileWriter writer;
 
     if (path.isEmpty()) {
-        path = writer->getPath(_defaultProfile);
+        path = writer.getPath(_defaultProfile);
     }
 
     QFileInfo fileInfo(path);
@@ -525,8 +521,6 @@ void ProfileManager::saveDefaultProfile()
     KSharedConfigPtr appConfig = KSharedConfig::openConfig();
     KConfigGroup group = appConfig->group("Desktop Entry");
     group.writeEntry("DefaultProfile", fileInfo.fileName());
-
-    delete writer;
 }
 
 QSet<Profile::Ptr> ProfileManager::findFavorites()
@@ -535,7 +529,7 @@ QSet<Profile::Ptr> ProfileManager::findFavorites()
 
     return _favorites;
 }
-void ProfileManager::setFavorite(Profile::Ptr profile , bool favorite)
+void ProfileManager::setFavorite(const Profile::Ptr &profile , bool favorite)
 {
     if (!_profiles.contains(profile)) {
         addProfile(profile);
@@ -568,13 +562,21 @@ void ProfileManager::loadShortcuts()
         // if the file is not an absolute path, look it up
         QFileInfo fileInfo(profilePath);
         if (!fileInfo.isAbsolute()) {
-            profilePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + profilePath);
+            profilePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QLatin1String("konsole/") + profilePath);
         }
 
         data.profilePath = profilePath;
         _shortcuts.insert(shortcut, data);
     }
 }
+
+QString ProfileManager::normalizePath(const QString& path) const {
+    QFileInfo fileInfo(path);
+    const QString location = QStandardPaths::locate(
+            QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + fileInfo.fileName());
+    return (!fileInfo.isAbsolute()) || location.isEmpty() ? path : fileInfo.fileName();
+}
+
 void ProfileManager::saveShortcuts()
 {
     KSharedConfigPtr appConfig = KSharedConfig::openConfig();
@@ -584,30 +586,27 @@ void ProfileManager::saveShortcuts()
     QMapIterator<QKeySequence, ShortcutData> iter(_shortcuts);
     while (iter.hasNext()) {
         iter.next();
-
         QString shortcutString = iter.key().toString();
-
-        // if the profile path in "Profile Shortcuts" is an absolute path,
-        // take the profile name
-        QFileInfo fileInfo(iter.value().profilePath);
-        QString profileName;
-        if (fileInfo.isAbsolute()) {
-            // Check to see if file is under KDE's data locations.  If not,
-            // store full path.
-            const QString location = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                                            QStringLiteral("konsole/") + fileInfo.fileName());
-            if (location.isEmpty()) {
-                profileName = iter.value().profilePath;
-            } else  {
-                profileName = fileInfo.fileName();
-            }
-        } else {
-            profileName = iter.value().profilePath;
-        }
-
+        QString profileName = normalizePath(iter.value().profilePath);
         shortcutGroup.writeEntry(shortcutString, profileName);
     }
 }
+
+
+void ProfileManager::saveFavorites()
+{
+    KSharedConfigPtr appConfig = KSharedConfig::openConfig();
+    KConfigGroup favoriteGroup = appConfig->group("Favorite Profiles");
+
+    QStringList paths;
+    foreach(const Profile::Ptr& profile, _favorites) {
+        Q_ASSERT(_profiles.contains(profile) && profile);
+        paths << normalizePath(profile->path());
+    }
+    favoriteGroup.writeEntry("Favorites", paths);
+}
+
+
 void ProfileManager::setShortcut(Profile::Ptr profile ,
                                  const QKeySequence& keySequence)
 {
@@ -660,37 +659,6 @@ void ProfileManager::loadFavorites()
     }
 
     _loadedFavorites = true;
-}
-void ProfileManager::saveFavorites()
-{
-    KSharedConfigPtr appConfig = KSharedConfig::openConfig();
-    KConfigGroup favoriteGroup = appConfig->group("Favorite Profiles");
-
-    QStringList paths;
-    foreach(const Profile::Ptr& profile, _favorites) {
-        Q_ASSERT(_profiles.contains(profile) && profile);
-
-        QFileInfo fileInfo(profile->path());
-        QString profileName;
-
-        if (fileInfo.isAbsolute()) {
-            // Check to see if file is under KDE's data locations.  If not,
-            // store full path.
-            const QString location = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + fileInfo.fileName());
-
-            if (location.isEmpty()) {
-                profileName = profile->path();
-            } else {
-                profileName = fileInfo.fileName();
-            }
-        } else {
-            profileName = profile->path();
-        }
-
-        paths << profileName;
-    }
-
-    favoriteGroup.writeEntry("Favorites", paths);
 }
 
 QList<QKeySequence> ProfileManager::shortcuts()

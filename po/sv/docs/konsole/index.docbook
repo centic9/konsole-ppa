@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % Swedish "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -79,13 +91,20 @@
 >&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->2018-03-10</date>
+>2019-06-16</date>
 <releaseinfo
->Program 18.04</releaseinfo>
+>Program 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -205,6 +224,13 @@
 >Hantera profiler...</guimenuitem
 ></menuchoice
 ></para
+></listitem>
+
+<listitem
+><para
+>Byt till sidan <guibutton
+>Profiler</guibutton
+>.</para
 ></listitem>
 
 <listitem
@@ -443,8 +469,7 @@
 <title
 >Drag och släpp</title>
 <para
->Om du släpper en fil, katalog eller webbadress på ett fönster i Terminal, visas en sammanhangsberoende meny med följande alternativ: </para
->  
+>Om du släpper en fil, katalog eller webbadress på ett fönster i Terminal, visas en sammanhangsberoende meny med följande alternativ: </para>
 <screenshot>
 <screeninfo
 >Sammanhangsberoende meny för drag och släpp</screeninfo>
@@ -1102,14 +1127,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1118,7 +1143,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1239,7 +1264,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1340,13 +1365,13 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
 >Visa</guimenu
 ><guimenuitem
->Koppla från vy</guimenuitem
+>Koppla loss aktuell flik</guimenuitem
 ></menuchoice>
 </term>
 <listitem
@@ -1356,6 +1381,29 @@ Various search improvements
 </para
 ><para
 >Att avsluta det föregående terminalfönstret påverkar inte det nyskapade fönstret. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visa</guimenu
+><guimenuitem
+>Koppla loss aktuell vy</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Öppnar den aktuella delade vyn i ett separat fönster</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1464,6 +1512,30 @@ Various search improvements
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visa</guimenu
+><guimenuitem
+>Återställ teckenstorlek</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Återställ textens teckenstorlek till profilens värde</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1629,9 +1701,10 @@ Various search improvements
 ><action
 >Öppnar bokmärkeseditorn</action
 ></para>
-
 <note
 ><para
+>Programmet keditbookmarks måste vara installerat för att menyalternativet ska visas.</para>
+<para
 >Du kan använda bokmärkeseditorn för att manuellt lägga till webbadresser. För närvarande accepterar Terminal följande: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1947,6 +2020,10 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 >%u : användarnamn</para
+></listitem>
+<listitem
+><para
+>%B : användarens Bourne prompter ($ = normal användare, # = systemadministratör)</para
 ></listitem>
 <listitem
 ><para
@@ -2349,7 +2426,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->För mer information, besök gärna <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>För mer information, besök gärna <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >&konsole; API Reference</ulink
 >. </para>
 </listitem>
@@ -2522,9 +2599,409 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->För mer information, besök gärna <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>För mer information, besök gärna <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >&DBus; tutorial</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Tangentbindningar i terminalen</title>
+
+<sect1>
+<title
+>Hur Terminal använder tangentbindningar</title>
+
+<sect2 id="intro">
+<title
+>Introduktion</title>
+<para
+>Terminal använder *.keytab-filer för att översätta tangentkombinationer till kontrolltecken och escape-följder som skickas till skalet eller till interaktiva program (typiskt program som använder den alternativa skärmbufferten, t.ex. <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>) som kör i ett skal.</para>
+
+<para
+>Användare kan anpassa tangentbindningarna i Terminal med Tangentbindningseditorn. En tangentkombination kan ställas in att skicka en specifik kontroll- eller escape-följd till terminalen.</para>
+
+<para
+>Tangentbindningseditorn kan öppnas med menyalternativet <menuchoice
+><guimenu
+>Inställningar</guimenu
+><guimenuitem
+>Redigera nuvarande profil</guimenuitem
+></menuchoice
+>, och gå till fliken <guilabel
+>Tangentbord</guilabel
+>. Där listas de tangentbindningsscheman som normalt levereras med Terminal.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Tangentkombinationer och lägen</title>
+
+<para
+>Tangentkombinationer följer mönstret: <programlisting
+>Tangent (+|-) Lägen</programlisting>
+</para>
+
+<para
+>exempelvis: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Tangentnamn definieras i deklarationsfilen qnamespace.h, med prefixet <quote
+>Qt::Key_</quote
+> borttaget. Titta på <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>Qt::Key enumeration i &Qt;-dokumentationen</ulink
+> för en lista med tangentnamn.</para>
+
+<para
+>Ett <quote
+>+</quote
+> som föregår ett lägesnamn betyder att läget <emphasis
+>används</emphasis
+>. För en väljartangent betyder det att den hålls nere, medan för alla andra lägen betyder det att det specifika läget är i kraft (dvs. aktivt). Exempelvis betyder <quote
+>+Ctrl</quote
+> att tangentkombinationen bara fungerar om &Ctrl;-tangenten hålls nere.</para>
+
+<para
+>Ett <quote
+>-</quote
+> som föregår ett lägesnamn betyder att läget <emphasis
+>återställs</emphasis
+>. I huvudsak är det motsatsen av att placera <quote
+>+</quote
+> framför ett lägesnamn, och för en väljartangent betyder det alltså att tangenten inte hålls nere, medan för alla andra lägen betyder det att det specifika läget är inaktivt. Exempelvis betyder <quote
+>-Ctrl</quote
+> att tangentkombinationen bara fungerar om &Ctrl;-tangenten <emphasis
+>inte</emphasis
+> hålls nere.</para>
+
+<note>
+<para
+>Om ett lägesnamn inte finns med i en tangentkombination ignoreras dess tillstånd.</para>
+</note>
+
+<para
+>Tangentbindningslägen som stöds listas nedan:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>En eller flera av dessa lägen kan användas i en tangentkombination. Om någon av dem är aktiv använder tangentkombinationen respektive väljartangent, och vice versa om den är inaktiv.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Om läget är aktivt, använder tangentkombinationen vilken som helst av väljartangenterna (någon av de tre tidigare väljartangenterna), och vice versa om det är inaktivt.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Om läget är aktivt, skickar Terminal ANSI escape- och kontrollföljder.</para>
+<para
+>Om läget är inaktivt, skickar Terminal VT52 escape- och kontrollföljder.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Om läget är aktivt, påverkar tangentkombinationen bara interaktiva program som använder den alternativa skärmbufferten.</para>
+<para
+>Om läget är inaktivt, påverkar tangentkombinationen bara terminalen när den använder den normala skärmbufferten.</para>
+
+<note>
+<para
+>Terminal använder sig av två skärmbuffertar:</para>
+<itemizedlist>
+<listitem>
+<para
+>Den normala skärmbufferten (förvald): Låter dig rulla bakåt för att titta på tidigare utmatade rader. Den är den normala bufferten som oftast används för att utföra kommandon, etc.</para>
+</listitem>
+<listitem>
+<para
+>Den alternativa skärmbufferten: Terminalen byter till denna buffert när ett interaktivt program körs (t.ex. <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+>... etc.).</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>KeyPad</term>
+<listitem>
+<para
+>Om läget är aktivt, använder tangentkombinationen en tangent på det numeriska tangentbordet. Läget är användbart för att skilja på tangenter på tangentbordet och tangenter på det numeriska tangentbordet. Exempelvis kan två separata tangentkombinationer ställas in när Num Lock är <emphasis
+>på</emphasis
+>, en med tangenten betecknad med <quote
+>1</quote
+> på tangentbordet (oftast under tangenten <keycap
+>F1</keycap
+>) och den andra med tangenten betecknad med <quote
+>1</quote
+> på det numeriska tangentbordet. Samma koncept gäller när Num Lock är <emphasis
+>av</emphasis
+> för piltangenterna och tangenterna End, Home, etc. på det numeriska tangentbordet.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Läget implementerar VT100 <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>piltangentläget (DECCKM)</ulink
+>. Det bestämmer escape-sekvenser som varje piltangent (<keycap
+>upp</keycap
+>, <keycap
+>ner</keycap
+>, <keycap
+>höger</keycap
+>, <keycap
+>vänster</keycap
+>) skickar, beroende på om läget är aktivt eller inaktivt.</para>
+<para
+>Normalt följer Terminal beteendet hos XTerm att behandla tangenterna <keycap
+>Home</keycap
+> och <keycap
+>End</keycap
+> som piltangenter med avseende på DECCKM.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Om läget är aktivt, fungerar bara tangentkombinationen när det numeriska tangentbordet är i programläge (DECKPAM).</para>
+<para
+>Om läget är inaktivt, fungerar bara tangentkombinationen när det numeriska tangentbordet är i numeriskt läge (DECKPNM).</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NewLine</term>
+<listitem>
+<para
+>Om läget är aktivt, skickar <keycap
+>Retur</keycap
+> (Enter)-tangenten på tangentbordet både kontrolltecknen vagnretur "\r" och nyrad "\n".</para>
+<para
+>Om läget är inaktivt, skickar <keycap
+>Retur</keycap
+>-tangenten bara vagnretur "\r".</para>
+<para
+>Samma sak gäller för tangenten <keycap
+>Enter</keycap
+> på det numeriska tangentbordet.</para>
+<para
+>Läget emulerar <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>LNM - Line Feed/New Line</ulink
+>.</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Observera att varje kombination av tangent och läge (aktivt/inaktivt) måste vara unikt. Betrakta exempelvis följande två regler:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>Terminal accepterar <emphasis
+>inte</emphasis
+> regeln för den lilla bokstaven <quote
+>a</quote
+>, utan <quote
+>-Shift</quote
+> måste läggas till i regeln för att få den att fungera.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>Utmatningsfältet</title>
+
+<para
+>I utmatningsfältet kan escape-sekvenser eller kontrolltecken som du vill att Terminal ska skicka till terminalen när den associerade tangentkombinationen används.</para>
+
+<para
+>Du kan också använda något av följande nyckelord, som vart och ett har en särskilt betydelse i Terminal:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : rulla upp en rad i bufferten med skalhistorik</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : rulla upp en sida i bufferten med skalhistorik</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : rulla ner en rad i bufferten med skalhistorik</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : rulla ner en sida i bufferten med skalhistorik</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : rulla upp till början av bufferten med skalhistorik</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : rulla ner till slutet av bufferten med skalhistorik</para
+></listitem>
+</itemizedlist>
+
+<para
+>Du kan också använda strängar med C-strängsyntax, och följande Escape-sekvenser kan användas:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Bakstreck</para
+></listitem>
+<listitem
+><para
+>\" : Dubbla citationstecken</para
+></listitem>
+<listitem
+><para
+>\t : Tabulator</para
+></listitem>
+<listitem
+><para
+>\r : Vagnretur</para
+></listitem>
+<listitem
+><para
+>\n : Nyrad</para
+></listitem>
+<listitem
+><para
+>\b : Baksteg</para
+></listitem>
+<listitem>
+<para
+>\xHH : där HH är två hexadecimala siffror</para>
+<tip>
+<para
+>Detta kan användas för att skicka ASCII-kontrolltecken, t.ex. <quote
+>\x00</quote
+> som är tecknet NUL.</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Andra systemresurser</title>
+<para
+>Det finns andra systemresurser som kan påverka terminalens tangentbindningar:</para>
+<itemizedlist>
+<listitem>
+<para
+>Se databaserna <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> eller <ulink url="man:termcap(5)"
+>termcap</ulink
+> för förväntade escape-sekvenser och kontrolltecken som varje tangentkombination förväntas skicka.</para>
+</listitem>
+<listitem>
+<para
+>Troligtvis har systemet andra tangentbordsdatabaser som också måste vara synkroniserade (t.ex. <ulink url="man:bash(1)"
+>/etc/inputrc och readline</ulink
+> för skalet <application
+>BASH</application
+>) eftersom de påverkar åtgärderna (interaktionen) kopplade till tangentkombinationer.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Ytterligare läsning</title>
+<para
+>För mer information om escape-sekvenser och kontrolltecken, se följande dokumentation:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>VT100 användarguide</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>VT102 användarguide</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>Den omfattande och oumbärliga dokumentationen <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>XTerm Control Sequences</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2540,7 +3017,7 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->För mer information, läs gärna <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
+>För mer information, läs gärna <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
 >&Qt; stilmallar</ulink
 > </para>
 
@@ -2823,8 +3300,7 @@ CommonDirNames=namn1,namn2,namn3...
 >Översättning Stefan Asserhäll <email
 >stefan.asserhall@bredband.net</email
 ></para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title
@@ -2835,31 +3311,31 @@ CommonDirNames=namn1,namn2,namn3...
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole"
+><ulink url="https://userbase.kde.org/Konsole"
 >&konsole;s hemsida på &kde;:s användarbas</ulink
 >&nbsp;</para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >&konsole;s hemsida</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >&konsole;s e-postlista</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; på FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; på &Solaris;</ulink
 ></para
 ></listitem>

@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    Copyright 2013, 2018 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -94,6 +94,105 @@ void KeyboardTranslatorTest::testEntryTextWildcards()
     entry.setText(text);
 
     QCOMPARE(entry.text(wildcards, modifiers), result);
+}
+
+// Use FallbackKeyboardTranslator to test basic functionality
+void KeyboardTranslatorTest::testFallback()
+{
+    auto fallback = new FallbackKeyboardTranslator();
+
+    QCOMPARE(QStringLiteral("fallback"), fallback->name());
+    QCOMPARE(QStringLiteral("Fallback Keyboard Translator"), fallback->description());
+
+    auto entries = fallback->entries();
+    QCOMPARE(1, entries.size());
+    auto entry = fallback->findEntry(Qt::Key_Tab, nullptr);
+    QVERIFY(!entry.isNull());
+    QCOMPARE(FallbackKeyboardTranslator::Command::NoCommand, entry.command());
+    QCOMPARE(int(Qt::Key_Tab), entry.keyCode());
+    QCOMPARE(QByteArray("\t"), entry.text());
+    QCOMPARE(QByteArray("\\t"), entry.escapedText());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifiers());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifierMask());
+    QCOMPARE(KeyboardTranslator::States(KeyboardTranslator::NoState), entry.state());
+    QCOMPARE(QStringLiteral("Tab"), entry.conditionToString());
+    QCOMPARE(QStringLiteral("\\t"), entry.resultToString());
+    QVERIFY(entry.matches(Qt::Key_Tab, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(entry == fallback->findEntry(Qt::Key_Tab, nullptr));
+
+    delete fallback;
+}
+
+void KeyboardTranslatorTest::testHexKeys()
+{
+    QFile linuxkeytab(QFINDTESTDATA(QStringLiteral("data/test.keytab")));
+    QVERIFY(linuxkeytab.exists());
+    QVERIFY(linuxkeytab.open(QIODevice::ReadOnly));
+
+    KeyboardTranslator* translator = new KeyboardTranslator(QStringLiteral("testtranslator"));
+
+    KeyboardTranslatorReader reader(&linuxkeytab);
+    while (reader.hasNextEntry()) {
+        translator->addEntry(reader.nextEntry());
+    }
+    linuxkeytab.close();
+
+    // A worthless check ATM
+    if (reader.parseError()) {
+        delete translator;
+        QFAIL("Parse failure");
+    }
+
+    QCOMPARE(QStringLiteral("testtranslator"), translator->name());
+    QCOMPARE(QString(), translator->description());
+
+    auto entry = translator->findEntry(Qt::Key_Backspace, nullptr);
+    QVERIFY(!entry.isNull());
+    QCOMPARE(FallbackKeyboardTranslator::Command::NoCommand, entry.command());
+    QCOMPARE(int(Qt::Key_Backspace), entry.keyCode());
+    QCOMPARE(QByteArray("\x7F"), entry.text());
+    QCOMPARE(QByteArray("\\x7f"), entry.escapedText());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifiers());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifierMask());
+    QCOMPARE(KeyboardTranslator::States(KeyboardTranslator::NoState), entry.state());
+    QCOMPARE(QStringLiteral("Backspace"), entry.conditionToString());
+    QCOMPARE(QStringLiteral("\\x7f"), entry.resultToString());
+    QVERIFY(entry.matches(Qt::Key_Backspace, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(entry == translator->findEntry(Qt::Key_Backspace, nullptr));
+
+    entry = translator->findEntry(Qt::Key_Delete, nullptr);
+    QVERIFY(!entry.isNull());
+    QCOMPARE(FallbackKeyboardTranslator::Command::NoCommand, entry.command());
+    QCOMPARE(int(Qt::Key_Delete), entry.keyCode());
+    QCOMPARE(QByteArray("\x08"), entry.text());
+    QCOMPARE(QByteArray("\\b"), entry.escapedText());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifiers());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifierMask());
+    QCOMPARE(KeyboardTranslator::States(KeyboardTranslator::NoState), entry.state());
+    QCOMPARE(QStringLiteral("Del"), entry.conditionToString());
+    QCOMPARE(QStringLiteral("\\b"), entry.resultToString());
+    QVERIFY(entry.matches(Qt::Key_Delete, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(!entry.matches(Qt::Key_Backspace, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(!(entry == translator->findEntry(Qt::Key_Backspace, nullptr)));
+
+    entry = translator->findEntry(Qt::Key_Space, nullptr);
+    QVERIFY(!entry.isNull());
+    QCOMPARE(FallbackKeyboardTranslator::Command::NoCommand, entry.command());
+    QCOMPARE(int(Qt::Key_Space), entry.keyCode());
+    QEXPECT_FAIL("", "Several keytabs use x00 as Space +Control;  text() fails", Continue);
+    QCOMPARE(QByteArray("\x00"), entry.text());
+    QCOMPARE(QByteArray("\\x00"), entry.escapedText());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifiers());
+    QCOMPARE(Qt::KeyboardModifiers(Qt::NoModifier), entry.modifierMask());
+    QCOMPARE(KeyboardTranslator::States(KeyboardTranslator::NoState), entry.state());
+    QCOMPARE(QStringLiteral("Space"), entry.conditionToString());
+    QCOMPARE(QStringLiteral("\\x00"), entry.resultToString());
+    QVERIFY(entry.matches(Qt::Key_Space, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(entry == translator->findEntry(Qt::Key_Space, nullptr));
+    QVERIFY(!entry.matches(Qt::Key_Backspace, Qt::NoModifier, KeyboardTranslator::NoState));
+    QVERIFY(!(entry == translator->findEntry(Qt::Key_Backspace, nullptr)));
+
+    delete translator;
 }
 
 QTEST_GUILESS_MAIN(KeyboardTranslatorTest)

@@ -33,8 +33,10 @@ class TerminalInterfaceTest : public QObject
 public:
 
 private Q_SLOTS:
+    void initTestCase();
     void testTerminalInterfaceNoShell();
     void testTerminalInterface();
+    void testTerminalInterfaceV2();
 
 private:
     KParts::Part* createPart();

@@ -55,13 +55,15 @@ class ProfileGroup;
  */
 class KONSOLEPRIVATE_EXPORT Profile : public QSharedData
 {
+    Q_GADGET
+
     friend class ProfileReader;
     friend class ProfileWriter;
     friend class ProfileGroup;
 
 public:
-    typedef QExplicitlySharedDataPointer<Profile> Ptr;
-    typedef QExplicitlySharedDataPointer<ProfileGroup> GroupPtr;
+    using Ptr = QExplicitlySharedDataPointer<Profile>;
+    using GroupPtr = QExplicitlySharedDataPointer<ProfileGroup>;
 
     /**
      * This enum describes the available properties
@@ -114,6 +116,9 @@ public:
          * resizing the application window.
          */
         ShowTerminalSizeHint,
+        /** (bool) If the background color should change to indicate if the window is active
+         */
+        DimWhenInactive,
         /** (QFont) The font to use in terminal displays using this profile. */
         Font,
         /** (QString) The name of the color scheme to use in terminal
@@ -269,9 +274,31 @@ public:
          * increases/decreases the terminal font size.
          */
         MouseWheelZoomEnabled,
+        /** (bool) Specifies whether emulated up/down key press events are
+         * sent, for mouse scroll wheel events, to programs using the
+         * Alternate Screen buffer; this is mainly for the benefit of
+         * programs that don't natively support mouse scroll events, e.g.
+         * less.
+         *
+         * This also works for scrolling in applications that support Mouse
+         * Tracking events but don't indicate they're interested in those
+         * events; for example, when vim doesn't indicate it's interested
+         * in Mouse Tracking events (i.e. when the mouse is in Normal
+         * (not Visual) mode): http://vimdoc.sourceforge.net/htmldoc/intro.html#Normal
+         * mouse wheel scroll events will send up/down key press events.
+         *
+         * Default value is true.
+         * See also, MODE_Mouse1007 in the Emulation header, which toggles
+         * Alternate Scrolling with escape sequences.
+        */
+        AlternateScrolling,
         /** (int) Keyboard modifiers to show URL hints */
-        UrlHintsModifiers
+        UrlHintsModifiers,
+        /** (bool) Reverse the order of URL hints */
+        ReverseUrlHints
     };
+
+    Q_ENUM(Property)
 
     /**
      * Constructs a new profile
@@ -280,7 +307,7 @@ public:
      * property using property(), if the property has not been set in this
      * profile then the parent's value for the property will be returned.
      */
-    explicit Profile(Ptr parent = Ptr());
+    explicit Profile(const Ptr &parent = Ptr());
     virtual ~Profile();
 
     /**
@@ -306,7 +333,7 @@ public:
      * if the specified property has not been set for this profile,
      * the parent's value for the property will be returned instead.
      */
-    void setParent(Ptr parent);
+    void setParent(const Ptr &parent);
 
     /** Returns the parent profile. */
     const Ptr parent() const;
@@ -417,6 +444,12 @@ public:
     bool showTerminalSizeHint() const
     {
         return property<bool>(Profile::ShowTerminalSizeHint);
+    }
+
+    /** Convenience method for property<bool>(Profile::DimWhenInactive) */
+    bool dimWhenInactive() const
+    {
+        return property<bool>(Profile::DimWhenInactive);
     }
 
     /** Convenience method for property<QFont>(Profile::Font) */
@@ -674,24 +707,24 @@ inline QVariant Profile::property(Property p) const
 class KONSOLEPRIVATE_EXPORT ProfileGroup : public Profile
 {
 public:
-    typedef QExplicitlySharedDataPointer<ProfileGroup> Ptr;
+    using Ptr = QExplicitlySharedDataPointer<ProfileGroup>;
 
     /** Construct a new profile group, which is hidden by default. */
-    explicit ProfileGroup(Profile::Ptr profileParent = Profile::Ptr());
+    explicit ProfileGroup(const Profile::Ptr &profileParent = Profile::Ptr());
 
     /** Add a profile to the group.  Calling setProperty() will update this
      * profile.  When creating a group, add the profiles to the group then
      * call updateValues() to make the group's property values reflect the
      * profiles currently in the group.
      */
-    void addProfile(Profile::Ptr profile)
+    void addProfile(const Profile::Ptr &profile)
     {
         _profiles.append(profile);
     }
 
     /** Remove a profile from the group.  Calling setProperty() will no longer
      * affect this profile. */
-    void removeProfile(Profile::Ptr profile)
+    void removeProfile(const Profile::Ptr &profile)
     {
         _profiles.removeAll(profile);
     }
@@ -725,7 +758,7 @@ private:
 
     QList<Profile::Ptr> _profiles;
 };
-inline ProfileGroup::ProfileGroup(Profile::Ptr profileParent) :
+inline ProfileGroup::ProfileGroup(const Profile::Ptr &profileParent) :
     Profile(profileParent),
     _profiles(QList<Profile::Ptr>())
 {

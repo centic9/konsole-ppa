@@ -25,8 +25,8 @@
 #include "Session.h"
 
 // Standard
-#include <stdlib.h>
-#include <signal.h>
+#include <cstdlib>
+#include <csignal>
 #include <unistd.h>
 
 // Qt
@@ -44,6 +44,7 @@
 #include <KShell>
 #include <KProcess>
 #include <KConfigGroup>
+#include <KIO/DesktopExecParser>
 
 // Konsole
 #include <sessionadaptor.h>
@@ -56,6 +57,9 @@
 #include "ZModemDialog.h"
 #include "History.h"
 #include "konsoledebug.h"
+#include "SessionManager.h"
+#include "ProfileManager.h"
+#include "Profile.h"
 
 using namespace Konsole;
 
@@ -66,18 +70,35 @@ static const int ZMODEM_BUFFER_SIZE = 1048576; // 1 Mb
 
 Session::Session(QObject* parent) :
     QObject(parent)
+    , _uniqueIdentifier(QUuid())
     , _shellProcess(nullptr)
     , _emulation(nullptr)
+    , _views(QList<TerminalDisplay *>())
     , _monitorActivity(false)
     , _monitorSilence(false)
     , _notifiedActivity(false)
     , _silenceSeconds(10)
+    , _silenceTimer(nullptr)
+    , _activityTimer(nullptr)
     , _autoClose(true)
     , _closePerUserRequest(false)
+    , _nameTitle(QString())
+    , _displayTitle(QString())
+    , _userTitle(QString())
+    , _localTabTitleFormat(QString())
+    , _remoteTabTitleFormat(QString())
     , _tabTitleSetByUser(false)
+    , _iconName(QString())
+    , _iconText(QString())
     , _addToUtmp(true)
     , _flowControlEnabled(true)
+    , _program(QString())
+    , _arguments(QStringList())
+    , _environment(QStringList())
     , _sessionId(0)
+    , _initialWorkingDir(QString())
+    , _currentWorkingDir(QString())
+    , _reportedWorkingUrl(QUrl())
     , _sessionProcessInfo(nullptr)
     , _foregroundProcessInfo(nullptr)
     , _foregroundPid(0)
@@ -87,6 +108,7 @@ Session::Session(QObject* parent) :
     , _hasDarkBackground(false)
     , _preferredSize(QSize())
     , _readOnly(false)
+    , _isPrimaryScreen(true)
 {
     _uniqueIdentifier = QUuid::createUuid();
 
@@ -98,11 +120,11 @@ Session::Session(QObject* parent) :
     //create emulation backend
     _emulation = new Vt102Emulation();
 
-    connect(_emulation, &Konsole::Emulation::titleChanged, this, &Konsole::Session::setUserTitle);
+    connect(_emulation, &Konsole::Emulation::sessionAttributeChanged, this, &Konsole::Session::setSessionAttribute);
     connect(_emulation, &Konsole::Emulation::stateSet, this, &Konsole::Session::activityStateSet);
     connect(_emulation, &Konsole::Emulation::zmodemDownloadDetected, this, &Konsole::Session::fireZModemDownloadDetected);
     connect(_emulation, &Konsole::Emulation::zmodemUploadDetected, this, &Konsole::Session::fireZModemUploadDetected);
-    connect(_emulation, &Konsole::Emulation::changeTabTextColorRequest, this, &Konsole::Session::changeTabTextColorRequest);
+    connect(_emulation, &Konsole::Emulation::changeTabTextColorRequest, this, &Konsole::Session::changeTabTextColor);
     connect(_emulation, &Konsole::Emulation::profileChangeCommandReceived, this, &Konsole::Session::profileChangeCommandReceived);
     connect(_emulation, &Konsole::Emulation::flowControlKeyPressed, this, &Konsole::Session::updateFlowControlState);
     connect(_emulation, &Konsole::Emulation::primaryScreenInUse, this, &Konsole::Session::onPrimaryScreenInUse);
@@ -121,8 +143,6 @@ Session::Session(QObject* parent) :
     _activityTimer = new QTimer(this);
     _activityTimer->setSingleShot(true);
     connect(_activityTimer, &QTimer::timeout, this, &Konsole::Session::activityTimerDone);
-
-    connect(this, &Konsole::Session::tabRenamedByUser, this, &Konsole::Session::tabTitleSetByUser);
 }
 
 Session::~Session()
@@ -159,7 +179,9 @@ void Session::openTeletype(int fd)
     connect(_emulation, &Konsole::Emulation::useUtf8Request, _shellProcess, &Konsole::Pty::setUtf8Mode);
 
     // get notified when the pty process is finished
-    connect(_shellProcess, static_cast<void(Pty::*)(int,QProcess::ExitStatus)>(&Konsole::Pty::finished), this, &Konsole::Session::done);
+    connect(_shellProcess,
+            QOverload<int,QProcess::ExitStatus>::of(&Konsole::Pty::finished),
+            this, &Konsole::Session::done);
 
     // emulator size
     // Use a direct connection to ensure that the window size is set before it runs
@@ -184,15 +206,16 @@ WId Session::windowId() const
     if (_views.count() == 0) {
         return 0;
     } else {
-        QWidget* window = _views.first();
-
-        Q_ASSERT(window);
-
-        while (window->parentWidget() != nullptr) {
-            window = window->parentWidget();
-        }
-
-        return window->winId();
+        /**
+         * compute the windows id to use
+         * doesn't call winId on some widget, as this might lead
+         * to rendering artifacts as this will trigger the
+         * creation of a native window, see https://doc.qt.io/qt-5/qwidget.html#winId
+         * instead, use https://doc.qt.io/qt-5/qwidget.html#effectiveWinId
+         */
+        QWidget* widget = _views.first();
+        Q_ASSERT(widget);
+        return widget->effectiveWinId();
     }
 }
 
@@ -287,11 +310,13 @@ void Session::addView(TerminalDisplay* widget)
     connect(widget, &Konsole::TerminalDisplay::mouseSignal, _emulation, &Konsole::Emulation::sendMouseEvent);
     connect(widget, &Konsole::TerminalDisplay::sendStringToEmu, _emulation, &Konsole::Emulation::sendString);
 
-    // allow emulation to notify view when the foreground process
-    // indicates whether or not it is interested in mouse signals
-    connect(_emulation, &Konsole::Emulation::programUsesMouseChanged, widget, &Konsole::TerminalDisplay::setUsesMouse);
+    // allow emulation to notify the view when the foreground process
+    // indicates whether or not it is interested in Mouse Tracking events
+    connect(_emulation, &Konsole::Emulation::programRequestsMouseTracking, widget, &Konsole::TerminalDisplay::setUsesMouseTracking);
 
-    widget->setUsesMouse(_emulation->programUsesMouse());
+    widget->setUsesMouseTracking(_emulation->programUsesMouseTracking());
+
+    connect(_emulation, &Konsole::Emulation::enableAlternateScrolling, widget, &Konsole::TerminalDisplay::setAlternateScrolling);
 
     connect(_emulation, &Konsole::Emulation::programBracketedPasteModeChanged, widget, &Konsole::TerminalDisplay::setBracketedPasteMode);
 
@@ -306,11 +331,14 @@ void Session::addView(TerminalDisplay* widget)
 
     connect(widget, &Konsole::TerminalDisplay::focusLost, _emulation, &Konsole::Emulation::focusLost);
     connect(widget, &Konsole::TerminalDisplay::focusGained, _emulation, &Konsole::Emulation::focusGained);
+
+    connect(_emulation, &Konsole::Emulation::setCursorStyleRequest, widget, &Konsole::TerminalDisplay::setCursorStyle);
+    connect(_emulation, &Konsole::Emulation::resetCursorStyleRequest, widget, &Konsole::TerminalDisplay::resetCursorStyle);
 }
 
 void Session::viewDestroyed(QObject* view)
 {
-    TerminalDisplay* display = reinterpret_cast<TerminalDisplay*>(view);
+    auto* display = reinterpret_cast<TerminalDisplay*>(view);
 
     Q_ASSERT(_views.contains(display));
 
@@ -355,7 +383,7 @@ QString Session::checkProgram(const QString& program)
         return exec;
     }
 
-    exec = KRun::binaryName(exec, false);
+    exec = KIO::DesktopExecParser::executablePath(exec);
     exec = KShell::tildeExpand(exec);
     const QString pexec = QStandardPaths::findExecutable(exec);
     if (pexec.isEmpty()) {
@@ -467,7 +495,7 @@ void Session::run()
 
     int result = _shellProcess->start(exec, arguments, _environment);
     if (result < 0) {
-        terminalWarning(i18n("Could not start program '%1' with arguments '%2'.", exec, arguments.join(QLatin1String(" "))));
+        terminalWarning(i18n("Could not start program '%1' with arguments '%2'.", exec, arguments.join(QLatin1Char(' '))));
         terminalWarning(_shellProcess->errorString());
         return;
     }
@@ -477,9 +505,10 @@ void Session::run()
     emit started();
 }
 
-void Session::setUserTitle(int what, const QString& caption)
+void Session::setSessionAttribute(int what, const QString& caption)
 {
-    //set to true if anything is actually changed (eg. old _nameTitle != new _nameTitle )
+    // set to true if anything has actually changed
+    // eg. old _nameTitle != new _nameTitle
     bool modified = false;
 
     if ((what == IconNameAndWindowTitle) || (what == WindowTitle)) {
@@ -516,13 +545,6 @@ void Session::setUserTitle(int what, const QString& caption)
         }
     }
 
-    /* I don't believe this has ever worked in KDE 4.x
-    if (what == 31) {
-        QString cwd = caption;
-        cwd = cwd.replace(QRegExp("^~"), QDir::homePath());
-        emit openUrlRequest(cwd);
-    }*/
-
     /* The below use of 32 works but appears to non-standard.
        It is from a commit from 2004 c20973eca8776f9b4f15bee5fdcb5a3205aa69de
      */
@@ -547,7 +569,7 @@ void Session::setUserTitle(int what, const QString& caption)
     }
 
     if (modified) {
-        emit titleChanged();
+        emit sessionAttributeChanged();
     }
 }
 
@@ -637,9 +659,20 @@ void Session::updateFlowControlState(bool suspended)
     }
 }
 
+void Session::changeTabTextColor(int i)
+{
+    qCDebug(KonsoleDebug) << "Changing tab text color is not implemented "<<i;
+}
+
 void Session::onPrimaryScreenInUse(bool use)
 {
+
+    _isPrimaryScreen = use;
     emit primaryScreenInUse(use);
+}
+bool Session::isPrimaryScreen()
+{
+    return _isPrimaryScreen;
 }
 
 void Session::sessionAttributeRequest(int id)
@@ -864,7 +897,11 @@ void Session::sendTextToTerminal(const QString& text, const QChar& eol) const
         return;
     }
 
-    _emulation->sendText(text + eol);
+    if (eol.isNull()) {
+        _emulation->sendText(text);
+    } else {
+        _emulation->sendText(text + eol);
+    }
 }
 
 // Only D-Bus calls this function (via SendText or runCommand)
@@ -901,12 +938,13 @@ void Session::sendMouseEvent(int buttons, int column, int line, int eventType)
 void Session::done(int exitCode, QProcess::ExitStatus exitStatus)
 {
     // This slot should be triggered only one time
-    disconnect(_shellProcess, static_cast<void(Pty::*)(int,QProcess::ExitStatus)>(&Konsole::Pty::finished),
+    disconnect(_shellProcess,
+               QOverload<int,QProcess::ExitStatus>::of(&Konsole::Pty::finished),
                this, &Konsole::Session::done);
 
     if (!_autoClose) {
         _userTitle = i18nc("@info:shell This session is done", "Finished");
-        emit titleChanged();
+        emit sessionAttributeChanged();
         return;
     }
 
@@ -987,7 +1025,7 @@ void Session::setTitle(TitleRole role , const QString& newTitle)
             _displayTitle = newTitle;
         }
 
-        emit titleChanged();
+        emit sessionAttributeChanged();
     }
 }
 
@@ -1027,8 +1065,7 @@ void Session::updateSessionProcessInfo()
     if ((_sessionProcessInfo == nullptr) ||
             (processId() != 0 && processId() != _sessionProcessInfo->pid(&ok))) {
         delete _sessionProcessInfo;
-        _sessionProcessInfo = ProcessInfo::newInstance(processId(),
-                    tabTitleFormat(Session::LocalTabTitle));
+        _sessionProcessInfo = ProcessInfo::newInstance(processId());
         _sessionProcessInfo->setUserHomeDir();
     }
     _sessionProcessInfo->update();
@@ -1041,8 +1078,7 @@ bool Session::updateForegroundProcessInfo()
     const int foregroundPid = _shellProcess->foregroundProcessGroup();
     if (foregroundPid != _foregroundPid) {
         delete _foregroundProcessInfo;
-        _foregroundProcessInfo = ProcessInfo::newInstance(foregroundPid,
-                    tabTitleFormat(Session::LocalTabTitle));
+        _foregroundProcessInfo = ProcessInfo::newInstance(foregroundPid);
         _foregroundPid = foregroundPid;
     }
 
@@ -1081,6 +1117,7 @@ QString Session::getDynamicTitle()
      * <br>
      * The markers recognized are:
      * <ul>
+     * <li> %B - User's Bourne prompt sigil ($, or # for superuser). </li>
      * <li> %u - Name of the user which owns the process. </li>
      * <li> %n - Replaced with the name of the process.   </li>
      * <li> %d - Replaced with the last part of the path name of the
@@ -1094,33 +1131,46 @@ QString Session::getDynamicTitle()
      */
     QString title = tabTitleFormat(Session::LocalTabTitle);
     // search for and replace known marker
+
+    int UID = process->userId(&ok);
+    if(!ok) {
+        title.replace(QLatin1String("%B"), QStringLiteral("-"));
+    } else {
+        //title.replace(QLatin1String("%I"), QString::number(UID));
+        if (UID == 0) {
+            title.replace(QLatin1String("%B"), QStringLiteral("#"));
+        } else {
+            title.replace(QLatin1String("%B"), QStringLiteral("$"));
+        }
+    }
+
+
     title.replace(QLatin1String("%u"), process->userName());
-    title.replace(QLatin1String("%h"), process->localHost());
+    title.replace(QLatin1String("%h"), Konsole::ProcessInfo::localHost());
     title.replace(QLatin1String("%n"), process->name(&ok));
 
     QString dir = _reportedWorkingUrl.toLocalFile();
+    ok = true;
     if (dir.isEmpty()) {
         // update current directory from process
         updateWorkingDirectory();
-        dir = process->validCurrentDir();
+        dir = process->currentDir(&ok);
     }
-
-    if (title.contains(QLatin1String("%D"))) {
+    if(!ok) {
+        title.replace(QLatin1String("%d"), QStringLiteral("-"));
+        title.replace(QLatin1String("%D"), QStringLiteral("-"));
+    } else {
+        // allow for shortname to have the ~ as homeDir
         const QString homeDir = process->userHomeDir();
         if (!homeDir.isEmpty()) {
-            QString tempDir = dir;
-            // Change User's Home Dir w/ ~ only at the beginning
-            if (tempDir.startsWith(homeDir)) {
-                tempDir.remove(0, homeDir.length());
-                tempDir.prepend(QLatin1Char('~'));
+            if (dir.startsWith(homeDir)) {
+                dir.remove(0, homeDir.length());
+                dir.prepend(QLatin1Char('~'));
             }
-            title.replace(QLatin1String("%D"), tempDir);
-        } else {
-            // Example: 'sudo top'  We have to replace %D with something
-            title.replace(QLatin1String("%D"), QStringLiteral("-"));
         }
+        title.replace(QLatin1String("%D"), dir);
+        title.replace(QLatin1String("%d"), process->formatShortDir(dir));
     }
-    title.replace(QLatin1String("%d"), process->formatShortDir(dir));
 
     return title;
 }
@@ -1138,7 +1188,7 @@ QUrl Session::getUrl()
         bool ok = false;
 
         // check if foreground process is bookmark-able
-        if (isForegroundProcessActive()) {
+        if (isForegroundProcessActive() && _foregroundProcessInfo->isValid()) {
             // for remote connections, save the user and host
             // bright ideas to get the directory at the other end are welcome :)
             if (_foregroundProcessInfo->name(&ok) == QLatin1String("ssh") && ok) {
@@ -1175,7 +1225,7 @@ void Session::setIconName(const QString& iconName)
 {
     if (iconName != _iconName) {
         _iconName = iconName;
-        emit titleChanged();
+        emit sessionAttributeChanged();
     }
 }
 
@@ -1339,7 +1389,9 @@ void Session::startZModem(const QString& zmodem, const QString& dir, const QStri
 
     connect(_zmodemProc, &KProcess::readyReadStandardOutput, this, &Konsole::Session::zmodemReadAndSendBlock);
     connect(_zmodemProc, &KProcess::readyReadStandardError, this, &Konsole::Session::zmodemReadStatus);
-    connect(_zmodemProc, static_cast<void(KProcess::*)(int,QProcess::ExitStatus)>(&KProcess::finished), this, &Konsole::Session::zmodemFinished);
+    connect(_zmodemProc,
+            QOverload<int,QProcess::ExitStatus>::of(&KProcess::finished),
+            this, &Konsole::Session::zmodemFinished);
 
     _zmodemProc->start();
 
@@ -1464,10 +1516,10 @@ void Session::setTitle(int role , const QString& title)
 {
     switch (role) {
     case 0:
-        this->setTitle(Session::NameRole, title);
+        setTitle(Session::NameRole, title);
         break;
     case 1:
-        this->setTitle(Session::DisplayedTitleRole, title);
+        setTitle(Session::DisplayedTitleRole, title);
 
         // without these, that title will be overridden by the expansion of
         // title format shortly after, which will confuses users.
@@ -1482,9 +1534,9 @@ QString Session::title(int role) const
 {
     switch (role) {
     case 0:
-        return this->title(Session::NameRole);
+        return title(Session::NameRole);
     case 1:
-        return this->title(Session::DisplayedTitleRole);
+        return title(Session::DisplayedTitleRole);
     default:
         return QString();
     }
@@ -1494,10 +1546,10 @@ void Session::setTabTitleFormat(int context , const QString& format)
 {
     switch (context) {
     case 0:
-        this->setTabTitleFormat(Session::LocalTabTitle, format);
+        setTabTitleFormat(Session::LocalTabTitle, format);
         break;
     case 1:
-        this->setTabTitleFormat(Session::RemoteTabTitle, format);
+        setTabTitleFormat(Session::RemoteTabTitle, format);
         break;
     }
 }
@@ -1506,9 +1558,9 @@ QString Session::tabTitleFormat(int context) const
 {
     switch (context) {
     case 0:
-        return this->tabTitleFormat(Session::LocalTabTitle);
+        return tabTitleFormat(Session::LocalTabTitle);
     case 1:
-        return this->tabTitleFormat(Session::RemoteTabTitle);
+        return tabTitleFormat(Session::RemoteTabTitle);
     default:
         return QString();
     }
@@ -1542,6 +1594,21 @@ int Session::historySize() const
     } else {
         return 0;
     }
+}
+
+QString Session::profile()
+{
+    return SessionManager::instance()->sessionProfile(this)->name();
+}
+
+void Session::setProfile(const QString &profileName)
+{
+  const QList<Profile::Ptr> profiles = ProfileManager::instance()->allProfiles();
+  foreach (const Profile::Ptr &profile, profiles) {
+    if (profile->name() == profileName) {
+      SessionManager::instance()->setSessionProfile(this, profile);
+    }
+  }
 }
 
 int Session::foregroundProcessId()
@@ -1676,7 +1743,7 @@ void SessionGroup::removeSession(Session* session)
 }
 void SessionGroup::sessionFinished()
 {
-    Session* session = qobject_cast<Session*>(sender());
+    auto* session = qobject_cast<Session*>(sender());
     Q_ASSERT(session);
     removeSession(session);
 }

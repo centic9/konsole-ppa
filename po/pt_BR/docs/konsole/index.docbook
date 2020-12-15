@@ -1,10 +1,18 @@
 <?xml version="1.0" ?>
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.5-Based Variant V1.1//EN"
  "dtd/kdedbx45.dtd" [
-<!ENTITY kappname "&konsole;">
-<!ENTITY package "kdebase">
 <!ENTITY % Brazilian-Portuguese "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -17,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -73,7 +83,7 @@
 >&Jonathan.Singer;</holder>
 </copyright>
 <copyright>
-<year
+    <year
 >2005</year
 ><year
 >2008</year
@@ -84,18 +94,31 @@
 ><year
 >2011</year
 ><year
->2014</year>
+>2014</year
+><year
+>2016</year
+><year
+>2017</year
+><year
+>2018</year>
 <holder
 >&Kurt.Hindenburg;</holder>
+</copyright>
+
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
 </copyright>
 
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->27/05/2015</date>
+>16/06/2019</date>
 <releaseinfo
->15.04</releaseinfo>
+>Applications 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -129,7 +152,7 @@
 >O que é um terminal?</title>
 
 <para
->&konsole; é um emulador de terminais X, frequentemente denominado como um terminal, console ou shell. Emula uma interface de linha de comando em uma janela somente com texto. </para>
+>&konsole; é um emulador de terminais X, frequentemente denominado como terminal, console ou shell. Emula uma interface de linha de comando em uma janela somente com texto. </para>
 
 <para
 >Geralmente executa um comando do shell, um aplicativo que executa os comandos digitados. O shell que o &konsole; executa depende das configurações da sua conta. Consulte a documentação do seu sistema operacional para saber qual é o shell e como fazer para configurar e usá-lo. </para>
@@ -140,7 +163,7 @@
 >Histórico</title>
 
 <para
->O &konsole; usa a noção de histórico para permitir que os usuários vejam os resultados apresentados anteriormente. Por padrão, o histórico está ativo e armazena 1.000 linhas de resultado, além do que já está sendo mostrado na tela. </para>
+>O &konsole; usa um conceito de histórico para permitir que os usuários consultem os resultados apresentados anteriormente. Por padrão, o histórico está ativo e armazena 1.000 linhas de resultado, além do que já está sendo mostrado na tela. </para>
 <para
 >Conforme as linhas se deslocam para a parte superior da tela, elas podem ser revistas ao mover a barra de rolagem para cima, com uso da roda do mouse ou através das teclas <keycombo action="simul"
 >&Shift;<keycap
@@ -180,7 +203,7 @@
 <title
 >Perfis</title>
 <para
->Os perfis permitem ao usuário automatizar rápida e facilmente a execução de comandos comuns. Podemos citar os exemplos: <itemizedlist>
+>Os perfis permitem que o usuário automatize, de forma simples e rápida, a execução de comandos comuns. Podemos citar os exemplos: <itemizedlist>
 <listitem
 ><para
 >ssh para outra máquina</para
@@ -198,6 +221,13 @@
 </para>
 
 <para
+>Todos os perfis novos e alterados são salvos na pasta pessoal local em <filename
+>$<envar
+>XDG_DATA_HOME</envar
+>/konsole</filename
+>.</para>
+
+<para
 >Procedimentos para criar um novo perfil: <orderedlist>
 <listitem
 ><para
@@ -212,14 +242,21 @@
 
 <listitem
 ><para
->Clique no botão <guibutton
->Novo perfil...</guibutton
+>Mude para a página de <guibutton
+>Perfis</guibutton
 >.</para
 ></listitem>
 
 <listitem
 ><para
->Preencha o primeiro campo com um nome. Este é o nome que aparecerá no menu e será o texto padrão em substituição ao <guilabel
+>Clique no botão <guibutton
+>Novo perfil...</guibutton
+></para
+></listitem>
+
+<listitem
+><para
+>Preencha o primeiro campo com um nome. Esse nome aparecerá no menu e será o texto padrão em substituição ao <guilabel
 >Shell</guilabel
 >, quando iniciar uma sessão desse tipo. </para
 ></listitem>
@@ -248,7 +285,7 @@
 >OK</guibutton
 >. A nova sessão ficará disponível na caixa de diálogo <guilabel
 >Gerenciar perfis...</guilabel
->. </para
+> </para
 ></listitem>
 
 </orderedlist>
@@ -285,10 +322,10 @@
 
 <listitem
 ><para
->Todos os cliques com o &LMB; serão enviados para um aplicativo com suporte a mouse, que esteja em execução no &konsole;. Se um aplicativo reagir aos cliques de mouse, o &konsole; indicará isso mostrando um cursor em forma de seta. Caso contrário, será mostrado um cursor em forma de barra (I).</para>
+>Todos os cliques com o &LMB; serão enviados para um aplicativo com suporte a mouse, que esteja em execução no &konsole;. Se um aplicativo reagir aos cliques do mouse, o &konsole; indicará isso mostrando um cursor em forma de seta. Caso contrário, será mostrado um cursor em forma de barra (I).</para>
 
 <para
->Manter o &LMB; pressionado e arrastar o mouse sobre a tela que tenha um aplicativo sem suporte a mouse em execução, apenas marcará uma região de texto. Ao arrastar com o mouse, o texto marcado será exibido em cores invertidas para ser facilmente visto. Selecione o item <guimenuitem
+>Manter o &LMB; pressionado e arrastar o mouse sobre a tela que tenha em execução um aplicativo sem suporte a mouse, apenas marcará uma região de texto. Ao arrastar com o mouse, o texto marcado será exibido em cores invertidas para ser facilmente visto. Selecione o item <guimenuitem
 >Copiar</guimenuitem
 > no menu <guimenu
 >Editar</guimenu
@@ -323,7 +360,7 @@
 
 <listitem
 ><para
->Pressionar o &MMB; cola o texto existente na área de transferência. Manter a tecla &Ctrl; pressionada enquanto pressiona o &MMB; cola o texto e adiciona uma nova linha. Isso é conveniente para executar de imediato o comando que for colado, mas por ser potencialmente perigoso, deve ser utilizado com cuidado. </para>
+>Pressionar o &MMB; cola o texto que estiver na área de transferência. Manter a tecla &Ctrl; pressionada enquanto pressiona o &MMB; cola o texto e adiciona uma nova linha. Isso é conveniente para executar de imediato o comando que for colado, mas por ser potencialmente perigoso, deve ser utilizado com cuidado. </para>
 
 <note
 ><para
@@ -345,27 +382,75 @@
 ></term>
 <listitem>
 <para
->Estes itens aparecem no menu quando o &RMB; é pressionado: <guimenuitem
+>Estes itens aparecem no menu quando o &RMB; é pressionado:</para>
+<itemizedlist>
+<listitem
+><para
+><guimenuitem
 >Copiar</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Colar</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+>Com uma seleção de texto aparecerá um submenu <guisubmenu
+>Pesquisar por</guisubmenu
+> com uma lista dos Atalhos da Web preferidos, bem como uma opção para configurar os atalhos da Web.</para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Abrir gerenciador de arquivos</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Definir codificação</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Limpar histórico</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Ajustar histórico...</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Mostrar barra de menus</guimenuitem
->, <guimenuitem
+>, apenas quando o menu estiver oculto</para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Mudar o perfil</guimenuitem
->, <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Editar o perfil atual...</guimenuitem
-> e <guimenuitem
+></para
+></listitem>
+<listitem
+><para
+><guimenuitem
 >Fechar aba</guimenuitem
->. </para>
+></para
+></listitem>
+</itemizedlist>
 
 <para
 >Em um aplicativo com suporte a mouse, pressione a tecla &Shift; em conjunto com o &RMB; para ver o menu de contexto. </para>
@@ -380,8 +465,7 @@
 <title
 >Arrastar e soltar</title>
 <para
->Se soltar um arquivo, pasta ou &URL; em uma janela do &konsole;, irá aparecer um menu de contexto com estas ações: </para
->  
+>Se soltar um arquivo, pasta ou &URL; em uma janela do &konsole;, irá aparecer um menu de contexto com estas ações: </para>
 <screenshot>
 <screeninfo
 >Menu de contexto de arrastar e soltar</screeninfo>
@@ -490,6 +574,11 @@
 <para
 >Em uma ação de arrastar e soltar, caso pressione as teclas de atalho antes de soltar o &LMB;, nenhum menu de contexto aparecerá e as ações serão executadas imediatamente. </para>
 
+<para
+>Se quiser usar a tecla &Ctrl; para arrastar e soltar ou desativar o menu de contexto para inserir &URL;s como texto por padrão, ative as opções correspondentes na aba <guilabel
+>Mouse</guilabel
+> na caixa de diálogo de configuração do perfil. </para>
+
 </sect1>
 
 </chapter>
@@ -507,8 +596,13 @@
 >Exibir barra de menus</guimenuitem
 > poderá ser acessada clicando com o botão <mousebutton
 >direito</mousebutton
-> na janela (desde que não esteja rodando nenhum aplicativo nessa janela, como o vi, minicom, etc.). O atalho padrão aparece ao lado de cada item do menu. </para>
-
+> na janela (desde que não esteja rodando nenhum aplicativo nessa janela, como o vi, minicom, etc.). O atalho padrão aparece ao lado de cada item de menu. </para>
+<para
+>Alternativamente, pode ser usado o atalho <keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>M</keycap
+></keycombo
+> para mostrar ou ocultar a barra de menus. </para>
 <sect2 id="file-menu">
 <title
 >Menu Arquivo</title>
@@ -526,7 +620,7 @@
 > <guimenu
 >Arquivo</guimenu
 ><guimenuitem
->Nova Janela</guimenuitem
+>Nova janela</guimenuitem
 > </menuchoice>
 </term>
 <listitem
@@ -558,7 +652,7 @@
 >Abre uma nova aba com o perfil padrão</action>
 <note
 ><para
->O &konsole; vem com o perfil de Linha de Comando como padrão. Todos os perfis adicionados pelo usuário serão listados em um submenu. Não aparecerá nenhum submenu se somente existir o perfil padrão. </para
+>O &konsole; vem com um perfil padrão. Todos os perfis adicionados pelo usuário serão listados em um submenu. Não aparecerá nenhum submenu se existir apenas o perfil padrão. </para
 ></note>
 </para
 ></listitem
@@ -623,8 +717,8 @@
 ><para
 ><action
 >Imprime a tela atual.</action
-> Por padrão, o tamanho do resultado é ajustado para caber no papel, sendo impresso com o texto em preto e sem fundo. Na caixa de diálogo de impressão, estas opções podem ser alteradas na aba <guilabel
->Opções do saída</guilabel
+> Por padrão, o tamanho do resultado é ajustado para caber no papel, sendo impresso com o texto em preto e sem fundo. Na caixa de diálogo de impressão, essas opções podem ser alteradas na aba <guilabel
+>Opções de saída</guilabel
 >.</para
 ></listitem>
 </varlistentry>
@@ -693,15 +787,19 @@
 ></para>
 <note
 ><para
->O &konsole; irá mostrar uma caixa de diálogo de confirmação, caso exista mais de uma aba aberta. Esta caixa de diálogo poderá ser desativada se assinalar a opção <guibutton
+>O &konsole; apresentará uma caixa de diálogo de confirmação, caso exista mais de uma aba aberta. Essa caixa de diálogo poderá ser desativada se marcar a opção <guibutton
 >Não perguntar novamente</guibutton
->. </para
-></note>
-<!--FIXME How to get the confirmation dialog get back?
-Delete in ~/.kde/share/config/konsolerc
-[Notification Messages]
-CloseAllTabs=true
--->
+>. </para>
+<para
+>Se quiser que a caixa de diálogo de confirmação apareça novamente, remova o item <screen
+>[Notification Messages]
+CloseAllTabs=true</screen
+> em <filename
+>$<envar
+>XDG_CONFIG_HOME</envar
+>/konsolerc</filename
+>. </para>
+</note>
 </listitem>
 </varlistentry>
 
@@ -833,7 +931,7 @@ CloseAllTabs=true
 > <guimenu
 >Editar</guimenu
 ><guisubmenu
->Copiar a Entrada Para</guisubmenu
+>Copiar a entrada para</guisubmenu
 ><guimenuitem
 >Nenhuma</guimenuitem
 ></menuchoice
@@ -841,7 +939,7 @@ CloseAllTabs=true
 <listitem
 ><para
 ><action
->Para o envio da entrada da sessão atual para as outras sessões</action>
+>Para de enviar a entrada da sessão atual para outras sessões</action>
 </para>
 </listitem>
 </varlistentry>
@@ -861,7 +959,7 @@ CloseAllTabs=true
 >Envia o sinal indicado para o processo do console ou outro processo que tenha sido carregado quando a nova sessão foi iniciada</action
 >.</para
 ><para
->Os sinais atualmente disponíveis são:</para>
+>Os sinais disponíveis são:</para>
 
 <informaltable>
 <tgroup cols="2">
@@ -963,7 +1061,7 @@ CloseAllTabs=true
 <listitem
 ><para
 ><action
->Abre uma caixa de diálogo que permite mudar o nome da aba atual</action
+>Abre uma caixa de diálogo que permite renomear a aba atual</action
 > (<link linkend="rename-tab-dialog"
 >mais informações</link
 >) </para
@@ -1014,7 +1112,7 @@ CloseAllTabs=true
 >Abre uma barra de pesquisa no fundo da janela do &konsole; </action
 ></para>
 <para
->Isto permite efetuar pesquisas com distinção de maiúsculas, para a frente ou para trás, ou ainda por expressões regulares.</para>
+>Isso permite efetuar pesquisas com distinção entre maiúsculas e minúsculas, para a frente ou para trás, ou ainda por expressões regulares.</para>
 </listitem>
 </varlistentry>
 <!--FIXME 4.12
@@ -1023,14 +1121,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1039,7 +1137,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1059,8 +1157,8 @@ Various search improvements
 <listitem
 ><para
 ><action
->Move para a próxima instância de pesquisa </action
->. Se a barra de pesquisa estiver em foco, você também pode usar o atalho &Enter;.</para
+>Move para a próxima instância de pesquisa</action
+>. Se a barra de pesquisa estiver em foco, você também pode usar a tecla &Enter;.</para
 ></listitem>
 </varlistentry>
 
@@ -1082,7 +1180,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Move para a instância de pesquisa anterior </action
+>Move para a instância de pesquisa anterior</action
 >. Se a barra de pesquisa estiver em foco, você também pode usar o atalho <keycombo action="simul"
 >&Shift;&Enter;</keycombo
 >.</para
@@ -1158,7 +1256,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1259,7 +1357,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1284,6 +1382,29 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Exibir</guimenu
+><guimenuitem
+>Desanexar a  exibição atual</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Abre a área dividida atual em uma janela separada</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
 >I</keycap
 ></keycombo
 ></shortcut
@@ -1296,7 +1417,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Ativa ou desativa o monitoramento da falta de atividade da aba atual</action>
+>Ativa ou desativa o monitoramento da ausência de atividade da aba atual</action>
 </para
 ><para
 >Por padrão, após 10 segundos de inatividade, irá aparecer um ícone informativo na aba da sessão. O tipo de alerta poderá ser configurado através da opção <menuchoice
@@ -1329,7 +1450,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Ativa ou desativa a vigilância de atividade da aba atual</action>
+>Ativa ou desativa o monitoramento de atividade da aba atual</action>
 </para
 ><para
 >Em caso de qualquer atividade, irá aparecer um ícone informativo na aba da sessão. O tipo de alerta poderá ser alterado através da opção <menuchoice
@@ -1341,6 +1462,23 @@ Various search improvements
 >Atividade em sessão monitorada</guimenuitem
 ></menuchoice
 >. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Exibir</guimenu
+> <guimenuitem
+>Somente leitura</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ativa/desativa o modo somente para leitura para a sessão: não é aceito nenhuma introdução de dados e o arrastar e soltar fica desativado. </action
+></para
 ></listitem>
 </varlistentry>
 
@@ -1362,10 +1500,34 @@ Various search improvements
 <listitem
 ><para
 ><action
->Aumenta o tamanho do texto</action
+>Aumenta o tamanho da fonte do texto</action
 ></para
 ></listitem>
 </varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Exibir</guimenu
+><guimenuitem
+>Restaurar o tamanho da fonte</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Restaura o tamanho da fonte do texto com o padrão do perfil</action
+></para
+></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term
@@ -1385,7 +1547,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Diminui o tamanho do texto</action
+>Diminui o tamanho da fonte do texto</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1468,7 +1630,7 @@ Various search improvements
 > <guimenu
 >Favoritos</guimenu
 ><guimenuitem
->Adicionar aos Favoritos</guimenuitem
+>Adicionar favorito</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1494,7 +1656,7 @@ Various search improvements
 >Adiciona todas as abas como uma pasta de favoritos</action>
 </para
 ><para
->Irá abrir uma janela para inserir o nome da pasta de favoritos. </para
+>Será aberta uma janela para inserir o nome da pasta de favoritos. </para
 ></listitem>
 </varlistentry>
 
@@ -1504,7 +1666,7 @@ Various search improvements
 ><guimenu
 >Favoritos</guimenu
 ><guimenuitem
->Nova Pasta de Favoritos</guimenuitem
+>Nova pasta de favoritos...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1513,7 +1675,7 @@ Various search improvements
 >Adiciona uma nova pasta à lista de favoritos</action>
 </para
 ><para
->Irá abrir uma janela para inserir o nome da pasta de favoritos. </para
+>Será aberta uma janela para inserir o nome da pasta de favoritos. </para
 ></listitem>
 </varlistentry>
 
@@ -1523,7 +1685,7 @@ Various search improvements
 ><guimenu
 >Favoritos</guimenu
 ><guimenuitem
->Editar Favoritos</guimenuitem
+>Editar favoritos</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1531,10 +1693,11 @@ Various search improvements
 ><action
 >Abre o editor de favoritos</action
 ></para>
-
 <note
 ><para
->Você poderá usar o editor de favoritos para adicionar URLs manualmente. No momento, o &konsole; tem suporte aos seguintes formatos: <itemizedlist mark='opencircle'>
+>O programa keditbookmarks precisa estar instalado para que este item de menu fique visível.</para>
+<para
+>Você poderá usar o editor de favoritos para adicionar URLs manualmente. No momento, o &konsole; tem suporte aos seguintes formatos: <itemizedlist mark="opencircle">
 <listitem
 ><para
 >ssh://usuário@máquina:porta</para
@@ -1564,13 +1727,13 @@ Various search improvements
 ><guimenu
 >Configurações</guimenu
 ><guimenuitem
->Editar perfil atual...</guimenuitem
+>Editar o perfil atual...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Abre um diálogo para editar o perfil atual</action>
+>Abre uma caixa de diálogo para editar o perfil atual</action>
 </para>
 </listitem>
 </varlistentry>
@@ -1581,13 +1744,13 @@ Various search improvements
 ><guimenu
 >Configurações</guimenu
 ><guimenuitem
->Alternar perfil</guimenuitem
+>Mudar o perfil</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Alterna o perfil atual para um perfil listado</action>
+>Muda o perfil atual para um perfil listado</action>
 </para>
 </listitem>
 </varlistentry>
@@ -1621,7 +1784,7 @@ Various search improvements
 > <guimenu
 >Configurações</guimenu
 ><guimenuitem
->Mostrar o Menu</guimenuitem
+>Mostrar barra de menus</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1648,7 +1811,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Ativa ou desativa a ocupação de toda a tela pelo &konsole;</action
+>Ativa ou desativa a utilização da tela inteira pelo &konsole;</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1671,7 +1834,7 @@ Various search improvements
 >.</para>
 
 <para
->Além disso, o &konsole; tem alguns atalhos especiais sem itens de menu correspondentes:</para>
+>Além disso, o &konsole; tem alguns atalhos especiais que não possuem itens de menu correspondentes:</para>
 
 <informaltable>
 <tgroup cols="2">
@@ -1740,7 +1903,7 @@ Various search improvements
 >&Shift;&Tab;</keycombo
 ></entry>
 <entry
->Próximo contêiner de visualização</entry
+>Próximo contêiner de exibição</entry
 > <!--FIXME what is this:yurchor container widget which holds views-->
 </row>
 </tbody>
@@ -1773,7 +1936,7 @@ Various search improvements
 ><guimenu
 >Configurações</guimenu
 ><guimenuitem
->Configurar &konsole;...</guimenuitem
+>Configurar o &konsole;...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1782,9 +1945,9 @@ Various search improvements
 >Abre o editor de configurações do &konsole;</action
 ></para>
 <para
->Esta caixa de diálogo tem opções que influenciam a aparência e comportamento da <guilabel
+>Esta caixa de diálogo tem opções que influenciam a aparência e o comportamento da <guilabel
 >Barra de abas</guilabel
-> e opções gerais para a janela do &konsole;. </para
+> e opções gerais da janela do &konsole;. </para
 ></listitem>
 <!-- FIXME
 since 4.9 Move options influencing tabbar from profiles into global setting
@@ -1816,17 +1979,18 @@ When the window title from current session is emtpy, fallback to using
 
 <sect2 id="rename-tab-dialog">
 <title
->Janela de Mudança de Nome da Página</title>
+>Janela de renomeação de aba</title>
 
 <para
->O nome da aba atual poderá ser alterado com esta janela. A janela poderá ser exibida através do menu, usando o atalho <keycombo action="simul"
+>O nome da aba atual poderá ser alterado a partir desta caixa de diálogo, que poderá ser exibida através do menu, usando o atalho <keycombo action="simul"
 >&Ctrl;&Alt; <keycap
 >S</keycap
 ></keycombo
-> ou com um clique duplo na separador da página, na barra de abas. Estas alterações poderão se tornar permanentes ao editar o perfil atual. </para>
+> ou com um clique duplo na aba. Essas alterações poderão se tornar permanentes se editar o perfil atual. </para>
 
 <para
->O &konsole; irá substituir estes itens: <itemizedlist mark='opencircle'>
+>O &konsole; irá substituir estes itens para as abas locais: </para>
+<itemizedlist mark="opencircle">
 <listitem
 ><para
 >%n : nome do programa</para
@@ -1837,7 +2001,19 @@ When the window title from current session is emtpy, fallback to using
 ></listitem>
 <listitem
 ><para
->%D : pasta atual (extensa)</para
+>%D : pasta atual (completa)</para
+></listitem>
+<listitem
+><para
+>%h : máquina local (curta)</para
+></listitem>
+<listitem
+><para
+>%u : nome do usuário</para
+></listitem>
+<listitem
+><para
+>%B : sigilo da linha de comandos Bourne do usuário ($ = usuário normal, # = superusuário)</para
 ></listitem>
 <listitem
 ><para
@@ -1847,29 +2023,49 @@ When the window title from current session is emtpy, fallback to using
 ><para
 >%# : número da sessão</para
 ></listitem>
-<listitem
+</itemizedlist>
+
+<para
+>O &konsole; irá substituir estes itens para abas remotas: <itemizedlist mark="opencircle">
+    <listitem
+><para
+>%c : programa atual</para
+></listitem>
+    <listitem
+><para
+>%h : máquina remota (curta)</para
+></listitem>
+    <listitem
+><para
+>%H : máquina remota (completa)</para
+></listitem>
+    <listitem
 ><para
 >%u : nome do usuário</para
 ></listitem>
-<listitem
+    <listitem
 ><para
->%h : máquina local ou remota (curto)</para
+>%U : nome do usuário (se indicado)</para
 ></listitem>
-<listitem
+    <listitem
 ><para
->%H : máquina remota (extenso)</para
+>%w : título da janela definido pela linha de comando</para
+></listitem>
+    <listitem
+><para
+>%# : número da sessão</para
 ></listitem>
 </itemizedlist>
 
 </para>
 <para
->Exemplos: <itemizedlist mark='opencircle'>
+>Exemplos: <itemizedlist mark="opencircle">
 
 <listitem
 ><para
->O <userinput
+><userinput
 >%d : %n</userinput
->, com a '/usr/src' como pasta atual e executando o <application
+>, com /usr/src como pasta atual e executando o <application
 >bash</application
 > irá mostrar <guibutton
 >src : bash</guibutton
@@ -1878,9 +2074,9 @@ When the window title from current session is emtpy, fallback to using
 
 <listitem
 ><para
->O <userinput
+><userinput
 >%D : %n</userinput
->, com a '/usr/src' como pasta atual e executando o <application
+>, com /usr/src como pasta atual e executando o <application
 >top</application
 > irá mostrar <guibutton
 >usr/src : top</guibutton
@@ -1889,11 +2085,11 @@ When the window title from current session is emtpy, fallback to using
 
 <listitem
 ><para
->O <userinput
+><userinput
 >%w (%#)</userinput
->, com a ~ como pasta atual e executando o <application
+>, com ~ como pasta atual e executando o <application
 >vim</application
-> na primeira aba, irá mostrar <guibutton
+> na primeira aba irá mostrar <guibutton
 >[Sem Nome] (~) - VIM(1)</guibutton
 > </para
 ></listitem>
@@ -1909,7 +2105,7 @@ When the window title from current session is emtpy, fallback to using
 >Janela de Cópia da Entrada</title>
 
 <para
->O texto inserido em uma aba poderá ser enviado simultaneamente para as outras abas. Esta janela permite-lhe selecionar quais as abas irão receber esses dados inseridos. A pasta atual irá ficar em cinza. </para>
+>O texto inserido em uma aba poderá ser enviado simultaneamente para as outras abas. Esta janela permite-lhe selecionar quais as abas irão receber esses dados inseridos. A aba atual ficará com uma tonalidade cinza. </para>
 
 </sect2>
 
@@ -1920,7 +2116,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >As opções do <link linkend="scrollback"
 >histórico</link
-> poderão ser alteradas nesta janela. Qualquer alteração será somente para a aba atual e não será salva no perfil. </para>
+> poderão ser alteradas nesta janela. Qualquer alteração será apenas para a aba atual e não será salva no perfil. </para>
 
 </sect2>
 
@@ -2104,6 +2300,10 @@ When the window title from current session is emtpy, fallback to using
 ><option
 >--separate</option
 ></term>
+<term
+><option
+>--nofork</option
+></term>
 <listitem
 ><para
 ><action
@@ -2214,9 +2414,9 @@ When the window title from current session is emtpy, fallback to using
 >Lista</action
 > todas as propriedades possíveis com o nome e tipo. Veja a opção <option
 >-p</option
-> . </para>
+>. </para>
 <para
->Para mais informações, consulte a <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Para mais informações, consulte a <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >Referência da API do &konsole;</ulink
 >. </para>
 </listitem>
@@ -2260,180 +2460,10 @@ When the window title from current session is emtpy, fallback to using
 </listitem>
 </varlistentry>
 
-<varlistentry>
-<term
-><option
->--nofork</option
-></term>
-<listitem
-><para
-><action
->Não executa no plano de fundo</action
->. Isto é frequentemente necessário para simular outros emuladores de terminal. </para
-></listitem>
-</varlistentry>
-
 </variablelist>
 
 <para
->O &konsole; também aceita opções genéricas do &Qt; e &kde;:</para>
-
-<variablelist>
-<varlistentry>
-<term
-><option
->--help-qt</option
-></term>
-<listitem
-><para
-><action
->Mostra as opções específicas do &Qt;</action
-></para
-></listitem>
-</varlistentry>
-</variablelist>
-
-<caution
-><para
->As seguintes opções do &Qt; não tem efeito no &konsole;: <informalexample
-> <variablelist>
-
-<varlistentry>
-<term
-><option
->--fn</option
->, <option
->--font</option
-> <parameter
->nomefonte</parameter
-></term>
-<listitem
-><para
-><action
->Define a fonte do aplicativo</action
-></para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><option
->--bg</option
->, <option
->--background</option
-> <parameter
->cor</parameter
-></term>
-<listitem
-><para
-><action
->Configura a cor de fundo padrão</action
-></para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><option
->--fg</option
->, <option
->--foreground</option
-> <parameter
->cor</parameter
-></term>
-<listitem
-><para
-><action
->Configura a cor de fonte padrão</action
-></para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><option
->--btn</option
->, <option
->--button</option
-> <parameter
->cor</parameter
-></term>
-<listitem
-><para
-><action
->Configura a cor de botão padrão</action
-></para
-></listitem>
-</varlistentry>
-
-</variablelist>
-
-</informalexample>
-</para
-></caution>
-
-<variablelist>
-<varlistentry>
-<term
-><option
->--help-kde</option
-></term>
-<listitem
-><para
-><action
->Mostra as opções específicas do &kde;</action
-></para
-></listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
->--help-all</option
-></term>
-<listitem
-><para
-><action
->Lista todas opções</action
-></para
-></listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
->--author</option
-></term>
-<listitem
-><para
-><action
->Mostra o nome do autor</action
-></para
-></listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
->-v,--version</option
-></term>
-<listitem
-><para
-><action
->Mostra o número de versão</action
-></para
-></listitem>
-</varlistentry>
-<varlistentry>
-<term
-><option
->--license</option
-></term>
-<listitem
-><para
-><action
->Mostra informações sobre a licença</action
-></para
-></listitem>
-</varlistentry>
-</variablelist>
+>O &konsole; também aceita as opções genéricas do &Qt; e do &kf5-full; - veja as páginas de manual para qt5options e kf5options.</para>
 
 </chapter>
 
@@ -2482,11 +2512,18 @@ When the window title from current session is emtpy, fallback to using
 > <option
 >org.kde.konsole /Windows/1</option
 > irá mostrar os métodos para controle da janela 1. </para>
-<note
-><para
->O /Konsole foi usado anteriormente para controlar a primeira janela, o que é um erro de arquitetura. Por favor, não o use mais para esse fim e considere atualizar os scripts existentes.</para
-></note>
 </listitem>
+
+<listitem
+><para
+><prompt
+>&percnt;</prompt
+> <command
+>qdbus</command
+> <option
+>org.kde.konsole $KONSOLE_DBUS_WINDOW</option
+> irá mostrar os métodos para controle da janela atual. </para
+></listitem>
 
 <listitem
 ><para
@@ -2499,20 +2536,462 @@ When the window title from current session is emtpy, fallback to using
 > irá mostrar os métodos para controle da sessão 1. </para
 ></listitem>
 
+<listitem
+><para
+><prompt
+>&percnt;</prompt
+> <command
+>qdbus</command
+> <option
+>org.kde.konsole $KONSOLE_DBUS_SESSION</option
+> irá mostrar os métodos para controle da sessão atual. </para
+></listitem>
+
+<listitem
+><para
+><prompt
+>&percnt;</prompt
+> <command
+>qdbus</command
+> <option
+>org.kde.konsole $KONSOLE_DBUS_SERVICE $KONSOLE_DBUS_SESSION</option
+> irá mostrar os métodos para controle da sessão atual do &konsole;. </para
+></listitem>
+
 </itemizedlist>
 </para>
 
 <para
->Se iniciar o &konsole; a partir de um terminal, pode ser necessário alterar o <option
+>Se algum dos comandos acima apresentar: 'Service 'org.kde.konsole' does not ""exist' (O serviço 'org.kde.konsole' não existe), altere o <option
 >org.kde.konsole</option
-> para <option
+> para um dos seguintes: <itemizedlist>
+
+<listitem
+><para
+><option
 >org.kde.konsole-`pidof -s konsole`</option
->. </para>
+> (irá selecionar o primeiro PID) </para
+></listitem>
+<listitem
+><para
+><option
+>$KONSOLE_DBUS_SERVICE</option
+> (isto pode ser usado a partir do &konsole; actual) </para
+></listitem>
+<listitem
+><para>
+<option
+>selecione um dos resultados do comando 'qdbus | grep konsole'</option>
+</para
+></listitem>
+
+</itemizedlist>
+</para>
 
 <para
->Para obter mais informações, consulte o <ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Para obter mais informações, consulte o <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >tutorial do &DBus;</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Combinações de teclas do Terminal</title>
+
+<sect1>
+<title
+>Como o &konsole; usa as combinações de teclas</title>
+
+<sect2 id="intro">
+<title
+>Introdução</title>
+<para
+>O &konsole; usa arquivos *.keytab para traduzir as combinações de teclas em caracteres de controle e sequências de escape que são enviadas para o shell ou para os programas interativos (normalmente os programas que usam o buffer da tela alternativa, &eg; <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>) executados a partir da linha de comando.</para>
+
+<para
+>Os usuários poderão personalizar a configuração das combinações de teclas no &konsole; com o Editor de Atalhos de Teclado. Poderá também configurar uma combinação de teclas para enviar um controle específico ou sequência de escape para o terminal.</para>
+
+<para
+>Você poderá abrir o Editor de Atalhos de Teclado a partir do item de menu <menuchoice
+><guimenu
+>Configurações</guimenu
+><guimenuitem
+>Editar o perfil atual</guimenuitem
+></menuchoice
+> e indo à página <guilabel
+>Teclado</guilabel
+>. Aqui aparecem enumerados os esquemas de Combinações de Teclas que disponibilizados por padrão no &konsole;.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Combinações de Teclas e Modos</title>
+
+<para
+>As combinações de teclas seguem o padrão: <programlisting
+>Tecla (+|-) Modos</programlisting>
+</para>
+
+<para
+>por exemplo: <programlisting
+>Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para
+>Os nomes das teclas estão definidos no arquivo qnamespace.h, com o prefixo <quote
+>Qt::Key_</quote
+> removido. Para obter uma lista com os nomes das teclas, consulte a <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>enumeração Qt::Key na documentação do &Qt;</ulink
+>.</para>
+
+<para
+>Um <quote
+>+</quote
+> que antecede o nome de um Modo significa que esse modo está <emphasis
+>definido</emphasis
+>; para uma tecla modificadora, indicando que está pressionada, enquanto que para os outros modos significa que esse modo em particular está em efeito (&ie;, ativo). Por exemplo, o <quote
+>+Ctrl</quote
+> significa que a combinação de teclas só irá funcionar se a tecla &Ctrl; estiver pressionada.</para>
+
+<para
+>Um <quote
+>-</quote
+> que antecede o nome de um Modo significa que esse modo está <emphasis
+>desativado</emphasis
+>; basicamente, este é o oposto de colocar um <quote
+>+</quote
+> antes do nome de um Modo. Assim, para uma tecla modificadora, isso significa que a tecla não está pressionada enquanto que, para todos os outros modos, significa que esse modo em particular está inativo. Por exemplo, o <quote
+>-Ctrl</quote
+> significa que a combinação de teclas só irá funcionar se a tecla &Ctrl; <emphasis
+>não</emphasis
+> estiver pressionada.</para>
+
+<note>
+<para
+>Se um nome de Modo não estiver presente em uma combinação de teclas, o seu estado será ignorado.</para>
+</note>
+
+<para
+>Os modos de Combinações de Teclas aparecem relacionados abaixo:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Shift</term>
+<listitem>
+<para
+>Um ou mais Modos como estes poderão ser usados em uma combinação de teclas. Caso algum deles esteja definido, a combinação de teclas usa essa tecla modificadora, respectivamente, ou se não estiver definido, aplica-se o modo inverso.</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AnyModifier</term>
+<listitem>
+<para
+>Se este modo estiver definido, a combinação de teclas usa qualquer tecla modificadora (das acima mencionadas) e se não estiver definido, não utilizará</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Se este modo estiver definido, o &konsole; irá enviar as sequências de controle e escape do ANSI</para>
+<para
+>Se este modo não estiver definido, o &konsole; irá enviar as sequências de controle e escape do VT52</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Se este modo estiver definido, a combinação de teclas só irá afetar os programas interativos que usam o buffer da tela alternativa</para>
+<para
+>Se este modo estiver desativado, a combinação de teclas só irá afetar o terminal quando estiver usando o buffer da tela norma</para>
+
+<note>
+<para
+>O &konsole; utiliza dois buffers de tela:</para>
+<itemizedlist>
+<listitem>
+<para
+>O buffer de tela normal (padrão): permite-lhe rolar para ver as linhas de resultado anteriores. Este é o buffer padrão que normalmente usado para executar os comandos, &etc;</para>
+</listitem>
+<listitem>
+<para
+>O buffer de tela alternativa: o terminal muda para este buffer quando você executar um programa interativo (&eg;, <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+>... &etc;)</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>KeyPad</term>
+<listitem>
+<para
+>Se este modo estiver ativo, a combinação de teclas usa uma tecla no teclado numérico. Este modo é útil para distinguir entre as teclas no teclado normal e as equivalentes no teclado numérico. Por exemplo, quando o Num Lock está <emphasis
+>ligado</emphasis
+>, você poderá configurar duas combinações de teclas em separado, uma que usa a tecla <quote
+>1</quote
+> no teclado (normalmente abaixo da tecla <keycap
+>F1</keycap
+>) e a outra usando a tecla <quote
+>1</quote
+> no teclado numérico. O mesmo conceito se aplica quando o Num Lock está <emphasis
+>desligado</emphasis
+> para as teclas End, Home, Setas direcionais, etc., no teclado numérico</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Este modo implementa o <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>Modo das Teclas de Cursores (DECCKM)</ulink
+> do VT100. Ele controla as sequências de escape que cada tecla de cursor (<keycap
+>Para cima</keycap
+>, <keycap
+>Para baixo</keycap
+>, <keycap
+>Direita</keycap
+>, <keycap
+>Esquerda</keycap
+>) envia, dependendo de este modo estar ativado ou desativado</para>
+<para
+>Por padrão, o &konsole; segue o comportamento do XTerm para tratar as teclas <keycap
+>Home</keycap
+> e <keycap
+>End</keycap
+> como teclas de cursores, no que diz respeito ao DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Se este modo estiver ativo, a combinação de teclas só irá funcionar quando o teclado numérico estiver no Modo de Aplicativo (DECKPAM)</para>
+<para
+>Se este modo estiver desativado, a combinação de teclas só irá funcionar quando o teclado numérico estiver no Modo Numérico (DECKPNM)</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NewLine</term>
+<listitem>
+<para
+>Se este modo estiver ativo, a tecla <keycap
+>Return</keycap
+> (Enter) do teclado irá enviar ambos os caracteres de controle 'Carriage Return' "\r" e 'New Line' "\n"</para>
+<para
+>Se este modo estiver desativado, a tecla <keycap
+>Return</keycap
+> só irá enviar um 'Carriage Return' "\r"</para>
+<para
+>O mesmo se aplica à tecla <keycap
+>Enter</keycap
+> no teclado numérico</para>
+<para
+>Este modo emula o <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>Modo LNM - Line Feed/New Line</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Repare que cada combinação de teclas e modos (ativado/desativado) deverá ser única. Por exemplo, considerando as duas regras seguintes:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Shift : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>O &konsole; <emphasis
+>não</emphasis
+> aceitará a regra da letra minúscula <quote
+>a</quote
+> e você precisará adicionar um <quote
+>-Shift</quote
+> a essa regra para que ela funcione.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>O campo Saída</title>
+
+<para
+>No campo Saída, você poderá adicionar as sequências de escape ou caracteres de controle que deseja que o &konsole; envie para o terminal, quando a combinação de teclas associada for pressionada.</para>
+
+<para
+>Você também poderá usar qualquer uma das seguintes palavras-chave, tendo cada uma delas um significado especial no &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : sobe uma linha no buffer de rolagem do histórico do shell</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : sobe uma página no buffer de rolagem do histórico do shell</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : desce uma linha no buffer de rolagem do histórico do shell</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : desce uma página no buffer de rolagem do histórico do shell</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : sobe até ao início do buffer de rolagem do histórico do shell</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : desce até o final do buffer de rolagem do histórico do shell</para
+></listitem>
+</itemizedlist>
+
+<para
+>Você também pode usar strings com sintaxes de texto em C, com as seguintes sequências de escape:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Barra invertida</para
+></listitem>
+<listitem
+><para
+>\" : Aspas</para
+></listitem>
+<listitem
+><para
+>\t : Tabulação</para
+></listitem>
+<listitem
+><para
+>\r : Carriage Return</para
+></listitem>
+<listitem
+><para
+>\n : Nova linha</para
+></listitem>
+<listitem
+><para
+>\b : Backspace</para
+></listitem>
+<listitem>
+<para
+>\xHH : onde HH são dois dígitos hexadecimais</para>
+<tip>
+<para
+>Isto poderá ser usado para enviar caracteres de controle em ASCII, &eg;, <quote
+>\x00</quote
+> que corresponde ao caractere NUL</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Outros recursos do sistema</title>
+<para
+>Existem outros recursos do sistema que poderão afetar as combinações de teclas do terminal:</para>
+<itemizedlist>
+<listitem>
+<para
+>Consulte a base de dados do <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> ou <ulink url="man:termcap(5)"
+>termcap</ulink
+> para conhecer as sequências de escape e caracteres de controle esperados que cada combinação de teclas deve enviar.</para>
+</listitem>
+<listitem>
+<para
+>É provável que o seu sistema tenha outras bases de dados de teclado que devem estar igualmente sincronizadas (&eg;, <ulink url="man:bash(1)"
+>/etc/inputrc e readline</ulink
+> para a linha de comando <application
+>BASH</application
+>), pois afetam as operações (interações) associadas às combinações de teclas.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Leitura complementar</title>
+<para
+>Para mais informações sobre as sequências de escape e caracteres de controle, consulte a seguinte documentação:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>Guia de usuário do VT100</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>Guia de usuário do VT102</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>Documentação abrangente e indispensável das <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>Sequências de Controle do XTerm</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2528,8 +3007,8 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->Para mais informações, leia a <ulink url="http://qt-project.org/doc/qt-4.8/stylesheet.html"
->página do Projeto &Qt; sobre Folhas de Estilo</ulink
+>Para mais informações, leia <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
+>Folhas de Estilo do &Qt;</ulink
 > </para>
 
 <para
@@ -2667,7 +3146,13 @@ QTabBar::tab {
 <listitem
 ><para
 >Existe uma funcionalidade oculta para o formatador "%d" no título da aba. Você pode indicar ao &konsole; para abreviar o nome de uma pasta para o seu primeiro caractere. Por exemplo, o "/local/do/konsole/src" pode ser abreviado para "konsole/s". Se deseja ativar e controlar esta funcionalidade oculta, abra o <filename
->~/.kde4/share/config/konsolerc</filename
+>konsolerc</filename
+> em <userinput
+><command
+>qtpaths</command
+> <option
+>--paths GenericConfigLocation</option
+></userinput
 > e adicione as seguintes linhas:</para>
 
 <para
@@ -2681,7 +3166,13 @@ CommonDirNames=nome1,nome2,nome3...
 >Se estiver usando o <application
 >Yakuake</application
 >, edite o arquivo <filename
->~/.kde4/share/config/yakuakerc</filename
+>yakuakerc</filename
+> em <userinput
+><command
+>qtpaths</command
+> <option
+>--paths GenericConfigLocation</option
+></userinput
 >.</para
 ></note>
 
@@ -2698,42 +3189,12 @@ CommonDirNames=nome1,nome2,nome3...
 >Problemas comuns</title>
 <itemizedlist>
 
-<listitem
-><para
->Por padrão, ao iniciar a partir de um terminal, o &konsole; rodará em segundo plano. Use <option
->--nofork</option
-> para forçar que o &konsole; rode em primeiro plano. </para>
-
-<para
->Isso é necessário para que alguns scripts e comandos funcionem como esperado: <itemizedlist mark='opencircle'>
-
-    <listitem
-><para>
-<command
->konsole --nofork -e sleep 3 ; echo 1</command>
-    </para
-></listitem>
-
-    <listitem
-><para>
-<command
->kdesu -u kdeuser konsole --nofork</command>
-    </para
-></listitem>
-
-    </itemizedlist>
-
-</para
-></listitem>
-
 <listitem>
 <para
->Algumas fontes podem estar indisponíveis no &konsole;, mesmo que estejam disponíveis para outros aplicativos. Isto não significa que haja um erro no &konsole;. O &konsole; necessita de fontes de tamanho fixo para oferecer o melhor resultado visual e, desta forma, solicita ao &Qt; para apresentar apenas as fontes de tamanho fixo.</para>
+>Algumas fontes podem estar indisponíveis no &konsole;, mesmo que estejam disponíveis para outros aplicativos. Isto não significa que haja um erro no &konsole;. O &konsole; necessita de fontes monoespaçadas para oferecer o melhor resultado visual e, desta forma, solicita ao &Qt; para apresentar apenas as fontes monoespaçadas.</para>
 
 <para
->Se tiver certeza de que uma fonte é realmente de tamanho fixo, mas não está disponível no &konsole;, então relate o problema para o <ulink url="https://bugreports.qt-project.org/"
->&Qt;</ulink
->.</para>
+>A partir da versão 16.08 (agosto de 2016), o &konsole; pode ser configurado para permitir a seleção de qualquer fonte, mas pode ser que a apresentação não fique correta.</para>
 </listitem>
 
 <listitem
@@ -2831,8 +3292,7 @@ CommonDirNames=nome1,nome2,nome3...
 > e André Marcelo Alvarenga <email
 >alvarenga@kde.org</email
 ></para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title
@@ -2843,31 +3303,31 @@ CommonDirNames=nome1,nome2,nome3...
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole"
+><ulink url="https://userbase.kde.org/Konsole"
 >Página Web do &konsole; no &kde; UserBase</ulink
 >&nbsp;</para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
+><ulink url="https://konsole.kde.org/"
 >Página Web do &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >Lista de discussão do &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; no FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; no &Solaris;</ulink
 ></para
 ></listitem>

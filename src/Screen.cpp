@@ -27,7 +27,6 @@
 #include <QTextStream>
 
 // Konsole
-#include "konsole_wcwidth.h"
 #include "TerminalCharacterDecoder.h"
 #include "History.h"
 #include "ExtendedCharTable.h"
@@ -60,13 +59,18 @@ Screen::Screen(int lines, int columns):
     _screenLines(new ImageLine[_lines + 1]),
     _screenLinesSize(_lines),
     _scrolledLines(0),
+    _lastScrolledRegion(QRect()),
     _droppedLines(0),
+    _lineProperties(QVarLengthArray<LineProperty, 64>()),
     _history(new HistoryScrollNone()),
     _cuX(0),
     _cuY(0),
+    _currentForeground(CharacterColor()),
+    _currentBackground(CharacterColor()),
     _currentRendition(DEFAULT_RENDITION),
     _topMargin(0),
     _bottomMargin(0),
+    _tabStops(QBitArray()),
     _selBegin(0),
     _selTopLeft(0),
     _selBottomRight(0),
@@ -522,8 +526,9 @@ void Screen::getImage(Character* dest, int size, int startLine, int endLine) con
         }
     }
 
+    int visX = qMin(_cuX, _columns - 1);
     // mark the character at the current cursor position
-    int cursorIndex = loc(_cuX, _cuY + linesInHistoryBuffer);
+    int cursorIndex = loc(visX, _cuY + linesInHistoryBuffer);
     if (getMode(MODE_Cursor) && cursorIndex < _columns * mergedLines) {
         dest[cursorIndex].rendition |= RE_CURSOR;
     }
@@ -678,21 +683,21 @@ void Screen::checkSelection(int from, int to)
     }
 }
 
-void Screen::displayCharacter(unsigned short c)
+void Screen::displayCharacter(uint c)
 {
     // Note that VT100 does wrapping BEFORE putting the character.
     // This has impact on the assumption of valid cursor positions.
     // We indicate the fact that a newline has to be triggered by
     // putting the cursor one right to the last column of the screen.
 
-    int w = konsole_wcwidth(c);
+    int w = Character::width(c);
 
     if (w < 0) {
         // Non-printable character
         return;
     } else if (w == 0) {
-        const QChar::Category category = QChar(c).category();
-        if (category != QChar::Mark_NonSpacing && category != QChar::Letter_Other && !QChar::isLowSurrogate(c)) {
+        const QChar::Category category = QChar::category(c);
+        if (category != QChar::Mark_NonSpacing && category != QChar::Letter_Other) {
             return;
         }
         // Find previous "real character" to try to combine with
@@ -717,18 +722,18 @@ void Screen::displayCharacter(unsigned short c)
 
         Character& currentChar = _screenLines[charToCombineWithY][charToCombineWithX];
         if ((currentChar.rendition & RE_EXTENDED_CHAR) == 0) {
-            const ushort chars[2] = { currentChar.character, c };
+            const uint chars[2] = { currentChar.character, c };
             currentChar.rendition |= RE_EXTENDED_CHAR;
             currentChar.character = ExtendedCharTable::instance.createExtendedChar(chars, 2);
         } else {
             ushort extendedCharLength;
-            const ushort* oldChars = ExtendedCharTable::instance.lookupExtendedChar(currentChar.character, extendedCharLength);
+            const uint* oldChars = ExtendedCharTable::instance.lookupExtendedChar(currentChar.character, extendedCharLength);
             Q_ASSERT(oldChars);
             if (((oldChars) != nullptr) && extendedCharLength < 3) {
                 Q_ASSERT(extendedCharLength > 1);
                 Q_ASSERT(extendedCharLength < 65535);
-                auto chars = new ushort[extendedCharLength + 1];
-                memcpy(chars, oldChars, sizeof(ushort) * extendedCharLength);
+                auto chars = new uint[extendedCharLength + 1];
+                memcpy(chars, oldChars, sizeof(uint) * extendedCharLength);
                 chars[extendedCharLength] = c;
                 currentChar.character = ExtendedCharTable::instance.createExtendedChar(chars, extendedCharLength + 1);
                 delete[] chars;
@@ -742,7 +747,7 @@ void Screen::displayCharacter(unsigned short c)
             _lineProperties[_cuY] = static_cast<LineProperty>(_lineProperties[_cuY] | LINE_WRAPPED);
             nextLine();
         } else {
-            _cuX = _columns - w;
+            _cuX = qMax(_columns - w, 0);
         }
     }
 
@@ -901,7 +906,7 @@ void Screen::toStartOfLine()
 
 int Screen::getCursorX() const
 {
-    return _cuX;
+    return qMin(_cuX, _columns - 1);
 }
 
 int Screen::getCursorY() const
@@ -922,7 +927,7 @@ void Screen::clearImage(int loca, int loce, char c)
     const int topLine = loca / _columns;
     const int bottomLine = loce / _columns;
 
-    Character clearCh(c, _currentForeground, _currentBackground, DEFAULT_RENDITION, false);
+    Character clearCh(uint(c), _currentForeground, _currentBackground, DEFAULT_RENDITION, false);
 
     //if the character being used to clear the area is the same as the
     //default character, the affected _lines can simply be shrunk.
@@ -1032,12 +1037,6 @@ void Screen::clearToBeginOfScreen()
 
 void Screen::clearEntireScreen()
 {
-    // Add entire screen to history
-    for (int i = 0; i < (_lines - 1); i++) {
-        addHistLine();
-        scrollUp(0, 1);
-    }
-
     clearImage(loc(0, 0), loc(_columns - 1, _lines - 1), ' ');
 }
 
@@ -1087,7 +1086,7 @@ void Screen::setDefaultRendition()
 
 void Screen::setForeColor(int space, int color)
 {
-    _currentForeground = CharacterColor(space, color);
+    _currentForeground = CharacterColor(quint8(space), color);
 
     if (_currentForeground.isValid()) {
         updateEffectiveRendition();
@@ -1098,7 +1097,7 @@ void Screen::setForeColor(int space, int color)
 
 void Screen::setBackColor(int space, int color)
 {
-    _currentBackground = CharacterColor(space, color);
+    _currentBackground = CharacterColor(quint8(space), color);
 
     if (_currentBackground.isValid()) {
         updateEffectiveRendition();
@@ -1335,8 +1334,6 @@ int Screen::copyLineToStream(int line ,
 
         int screenLine = line - _history->getLines();
 
-        // FIXME: This can be triggered when clearing history
-        //  while having the searchbar open and selecting next/prev
         Q_ASSERT(screenLine <= _screenLinesSize);
 
         screenLine = qMin(screenLine, _screenLinesSize);
@@ -1385,7 +1382,7 @@ int Screen::copyLineToStream(int line ,
     if ((options & TrimLeadingWhitespace) != 0u) {
         int spacesCount = 0;
         for (spacesCount = 0; spacesCount < count; spacesCount++) {
-            if (!QChar(characterBuffer[spacesCount].character).isSpace()) {
+            if (QChar::category(characterBuffer[spacesCount].character) != QChar::Category::Separator_Space) {
                 break;
             }
         }

@@ -18,7 +18,7 @@
 */
 
 // Config
-#include <config-konsole.h>
+#include "config-konsole.h"
 
 // Own
 #include "ProcessInfo.h"
@@ -30,12 +30,11 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <sys/param.h>
-#include <errno.h>
+#include <cerrno>
 
 // Qt
 #include <QDir>
 #include <QFileInfo>
-#include <QFlags>
 #include <QTextStream>
 #include <QStringList>
 #include <QHostInfo>
@@ -113,7 +112,7 @@ QString ProcessInfo::validCurrentDir() const
     int currentPid = parentPid(&ok);
     QString dir = currentDir(&ok);
     while (!ok && currentPid != 0) {
-        ProcessInfo *current = ProcessInfo::newInstance(currentPid, QString());
+        ProcessInfo *current = ProcessInfo::newInstance(currentPid);
         current->update();
         currentPid = current->parentPid(&ok);
         dir = current->currentDir(&ok);
@@ -142,6 +141,10 @@ QSet<QString> ProcessInfo::commonDirNames()
 
 QString ProcessInfo::formatShortDir(const QString &input) const
 {
+    if(input == QLatin1String("/")) {
+        return QStringLiteral("/");
+    }
+
     QString result;
 
     const QStringList &parts = input.split(QDir::separator());
@@ -331,7 +334,7 @@ void ProcessInfo::setFileError(QFile::FileError error)
 // implementations of the UnixProcessInfo abstract class.
 //
 
-NullProcessInfo::NullProcessInfo(int pid, const QString & /*titleFormat*/) :
+NullProcessInfo::NullProcessInfo(int pid) :
     ProcessInfo(pid)
 {
 }
@@ -350,10 +353,10 @@ void NullProcessInfo::readUserName()
 }
 
 #if !defined(Q_OS_WIN)
-UnixProcessInfo::UnixProcessInfo(int pid, const QString &titleFormat) :
+UnixProcessInfo::UnixProcessInfo(int pid) :
     ProcessInfo(pid)
 {
-    setUserNameRequired(titleFormat.contains(QLatin1String("%u")));
+    setUserNameRequired(true);
 }
 
 void UnixProcessInfo::readProcessInfo(int pid)
@@ -365,6 +368,18 @@ void UnixProcessInfo::readProcessInfo(int pid)
     if (readProcInfo(pid)) {
         readArguments(pid);
         readCurrentDir(pid);
+
+        bool ok = false;
+        const QString &processNameString = name(&ok);
+
+        if (ok && processNameString == QLatin1String("sudo")) {
+            //Append process name along with sudo
+            const QVector<QString> &args = arguments(&ok);
+
+            if (ok && args.size() > 1) {
+                setName(processNameString + QStringLiteral(" ") + args[1]);
+            }
+        }
     }
 }
 
@@ -407,8 +422,8 @@ void UnixProcessInfo::readUserName()
 class LinuxProcessInfo : public UnixProcessInfo
 {
 public:
-    LinuxProcessInfo(int pid, const QString &titleFormat) :
-        UnixProcessInfo(pid, titleFormat)
+    LinuxProcessInfo(int pid) :
+        UnixProcessInfo(pid)
     {
     }
 
@@ -418,7 +433,7 @@ protected:
         char path_buffer[MAXPATHLEN + 1];
         path_buffer[MAXPATHLEN] = 0;
         QByteArray procCwd = QFile::encodeName(QStringLiteral("/proc/%1/cwd").arg(pid));
-        const int length = static_cast<int>(readlink(procCwd.constData(), path_buffer, MAXPATHLEN));
+        const auto length = static_cast<int>(readlink(procCwd.constData(), path_buffer, MAXPATHLEN));
         if (length == -1) {
             setError(UnknownError);
             return false;
@@ -478,6 +493,7 @@ private:
             // This will cause constant opening of /etc/passwd
             if (userNameRequired()) {
                 readUserName();
+                setUserNameRequired(false);
             }
         } else {
             setFileError(statusInfo.error());
@@ -487,7 +503,7 @@ private:
         // read process status file ( /proc/<pid/stat )
         //
         // the expected file format is a list of fields separated by spaces, using
-        // parenthesies to escape fields such as the process name which may itself contain
+        // parentheses to escape fields such as the process name which may itself contain
         // spaces:
         //
         // FIELD FIELD (FIELD WITH SPACES) FIELD FIELD
@@ -583,8 +599,8 @@ private:
 class FreeBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    FreeBSDProcessInfo(int pid, const QString &titleFormat) :
-        UnixProcessInfo(pid, titleFormat)
+    FreeBSDProcessInfo(int pid) :
+        UnixProcessInfo(pid)
     {
     }
 
@@ -611,7 +627,7 @@ protected:
         return true;
 #else
         int numrecords;
-        struct kinfo_file *info = 0;
+        struct kinfo_file *info = nullptr;
 
         info = kinfo_getfile(pid, &numrecords);
 
@@ -708,8 +724,8 @@ private:
 class OpenBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    OpenBSDProcessInfo(int pid, const QString &titleFormat) :
-        UnixProcessInfo(pid, titleFormat)
+    OpenBSDProcessInfo(int pid) :
+        UnixProcessInfo(pid)
     {
     }
 
@@ -826,8 +842,8 @@ private:
 class MacProcessInfo : public UnixProcessInfo
 {
 public:
-    MacProcessInfo(int pid, const QString &titleFormat) :
-        UnixProcessInfo(pid, titleFormat)
+    MacProcessInfo(int pid) :
+        UnixProcessInfo(pid)
     {
     }
 
@@ -857,11 +873,11 @@ private:
         managementInfoBase[2] = KERN_PROC_PID;
         managementInfoBase[3] = pid;
 
-        if (sysctl(managementInfoBase, 4, NULL, &mibLength, NULL, 0) == -1) {
+        if (sysctl(managementInfoBase, 4, nullptr, &mibLength, nullptr, 0) == -1) {
             return false;
         } else {
             kInfoProc = new struct kinfo_proc [mibLength];
-            if (sysctl(managementInfoBase, 4, kInfoProc, &mibLength, NULL, 0) == -1) {
+            if (sysctl(managementInfoBase, 4, kInfoProc, &mibLength, nullptr, 0) == -1) {
                 delete [] kInfoProc;
                 return false;
             } else {
@@ -884,14 +900,14 @@ private:
                 managementInfoBase[3] = statInfo.st_rdev;
 
                 mibLength = 0;
-                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), NULL,
-                           &mibLength, NULL, 0) == -1) {
+                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), nullptr,
+                           &mibLength, nullptr, 0) == -1) {
                     return false;
                 }
 
                 kInfoProc = new struct kinfo_proc [mibLength];
                 if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), kInfoProc,
-                           &mibLength, NULL, 0) == -1) {
+                           &mibLength, nullptr, 0) == -1) {
                     return false;
                 }
 
@@ -927,8 +943,8 @@ private:
 class SolarisProcessInfo : public UnixProcessInfo
 {
 public:
-    SolarisProcessInfo(int pid, const QString &titleFormat) :
-        UnixProcessInfo(pid, titleFormat)
+    SolarisProcessInfo(int pid) :
+        UnixProcessInfo(pid)
     {
     }
 
@@ -1135,7 +1151,7 @@ QString SSHProcessInfo::format(const QString &input) const
     // Depending on whether -l was passed to ssh (which is mostly not the
     // case due to ~/.ssh/config).
     if (_user.isEmpty()) {
-        output.replace(QLatin1String("%U"), QString());
+        output.remove(QLatin1String("%U"));
     } else {
         output.replace(QLatin1String("%U"), _user + QLatin1Char('@'));
     }
@@ -1158,21 +1174,21 @@ QString SSHProcessInfo::format(const QString &input) const
     return output;
 }
 
-ProcessInfo *ProcessInfo::newInstance(int pid, const QString &titleFormat)
+ProcessInfo *ProcessInfo::newInstance(int pid)
 {
     ProcessInfo *info;
 #if defined(Q_OS_LINUX)
-    info = new LinuxProcessInfo(pid, titleFormat);
+    info = new LinuxProcessInfo(pid);
 #elif defined(Q_OS_SOLARIS)
-    info = new SolarisProcessInfo(pid, titleFormat);
+    info = new SolarisProcessInfo(pid);
 #elif defined(Q_OS_MACOS)
-    info = new MacProcessInfo(pid, titleFormat);
+    info = new MacProcessInfo(pid);
 #elif defined(Q_OS_FREEBSD)
-    info = new FreeBSDProcessInfo(pid, titleFormat);
+    info = new FreeBSDProcessInfo(pid);
 #elif defined(Q_OS_OPENBSD)
-    info = new OpenBSDProcessInfo(pid, titleFormat);
+    info = new OpenBSDProcessInfo(pid);
 #else
-    info = new NullProcessInfo(pid, titleFormat);
+    info = new NullProcessInfo(pid);
 #endif
     info->readProcessInfo(pid);
     return info;

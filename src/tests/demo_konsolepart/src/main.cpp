@@ -6,7 +6,7 @@
  published by the Free Software Foundation; either version 2 of
  the License or (at your option) version 3 or any later version
  accepted by the membership of KDE e.V. (or its successor approved
- by the membership of KDE e.V.), which shall act as a proxy 
+ by the membership of KDE e.V.), which shall act as a proxy
  defined in Section 14 of version 3 of the license.
 
  This program is distributed in the hope that it will be useful,
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
                      i18nc("@title", "Terminal emulator"),
                      KAboutLicense::GPL_V2,
                      i18nc("@info:credit", "(c) 2017, The Konsole Developers"),
-                     QStringLiteral(),
+                     QString(),
                      QStringLiteral("https://konsole.kde.org/"));
 
     KAboutData::setApplicationData(about);

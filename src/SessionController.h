@@ -22,11 +22,9 @@
 #define SESSIONCONTROLLER_H
 
 // Qt
-#include <QList>
 #include <QSet>
 #include <QPointer>
 #include <QString>
-#include <QHash>
 #include <QRegularExpression>
 
 // KDE
@@ -37,10 +35,6 @@
 #include "Profile.h"
 #include "Enumeration.h"
 
-namespace KIO {
-class Job;
-}
-
 class QAction;
 class QTextCodec;
 class QKeyEvent;
@@ -48,7 +42,6 @@ class QTimer;
 class QUrl;
 
 class KCodecAction;
-class KJob;
 class QAction;
 class KActionMenu;
 
@@ -64,10 +57,7 @@ class UrlFilter;
 class FileFilter;
 class EditProfileDialog;
 
-// SaveHistoryTask
-class TerminalCharacterDecoder;
-
-typedef QPointer<Session> SessionPtr;
+using SessionPtr = QPointer<Session>;
 
 /**
  * Provides the menu actions to manipulate a single terminal session and view pair.
@@ -135,19 +125,6 @@ public:
     /** set start line to the first or last line (depending on the reverse search
      * setting) in the terminal display **/
     void setSearchStartToWindowCurrentLine();
-
-    /**
-     * Sets the widget used for searches through the session's output.
-     *
-     * When the user clicks on the "Search Output" menu action the @p searchBar 's
-     * show() method will be called.  The SessionController will then connect to the search
-     * bar's signals to update the search when the widget's controls are pressed.
-     */
-    void setSearchBar(IncrementalSearchBar *searchBar);
-    /**
-     * see setSearchBar()
-     */
-    IncrementalSearchBar *searchBar() const;
 
     /**
      * Sets the action displayed in the session's context menu to hide or
@@ -232,6 +209,12 @@ public Q_SLOTS:
     /**  Decrease font size */
     void decreaseFontSize();
 
+    /** Reset font size */
+    void resetFontSize();
+
+    /** Close the incremental search */
+    void searchClosed(); // called when the user clicks on the
+
 private Q_SLOTS:
     // menu item handlers
     void openBrowser();
@@ -261,7 +244,7 @@ private Q_SLOTS:
     void monitorActivity(bool monitor);
     void monitorSilence(bool monitor);
     void renameSession();
-    void switchProfile(Profile::Ptr profile);
+    void switchProfile(const Profile::Ptr &profile);
     void handleWebShortcutAction();
     void configureWebShortcuts();
     void sendSignal(QAction *action);
@@ -269,17 +252,16 @@ private Q_SLOTS:
     void toggleReadOnly();
 
     // other
+    void setupSearchBar();
     void prepareSwitchProfileMenu();
     void updateCodecAction();
     void showDisplayContextMenu(const QPoint &position);
     void movementKeyFromSearchBarReceived(QKeyEvent *event);
     void sessionStateChanged(int state);
-    void sessionTitleChanged();
+    void sessionAttributeChanged();
     void sessionReadOnlyChanged();
     void searchTextChanged(const QString &text);
     void searchCompleted(bool success);
-    void searchClosed(); // called when the user clicks on the
-    // history search bar's close button
 
     void updateFilterList(Profile::Ptr profile); // Called when the profile has changed, so we might need to change the list of filters
 
@@ -348,7 +330,6 @@ private:
 
     int _searchStartLine;
     int _prevSearchResultLine;
-    QPointer<IncrementalSearchBar> _searchBar;
 
     KCodecAction *_codecAction;
 
@@ -373,173 +354,13 @@ private:
     QPointer<EditProfileDialog> _editProfileDialog;
 
     QString _searchText;
+    QPointer<IncrementalSearchBar> _searchBar;
 };
 inline bool SessionController::isValid() const
 {
     return !_session.isNull() && !_view.isNull();
 }
 
-/**
- * Abstract class representing a task which can be performed on a group of sessions.
- *
- * Create a new instance of the appropriate sub-class for the task you want to perform and
- * call the addSession() method to add each session which needs to be processed.
- *
- * Finally, call the execute() method to perform the sub-class specific action on each
- * of the sessions.
- */
-class SessionTask : public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit SessionTask(QObject *parent = nullptr);
-
-    /**
-     * Sets whether the task automatically deletes itself when the task has been finished.
-     * Depending on whether the task operates synchronously or asynchronously, the deletion
-     * may be scheduled immediately after execute() returns or it may happen some time later.
-     */
-    void setAutoDelete(bool enable);
-    /** Returns true if the task automatically deletes itself.  See setAutoDelete() */
-    bool autoDelete() const;
-
-    /** Adds a new session to the group */
-    void addSession(Session *session);
-
-    /**
-     * Executes the task on each of the sessions in the group.
-     * The completed() signal is emitted when the task is finished, depending on the specific sub-class
-     * execute() may be synchronous or asynchronous
-     */
-    virtual void execute() = 0;
-
-Q_SIGNALS:
-    /**
-     * Emitted when the task has completed.
-     * Depending on the task this may occur just before execute() returns, or it
-     * may occur later
-     *
-     * @param success Indicates whether the task completed successfully or not
-     */
-    void completed(bool success);
-
-protected:
-    /** Returns a list of sessions in the group */
-    QList< SessionPtr > sessions() const;
-
-private:
-    bool _autoDelete;
-    QList< SessionPtr > _sessions;
-};
-
-/**
- * A task which prompts for a URL for each session and saves that session's output
- * to the given URL
- */
-class SaveHistoryTask : public SessionTask
-{
-    Q_OBJECT
-
-public:
-    /** Constructs a new task to save session output to URLs */
-    explicit SaveHistoryTask(QObject *parent = nullptr);
-    ~SaveHistoryTask() Q_DECL_OVERRIDE;
-
-    /**
-     * Opens a save file dialog for each session in the group and begins saving
-     * each session's history to the given URL.
-     *
-     * The data transfer is performed asynchronously and will continue after execute() returns.
-     */
-    void execute() Q_DECL_OVERRIDE;
-
-private Q_SLOTS:
-    void jobDataRequested(KIO::Job *job, QByteArray &data);
-    void jobResult(KJob *job);
-
-private:
-    class SaveJob // structure to keep information needed to process
-        // incoming data requests from jobs
-    {
-    public:
-        SessionPtr session; // the session associated with a history save job
-        int lastLineFetched; // the last line processed in the previous data request
-        // set this to -1 at the start of the save job
-
-        TerminalCharacterDecoder *decoder;  // decoder used to convert terminal characters
-        // into output
-    };
-
-    QHash<KJob *, SaveJob> _jobSession;
-};
-
-//class SearchHistoryThread;
-/**
- * A task which searches through the output of sessions for matches for a given regular expression.
- * SearchHistoryTask operates on ScreenWindow instances rather than sessions added by addSession().
- * A screen window can be added to the list to search using addScreenWindow()
- *
- * When execute() is called, the search begins in the direction specified by searchDirection(),
- * starting at the position of the current selection.
- *
- * FIXME - This is not a proper implementation of SessionTask, in that it ignores sessions specified
- * with addSession()
- *
- * TODO - Implementation requirements:
- *          May provide progress feedback to the user when searching very large output logs.
- */
-class SearchHistoryTask : public SessionTask
-{
-    Q_OBJECT
-
-public:
-    /**
-     * Constructs a new search task.
-     */
-    explicit SearchHistoryTask(QObject *parent = nullptr);
-
-    /** Adds a screen window to the list to search when execute() is called. */
-    void addScreenWindow(Session *session, ScreenWindow *searchWindow);
-
-    /** Sets the regular expression which is searched for when execute() is called */
-    void setRegExp(const QRegularExpression &expression);
-    /** Returns the regular expression which is searched for when execute() is called */
-    QRegularExpression regExp() const;
-
-    /** Specifies the direction to search in when execute() is called. */
-    void setSearchDirection(Enum::SearchDirection direction);
-    /** Returns the current search direction.  See setSearchDirection(). */
-    Enum::SearchDirection searchDirection() const;
-
-    /** The line from which the search will be done **/
-    void setStartLine(int line);
-
-    /**
-     * Performs a search through the session's history, starting at the position
-     * of the current selection, in the direction specified by setSearchDirection().
-     *
-     * If it finds a match, the ScreenWindow specified in the constructor is
-     * scrolled to the position where the match occurred and the selection
-     * is set to the matching text.  execute() then returns immediately.
-     *
-     * To continue the search looking for further matches, call execute() again.
-     */
-    void execute() Q_DECL_OVERRIDE;
-
-private:
-    typedef QPointer<ScreenWindow> ScreenWindowPtr;
-
-    void executeOnScreenWindow(SessionPtr session, ScreenWindowPtr window);
-    void highlightResult(ScreenWindowPtr window, int position);
-
-    QMap< SessionPtr, ScreenWindowPtr > _windows;
-    QRegularExpression _regExp;
-    Enum::SearchDirection _direction;
-    int _startLine;
-
-    //static QPointer<SearchHistoryThread> _thread;
-};
 }
 
 #endif //SESSIONCONTROLLER_H

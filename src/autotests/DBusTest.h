@@ -28,6 +28,8 @@
 
 #include <unistd.h>
 
+class QProcess;
+
 namespace Konsole
 {
 
@@ -40,12 +42,18 @@ private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
     void testSessions();
+    void testWindows();
 
 // protected slots are not treated as test cases
 protected Q_SLOTS:
 
 private:
     QString _interfaceName;
+    QProcess *_process = nullptr;
+
+    QString _testProfileName;
+    QString _testProfilePath;
+    QString _testProfileEnv;
 };
 
 }

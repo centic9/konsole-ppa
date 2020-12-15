@@ -21,6 +21,7 @@
 
 // Own
 #include "ColorScheme.h"
+#include "hsluv.h"
 
 // Qt
 #include <QPainter>
@@ -33,9 +34,20 @@
 // STL
 #include <random>
 
+#include "konsoledebug.h"
+
 namespace {
 const int FGCOLOR_INDEX = 0;
 const int BGCOLOR_INDEX = 1;
+
+const char RandomHueRangeKey[]           = "RandomHueRange";
+const char RandomSaturationRangeKey[]    = "RandomSaturationRange";
+const char RandomLightnessRangeKey[]     = "RandomLightnessRange";
+const char EnableColorRandomizationKey[] = "ColorRandomization";
+
+const double MaxHue        = 360.0;
+const double MaxSaturation = 100.0;
+const double MaxLightness  = 100.0;
 }
 
 using namespace Konsole;
@@ -165,6 +177,7 @@ ColorScheme::ColorScheme() :
     _randomTable(nullptr),
     _opacity(1.0),
     _blur(false),
+    _colorRandomization(false),
     _wallpaper(nullptr)
 {
     setWallpaper(QString());
@@ -177,6 +190,7 @@ ColorScheme::ColorScheme(const ColorScheme &other) :
     _randomTable(nullptr),
     _opacity(other._opacity),
     _blur(other._blur),
+    _colorRandomization(other._colorRandomization),
     _wallpaper(other._wallpaper)
 {
     setName(other.name());
@@ -191,7 +205,7 @@ ColorScheme::ColorScheme(const ColorScheme &other) :
     if (other._randomTable != nullptr) {
         for (int i = 0; i < TABLE_COLORS; i++) {
             const RandomizationRange &range = other._randomTable[i];
-            setRandomizationRange(i, range.hue, range.saturation, range.value);
+            setRandomizationRange(i, range.hue, range.saturation, range.lightness);
         }
     }
 }
@@ -234,7 +248,12 @@ void ColorScheme::setColorTableEntry(int index, const ColorEntry &entry)
         }
     }
 
-    _table[index] = entry;
+    if (entry.isValid()) {
+        _table[index] = entry;
+    } else {
+        _table[index] = defaultTable[index];
+        qCDebug(KonsoleDebug)<<"ColorScheme"<<name()<<"has an invalid color index"<<index<<", using default table color";
+    }
 }
 
 ColorEntry ColorScheme::colorEntry(int index, uint randomSeed) const
@@ -243,9 +262,14 @@ ColorEntry ColorScheme::colorEntry(int index, uint randomSeed) const
 
     ColorEntry entry = colorTable()[index];
 
-    if (randomSeed == 0 || _randomTable == nullptr || _randomTable[index].isNull()) {
+    if (!_colorRandomization || randomSeed == 0 || _randomTable == nullptr
+            || _randomTable[index].isNull()) {
         return entry;
     }
+
+    double baseHue, baseSaturation, baseLightness;
+    rgb2hsluv(entry.redF(), entry.greenF(), entry.blueF(),
+              &baseHue, &baseSaturation, &baseLightness);
 
     const RandomizationRange &range = _randomTable[index];
 
@@ -254,33 +278,54 @@ ColorEntry ColorScheme::colorEntry(int index, uint randomSeed) const
     // minstd_rand0 which always gives us 0 on the first number.
     std::mt19937 randomEngine(randomSeed);
 
-    int hueDifference = 0;
-    if (range.hue != 0u) {
-        std::uniform_int_distribution<int> dist(0, range.hue);
-        hueDifference = dist(randomEngine);
+    // Use hues located around base color's hue.
+    // H=0 [|=      =]    H=128 [   =|=   ]    H=360 [=      =|]
+    const double minHue = baseHue - range.hue / 2.0;
+    const double maxHue = baseHue + range.hue / 2.0;
+    std::uniform_real_distribution<> hueDistribution(minHue, maxHue);
+    // Hue value is an angle, it wraps after 360°. Adding MAX_HUE
+    // guarantees that the sum is not negative.
+    const double hue = fmod(MaxHue + hueDistribution(randomEngine), MaxHue);
+
+    // Saturation is always decreased. With more saturation more
+    // information about hue is preserved in RGB color space
+    // (consider red with S=100 and "red" with S=0 which is gray).
+    // Additionally, I think it can be easier to imagine more
+    // toned color than more vivid one.
+    // S=0 [|==      ]    S=50 [  ==|    ]    S=100 [      ==|]
+    const double minSaturation = qMax(baseSaturation - range.saturation, 0.0);
+    const double maxSaturation = qMax(range.saturation, baseSaturation);
+    // Use rising linear distribution as colors with lower
+    // saturation are less distinguishable.
+    std::piecewise_linear_distribution<> saturationDistribution({minSaturation, maxSaturation},
+                                                                [](double v) { return v; });
+    const double saturation = qFuzzyCompare(minSaturation, maxSaturation)
+                              ? baseSaturation
+                              : saturationDistribution(randomEngine);
+
+    // Lightness range has base value at its center. The base
+    // value is clamped to prevent the range from shrinking.
+    // L=0 [=|=        ]    L=50 [    =|=    ]    L=100 [        =|=]
+    baseLightness = qBound(range.lightness / 2.0, baseLightness , MaxLightness - range.lightness);
+    const double minLightness = qMax(baseLightness - range.lightness / 2.0, 0.0);
+    const double maxLightness = qMin(baseLightness + range.lightness / 2.0, MaxLightness);
+    // Use triangular distribution with peak at L=50.0.
+    // Dark and very light colors are less distinguishable.
+    static const auto lightnessWeightsFunc = [](double v) { return 50.0 - qAbs(v - 50.0); };
+    std::piecewise_linear_distribution<> lightnessDistribution;
+    if (minLightness < 50.0 && 50.0 < maxLightness) {
+        lightnessDistribution = std::piecewise_linear_distribution<>({minLightness, 50.0, maxLightness}, lightnessWeightsFunc);
+    } else {
+        lightnessDistribution = std::piecewise_linear_distribution<>({minLightness, maxLightness}, lightnessWeightsFunc);
     }
+    const double lightness = qFuzzyCompare(minLightness, maxLightness)
+                             ? baseLightness
+                             : lightnessDistribution(randomEngine);
 
-    int saturationDifference = 0;
-    if (range.saturation != 0u) {
-        std::uniform_int_distribution<int> dist(0, range.saturation);
-        saturationDifference = dist(randomEngine) - range.saturation / 2;
-    }
+    double red, green, blue;
+    hsluv2rgb(hue, saturation, lightness, &red, &green, &blue);
 
-    int valueDifference = 0;
-    if (range.value != 0u) {
-        std::uniform_int_distribution<int> dist(0, range.value);
-        valueDifference = dist(randomEngine) - range.value / 2;
-    }
-
-    QColor &color = entry;
-
-    int newHue = qAbs((color.hue() + hueDifference) % MAX_HUE);
-    int newValue = qMin(qAbs(color.value() + valueDifference), 255);
-    int newSaturation = qMin(qAbs(color.saturation() + saturationDifference), 255);
-
-    color.setHsv(newHue, newSaturation, newValue);
-
-    return entry;
+    return {qRound(red * 255), qRound(green * 255), qRound(blue * 255)};
 }
 
 void ColorScheme::getColorTable(ColorEntry *table, uint randomSeed) const
@@ -290,29 +335,38 @@ void ColorScheme::getColorTable(ColorEntry *table, uint randomSeed) const
     }
 }
 
-bool ColorScheme::randomizedBackgroundColor() const
+bool ColorScheme::isColorRandomizationEnabled() const
 {
-    return _randomTable == nullptr ? false : !_randomTable[BGCOLOR_INDEX].isNull();
+    return (_colorRandomization && _randomTable != nullptr);
 }
 
-void ColorScheme::setRandomizedBackgroundColor(bool randomize)
+void ColorScheme::setColorRandomization(bool randomize)
 {
-    // the hue of the background color is allowed to be randomly
-    // adjusted as much as possible.
-    //
-    // the value and saturation are left alone to maintain read-ability
+    _colorRandomization = randomize;
     if (randomize) {
-        setRandomizationRange(BGCOLOR_INDEX, MAX_HUE, 255, 0);
-    } else {
+        bool hasAnyRandomizationEntries = false;
         if (_randomTable != nullptr) {
-            setRandomizationRange(BGCOLOR_INDEX, 0, 0, 0);
+            for (int i = 0; !hasAnyRandomizationEntries && i < TABLE_COLORS; i++) {
+                hasAnyRandomizationEntries = !_randomTable[i].isNull();
+            }
+        }
+        // Set default randomization settings
+        if (!hasAnyRandomizationEntries) {
+            static const int ColorIndexesForRandomization[] = {
+                    ColorFgIndex,           ColorBgIndex,
+                    ColorFgIntenseIndex,    ColorBgIntenseIndex,
+                    ColorFgFaintIndex,      ColorBgFaintIndex,
+            };
+            for (int index: ColorIndexesForRandomization) {
+                setRandomizationRange(index, MaxHue, MaxSaturation, 0.0);
+            }
         }
     }
 }
 
-void ColorScheme::setRandomizationRange(int index, quint16 hue, quint8 saturation, quint8 value)
+void ColorScheme::setRandomizationRange(int index, double hue, double saturation, double lightness)
 {
-    Q_ASSERT(hue <= MAX_HUE);
+    Q_ASSERT(hue <= MaxHue);
     Q_ASSERT(index >= 0 && index < TABLE_COLORS);
 
     if (_randomTable == nullptr) {
@@ -320,17 +374,16 @@ void ColorScheme::setRandomizationRange(int index, quint16 hue, quint8 saturatio
     }
 
     _randomTable[index].hue = hue;
-    _randomTable[index].value = value;
     _randomTable[index].saturation = saturation;
+    _randomTable[index].lightness = lightness;
 }
 
 const ColorEntry *ColorScheme::colorTable() const
 {
     if (_table != nullptr) {
         return _table;
-    } else {
-        return defaultTable;
     }
+    return defaultTable;
 }
 
 QColor ColorScheme::foregroundColor() const
@@ -345,13 +398,20 @@ QColor ColorScheme::backgroundColor() const
 
 bool ColorScheme::hasDarkBackground() const
 {
-    // value can range from 0 - 255, with larger values indicating higher brightness.
-    // so 127 is in the middle, anything less is deemed 'dark'
-    return backgroundColor().value() < 127;
+    double h, s, l;
+    const double r = backgroundColor().redF();
+    const double g = backgroundColor().greenF();
+    const double b = backgroundColor().blueF();
+    rgb2hsluv(r, g, b, &h, &s, &l);
+    return l < 0.5;
 }
 
 void ColorScheme::setOpacity(qreal opacity)
 {
+    if (opacity < 0.0 || opacity > 1.0) {
+        qCDebug(KonsoleDebug)<<"ColorScheme"<<name()<<"has an invalid opacity"<<opacity<<"using 1";
+        opacity = 1.0;
+    }
     _opacity = opacity;
 }
 
@@ -377,14 +437,16 @@ void ColorScheme::read(const KConfig &config)
     const QString schemeDescription = configGroup.readEntry("Description", i18nc("@item", "Un-named Color Scheme"));
 
     _description = i18n(schemeDescription.toUtf8().constData());
-    _opacity = configGroup.readEntry("Opacity", 1.0);
+    setOpacity(configGroup.readEntry("Opacity", 1.0));
     _blur = configGroup.readEntry("Blur", false);
     setWallpaper(configGroup.readEntry("Wallpaper", QString()));
+    _colorRandomization = configGroup.readEntry(EnableColorRandomizationKey, false);
 
     for (int i = 0; i < TABLE_COLORS; i++) {
         readColorEntry(config, i);
     }
 }
+
 void ColorScheme::readColorEntry(const KConfig &config, int index)
 {
     KConfigGroup configGroup = config.group(colorNameForIndex(index));
@@ -397,15 +459,27 @@ void ColorScheme::readColorEntry(const KConfig &config, int index)
     ColorEntry entry;
 
     entry = configGroup.readEntry("Color", QColor());
-
     setColorTableEntry(index, entry);
 
-    const quint16 hue = static_cast<quint16>(configGroup.readEntry("MaxRandomHue", 0));
-    const quint8 value = static_cast<quint8>(configGroup.readEntry("MaxRandomValue", 0));
-    const quint8 saturation = static_cast<quint8>(configGroup.readEntry("MaxRandomSaturation", 0));
+    const auto readAndCheckConfigEntry = [&](const char *key, double min, double max) -> double {
+        const double value = configGroup.readEntry(key, min);
+        if (min > value || value > max) {
+            qCDebug(KonsoleDebug) << QStringLiteral(
+                    "Color scheme \"%1\": color index 2 has an invalid value: %3 = %4. "
+                    "Allowed value range: %5 - %6. Using %7.")
+                    .arg(name()).arg(index).arg(QLatin1String(key)).arg(value, 0, 'g', 1)
+                    .arg(min, 0, 'g', 1).arg(max, 0, 'g', 1).arg(min, 0, 'g', 1);
+            return min;
+        }
+        return value;
+    };
 
-    if (hue != 0 || value != 0 || saturation != 0) {
-        setRandomizationRange(index, hue, saturation, value);
+    double hue        = readAndCheckConfigEntry(RandomHueRangeKey,        0.0, MaxHue);
+    double saturation = readAndCheckConfigEntry(RandomSaturationRangeKey, 0.0, MaxSaturation);
+    double lightness  = readAndCheckConfigEntry(RandomLightnessRangeKey,  0.0, MaxLightness);
+
+    if (!qFuzzyIsNull(hue) || !qFuzzyIsNull(saturation) || !qFuzzyIsNull(lightness)) {
+        setRandomizationRange(index, hue, saturation, lightness);
     }
 }
 
@@ -417,6 +491,7 @@ void ColorScheme::write(KConfig &config) const
     configGroup.writeEntry("Opacity", _opacity);
     configGroup.writeEntry("Blur", _blur);
     configGroup.writeEntry("Wallpaper", _wallpaper->path());
+    configGroup.writeEntry(EnableColorRandomizationKey, _colorRandomization);
 
     for (int i = 0; i < TABLE_COLORS; i++) {
         writeColorEntry(config, i);
@@ -432,25 +507,36 @@ void ColorScheme::writeColorEntry(KConfig &config, int index) const
     configGroup.writeEntry("Color", entry);
 
     // Remove unused keys
-    if (configGroup.hasKey("Transparent")) {
-        configGroup.deleteEntry("Transparent");
-    }
-    if (configGroup.hasKey("Transparency")) {
-        configGroup.deleteEntry("Transparency");
-    }
-    if (configGroup.hasKey("Bold")) {
-        configGroup.deleteEntry("Bold");
+    static const char *obsoleteKeys[] = {
+        "Transparent",
+        "Transparency",
+        "Bold",
+        // Uncomment when people stop using Konsole from 2019:
+        // "MaxRandomHue",
+        // "MaxRandomValue",
+        // "MaxRandomSaturation"
+    };
+    for (const auto key: obsoleteKeys) {
+        if (configGroup.hasKey(key)) {
+            configGroup.deleteEntry(key);
+        }
     }
 
     RandomizationRange random = _randomTable != nullptr ? _randomTable[index] : RandomizationRange();
 
-    // record randomization if this color has randomization or
-    // if one of the keys already exists
-    if (!random.isNull() || configGroup.hasKey("MaxRandomHue")) {
-        configGroup.writeEntry("MaxRandomHue", static_cast<int>(random.hue));
-        configGroup.writeEntry("MaxRandomValue", static_cast<int>(random.value));
-        configGroup.writeEntry("MaxRandomSaturation", static_cast<int>(random.saturation));
-    }
+    const auto checkAndMaybeSaveValue = [&](const char *key, double value) {
+        const bool valueIsNull = qFuzzyCompare(value, 0.0);
+        const bool keyExists = configGroup.hasKey(key);
+        const bool keyExistsAndHasDifferentValue = !qFuzzyCompare(configGroup.readEntry(key, value),
+                                                                  value);
+        if ((!valueIsNull && !keyExists) || keyExistsAndHasDifferentValue) {
+            configGroup.writeEntry(key, value);
+        }
+    };
+
+    checkAndMaybeSaveValue(RandomHueRangeKey,        random.hue);
+    checkAndMaybeSaveValue(RandomSaturationRangeKey, random.saturation);
+    checkAndMaybeSaveValue(RandomLightnessRangeKey,  random.lightness);
 }
 
 void ColorScheme::setWallpaper(const QString &path)
@@ -505,6 +591,7 @@ bool ColorSchemeWallpaper::draw(QPainter &painter, const QRect rect, qreal opaci
         painter.drawTiledPixmap(rect, *_picture, rect.topLeft());
         return true;
     }
+
     painter.save();
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(rect, QColor(0, 0, 0, 0));

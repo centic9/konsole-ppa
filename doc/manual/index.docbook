@@ -3,6 +3,8 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % English "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname><firstname>Ahmad</firstname><surname>Samir</surname></personname>'>
+<!ENTITY Ahmad.Samir.mail '<email>a.samirh78@gmail.com</email>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -12,6 +14,7 @@
 <authorgroup>
 <author>&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author>&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer">
 &Robert.Knight; &Robert.Knight.mail;
@@ -42,10 +45,15 @@
 <holder>&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year>2018</year>
+<holder>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice>&FDLNotice;</legalnotice>
 
-<date>2018-03-10</date>
-<releaseinfo>Applications 18.04</releaseinfo>
+<date>2019-06-16</date>
+<releaseinfo>Applications 19.08</releaseinfo>
 
 <abstract><para>&konsole; is &kde;'s terminal emulator.</para></abstract>
 
@@ -70,8 +78,8 @@
 emulator, often referred to as a terminal or a shell. It emulates a command line interface in a text only window.
 </para>
 
-<para>&konsole; typically runs a command shell, an application that executes commands that you type. 
-The shell the &konsole; runs depends on your account settings.  
+<para>&konsole; typically runs a command shell, an application that executes commands that you type.
+The shell the &konsole; runs depends on your account settings.
 Consult your operating system documentation to know what the shell is, how to configure it and how to use it.
 </para>
 </sect1>
@@ -122,6 +130,8 @@ Procedure to create a new profile:
 <orderedlist>
 <listitem><para>Click on the menu entry <menuchoice><guimenu>Settings</guimenu><guimenuitem>Manage Profiles...</guimenuitem>
 </menuchoice></para></listitem>
+
+<listitem><para>Switch to the <guibutton>Profiles</guibutton> page.</para></listitem>
 
 <listitem><para>Click on the button <guibutton>New Profile...</guibutton>.</para></listitem>
 
@@ -179,7 +189,7 @@ running will mark a region of the text. While dragging the mouse, the marked
 text is displayed in reversed color for visual feedback. Select <guimenuitem>Copy</guimenuitem>
 from the <guimenu>Edit</guimenu> menu to copy the marked text to the clipboard for further use
 within &konsole; or another application. The selected text can also be
-dragged and dropped into compatible applications. Hold the &Ctrl; key and 
+dragged and dropped into compatible applications. Hold the &Ctrl; key and
 drag the selected text to the desired location.</para>
 
 <para>Normally, new-line characters are inserted at the end of each
@@ -264,9 +274,9 @@ rolling it in a mouse-unaware program will move &konsole;'s scrollbar.</para>
 
 <sect1 id="drag-and-drop">
 <title>Drag and Drop</title>
-<para>If you drop a file, folder or &URL; on a &konsole; window, a context 
+<para>If you drop a file, folder or &URL; on a &konsole; window, a context
 menu appears with these actions:
-</para>  
+</para>
 <screenshot>
 <screeninfo>Drag and Drop Context Menu</screeninfo>
 <mediaobject>
@@ -284,7 +294,7 @@ menu appears with these actions:
 <term><menuchoice>
 <shortcut>&Shift;</shortcut><guimenuitem>Move Here</guimenuitem> </menuchoice>
 </term> <listitem>
-<para>Move the dropped item into the current folder. This item only appears in 
+<para>Move the dropped item into the current folder. This item only appears in
 the context menu, if you have the rights to delete the dropped file or folder.
 </para></listitem>
 </varlistentry>
@@ -314,7 +324,7 @@ the context menu, if you have the rights to delete the dropped file or folder.
 <term><menuchoice>
 <guimenuitem>Change Directory To</guimenuitem> </menuchoice>
 </term> <listitem>
-<para>If a folder is dropped, this action appears in the context menu and allows you to 
+<para>If a folder is dropped, this action appears in the context menu and allows you to
 change the working folder of the &konsole; session.</para></listitem>
 </varlistentry>
 
@@ -327,7 +337,7 @@ change the working folder of the &konsole; session.</para></listitem>
 
 </variablelist>
 
-<para>If you press the shortcuts before releasing the &LMB; during drag and drop, no context menu appears and 
+<para>If you press the shortcuts before releasing the &LMB; during drag and drop, no context menu appears and
 the actions will be executed immediately.
 </para>
 
@@ -441,7 +451,7 @@ at the current directory</action>.  By default, that is
 <note><para>&konsole; will display a confirmation dialog if there is more than one
 tab open.  This dialog can be disabled by clicking on the <guibutton>Do not ask again</guibutton> checkbox.
 </para>
-<para>If you want to get the confirmation dialog get back, delete the entry 
+<para>If you want to get the confirmation dialog get back, delete the entry
 <screen>[Notification Messages]
 CloseAllTabs=true</screen>
 in <filename>$<envar>XDG_CONFIG_HOME</envar>/konsolerc</filename>.
@@ -598,14 +608,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -614,7 +624,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term><menuchoice>
@@ -668,7 +678,7 @@ Any output on one view is duplicated in the other view.
 
 <varlistentry>
 <term><menuchoice>
-<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>S</keycap></keycombo></shortcut>
+<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>X</keycap></keycombo></shortcut>
 <guimenu>View</guimenu><guisubmenu>Split View</guisubmenu><guimenuitem>Close Active</guimenuitem></menuchoice>
 </term>
 <listitem><para><action>Closes the current view</action>
@@ -705,14 +715,24 @@ Any output on one view is duplicated in the other view.
 
 <varlistentry>
 <term><menuchoice>
-<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>H</keycap></keycombo></shortcut>
+<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>L</keycap></keycombo></shortcut>
 <guimenu>View</guimenu><guimenuitem>Detach Current Tab</guimenuitem></menuchoice>
 </term>
 <listitem><para><action>Opens the current tab in a
 separate window</action>
 </para><para>
-Quiting the previous &konsole; window will not
+Quitting the previous &konsole; window will not
 affect the newly created window.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>H</keycap></keycombo></shortcut>
+<guimenu>View</guimenu><guimenuitem>Detach Current View</guimenuitem></menuchoice>
+</term>
+<listitem><para><action>Opens the current split view in a
+separate window</action>
 </para></listitem>
 </varlistentry>
 
@@ -759,6 +779,14 @@ drag and drop is disabled.
 <guimenu>View</guimenu><guimenuitem>Enlarge Font</guimenuitem></menuchoice></term>
 <listitem><para><action>Increases the text font size</action></para></listitem>
 </varlistentry>
+
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;<keycap>0</keycap></keycombo></shortcut>
+<guimenu>View</guimenu><guimenuitem>Reset Font Size</guimenuitem></menuchoice></term>
+<listitem><para><action>Reset the text font size to the profile default</action></para></listitem>
+</varlistentry>
+
 
 <varlistentry>
 <term><menuchoice>
@@ -822,8 +850,8 @@ A dialog will open for the bookmark folder name.
 <varlistentry>
 <term><menuchoice><guimenu>Bookmarks</guimenu><guimenuitem>Edit Bookmarks</guimenuitem></menuchoice></term>
 <listitem><para><action>Opens the bookmark editor</action></para>
-
-<note><para>You can use the bookmark editor to manually add URLs.
+<note><para>The keditbookmarks program must be installed for this menu item to appear.</para>
+<para>You can use the bookmark editor to manually add URLs.
 Currently, &konsole; accepts the following:
 <itemizedlist mark="opencircle">
 <listitem><para>ssh://user@host:port</para></listitem>
@@ -842,7 +870,7 @@ Currently, &konsole; accepts the following:
 <variablelist>
 
 <varlistentry>
-<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Edit 
+<term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Edit
 Current Profile...</guimenuitem></menuchoice></term>
 <listitem><para><action>Opens a dialog to configure current profile</action>
 </para>
@@ -940,8 +968,8 @@ Notifications...</guimenuitem></menuchoice></term>
 <term><menuchoice><guimenu>Settings</guimenu><guimenuitem>Configure
 &konsole;...</guimenuitem></menuchoice></term>
 <listitem><para><action>Opens the &konsole; settings editor</action></para>
-<para>This dialog has options influencing the appearance and behaviour of the 
-<guilabel>TabBar</guilabel> and general options for the &konsole; window.
+<para>This dialog has options influencing the appearance and behaviour of the
+<guilabel>Tab Bar</guilabel> and general options for the &konsole; window.
 </para></listitem>
 <!-- FIXME
 since 4.9 Move options influencing tabbar from profiles into global setting
@@ -985,6 +1013,7 @@ These changes can be made permanent by editing the current profile.
 <listitem><para>%D : current directory (long)</para></listitem>
 <listitem><para>%h : local host (short)</para></listitem>
 <listitem><para>%u : user name</para></listitem>
+<listitem><para>%B : user's Bourne prompt sigil ($ = normal user, # = superuser)</para></listitem>
 <listitem><para>%w : window title set by shell</para></listitem>
 <listitem><para>%# : session number</para></listitem>
 </itemizedlist>
@@ -1118,9 +1147,9 @@ instead of the default profile.</para></listitem>
 <listitem><para><action>Create tabs</action> as specified in the given tabs configuration file.
 </para>
 <note><para>The file has one tab per line in the following format:</para>
-<para>Each line specifies a tab to open using up to 4 fields specifying how it is to open. 
+<para>Each line specifies a tab to open using up to 4 fields specifying how it is to open.
 Fields are delimited with <userinput>;;</userinput> and a field name must have a <userinput>:</userinput> appended.
-Empty lines or lines with <userinput>#</userinput> at the beginning are ignored, so you can use line beginning with 
+Empty lines or lines with <userinput>#</userinput> at the beginning are ignored, so you can use line beginning with
 <userinput>#</userinput> to add comments.
 </para>
 
@@ -1198,8 +1227,8 @@ Empty lines or lines with <userinput>#</userinput> at the beginning are ignored,
 </para>
 <para>
 For more information, please visit
-<ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429">&konsole; API Reference</ulink>.
-<!--FIXME update url to kf5 if available on api.kde.org-->
+<ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html">&konsole; API Reference</ulink>.
+<!--FIXME update url to kf5 when available on api.kde.org-->
 </para>
 </listitem>
 </varlistentry>
@@ -1315,8 +1344,207 @@ Service 'org.kde.konsole' does not exist, change
 
 <para>
 For more information, please visit
-<ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction">&DBus; tutorial</ulink>.
+<ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction">&DBus; tutorial</ulink>.
 </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title>Terminal Key Bindings</title>
+
+<sect1>
+<title>How &konsole; Uses Key Bindings</title>
+
+<sect2 id="intro">
+<title>Introduction</title>
+<para>&konsole; uses *.keytab files to translate key combinations into control characters and escape sequences that are sent to the shell or to interactive programs (typically programs that use the Alternate Screen buffer, &eg; <application>vim</application>, <application>less</application>, <application>screen</application>) running in the shell.</para>
+
+<para>Users can customize the key bindings settings in &konsole; using the Key Bindings Editor. A key combination can be configured to send a specific control or escape sequence to the terminal.</para>
+
+<para>You can open the Key Bindings Editor from the menu entry <menuchoice><guimenu>Settings</guimenu><guimenuitem>Edit Current Profile</guimenuitem></menuchoice>, and going to the <guilabel>Keyboard</guilabel> tab. Listed there are the Key Bindings schemas that come by default with &konsole;.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title>Key Combinations and Modes</title>
+
+<para>Key combinations follow the pattern:
+<programlisting>Key (+|-) Modes</programlisting>
+</para>
+
+<para>for example:
+<programlisting>
+Up+Shift+AppScreen
+Down+Shift-AppScreen
+Space+Ctrl
+</programlisting>
+</para>
+
+<para>Key names are defined in the qnamespace.h header file, with the <quote>Qt::Key_</quote> prefix removed, for a list of key names check the <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum">Qt::Key enumeration in the &Qt; documentation</ulink>.</para>
+
+<para>A <quote>+</quote> preceding a Mode name means that mode is <emphasis>set</emphasis>; for a modifier key, that means it's pressed, whereas for all other modes it means that particular mode is in effect (&ie; active). For example <quote>+Ctrl</quote> means the key combination will work only if the &Ctrl; key is pressed.</para>
+
+<para>A <quote>-</quote> preceding a Mode name means that mode is <emphasis>reset</emphasis>; basically this is the opposite of putting <quote>+</quote> before a Mode name, so for a modifier key that means the key isn't pressed, whereas for all other modes it means that particular mode is inactive. For example <quote>-Ctrl</quote> means the key combination will work only if the &Ctrl; key is <emphasis>not</emphasis> pressed.</para>
+
+<note>
+<para>If a Mode name isn't present in a key combination, its state is ignored.</para>
+</note>
+
+<para>The supported Key Bindings modes are listed below:</para>
+
+<variablelist>
+
+<varlistentry>
+<term>Alt, Ctrl, Shift</term>
+<listitem>
+<para>One or more of these Modes can be used in a key combination, if any of them is set, the key combination uses that modifier key, respectively; and vice versa if it's reset</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>AnyModifier</term>
+<listitem>
+<para>If this mode is set, the key combination uses any modifier key (any of the previous three modifier keys); and vice versa if it's reset</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Ansi</term>
+<listitem>
+<para>If this mode is set, &konsole; will send ANSI escape and control sequences</para>
+<para>If this mode is reset &konsole; will send VT52 escape and control sequences</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>AppScreen</term>
+<listitem>
+<para>If this mode is set, the key combination will only affect interactive programs that use the Alternate Screen buffer</para>
+<para>If this mode is reset the key combination will only affect the terminal when it's using the Normal Screen buffer</para>
+
+<note>
+<para>&konsole; makes use of two screen buffers:</para>
+<itemizedlist>
+<listitem>
+<para>The Normal Screen buffer (default): allows you to scroll back to view previous lines of output, this is the default buffer you usually use to execute commands... &etc;</para>
+</listitem>
+<listitem>
+<para>The Alternate Screen buffer: the terminal switches to this buffer when you run an interactive program (&eg; <application>less</application>, <application>vim</application>, <application>screen</application>, <application>tmux</application>... &etc;)</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>KeyPad</term>
+<listitem>
+<para>If this mode is set, the key combination uses a key on the Keypad (Number Pad). This mode is useful to distinguish between keys on the keyboard and keys on the Keypad. For example when Num Lock is <emphasis>on</emphasis> you can configure two separate key combinations, one using the key labelled <quote>1</quote> on the keyboard (usually under the <keycap>F1</keycap> key) and the other using the key labelled <quote>1</quote> on the Keypad. The same concept applies when Num Lock is <emphasis>off</emphasis> for the End, Home, Cursor Keys ...etc on the Keypad</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>AppCursorKeys</term>
+<listitem>
+<para>This mode implements the VT100 <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM">Cursor Keys Mode (DECCKM)</ulink>. It controls the escape sequences each Cursor Key (<keycap>Up</keycap>, <keycap>Down</keycap>, <keycap>Right</keycap>, <keycap>Left</keycap>) sends, depending on whether this mode is set or reset</para>
+<para>By default &konsole; follows the XTerm behavior of treating the <keycap>Home</keycap> and <keycap>End</keycap> keys as cursor keys with respect to DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>AppKeyPad</term>
+<listitem>
+<para>If this mode is set, the key combination will only work when the Keypad is in Application Mode (DECKPAM)</para>
+<para>If this mode is reset, the key combination will only work when the Keypad is in Numeric Mode (DECKPNM)</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>NewLine</term>
+<listitem>
+<para>If this mode is set, the <keycap>Return</keycap> (Enter) key on the keyboard will send both Carriage Return "\r" and New Line "\n" control characters</para>
+<para>If this mode is reset, the <keycap>Return</keycap> key will send only a Carriage Return "\r"</para>
+<para>The same applies to the <keycap>Enter</keycap> key on the Keypad</para>
+<para>This mode emulates the <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM">LNM - Line Feed/New Line Mode</ulink></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para>Note that each combination of Key and Modes (set/reset) must be unique. For example, consider the following two rules:</para>
+
+<itemizedlist>
+<listitem><para>A+Shift : <quote>A</quote></para></listitem>
+<listitem><para>a       : <quote>a</quote></para></listitem>
+</itemizedlist>
+<para>&konsole; will <emphasis>not</emphasis> accept the small letter <quote>a</quote> rule, you have to add a <quote>-Shift</quote> to that rule to make it work.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title>The Output Field</title>
+
+<para>In the Output field you can add the escape sequences or control characters that you want &konsole; to send to the terminal when the associated key combination is pressed.</para>
+
+<para>You can also use any of the following keywords, each of which has a special meaning in &konsole;:</para>
+
+<itemizedlist>
+<listitem><para>scrollUpLine       : scroll up one line in the shell history scrollback buffer</para></listitem>
+<listitem><para>scrollUpPage       : scroll up one page in the shell history scrollback buffer</para></listitem>
+<listitem><para>scrollDownLine     : scroll down one line in the shell history scrollback buffer</para></listitem>
+<listitem><para>scrollDownPage     : scroll down one page in the shell history scrollback buffer</para></listitem>
+<listitem><para>scrollUpToTop      : scroll up to the begining of the shell history scrollback buffer</para></listitem>
+<listitem><para>scrollDownToBottom : scroll down to the end of the shell history scrollback buffer</para></listitem>
+</itemizedlist>
+
+<para>You can also use strings with C-string syntax; you may use the following escapes sequences:</para>
+
+<itemizedlist>
+<listitem><para>\E   : Escape</para></listitem>
+<listitem><para>\\   : Backslash</para></listitem>
+<listitem><para>\"   : Double quote</para></listitem>
+<listitem><para>\t   : Tab</para></listitem>
+<listitem><para>\r   : Carriage Return</para></listitem>
+<listitem><para>\n   : New line</para></listitem>
+<listitem><para>\b   : Backspace</para></listitem>
+<listitem>
+<para>\xHH : where HH are two hex digits</para>
+<tip>
+<para>This can be used to send ASCII control characters, &eg; <quote>\x00</quote> which is the NUL character</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title>Other System Resources</title>
+<para>There are other system resources that can affect terminal Key Bindings:</para>
+<itemizedlist>
+<listitem>
+<para>Consult the <ulink url="man:terminfo(5)">terminfo</ulink> or <ulink url="man:termcap(5)">termcap</ulink> database for the expected escape sequences and control characters that each key combination is supposed to send.</para>
+</listitem>
+<listitem>
+<para>It is likely that your system has other keyboard databases which have to be in sync too, (&eg; <ulink url="man:bash(1)">/etc/inputrc and readline</ulink> for the <application>BASH shell</application>) as they affect the operations (interactions) bound to key combinations.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title>Further Reading</title>
+<para>For more information on escape sequences and control characters, check the following documentation:</para>
+<itemizedlist>
+<listitem>
+<para><ulink url="https://www.vt100.net/docs/vt100-ug/">The VT100 user guide</ulink></para>
+</listitem>
+<listitem>
+<para><ulink url="https://vt100.net/docs/vt102-ug/">The VT102 user guide</ulink></para>
+</listitem>
+<listitem>
+<para>The comprehensive and indispensable <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html">XTerm Control Sequences</ulink> documentation</para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -1330,7 +1558,7 @@ style sheet for the tab bar.  In the <filename role="extension">.css</filename> 
 </para>
 <para>
 For more information, consider reading
-<ulink url="http://doc.qt.io/qt-5/stylesheet.html">&Qt; Style Sheets</ulink>
+<ulink url="https://doc.qt.io/qt-5/stylesheet.html">&Qt; Style Sheets</ulink>
 </para>
 
 <para>
@@ -1415,7 +1643,7 @@ Pressing the <keycombo action="simul">&Ctrl;&Alt;</keycombo> keys while selectin
 </para></listitem>
 
 <listitem><para>
-The <keycombo action="simul">&Ctrl;<mousebutton>Wheel</mousebutton></keycombo> combination will zoom text size, like in konqueror and firefox. 
+The <keycombo action="simul">&Ctrl;<mousebutton>Wheel</mousebutton></keycombo> combination will zoom text size, like in konqueror and firefox.
 </para></listitem>
 
 <listitem><para>
@@ -1502,7 +1730,7 @@ Of course, users still can run login shell in &konsole; if they really need to. 
 </listitem>
 
 <listitem><para>
-The <option>--new-tab</option> option sometimes behaves strangely. It may create new window, or it may create new tab in another existing &konsole; window instead of the current &konsole; window. 
+The <option>--new-tab</option> option sometimes behaves strangely. It may create new window, or it may create new tab in another existing &konsole; window instead of the current &konsole; window.
 </para>
 <para>
 Those behaviors feel strange, but they are not necessarily bugs. The <option>--new-tab</option> option tries to reuse existing &konsole; windows, but not all &konsole; windows are reusable. All &konsole; windows opened through &krunner; are reusable, while most &konsole; windows opened from command line are not.
@@ -1548,12 +1776,12 @@ Those behaviors feel strange, but they are not necessarily bugs. The <option>--n
 
 <para>For more information please visit these websites:</para>
 <itemizedlist>
-<listitem><para><ulink url="http://userbase.kde.org/Konsole">&konsole;'s homepage on &kde;'s UserBase</ulink>&nbsp;</para></listitem>
-<listitem><para><ulink url="http://konsole.kde.org/">&konsole;'s homepage</ulink></para></listitem>
-<listitem><para><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel">&konsole;'s mailing list</ulink></para></listitem>
-<listitem><para><ulink url="http://freebsd.kde.org/">&kde; on
+<listitem><para><ulink url="https://userbase.kde.org/Konsole">&konsole;'s homepage on &kde;'s UserBase</ulink>&nbsp;</para></listitem>
+<listitem><para><ulink url="https://konsole.kde.org/">&konsole;'s homepage</ulink></para></listitem>
+<listitem><para><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel">&konsole;'s mailing list</ulink></para></listitem>
+<listitem><para><ulink url="https://freebsd.kde.org/">&kde; on
 FreeBSD</ulink></para></listitem>
-<listitem><para><ulink url="http://solaris.kde.org/">&kde; on &Solaris;</ulink></para></listitem>
+<listitem><para><ulink url="https://solaris.kde.org/">&kde; on &Solaris;</ulink></para></listitem>
 </itemizedlist>
 
 </appendix>

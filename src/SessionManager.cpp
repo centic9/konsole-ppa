@@ -41,7 +41,12 @@
 
 using namespace Konsole;
 
-SessionManager::SessionManager()
+SessionManager::SessionManager() :
+    _sessions(QList<Session *>()),
+    _sessionProfiles(QHash<Session *, Profile::Ptr>()),
+    _sessionRuntimeProfiles(QHash<Session *, Profile::Ptr>()),
+    _restoreMapping(QHash<Session *, int>()),
+    _isClosingAllSessions(false)
 {
     ProfileManager *profileMananger = ProfileManager::instance();
     connect(profileMananger, &Konsole::ProfileManager::profileChanged, this,
@@ -50,7 +55,7 @@ SessionManager::SessionManager()
 
 SessionManager::~SessionManager()
 {
-    if (_sessions.count() > 0) {
+    if (!_sessions.isEmpty()) {
         qCDebug(KonsoleDebug) << "Konsole SessionManager destroyed with"
                               << _sessions.count()
                               <<"session(s) still alive";
@@ -68,9 +73,14 @@ SessionManager* SessionManager::instance()
     return theSessionManager;
 }
 
+bool SessionManager::isClosingAllSessions() const
+{
+    return _isClosingAllSessions;
+}
+
 void SessionManager::closeAllSessions()
 {
-    // close remaining sessions
+    _isClosingAllSessions = true;
     foreach (Session *session, _sessions) {
         session->close();
     }
@@ -114,7 +124,7 @@ Session *SessionManager::createSession(Profile::Ptr profile)
     return session;
 }
 
-void SessionManager::profileChanged(Profile::Ptr profile)
+void SessionManager::profileChanged(const Profile::Ptr &profile)
 {
     applyProfile(profile, true);
 }
@@ -130,7 +140,7 @@ void SessionManager::sessionTerminated(Session *session)
     session->deleteLater();
 }
 
-void SessionManager::applyProfile(Profile::Ptr profile, bool modifiedPropertiesOnly)
+void SessionManager::applyProfile(const Profile::Ptr &profile, bool modifiedPropertiesOnly)
 {
     foreach (Session *session, _sessions) {
         if (_sessionProfiles[session] == profile) {
@@ -159,7 +169,7 @@ void SessionManager::setSessionProfile(Session *session, Profile::Ptr profile)
     emit sessionUpdated(session);
 }
 
-void SessionManager::applyProfile(Session *session, const Profile::Ptr profile,
+void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
                                   bool modifiedPropertiesOnly)
 {
     Q_ASSERT(profile);
@@ -188,17 +198,30 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr profile,
     if (apply.shouldApply(Profile::Environment)) {
         // add environment variable containing home directory of current profile
         // (if specified)
+
+        // prepend a 0 to the VERSION_MICRO part to make the version string
+        // length consistent, so that conditions that depend on the exported
+        // env var actually work
+        // e.g. the second version should be higher than the first one:
+        // 18.04.12 -> 180412
+        // 18.08.0  -> 180800
+        QStringList list = QStringLiteral(KONSOLE_VERSION).split(QLatin1Char('.'));
+        if (list[2].length() < 2) {
+                list[2].prepend(QLatin1String("0"));
+        }
+        const QString &numericVersion = list.join(QString());
+
         QStringList environment = profile->environment();
         environment << QStringLiteral("PROFILEHOME=%1").arg(profile->defaultWorkingDirectory());
-        environment << QStringLiteral("KONSOLE_PROFILE_NAME=%1").arg(profile->name());
+        environment << QStringLiteral("KONSOLE_VERSION=%1").arg(numericVersion);
 
         session->setEnvironment(environment);
     }
 
     if (apply.shouldApply(Profile::TerminalColumns)
         || apply.shouldApply(Profile::TerminalRows)) {
-        const int columns = profile->property<int>(Profile::TerminalColumns);
-        const int rows = profile->property<int>(Profile::TerminalRows);
+        const auto columns = profile->property<int>(Profile::TerminalColumns);
+        const auto rows = profile->property<int>(Profile::TerminalRows);
         session->setPreferredSize(QSize(columns, rows));
     }
 
@@ -225,7 +248,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr profile,
 
     // History
     if (apply.shouldApply(Profile::HistoryMode) || apply.shouldApply(Profile::HistorySize)) {
-        const int mode = profile->property<int>(Profile::HistoryMode);
+        const auto mode = profile->property<int>(Profile::HistoryMode);
         switch (mode) {
         case Enum::NoHistory:
             session->setHistoryType(HistoryTypeNone());
@@ -263,7 +286,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr profile,
 
 void SessionManager::sessionProfileCommandReceived(const QString &text)
 {
-    Session *session = qobject_cast<Session *>(sender());
+    auto *session = qobject_cast<Session *>(sender());
     Q_ASSERT(session);
 
     // store the font for each view if zoom was applied so that they can

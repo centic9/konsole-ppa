@@ -3,6 +3,16 @@
  "dtd/kdedbx45.dtd" [
 <!ENTITY % Italian "INCLUDE">
 <!ENTITY % addindex "IGNORE">
+<!ENTITY Ahmad.Samir '<personname
+><firstname
+>Ahmad</firstname
+><surname
+>Samir</surname
+></personname
+>'>
+<!ENTITY Ahmad.Samir.mail '<email
+>a.samirh78@gmail.com</email
+>'>
 ]>
 
 <book id="konsole" lang="&language;">
@@ -15,6 +25,8 @@
 >&Jonathan.Singer; &Jonathan.Singer.mail;</author>
 <author
 >&Kurt.Hindenburg; &Kurt.Hindenburg.mail;</author>
+<author
+>&Ahmad.Samir; &Ahmad.Samir.mail;</author>
 
 <othercredit role="developer"
 >&Robert.Knight; &Robert.Knight.mail; </othercredit>
@@ -93,13 +105,20 @@
 >&Kurt.Hindenburg;</holder>
 </copyright>
 
+<copyright>
+    <year
+>2018</year>
+<holder
+>&Ahmad.Samir;</holder>
+</copyright>
+
 <legalnotice
 >&FDLNotice;</legalnotice>
 
 <date
->10/03/2018</date>
+>16/06/2019</date>
 <releaseinfo
->Applications 18.04</releaseinfo>
+>Applications 19.08</releaseinfo>
 
 <abstract
 ><para
@@ -187,19 +206,15 @@
 >I profili permettono all'utente di automatizzare velocemente e facilmente l'esecuzione di comandi comuni. Alcuni esempi sono: <itemizedlist>
 <listitem
 ><para
->usare <command
->ssh</command
-> per entrare in un'altra macchina;</para
+>accedere via ssh a un'altra macchina</para
 ></listitem>
 <listitem
 ><para
->avviare una sessione IRC;</para
+>avviare una sessione IRC</para
 ></listitem>
 <listitem
 ><para
->usare <command
->tail</command
-> per sorvegliare un file.</para
+>usare tail per sorvegliare un file</para
 ></listitem>
 </itemizedlist>
 
@@ -223,6 +238,13 @@
 >Gestisci profili</guimenuitem
 ></menuchoice
 ></para
+></listitem>
+
+<listitem
+><para
+>Passa alla pagina <guibutton
+>Profili</guibutton
+>.</para
 ></listitem>
 
 <listitem
@@ -443,8 +465,7 @@
 <title
 >Trascinamento</title>
 <para
->Se rilasci un file, una cartella o un &URL; in una finestra di &konsole;, appare un menu contestuale con queste azioni: </para
->  
+>Se rilasci un file, una cartella o un &URL; in una finestra di &konsole;, appare un menu contestuale con queste azioni: </para>
 <screenshot>
 <screeninfo
 >Menu contestuale del trascinamento</screeninfo>
@@ -588,9 +609,7 @@
 > per mostrare o nascondere la barra dei menu. </para>
 <sect2 id="file-menu">
 <title
->Il menu <guimenu
->File</guimenu
-></title>
+>Il menu File</title>
 
 <variablelist>
 <varlistentry>
@@ -794,9 +813,7 @@ CloseAllTabs=true</screen
 
 <sect2 id="edit-menu">
 <title
->Il menu <guimenu
->Modifica</guimenu
-></title>
+>Il menu Modifica</title>
 <variablelist>
 
 <varlistentry>
@@ -936,8 +953,8 @@ CloseAllTabs=true</screen
 ><menuchoice
 ><guimenu
 >Modifica</guimenu
-><guimenuitem
->Manda segnale</guimenuitem
+><guisubmenu
+>Invia segnale</guisubmenu
 ></menuchoice
 ></term>
 <listitem
@@ -1108,14 +1125,14 @@ Various search improvements
  This was causing the annoying behavior that if you were to pause while typing
  in a search term, and it would actually find a hit, then you would be searching
  for the term a second time once you finish typing.
- 
+
  This commit introduces two new behaviors:
  1. When you show the search bar, all searching will be done from the first
  visible line in the terminal.
  2. This start position is only reset when you
  advance to the next result, by pressing "next", "previous", or the shortcuts
  RETURN or SHIFT-RETURN
- 
+
  - When the view scrolls to a result, it will appear centered.
  - When showing the search bar, do not invoke a search, only apply the highlight filters
  - Add "search from beginning/end" button
@@ -1124,7 +1141,7 @@ Various search improvements
  - Text highlighted by mouse will be set as the current search text when the incremental
  search bar is opened
  - Add "Search backwards" to search bar options
- Button text is swapped according to reverse search switch 
+ Button text is swapped according to reverse search switch
 -->
 <varlistentry>
 <term
@@ -1180,9 +1197,7 @@ Various search improvements
 
 <sect2 id="view-menu">
 <title
->Il menu <guimenu
->Visualizza</guimenu
-></title>
+>Il menu Visualizza</title>
 <variablelist>
 
 <varlistentry>
@@ -1245,7 +1260,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->S</keycap
+>X</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1346,7 +1361,7 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->H</keycap
+>L</keycap
 ></keycombo
 ></shortcut
 > <guimenu
@@ -1361,7 +1376,30 @@ Various search improvements
 >Apre la scheda attuale in una finestra a parte.</action>
 </para
 ><para
->Uscire dalla finestra precedente di &konsole; non avrà alcun effetto sulla nuova finestra creata. </para
+>L'uscita dalla finestra precedente di &konsole; non avrà effetto sulla nuova finestra creata. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>H</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Stacca la vista attuale</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Apre la vista divisa attuale in una finestra separata</action>
+</para
 ></listitem>
 </varlistentry>
 
@@ -1477,6 +1515,30 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;<keycap
+>0</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Ripristina la dimensione dei caratteri</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ripristinare la dimensione dei caratteri del testo ai valori predefiniti del profilo.</action
+></para
+></listitem>
+</varlistentry>
+
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;<keycap
 >-</keycap
 ></keycombo
 ></shortcut
@@ -1556,9 +1618,7 @@ Various search improvements
 
 <sect2 id="bookmarks-menu">
 <title
->Il menu <guimenu
->Segnalibri</guimenu
-></title>
+>Il menu Segnalibri</title>
 
 <variablelist>
 
@@ -1637,9 +1697,10 @@ Various search improvements
 ><action
 >Apre l'editor dei segnalibri.</action
 ></para>
-
 <note
 ><para
+>Il programma keditbookmarks deve essere installato affinché questa voce di menu appaia.</para>
+<para
 >Puoi usare l'editor dei segnalibri per aggiungere manualmente URL. Attualmente &konsole; accetta le seguenti: <itemizedlist mark="opencircle">
 <listitem
 ><para
@@ -1661,9 +1722,7 @@ Various search improvements
 
 <sect2 id="settings-menu">
 <title
->Il menu <guimenu
->Impostazioni</guimenu
-></title>
+>Il menu Impostazioni</title>
 <variablelist>
 
 <varlistentry>
@@ -1891,7 +1950,7 @@ Various search improvements
 ></para>
 <para
 >Questa finestra contiene opzioni che influenzano l'aspetto e il comportamento della <guilabel
->Barra delle linguette</guilabel
+>Barra delle schede</guilabel
 > e opzioni generali della finestra di &konsole;. </para
 ></listitem>
 <!-- FIXME
@@ -1906,9 +1965,7 @@ When the window title from current session is emtpy, fallback to using
 
 <sect2 id="help-menu">
 <title
->Il menu <guimenu
->Aiuto</guimenu
-></title>
+>Il menu Aiuto</title>
 <para
 >&konsole; ha alcuni dei normali elementi del menu di &kde; <guimenu
 >Aiuto</guimenu
@@ -1940,21 +1997,15 @@ When the window title from current session is emtpy, fallback to using
 <itemizedlist mark="opencircle">
 <listitem
 ><para
-><userinput
->%n</userinput
->: nome del programma;</para
+>%n: nome del programma</para
 ></listitem>
 <listitem
 ><para
-><userinput
->%d</userinput
->: cartella attuale (breve);</para
+>%d: cartella attuale (breve)</para
 ></listitem>
 <listitem
 ><para
-><userinput
->%D</userinput
->: cartella attuale (lunga);</para
+>%D: cartella attuale (lunga)</para
 ></listitem>
 <listitem
 ><para
@@ -1962,21 +2013,19 @@ When the window title from current session is emtpy, fallback to using
 ></listitem>
 <listitem
 ><para
-><userinput
->%u</userinput
->: nome dell'utente.</para
+>%u: nome dell'utente</para
 ></listitem>
 <listitem
 ><para
-><userinput
->%w</userinput
->: titolo della finestra impostato dalla shell;</para
+>%B : simbolo del prompt di Bourne dell'utente ($ = utente normale, # = superutente)</para
 ></listitem>
 <listitem
 ><para
-><userinput
->%#</userinput
->: numero della sessione;</para
+>%w: titolo della finestra impostato dalla shell</para
+></listitem>
+<listitem
+><para
+>%#: numero della sessione</para
 ></listitem>
 </itemizedlist>
 
@@ -1992,15 +2041,11 @@ When the window title from current session is emtpy, fallback to using
 ></listitem>
     <listitem
 ><para
-><userinput
->%H</userinput
->: host remoto (esteso)</para
+>%H: host remoto (esteso)</para
 ></listitem>
     <listitem
 ><para
-><userinput
->%u</userinput
->: nome dell'utente.</para
+>%u: nome dell'utente</para
 ></listitem>
     <listitem
 ><para
@@ -2008,15 +2053,11 @@ When the window title from current session is emtpy, fallback to using
 ></listitem>
     <listitem
 ><para
-><userinput
->%w</userinput
->: titolo della finestra impostato dalla shell;</para
+>%w: titolo della finestra impostato dalla shell</para
 ></listitem>
     <listitem
 ><para
-><userinput
->%#</userinput
->: numero della sessione;</para
+>%#: numero della sessione</para
 ></listitem>
 </itemizedlist>
 
@@ -2028,9 +2069,7 @@ When the window title from current session is emtpy, fallback to using
 ><para
 ><userinput
 >%d : %n</userinput
-> con <filename class="directory"
->/usr/src</filename
-> come cartella attuale e usando <application
+> con /usr/src come cartella attuale ed eseguendo <application
 >bash</application
 > visualizzerà <guibutton
 >src : bash</guibutton
@@ -2041,9 +2080,7 @@ When the window title from current session is emtpy, fallback to using
 ><para
 ><userinput
 >%D : %n</userinput
-> con <filename class="directory"
->/usr/src</filename
-> come cartella attuale e usando <application
+> con /usr/src come cartella attuale ed eseguendo <application
 >top</application
 > visualizzerà <guibutton
 >/usr/src : top</guibutton
@@ -2053,15 +2090,11 @@ When the window title from current session is emtpy, fallback to using
 <listitem
 ><para
 ><userinput
->%w %n(%#)</userinput
-> con ~ come cartella attuale e usando <application
+>%w (%#)</userinput
+> con ~ come cartella attuale ed eseguendo <application
 >vim</application
 > nella prima scheda indicherà <guibutton
-><replaceable
->utente</replaceable
->@<replaceable
->host</replaceable
->: ~ vim(1)</guibutton
+>[Nessun nome] (~) - VIM(1)</guibutton
 > </para
 ></listitem>
 
@@ -2387,7 +2420,7 @@ When the window title from current session is emtpy, fallback to using
 >-p</option
 >. </para>
 <para
->Per maggiori informazioni, leggi la <ulink url="http://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html#a57848e15fe69d3f27565851fe7cda429"
+>Per ulteriori informazioni, leggere la <ulink url="https://api.kde.org/4.14-api/applications-apidocs/konsole/html/classKonsole_1_1Profile.html"
 >guida alle API di &konsole;</ulink
 >. </para>
 </listitem>
@@ -2440,7 +2473,7 @@ When the window title from current session is emtpy, fallback to using
 
 <chapter id="scripting">
 <title
->&DBus; e &konsole;</title>
+>Script per &konsole;</title>
 
 <para
 >&konsole; supporta molti metodi che si possono utilizzare con &DBus;. </para>
@@ -2560,9 +2593,409 @@ When the window title from current session is emtpy, fallback to using
 </para>
 
 <para
->Per maggiori informazioni, visita l'<ulink url="http://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Per ulteriori informazioni, visitare l'<ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >esercitazione con &DBus;</ulink
 >. </para>
+
+</chapter>
+
+<chapter id="key-bindings">
+<title
+>Associazioni dei tasti del terminale</title>
+
+<sect1>
+<title
+>Come &konsole; utilizza le associazioni dei tasti</title>
+
+<sect2 id="intro">
+<title
+>Introduzione</title>
+<para
+>&konsole; utilizza i file *.keytab per tradurre le combinazioni di tasti in caratteri di controllo e sequenze di escape che sono inviate alla shell o ai programmi interattivi (programmi che tipicamente utilizzano il buffer Schermo alternativo, &eg; <application
+>vim</application
+>, <application
+>less</application
+>, <application
+>screen</application
+>) eseguiti nella shell.</para>
+
+<para
+>Gli utenti possono personalizzare le impostazioni delle associazioni di tasti in &konsole; utilizzando l'editor delle associazioni di tasti. Una combinazione di tasti può essere configurata per inviare una specifica sequenza di controllo o escape al terminale.</para>
+
+<para
+>È possibile aprire l'editor delle associazioni di tasti dalla voce di menu <menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Modifica il profilo attuale</guimenuitem
+></menuchoice
+>, e portandosi sulla scheda <guilabel
+>Tastiera</guilabel
+>. Elencati si troveranno gli schemi delle associazioni dei tasti forniti in modo predefinito da &konsole;.</para>
+</sect2>
+
+<sect2 id="table-fields">
+<title
+>Combinazioni di tasti e modalità</title>
+
+<para
+>Le combinazioni di tasti seguono il modello: <programlisting
+>Modalità (+|-) tasti</programlisting>
+</para>
+
+<para
+>ad esempio: <programlisting
+>Su+Maiusc+AppScreen
+Giù+Maiusc-AppScreen
+Barra spaziatrice+Ctrl
+</programlisting>
+</para>
+
+<para
+>I nome dei tasti sono definiti nel file qnamespace.h, senza il prefisso <quote
+>Qt::Key_</quote
+>, per un elenco dei nomi dei tasti controllare <ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>Qt::Key enumeration</ulink
+> nella documentazione di &Qt;.</para>
+
+<para
+>Un <quote
+>+</quote
+> che precede il nome di una modalità significa che tale modalità è <emphasis
+>impostata</emphasis
+>; per un tasto modificatore, che significa che è premuto, mentre per tutte le altre modalità significa che la specifica modalità è attiva. Ad esempio, <quote
+>+Ctrl</quote
+> significa che la combinazione di tasti funzionerà solo se il tasto &Ctrl; è premuto.</para>
+
+<para
+>Un <quote
+>-</quote
+> che precede il nome di una modalità significa che tale modalità è <emphasis
+>ripristinata</emphasis
+>; fondamentalmente è l'opposto di anteporre un <quote
+>+</quote
+> prima del nome della modalità, quindi per un tasto modificare significa che è il tasto non è premuto, mentre per tutte le altre modalità significa che la specifica modalità è inattiva. Ad esempio, <quote
+>-Ctrl</quote
+> significa che la combinazione di tasti funzionerà solo se il tasto &Ctrl; <emphasis
+>non</emphasis
+> è premuto.</para>
+
+<note>
+<para
+>Se il nome di una modalità non è presente una combinazione di tasti, il suo stato è ignorato.</para>
+</note>
+
+<para
+>Le associazioni di tasti supportate sono elencate di seguito:</para>
+
+<variablelist>
+
+<varlistentry>
+<term
+>Alt, Ctrl, Maiusc</term>
+<listitem>
+<para
+>Una o più di queste modalità possono essere utilizzate in una combinazione di tasti, se ne esistono, la combinazione di tasti utilizza il tasto modificatore, rispettivamente; e viceversa se è ripristinata</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>QualsiasiModificatore</term>
+<listitem>
+<para
+>Se questa modalità è impostata, la combinazione di tasti utilizza qualsiasi tasto modificatore (uno tra i precedenti tasti modificatori); e viceversa se viene reimpostata</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Ansi</term>
+<listitem>
+<para
+>Se questa modalità è impostata, &konsole; invierà sequenze di escape ANSI e di controllo</para>
+<para
+>Se questa modalità è impostata,  &konsole; invierà sequenze di escape VT52 e di controllo</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppScreen</term>
+<listitem>
+<para
+>Se questa modalità è impostata, la combinazione di tasti interesserà solo i programmi interattivi che utilizzano il buffer Schermo alternativo</para>
+<para
+>Se questa modalità è reimpostata, la combinazione di tasti interesserà il terminale solo quando si utilizza il buffer Schermo normale</para>
+
+<note>
+<para
+>&konsole; utilizza due buffer dello schermo:</para>
+<itemizedlist>
+<listitem>
+<para
+>Il buffer Schermo normale (predefinito): consente di scorrere indietro per visualizzare le righe precedenti, questo è il buffer predefinito che si utilizza normalmente per eseguire i comandi... &etc;</para>
+</listitem>
+<listitem>
+<para
+>Il buffer Schermo alternativo: il terminale passa a questo buffer quando si esegue un programma interattivo (&eg; <application
+>less</application
+>, <application
+>vim</application
+>, <application
+>screen</application
+>, <application
+>tmux</application
+>... &etc;)</para>
+</listitem>
+</itemizedlist>
+</note>
+
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>Tastierino numerico</term>
+<listitem>
+<para
+>Se questa modalità è impostata, la combinazione di tasti utilizza un tasto sul tastierino numerico. Questa modalità è utile per distinguere tra i tasti sulla tastiera e i tasti sul tastierino numerico. Ad esempio, quando Bloc Num è <emphasis
+>attivo</emphasis
+>, è possibile configurare due combinazioni di tasti diverse, una che usa il tasto etichettato con <quote
+>1</quote
+> sulla tastiera (normalmente sotto il tasto <keycap
+>F1</keycap
+>) e l'altra che usa il tasto etichettato con <quote
+>1</quote
+> sul tastierino numerico. Lo stesso concetto si applica quando Bloc Num è <emphasis
+>disattivato</emphasis
+> per i tasti Fine, Inizio, le frecce direzionali, ecc. sul tastierino numerico</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppCursorKeys</term>
+<listitem>
+<para
+>Questa modalità implementa la <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
+>Modalità dei tasti cursore (DECCKM)</ulink
+> di VT100. Questa controlla le sequenze di escape che ogni tasto cursore (<keycap
+>Su</keycap
+>, <keycap
+>Giù</keycap
+>, <keycap
+>Destra</keycap
+>, <keycap
+>Sinistra</keycap
+>) invia, a seconda che questa modalità sia impostata o ripristinata</para>
+<para
+>In modo predefinito, &konsole; segue il comportamento di XTerm, trattando i tasti <keycap
+>Home</keycap
+> e <keycap
+>Fine</keycap
+> come tasti cursore rispetto a DECCKM</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>AppKeyPad</term>
+<listitem>
+<para
+>Se questa modalità è impostata, la combinazione di tasti funzionerà solo quando il tastierino numerico è in modalità applicazione (DECKPAM)</para>
+<para
+>Se questa modalità è reimpostata, la combinazione di tasti funzionerà solo se il tastierino numerico è in modalità numerica (DECKPNM)</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+>NuovaRiga</term>
+<listitem>
+<para
+>Se questa modalità è impostata, il tasto <keycap
+>Return</keycap
+> (Invio) sulla tastiera invierà entrambi i caratteri di controllo Ritorno carrello "\r" e Nuova riga "\n" </para>
+<para
+>Se questa modalità è ripristinata, il tasto <keycap
+>Invio</keycap
+> invierà solo un Ritorno carrello "\r"</para>
+<para
+>Lo stesso si applica al tasto <keycap
+>Invio</keycap
+> sul tastierino numerico</para>
+<para
+>Questa modalità emula la <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#LNM"
+>Modalità LNM - Line Feed/New Line</ulink
+></para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para
+>Nota che ogni combinazione di tasti e modalità (imposta/ripristina) deve essere unica. Ad esempio, considera le due regole seguenti:</para>
+
+<itemizedlist>
+<listitem
+><para
+>A+Maiusc : <quote
+>A</quote
+></para
+></listitem>
+<listitem
+><para
+>a : <quote
+>a</quote
+></para
+></listitem>
+</itemizedlist>
+<para
+>&konsole; <emphasis
+>non</emphasis
+> accetterà la regola della lettera minuscola <quote
+>a</quote
+>, sarà necessario aggiungere un <quote
+>-Maiusc</quote
+> alla regola perché funzioni.</para>
+</sect2>
+
+<sect2 id="output-field">
+<title
+>Il campo di uscita</title>
+
+<para
+>Nel campo di uscita puoi aggiungere le sequenze di escape e i caratteri di controllo che vuoi che &konsole; invii al terminale quando la combinazione di tasti associata viene premuta.</para>
+
+<para
+>È inoltre possibile utilizzare le seguenti parole chiave, ognuna delle quali ha un significato speciale in &konsole;:</para>
+
+<itemizedlist>
+<listitem
+><para
+>scrollUpLine : scorri in alto di una riga nel buffer della cronologia della shell</para
+></listitem>
+<listitem
+><para
+>scrollUpPage : scorri in alto di una pagina nel buffer della cronologia della shell</para
+></listitem>
+<listitem
+><para
+>scrollDownLine : scorri in basso di una riga nel buffer della cronologia della shell</para
+></listitem>
+<listitem
+><para
+>scrollDownPage : scorri in basso di una pagina nel buffer della cronologia della shell</para
+></listitem>
+<listitem
+><para
+>scrollUpToTop : scorri in alto fino all'inizio del buffer della cronologia della shell</para
+></listitem>
+<listitem
+><para
+>scrollDownToBottom : scorri in basso fino alla fine del buffer della cronologia della shell</para
+></listitem>
+</itemizedlist>
+
+<para
+>È inoltre possibile utilizzare stringhe con la sintassi del C; sono disponibili le sequenze di escape seguenti:</para>
+
+<itemizedlist>
+<listitem
+><para
+>\E : Escape</para
+></listitem>
+<listitem
+><para
+>\\ : Barra inversa</para
+></listitem>
+<listitem
+><para
+>\" : Doppi apici</para
+></listitem>
+<listitem
+><para
+>\t : Tabulazione</para
+></listitem>
+<listitem
+><para
+>\r : Ritorno carrello</para
+></listitem>
+<listitem
+><para
+>\n : Nuova riga</para
+></listitem>
+<listitem
+><para
+>\b : Backspace</para
+></listitem>
+<listitem>
+<para
+>\xHH : dove HH sono due cifre esadecimali</para>
+<tip>
+<para
+>Questo può essere utilizzato per inviare caratteri di controllo ASCII, &eg; <quote
+>\x00</quote
+> che è il carattere NUL</para>
+</tip>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="other-factors">
+<title
+>Altre risorse di sistema</title>
+<para
+>Ci sono altre risorse di sistema che possono interessare le associazioni dei tasti del terminale:</para>
+<itemizedlist>
+<listitem>
+<para
+>Consultare la banca dati <ulink url="man:terminfo(5)"
+>terminfo</ulink
+> o <ulink url="man:termcap(5)"
+>termcap</ulink
+> per le sequenze di escape e per i caratteri di controllo attesi che ogni combinazione di tasti dovrebbe inviare.</para>
+</listitem>
+<listitem>
+<para
+>Sembra che il tuo sistema abbia altre banche dati della tastiera che devono essere sincronizzati, (&eg; <ulink url="man:bash(1)"
+>/etc/inputrc e readline</ulink
+> per la <application
+>shell BASH</application
+>) poiché interessano le operazioni (interazioni) associate alle combinazioni di tasti.</para>
+</listitem>
+</itemizedlist>
+</sect2>
+
+<sect2 id="further-reading">
+<title
+>Letture ulteriori</title>
+<para
+>Per ulteriori informazioni sulle sequenze di escape e sui caratteri di controllo, controllare la documentazione seguente:</para>
+<itemizedlist>
+<listitem>
+<para
+><ulink url="https://www.vt100.net/docs/vt100-ug/"
+>La guida utente di VT100</ulink
+></para>
+</listitem>
+<listitem>
+<para
+><ulink url="https://vt100.net/docs/vt102-ug/"
+>La guida utente di VT102</ulink
+></para>
+</listitem>
+<listitem>
+<para
+>La documentazione completa e indispensabile <ulink url="https://invisible-island.net/xterm/ctlseqs/ctlseqs.html"
+>Sequenza di controllo di XTerm</ulink
+></para>
+</listitem>
+</itemizedlist>
+</sect2>
+</sect1>
 
 </chapter>
 
@@ -2578,7 +3011,7 @@ When the window title from current session is emtpy, fallback to using
 >QTabBar::tab</userinput
 >. </para>
 <para
->Per ulteriori informazioni, provare a leggere <ulink url="http://doc.qt.io/qt-5/stylesheet.html"
+>Per ulteriori informazioni, provare a leggere <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
 >Fogli di stile di &Qt;</ulink
 > </para>
 
@@ -2853,7 +3286,7 @@ CommonDirNames=nome1,nome2,nome3...
 >Questo documento è stato aggiornato per &kde; 3.4 da &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
 
 <para
->Inizialmente convertito a <acronym
+>Inizialmente convertito in <acronym
 >SGML</acronym
 > DocBook da &Mike.McBride; e &Lauri.Watts;</para>
 
@@ -2865,43 +3298,42 @@ CommonDirNames=nome1,nome2,nome3...
 >Traduzione della documentazione di Vincenzo Reale <email
 >smart2128@baslug.org</email
 ></para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title
 >Collegamenti</title>
 
 <para
->Per maggiori informazioni visita questi siti Web:</para>
+>Per maggiori informazioni visita questi siti web:</para>
 <itemizedlist>
 <listitem
 ><para
-><ulink url="http://userbase.kde.org/Konsole"
->La pagina Web di &konsole; sul sito UserBase di &kde;</ulink
+><ulink url="https://userbase.kde.org/Konsole"
+>La pagina web di &konsole; sul sito UserBase di &kde;</ulink
 >&nbsp;</para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://konsole.kde.org/"
->Pagina Web di &konsole;</ulink
+><ulink url="https://konsole.kde.org/"
+>Pagina web di &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://mail.kde.org/mailman/listinfo/konsole-devel"
+><ulink url="https://mail.kde.org/mailman/listinfo/konsole-devel"
 >Lista di distribuzione di &konsole;</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://freebsd.kde.org/"
+><ulink url="https://freebsd.kde.org/"
 >&kde; su FreeBSD</ulink
 ></para
 ></listitem>
 <listitem
 ><para
-><ulink url="http://solaris.kde.org/"
+><ulink url="https://solaris.kde.org/"
 >&kde; su &Solaris;</ulink
 ></para
 ></listitem>

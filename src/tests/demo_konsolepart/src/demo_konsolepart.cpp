@@ -6,7 +6,7 @@
  published by the Free Software Foundation; either version 2 of
  the License or (at your option) version 3 or any later version
  accepted by the membership of KDE e.V. (or its successor approved
- by the membership of KDE e.V.), which shall act as a proxy 
+ by the membership of KDE e.V.), which shall act as a proxy
  defined in Section 14 of version 3 of the license.
 
  This program is distributed in the hope that it will be useful,
@@ -28,8 +28,8 @@
 #include <KPluginLoader>
 #include <KPluginFactory>
 #include <KService>
-#include <KStandardAction>
 #include <KWindowSystem>
+#include <KWindowEffects>
 
 // see below notes
 //#include "../../../WindowSystemInfo.h"
@@ -73,7 +73,7 @@ demo_konsolepart::demo_konsolepart()
                               Qt::DirectConnection,
                               Q_RETURN_ARG(bool, blurEnabled));
     qWarning()<<"blur enabled: "<<blurEnabled;
-
+    KWindowEffects::enableBlurBehind(winId(), blurEnabled);
 }
 
 demo_konsolepart::~demo_konsolepart()
@@ -90,7 +90,7 @@ KParts::ReadOnlyPart* demo_konsolepart::createPart()
     KPluginFactory* factory = KPluginLoader(service->library()).factory();
     Q_ASSERT(factory);
 
-    KParts::ReadOnlyPart* terminalPart = factory->create<KParts::ReadOnlyPart>(this);
+    auto* terminalPart = factory->create<KParts::ReadOnlyPart>(this);
 
     return terminalPart;
 }

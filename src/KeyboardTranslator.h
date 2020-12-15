@@ -23,10 +23,10 @@
 #define KEYBOARDTRANSLATOR_H
 
 // Qt
-#include <QHash>
 #include <QList>
-#include <QString>
 #include <QMetaType>
+#include <QMultiHash>
+#include <QString>
 
 // Konsole
 #include "konsoleprivate_export.h"
@@ -161,10 +161,10 @@ public:
          * eg. \\E for Escape, \\t for tab, \\n for new line.
          *
          * @param expandWildCards See text()
-         * @param modifiers See text()
+         * @param keyboardModifiers The keyboard modifiers being pressed.
          */
         QByteArray escapedText(bool expandWildCards = false,
-                               Qt::KeyboardModifiers modifiers = Qt::NoModifier) const;
+                               Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
 
         /** Returns the character code ( from the Qt::Key enum ) associated with this entry */
         int keyCode() const;
@@ -208,12 +208,6 @@ public:
         void setStateMask(States aStateMask);
 
         /**
-         * Returns the key code and modifiers associated with this entry
-         * as a QKeySequence
-         */
-        //QKeySequence keySequence() const;
-
-        /**
          * Returns this entry's conditions ( ie. its key code, modifier and state criteria )
          * as a string.
          */
@@ -224,10 +218,10 @@ public:
          * as a string.
          *
          * @param expandWildCards See text()
-         * @param modifiers See text()
+         * @param keyboardModifiers The keyboard modifiers being pressed.
          */
         QString resultToString(bool expandWildCards = false,
-                               Qt::KeyboardModifiers modifiers = Qt::NoModifier) const;
+                               Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
 
         /**
          * Returns true if this entry matches the given key sequence, specified
@@ -254,8 +248,6 @@ public:
 
     /** Constructs a new keyboard translator with the given @p name */
     explicit KeyboardTranslator(const QString &name);
-
-    //KeyboardTranslator(const KeyboardTranslator& other);
 
     /** Returns the name of this keyboard translator */
     QString name() const;
@@ -312,7 +304,7 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::States)
 Q_DECLARE_OPERATORS_FOR_FLAGS(KeyboardTranslator::Commands)
 
-class FallbackKeyboardTranslator : public KeyboardTranslator
+class KONSOLEPRIVATE_EXPORT FallbackKeyboardTranslator : public KeyboardTranslator
 {
 public:
     FallbackKeyboardTranslator();
@@ -346,7 +338,7 @@ public:
  *  }
  * @endcode
  */
-class KeyboardTranslatorReader
+class KONSOLEPRIVATE_EXPORT KeyboardTranslatorReader
 {
 public:
     /** Constructs a new reader which parses the given @p source */
