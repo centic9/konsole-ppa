@@ -72,7 +72,9 @@
 ><year
 >2017</year
 ><year
->2018</year>
+>2018</year
+><year
+>2020</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -88,9 +90,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->16 de juny de 2019</date>
+>2 de juliol de 2020</date>
 <releaseinfo
->Aplicacions 19.08</releaseinfo>
+>Aplicacions 20.08</releaseinfo>
 
 <abstract
 ><para
@@ -1027,14 +1029,14 @@ CloseAllTabs=true</screen
 > <guimenu
 >Edita</guimenu
 ><guimenuitem
->Reanomena la pestanya...</guimenuitem
+>Configura els ajustaments de la pestanya...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Obre un diàleg que us permetrà canviar el nom de la pestanya actual</action
-> (<link linkend="rename-tab-dialog"
+>Obre un diàleg que us permetrà canviar el format del nom, el format per al títol de la pestanya remota i el color de la pestanya actual</action
+> (<link linkend="configure-tab-settings-dialog"
 >més informació</link
 >). </para
 ></listitem>
@@ -1433,6 +1435,31 @@ Various search improvements
 ><guimenuitem
 >Activitat en una sessió controlada</guimenuitem
 ></menuchoice
+>. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualitza</guimenu
+> <guimenuitem
+>Vigila la finalització del procés</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Alterna la vigilància de la pestanya actual per a la finalització del procés</action
+>. </para
+><para
+>Si està marcada, en finalitzar el procés actual, el &konsole; mostrarà una notificació <guilabel
+>El procés «<replaceable
+>nom del procés</replaceable
+>» ha finalitzat l'execució a la sessió «<replaceable
+>nom de la sessió</replaceable
+>»</guilabel
 >. </para
 ></listitem>
 </varlistentry>
@@ -1917,15 +1944,94 @@ Various search improvements
 >Obre l'editor de la configuració del &konsole;.</action
 ></para>
 <para
->Aquest diàleg té opcions que influeixen en l'aparença i el comportament de les opcions <guilabel
->Barra de pestanyes</guilabel
-> i generals per a la finestra del &konsole;. </para
-></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+>Aquest diàleg té opcions que influeixen en l'aparença i el comportament de la finestra del &konsole;. </para>
+<itemizedlist>
+    <listitem>
+        <para
+>La pàgina <guilabel
+>General</guilabel
+> permet configurar la visibilitat de la barra de menús, recordar la mida de la finestra del &konsole;, executar totes les finestres del &konsole; en un sol procés, habilitar els acceleradors de menú, mostrar el títol de la finestra a la barra de títol, eliminar la barra de títol i el marc de la finestra. També és possible configurar la sensibilitat de majúscules i minúscules a la cerca, l'ús d'una expressió regular, ressaltar totes les coincidències i la direcció de la cerca (<guilabel
+>Cerca cap enrere</guilabel
+> és el valor predeterminat). La pàgina <guilabel
+>General</guilabel
+> també és el lloc on podreu fer <guibutton
+>Activa tots els missatges «No ho tornis a preguntar»</guibutton
+> si es van desactivar abans. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pàgina <guilabel
+>Perfils</guilabel
+> està pensada per a crear i gestionar els <link linkend="profiles"
+>perfils</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>Emprant la pàgina <guilabel
+>Barra de pestanyes/Divisors</guilabel
+> podreu configurar la visibilitat i la ubicació de la barra de pestanyes, definir el comportament de les pestanyes i ajustar les opcions dels botons a les pestanyes. És possible configurar si voleu <guilabel
+>Mostra el botó «Pestanya nova»</guilabel
+> i <guilabel
+>Amplia l'amplada de la pestanya individual a la finestra completa</guilabel
+> o configurar <guilabel
+>Usa el full d'estil definit per l'usuari</guilabel
+>. La pestanya <guilabel
+>Comportament</guilabel
+> es pot fer servir per a definir el lloc de les pestanyes noves (<guilabel
+>Al final</guilabel
+> o <guilabel
+>Després de la pestanya actual</guilabel
+>) i tancar les pestanyes amb un clic del &BMR;. </para>
+        <para
+>També és possible configurar la visibilitat dels divisors (<guilabel
+>Quan calgui</guilabel
+> (predeterminat), <guilabel
+>Sempre</guilabel
+>, o <guilabel
+>Mai</guilabel
+>) i definir la mida de la nansa per arrossegar dels divisors (<guilabel
+>Petita</guilabel
+> (predeterminat), <guilabel
+>Mitjana</guilabel
+> o <guilabel
+>Gran</guilabel
+>) utilitzant la pestanya <guilabel
+>Divisors</guilabel
+> de la seva pàgina de configuració. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pàgina <guilabel
+>Fitxers temporals</guilabel
+> s'utilitza per a definir la ubicació del <link linkend="scrollback"
+>fitxer de l'historial</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pàgina <guilabel
+>Miniatures</guilabel
+> es pot utilitzar per a definir la mida de les miniatures i les opcions d'activació (podreu triar la tecla de control per a l'activació &Maj;, &Alt; i &Ctrl;). </para>
+        <note>
+            <para
+>Per utilitzar la característica de miniatures que mostra les miniatures de les imatges als emergents quan es mostren en passar per sobre dels elements d'imatge amb el punter del ratolí, haureu d'habilitar el subratllat del fitxer per al vostre perfil actual: <menuchoice
+><guimenu
+>Arranjament</guimenu
+><guimenuitem
+>Edita el perfil actual...</guimenuitem
+><guimenuitem
+>Ratolí</guimenuitem
+><guimenuitem
+>Miscel·lània</guimenuitem
+><guimenuitem
+>Subratlla els fitxers</guimenuitem
+></menuchoice
+>. </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -1937,7 +2043,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >El &konsole; té la configuració comuna al &kde; i els elements del menú <guimenu
 >Ajuda</guimenu
->, per obtenir més informació llegiu la secció sobre <ulink url="help:/fundamentals/ui.html#menus-help"
+>, per obtenir més informació llegiu la secció sobre <ulink url="help:/fundamentals/menus.html#menus-help"
 >El menú Ajuda</ulink
 > dels fonaments del &kde;. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
@@ -1949,16 +2055,16 @@ When the window title from current session is emtpy, fallback to using
 <title
 >Diàlegs del &konsole;</title>
 
-<sect2 id="rename-tab-dialog">
+<sect2 id="configure-tab-settings-dialog">
 <title
->El diàleg per a reanomenar la pestanya</title>
+>Configurar el diàleg Ajustaments de la pestanya</title>
 
 <para
->El nom de la pestanya actual es pot canviar des d'aquest diàleg. El diàleg es pot mostrar a través del menú, la drecera <keycombo action="simul"
+>El format del nom, el format per al títol de la pestanya remota i el color de la pestanya actual es pot canviar des d'aquest diàleg. El diàleg es pot mostrar a través del menú, la drecera <keycombo action="simul"
 >&Ctrl;&Alt;<keycap
 >S</keycap
 ></keycombo
-> o fent doble clic sobre la pestanya a la barra de pestanyes. Aquests canvis poden ser permanents editant el perfil actual. </para>
+> o fent doble clic sobre la pestanya a la barra de pestanyes. Aquests canvis seran temporals i poden ser permanents editant el perfil actual. </para>
 
 <para
 >El &konsole; substituirà aquests testimonis a les pestanyes locals: </para>
@@ -2903,7 +3009,7 @@ Space+Ctrl
 >\xHH : on HH són dos dígits hexadecimals</para>
 <tip>
 <para
->Això es pot utilitzar per enviar caràcters de control ASCII, &pex;, <quote
+>Això es pot utilitzar per enviar caràcters de control &ASCII;, &pex;, <quote
 >\x00</quote
 > és el caràcter NUL</para>
 </tip>

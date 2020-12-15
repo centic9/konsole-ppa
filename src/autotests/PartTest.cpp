@@ -51,13 +51,23 @@ void PartTest::initTestCase()
     auto buildPath = libraryPaths.last();
     QCoreApplication::removeLibraryPath(buildPath);
     // konsolepart.so is in ../autotests/
-    if (buildPath.endsWith(QLatin1String("/autotests"))) {
+    if (buildPath.endsWith(QStringLiteral("/autotests"))) {
         buildPath.chop(10);
     }
     QCoreApplication::addLibraryPath(buildPath);
 }
 
-void PartTest::testFd()
+void PartTest::testFdShell()
+{
+    testFd(true);
+}
+
+void PartTest::testFdStandalone()
+{
+    testFd(false);
+}
+
+void PartTest::testFd(bool runShell)
 {
     // find ping
     QStringList pingList;
@@ -92,9 +102,19 @@ void PartTest::testFd()
 
     int fd = ptyProcess.pty()->masterFd();
 
-    bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype",
-                                            Qt::DirectConnection, Q_ARG(int, fd));
-    QVERIFY(result);
+    // test that the 2nd argument of openTeletype is optional,
+    // to run without shell
+    if (runShell) {
+        // connect to an existing pty
+        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype",
+                                                Qt::DirectConnection, Q_ARG(int, fd));
+        QVERIFY(result);
+    } else {
+        // test the optional 2nd argument of openTeletype, to run without shell
+        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype",
+                                                Qt::DirectConnection, Q_ARG(int, fd), Q_ARG(bool, false));
+        QVERIFY(result);
+    }
 
     // suspend the KPtyDevice so that the embedded terminal gets a chance to
     // read from the pty.  Otherwise the KPtyDevice will simply read everything
@@ -103,7 +123,10 @@ void PartTest::testFd()
 
     QPointer<QDialog> dialog = new QDialog();
     auto layout = new QVBoxLayout(dialog.data());
-    layout->addWidget(new QLabel(QStringLiteral("Output of 'ping localhost' should appear in a terminal below for 5 seconds")));
+    auto explanation = runShell
+        ? QStringLiteral("Output of 'ping localhost' should appear in a terminal below for 5 seconds")
+        : QStringLiteral("Output of 'ping localhost' should appear standalone below for 5 seconds");
+    layout->addWidget(new QLabel(explanation));
     layout->addWidget(terminalPart->widget());
     QTimer::singleShot(5000, dialog.data(), &QDialog::close);
     dialog.data()->exec();

@@ -21,12 +21,11 @@
 
 // Own
 #include "ViewSplitter.h"
+#include "KonsoleSettings.h"
 
 // Qt
 #include <QChildEvent>
 #include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QDragMoveEvent>
 #include <QMimeData>
 #include <QApplication>
 #include <memory>
@@ -41,10 +40,24 @@ using Konsole::TerminalDisplay;
 
 //TODO: Connect the TerminalDisplay destroyed signal here.
 
+namespace {
+    int calculateHandleWidth(int settingsEnum) {
+        switch (settingsEnum) {
+            case Konsole::KonsoleSettings::SplitDragHandleLarge: return 10;
+            case Konsole::KonsoleSettings::SplitDragHandleMedium: return  5;
+            case Konsole::KonsoleSettings::SplitDragHandleSmall: return  1;
+            default: return  1;
+        }
+    }
+}
+
 ViewSplitter::ViewSplitter(QWidget *parent) :
     QSplitter(parent)
 {
     setAcceptDrops(true);
+    connect(KonsoleSettings::self(), &KonsoleSettings::configChanged, this, [this]{
+        setHandleWidth(calculateHandleWidth(KonsoleSettings::self()->splitDragHandleSize()));
+    });
 }
 
 /* This function is called on the toplevel splitter, we need to look at the actual ViewSplitter inside it */
@@ -132,12 +145,8 @@ void ViewSplitter::childEvent(QChildEvent *event)
     }
 
     auto terminals = getToplevelSplitter()->findChildren<TerminalDisplay*>();
-    if (terminals.size() == 1) {
-        terminals.at(0)->headerBar()->setVisible(false);
-    } else {
-        for(auto terminal : terminals) {
-            terminal->headerBar()->setVisible(true);
-        }
+    for(auto terminal : terminals) {
+        terminal->headerBar()->applyVisibilitySettings();
     }
 }
 
@@ -204,8 +213,17 @@ void ViewSplitter::focusRight()
 
 TerminalDisplay *ViewSplitter::activeTerminalDisplay() const
 {
-    auto focusedWidget = qobject_cast<TerminalDisplay*>(focusWidget());
-    return focusedWidget != nullptr ? focusedWidget : findChild<TerminalDisplay*>();
+    auto focusedWidget = focusWidget();
+    auto focusedTerminalDisplay = qobject_cast<TerminalDisplay*>(focusedWidget);
+
+    // TD's child can be focused - try to find parent.
+    while (focusedTerminalDisplay == nullptr && focusedWidget != nullptr && focusedWidget != this) {
+        focusedWidget = focusedWidget->parentWidget();
+        focusedTerminalDisplay = qobject_cast<TerminalDisplay*>(focusedWidget);
+    }
+
+    return focusedTerminalDisplay != nullptr ? focusedTerminalDisplay
+                                             : findChild<TerminalDisplay*>();
 }
 
 void ViewSplitter::toggleMaximizeCurrentTerminal()
@@ -317,7 +335,7 @@ void Konsole::ViewSplitter::dragMoveEvent(QDragMoveEvent* ev)
 
 void Konsole::ViewSplitter::dragLeaveEvent(QDragLeaveEvent* event)
 {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
     if (currentDragTarget != nullptr) {
         currentDragTarget->hideDragTarget();
         currentDragTarget = nullptr;
@@ -355,4 +373,8 @@ void Konsole::ViewSplitter::dropEvent(QDropEvent* ev)
     }
 }
 
-
+void Konsole::ViewSplitter::showEvent(QShowEvent *)
+{
+    // Fixes lost focus in background mode.
+    setFocusProxy(activeSplitter()->activeTerminalDisplay());
+}

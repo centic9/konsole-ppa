@@ -118,10 +118,13 @@ public:
 
     bool hasChanged() const {
         for(const QButtonGroup *group: qAsConst(_groups)) {
+            if (!group->checkedButton()) {
+                continue;
+            }
             int value = buttonToEnumValue(group->checkedButton());
-            const auto enumItem = groupToConfigItemEnum(group);
+            const auto *enumItem = groupToConfigItemEnum(group);
 
-            if(!enumItem->isEqual(value)) {
+            if(enumItem != nullptr && !enumItem->isEqual(value)) {
                 return true;
             }
         }

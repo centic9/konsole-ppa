@@ -86,7 +86,9 @@
 ><year
 >2017</year
 ><year
->2018</year>
+>2018</year
+><year
+>2020</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -102,9 +104,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2019-06-16</date>
+>2020-07-02</date>
 <releaseinfo
->Program 19.08</releaseinfo>
+>Program 20.08</releaseinfo>
 
 <abstract
 ><para
@@ -1061,14 +1063,14 @@ CloseAllTabs=true</screen
 > <guimenu
 >Redigera</guimenu
 ><guimenuitem
->Byt namn på flik...</guimenuitem
+>Anpassa flikinställningar...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Öppnar en dialogruta som låter dig byta namn på aktuell flik</action
-> (<link linkend="rename-tab-dialog"
+>Öppnar en dialogruta som låter dig ändra namnformat, fjärrflikars rubrikformat och färgen på aktuell flik</action
+> (<link linkend="configure-tab-settings-dialog"
 >mer information</link
 >) </para
 ></listitem>
@@ -1469,6 +1471,31 @@ Various search improvements
 ><guimenuitem
 >Aktivitet i övervakad session</guimenuitem
 ></menuchoice
+>. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visa</guimenu
+><guimenuitem
+>Övervakare av processavslutning</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ändrar övervakning av aktuell flik för avslutning av processen</action
+> </para
+><para
+>Om markerad, visar Terminal en underrättelse när den aktuella processen avslutas: <guilabel
+>Processen '<replaceable
+>processnamnet</replaceable
+>' har slutat köra i session '<replaceable
+>sessionsnamnet</replaceable
+>'</guilabel
 >. </para
 ></listitem>
 </varlistentry>
@@ -1955,15 +1982,94 @@ Various search improvements
 >Öppnar inställningseditorn i Terminal</action
 ></para>
 <para
->Dialogrutan har alternativ som påverkar utseende och beteende hos <guilabel
->Flikraden</guilabel
-> och allmänna alternativ för fönstret i Terminal. </para
-></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+>Dialogrutan har alternativ som påverkar utseende och beteende för fönstret i Terminal. </para>
+<itemizedlist>
+    <listitem>
+        <para
+>Sidan <guilabel
+>Allmänt</guilabel
+> gör det möjligt att anpassa menyradens synlighet, om Terminals fönsterstorleken ska kommas ihåg, om alla fönster i Terminal ska köras i en enda process, om menygenvägar ska aktiveras, om fönstertiteln ska visas i namnlisten, och om fönstrets namnlist och ram ska tas bort. Det är också möjligt att anpassa sökningens skiftlägeskänslighet, användning av reguljära uttryck, markering av alla träffar, och sökriktningen (<guilabel
+>Sök bakåt</guilabel
+> är förval). Sidan <guilabel
+>Allmänt</guilabel
+> är också där du kan <guibutton
+>Aktivera alla "Fråga inte igen"-meddelanden</guibutton
+> igen om de tidigare har stängts av. </para>
+    </listitem>
+    <listitem>
+        <para
+>Sidan <guilabel
+>Profiler</guilabel
+> är avsedd för att skapa och hantera <link linkend="profiles"
+>profiler</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>Genom att använda sidan <guilabel
+>Flikrad och delare</guilabel
+> kan du anpassa flikradens synlighet och placering, definiera flikarnas beteende och finjustera flikknapparnas alternativ. Det är möjligt att ställa in om du vill <guilabel
+>Visa knappen 'Ny flik'</guilabel
+> och <guilabel
+>Expandera individuella flikbredder till hela fönster</guilabel
+> eller anpassa <guilabel
+>Använd användardefinierad stilmall</guilabel
+>. Fliken <guilabel
+>Beteende</guilabel
+> kan användas för att definiera platsen för nya flikar (<guilabel
+>Lägg till sist</guilabel
+> eller <guilabel
+>Efter aktuell flik</guilabel
+>) och stängning av flikar med mittenklick. </para>
+        <para
+>Det är också möjligt att anpassa delningsrubrikernas synlighet (<guilabel
+>Vid behov</guilabel
+> (förval), <guilabel
+>Alltid</guilabel
+> eller <guilabel
+>Aldrig</guilabel
+>) och definiera storleken på draggreppen för avdelare (<guilabel
+>Liten</guilabel
+> (förval), <guilabel
+>Medium</guilabel
+> eller <guilabel
+>Stor</guilabel
+>) genom att använda fliken <guilabel
+>Avdelningar</guilabel
+> på inställningssidan. </para>
+    </listitem>
+    <listitem>
+        <para
+>Sidan <guilabel
+>Tillfälliga filer</guilabel
+> används för att definiera platsen för <link linkend="scrollback"
+>historikens</link
+> fil. </para>
+    </listitem>
+    <listitem>
+        <para
+>Sidan <guilabel
+>Miniatyrbilder</guilabel
+> kan användas för att definiera alternativen för miniatyrbildsstorlek och aktivering (du kan välja kontrolltangent för aktivering från &Shift;, &Alt; och &Ctrl;). </para>
+        <note>
+            <para
+>För att använda miniatyrbildsfunktionen som visar miniatyrbilder i meddelanderutor när muspekaren hålls över bildobjekt, måste du aktivera filunderstrykning i den nuvarande profilen: <menuchoice
+><guimenu
+>Inställningar</guimenu
+><guimenuitem
+>Redigera nuvarande profil...</guimenuitem
+><guimenuitem
+>Mus</guimenuitem
+><guimenuitem
+>Diverse</guimenuitem
+><guimenuitem
+>Stryk under filer</guimenuitem
+></menuchoice
+>. </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -1975,7 +2081,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >&konsole; har några av &kde;:s vanliga menyalternativ i menyn <guimenu
 >Hjälp</guimenu
->. För mer information läs avsnittet om <ulink url="help:/fundamentals/ui.html#menus-help"
+>. För mer information läs avsnittet om <ulink url="help:/fundamentals/menus.html#menus-help"
 >hjälpmenyn</ulink
 > i &kde;:s grunder. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
@@ -1987,16 +2093,16 @@ When the window title from current session is emtpy, fallback to using
 <title
 >Dialogrutor i &konsole;</title>
 
-<sect2 id="rename-tab-dialog">
+<sect2 id="configure-tab-settings-dialog">
 <title
->Dialogruta för att byta namn på flik</title>
+>Dialogrutan Anpassa flikinställningar</title>
 
 <para
->Namnet på aktuell flik kan ändras med dialogrutan. Dialogrutan kan visas via menyn, genvägen <keycombo action="simul"
+>Namnformatet, fjärrflikars rubrikformat, och färgen på den aktuella fliken kan ändras med dialogrutan. Dialogrutan kan visas via menyn, genvägen <keycombo action="simul"
 >&Ctrl;&Alt;<keycap
 >S</keycap
 ></keycombo
-> eller genom att dubbelklicka på fliken i flikraden. Ändringarna kan göras permanenta genom att redigera nuvarande profil. </para>
+> eller genom att dubbelklicka på fliken i flikraden. Ändringarna är tillfälliga och kan göras permanenta genom att redigera nuvarande profil. </para>
 
 <para
 >Terminal ersätter följande markörer i lokala flikar: </para>
@@ -2941,7 +3047,7 @@ Space+Ctrl
 >\xHH : där HH är två hexadecimala siffror</para>
 <tip>
 <para
->Detta kan användas för att skicka ASCII-kontrolltecken, t.ex. <quote
+>Detta kan användas för att skicka &ASCII;-kontrolltecken, t.ex. <quote
 >\x00</quote
 > som är tecknet NUL.</para>
 </tip>

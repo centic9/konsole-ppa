@@ -152,6 +152,10 @@ public:
          * height or half height.
              */
         ScrollFullPage,
+        /** (bool) Specifies whether the the lines that are scrolled into view
+         * should be highlighted.
+             */
+        HighlightScrolledLines,
         /** (bool) Specifies whether the terminal will enable Bidirectional
          * text display
          */
@@ -186,6 +190,11 @@ public:
          * Only applicable if the UseCustomCursorColor property is true.
          */
         CustomCursorColor,
+        /** (QColor) The color used by terminal displays to draw the character
+         * underneath the cursor. Only applicable if the UseCustomCursorColor
+         * property is true and CursorShape property is Enum::BlockCursor.
+         */
+        CustomCursorTextColor,
         /** (QString) A string consisting of the characters used to delimit
          * words when selecting text in the terminal display.
          */
@@ -284,7 +293,7 @@ public:
          * Tracking events but don't indicate they're interested in those
          * events; for example, when vim doesn't indicate it's interested
          * in Mouse Tracking events (i.e. when the mouse is in Normal
-         * (not Visual) mode): http://vimdoc.sourceforge.net/htmldoc/intro.html#Normal
+         * (not Visual) mode): https://vimhelp.org/intro.txt.html#vim-modes-intro
          * mouse wheel scroll events will send up/down key press events.
          *
          * Default value is true.
@@ -295,7 +304,9 @@ public:
         /** (int) Keyboard modifiers to show URL hints */
         UrlHintsModifiers,
         /** (bool) Reverse the order of URL hints */
-        ReverseUrlHints
+        ReverseUrlHints,
+        /** (QColor) used in tab color */
+        TabColor
     };
 
     Q_ENUM(Property)
@@ -440,6 +451,12 @@ public:
         return property<QString>(Profile::RemoteTabTitleFormat);
     }
 
+    /** Convenience method for property<QColor>(Profile::TabColor) */
+    QColor tabColor() const
+    {
+        return property<QColor>(Profile::TabColor);
+    }
+
     /** Convenience method for property<bool>(Profile::ShowTerminalSizeHint) */
     bool showTerminalSizeHint() const
     {
@@ -524,10 +541,16 @@ public:
         return property<bool>(Profile::UseCustomCursorColor);
     }
 
-    /** Convenience method for property<bool>(Profile::CustomCursorColor) */
+    /** Convenience method for property<QColor>(Profile::CustomCursorColor) */
     QColor customCursorColor() const
     {
         return property<QColor>(Profile::CustomCursorColor);
+    }
+
+    /** Convenience method for property<QColor>(Profile::CustomCursorTextColor) */
+    QColor customCursorTextColor() const
+    {
+        return property<QColor>(Profile::CustomCursorTextColor);
     }
 
     /** Convenience method for property<QString>(Profile::WordCharacters) */
@@ -751,7 +774,7 @@ public:
     /** Sets the value of @p property in each of the group's profiles to
      * @p value.
      */
-    void setProperty(Property p, const QVariant &value) Q_DECL_OVERRIDE;
+    void setProperty(Property p, const QVariant &value) override;
 
 private:
     Q_DISABLE_COPY(ProfileGroup)

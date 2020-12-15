@@ -129,6 +129,37 @@ void Screen::cursorLeft(int n)
     _cuX = qMax(0, _cuX - n);
 }
 
+void Screen::cursorNextLine(int n)
+//=CNL
+{
+    if (n == 0) {
+        n = 1; // Default
+    }
+    _cuX = 0;
+    while (n > 0) {
+        if (_cuY < _lines - 1) {
+            _cuY += 1;
+        }
+        n--;
+    }
+
+}
+
+void Screen::cursorPreviousLine(int n)
+//=CPL
+{
+    if (n == 0) {
+        n = 1; // Default
+    }
+    _cuX = 0;
+    while (n > 0) {
+        if (_cuY  > 0) {
+            _cuY -= 1;
+        }
+        n--;
+    }
+}
+
 void Screen::cursorRight(int n)
 //=CUF
 {
@@ -502,7 +533,7 @@ void Screen::getImage(Character* dest, int size, int startLine, int endLine) con
     const int mergedLines = endLine - startLine + 1;
 
     Q_ASSERT(size >= mergedLines * _columns);
-    Q_UNUSED(size);
+    Q_UNUSED(size)
 
     const int linesInHistoryBuffer = qBound(0, _history->getLines() - startLine, mergedLines);
     const int linesInScreenBuffer = mergedLines - linesInHistoryBuffer;
@@ -731,7 +762,7 @@ void Screen::displayCharacter(uint c)
             Q_ASSERT(oldChars);
             if (((oldChars) != nullptr) && extendedCharLength < 3) {
                 Q_ASSERT(extendedCharLength > 1);
-                Q_ASSERT(extendedCharLength < 65535);
+                Q_ASSERT(extendedCharLength < 65535); // redundant due to above check
                 auto chars = new uint[extendedCharLength + 1];
                 memcpy(chars, oldChars, sizeof(uint) * extendedCharLength);
                 chars[extendedCharLength] = c;
@@ -1113,6 +1144,11 @@ void Screen::clearSelection()
     _selBegin = -1;
 }
 
+bool Screen::hasSelection() const
+{
+    return _selBegin != -1;
+}
+
 void Screen::getSelectionStart(int& column , int& line) const
 {
     if (_selTopLeft != -1) {
@@ -1227,15 +1263,6 @@ bool Screen::isSelectionValid() const
     return _selTopLeft >= 0 && _selBottomRight >= 0;
 }
 
-void Screen::writeSelectionToStream(TerminalCharacterDecoder* decoder ,
-                                    const DecodingOptions options) const
-{
-    if (!isSelectionValid()) {
-        return;
-    }
-    writeToStream(decoder, _selTopLeft, _selBottomRight, options);
-}
-
 void Screen::writeToStream(TerminalCharacterDecoder* decoder,
                            int startIndex, int endIndex,
                            const DecodingOptions options) const
@@ -1281,6 +1308,34 @@ void Screen::writeToStream(TerminalCharacterDecoder* decoder,
     }
 }
 
+int Screen::getLineLength(const int line) const
+{
+  // determine if the line is in the history buffer or the screen image
+  const bool isInHistoryBuffer = line < _history->getLines();
+
+  if (isInHistoryBuffer) {
+    return _history->getLineLen(line);
+  }
+
+  return _columns;
+}
+
+Character *Screen::getCharacterBuffer(const int size)
+{
+  // buffer to hold characters for decoding
+  // the buffer is static to avoid initializing every
+  // element on each call to copyLineToStream
+  // (which is unnecessary since all elements will be overwritten anyway)
+  static const int MAX_CHARS = 1024;
+  static QVector<Character> characterBuffer(MAX_CHARS);
+
+  if (characterBuffer.count() < size) {
+    characterBuffer.resize(size);
+  }
+
+  return characterBuffer.data();
+}
+
 int Screen::copyLineToStream(int line ,
                              int start,
                              int count,
@@ -1288,21 +1343,14 @@ int Screen::copyLineToStream(int line ,
                              bool appendNewLine,
                              const DecodingOptions options) const
 {
-    //buffer to hold characters for decoding
-    //the buffer is static to avoid initializing every
-    //element on each call to copyLineToStream
-    //(which is unnecessary since all elements will be overwritten anyway)
-    static const int MAX_CHARS = 1024;
-    static Character characterBuffer[MAX_CHARS];
-
-    Q_ASSERT(count < MAX_CHARS);
-
+    const int lineLength = getLineLength(line);
+    // ensure that this method, can append space or 'eol' character to
+    // the selection
+    Character *characterBuffer = getCharacterBuffer((count > -1 ? count : lineLength - start) + 1);
     LineProperty currentLineProperties = 0;
 
-    //determine if the line is in the history buffer or the screen image
+    // determine if the line is in the history buffer or the screen image
     if (line < _history->getLines()) {
-        const int lineLength = _history->getLineLen(line);
-
         // ensure that start position is before end of line
         start = qMin(start, qMax(0, lineLength - 1));
 
@@ -1327,7 +1375,7 @@ int Screen::copyLineToStream(int line ,
         }
     } else {
         if (count == -1) {
-            count = _columns - start;
+            count = lineLength - start;
         }
 
         Q_ASSERT(count >= 0);
@@ -1367,7 +1415,7 @@ int Screen::copyLineToStream(int line ,
         currentLineProperties |= _lineProperties[screenLine];
     }
 
-    if (appendNewLine && (count + 1 < MAX_CHARS)) {
+    if (appendNewLine) {
         if ((currentLineProperties & LINE_WRAPPED) != 0) {
             // do nothing extra when this line is wrapped.
         } else {

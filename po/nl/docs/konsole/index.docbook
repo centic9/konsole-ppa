@@ -72,7 +72,9 @@
 ><year
 >2017</year
 ><year
->2018</year>
+>2018</year
+><year
+>2020</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -88,9 +90,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2019-06-16</date>
+>2020-07-02</date>
 <releaseinfo
->Applications 19.08</releaseinfo>
+>Applications 20.08</releaseinfo>
 
 <abstract
 ><para
@@ -1027,14 +1029,14 @@ CloseAllTabs=true</screen
 > <guimenu
 >Bewerken</guimenu
 ><guimenuitem
->Tabblad hernoemen...</guimenuitem
+>Tabbladinstellingen configureren...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Opent een dialoogvenster waarin u de naam van het huidige tabblad kunt wijzigen</action
-> (<link linkend="rename-tab-dialog"
+>Opent een dialoogvenster waarin u het naamformaat, het tabbladtitelformaat op afstand en de kleur van het huidige tabblad kunt wijzigen</action
+> (<link linkend="configure-tab-settings-dialog"
 >meer info</link
 >) </para
 ></listitem>
@@ -1433,6 +1435,31 @@ Various search improvements
 ><guimenuitem
 >Stilte in geobserveerde sessie</guimenuitem
 ></menuchoice
+>. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Beeld</guimenu
+><guimenuitem
+>Monitor voor procesbeëindiging</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Schakelt het monitoren van het huidige tabblad om voor de procesbeëindiging</action
+>. </para
+><para
+>Indien geactiveerd, na beëindiging van het huidige proces, zal &konsole; een melding tonen <guilabel
+>Het proces '<replaceable
+>naam van het proces</replaceable
+>' is geëindigd actief te zijn in sessie '<replaceable
+>naam van de sessie</replaceable
+>'</guilabel
 >. </para
 ></listitem>
 </varlistentry>
@@ -1917,15 +1944,94 @@ Various search improvements
 >Opent instellingenbewerker van &konsole;</action
 ></para>
 <para
->Deze dialoog heeft opties die het uiterlijk en het gedrag van de <guilabel
->Tabbladbalk</guilabel
-> beïnvloeden en algemene opties voor het venster van &konsole;. </para
-></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+>Deze dialoog heeft opties die het uiterlijk en het gedrag van het venster van &konsole; beïnvloeden. </para>
+<itemizedlist>
+    <listitem>
+        <para
+>De pagina <guilabel
+>Algemeen</guilabel
+> biedt het configureren van de zichtbaarheid van de menubalk, onthouden van de venstergrotte van &konsole;, actief zijn van alle vensters van &konsole; in een enkel proces, inschakelen van menuversnellers, het tonen van de venstertitel op de titelbalk, verwijderen van de titelbalk en frame. Het is ook mogelijk om gevoeligheid voor hoofd-/kleine letters te configureren bij zoeken, gebruik van de reguliere expressie, accentueren van alle overeenkomsten en de zoekrichting (<guilabel
+>Achterwaarts zoeken</guilabel
+> is de standaard). De pagina <guilabel
+>Algemeen</guilabel
+> is ook de plek waar u opnieuw <guibutton
+>Alle "Niet meer vragen" berichten inschakelen</guibutton
+> kunt instellen als ze eerder zijn uitgeschakeld. </para>
+    </listitem>
+    <listitem>
+        <para
+>De pagina <guilabel
+>Profielen</guilabel
+> is bedoeld voor aanmaken en behandelen van <link linkend="profiles"
+>profielen</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>Op de pagina <guilabel
+>Tabbladbalk/Spitters</guilabel
+> kunt u de zichtbaarheid en plaatsing van tabbladbalk configureren, gedrag van tabs definiëren en de opties voor de tabbladen kunt verfijnen. Het is mogelijk om <guilabel
+>'Nieuw tabblad' knop tonen</guilabel
+> te configureren als u dat wilt en <guilabel
+>Individuele tabbladbreedtes naar volledig venster</guilabel
+> of <guilabel
+>Gebruiker-gedefinieerd stijlblad</guilabel
+> te configureren. Het tabblad <guilabel
+>Gedraag</guilabel
+> kan gebruikt worden om de plaats te definiëren voor de nieuwe tabbladen (<guilabel
+>Aan het eind</guilabel
+> of <guilabel
+>Na huidig tabblad</guilabel
+>) en tabbladen sluiten met een &MMB; klik. </para>
+        <para
+>Het is ook mogelijk om zichtbaarheid van de gesplitste koppen te configureren (<guilabel
+>Indien nodig</guilabel
+> (standaard), <guilabel
+>Altijd</guilabel
+> of <guilabel
+>Nooit</guilabel
+>) en de grootte van het sleephandvat voor splitsen als (<guilabel
+>Klein</guilabel
+> (standaard), <guilabel
+>Middel</guilabel
+> of <guilabel
+>Groot</guilabel
+>) te definiëren met het tabblad <guilabel
+>Splitsen</guilabel
+> van deze configuratiepagina. </para>
+    </listitem>
+    <listitem>
+        <para
+>De pagina <guilabel
+>Tijdelijke bestanden</guilabel
+> wordt gebruikt om de bestandslocatie <link linkend="scrollback"
+>scrollback</link
+> te definiëren. </para>
+    </listitem>
+    <listitem>
+        <para
+>De pagina <guilabel
+>Miniaturen</guilabel
+> kan gebruikt worden om de grootte van miniaturen te definiëren en opties activeren (u kunt de besturingstoets voor activeren kiezen uit &Shift;, &Alt;, en &Ctrl;). </para>
+        <note>
+            <para
+>Om de mogelijkheid miniaturen die miniaturen van afbeeldingen in pop-ups laten zien bij zweven met de muisaanwijzer boven afbeeldingsitems, zou u onderstrepen van bestanden voor uw huidige profiel moeten inschakelen: <menuchoice
+><guimenu
+>Instellingen</guimenu
+><guimenuitem
+>Huidige profiel bewerken...</guimenuitem
+><guimenuitem
+>Muis</guimenuitem
+><guimenuitem
+>Diversen</guimenuitem
+><guimenuitem
+>Bestanden onderstrepen</guimenuitem
+></menuchoice
+>. </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -1937,7 +2043,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >&konsole; heeft een aantal van de algemene &kde; items in het menu <guimenu
 >Help</guimenu
->, voor meer informatie lees de sectie hierover in het <ulink url="help:/fundamentals/ui.html#menus-help"
+>, voor meer informatie lees de sectie hierover in het <ulink url="help:/fundamentals/menus.html#menus-help"
 >Menu Help</ulink
 > van de basisinformatie van &kde;. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
@@ -1949,16 +2055,16 @@ When the window title from current session is emtpy, fallback to using
 <title
 >Dialogen van &konsole;</title>
 
-<sect2 id="rename-tab-dialog">
+<sect2 id="configure-tab-settings-dialog">
 <title
->Dialoog voor tabblad hernoemen</title>
+>Dialoog Tabbladinstellingen configureren</title>
 
 <para
->De naam van het huidige tabblad kan worden aangepast vanuit deze dialoog. De dialoog kan worden getoond via het menu, de sneltoets <keycombo action="simul"
+>Het naamformaat, het tabbladtitelformaat op afstand van het huidige tabblad kan worden aangepast vanuit deze dialoog. De dialoog kan worden getoond via het menu, de sneltoets <keycombo action="simul"
 >&Ctrl;&Alt;<keycap
 >S</keycap
 ></keycombo
-> of door op een tabblad te dubbelklikken. Deze aanpassingen kunnen permanent worden gemaakt door het huidige profiel te bewerken. </para>
+> of door op een tabblad te dubbelklikken. Deze aanpassingen zijn tijdelijk en kunnen permanent worden gemaakt door het huidige profiel te bewerken. </para>
 
 <para
 >&konsole; zal deze plaatshouders vervangen voor lokale tabs: </para>
@@ -2903,9 +3009,9 @@ Space+Ctrl
 >\xHH : waar HH twee hex-tekens zijn</para>
 <tip>
 <para
->Dit kan gebruikt worden om ASCII control tekens te verzenden, &eg; <quote
+>Dit kan gebruikt worden om &ASCII; control-tekens te verzenden, &eg; <quote
 >\x00</quote
-> wat het NUL teken is</para>
+> wat het NUL-teken is</para>
 </tip>
 </listitem>
 </itemizedlist>

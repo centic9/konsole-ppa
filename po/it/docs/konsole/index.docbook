@@ -42,20 +42,6 @@
 
 <othercredit role="translator"
 ><firstname
->Federico</firstname
-><surname
->Zenith</surname
-><affiliation
-><address
-><email
->federico.zenith@member.fsf.org</email
-></address
-></affiliation
-><contrib
->Traduzione della documentazione in italiano</contrib
-></othercredit
-><othercredit role="translator"
-><firstname
 >Vincenzo</firstname
 ><surname
 >Reale</surname
@@ -66,7 +52,21 @@
 ></address
 ></affiliation
 ><contrib
->Traduzione della documentazione in italiano</contrib
+>Traduzione della documentazione</contrib
+></othercredit
+><othercredit role="translator"
+><firstname
+>Federico</firstname
+><surname
+>Zenith</surname
+><affiliation
+><address
+><email
+>federico.zenith@member.fsf.org</email
+></address
+></affiliation
+><contrib
+>Traduzione della documentazione</contrib
 ></othercredit
 > 
 
@@ -100,7 +100,9 @@
 ><year
 >2017</year
 ><year
->2018</year>
+>2018</year
+><year
+>2020</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -116,9 +118,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->16/06/2019</date>
+>2/7/2020</date>
 <releaseinfo
->Applications 19.08</releaseinfo>
+>Applications 20.08</releaseinfo>
 
 <abstract
 ><para
@@ -1059,14 +1061,14 @@ CloseAllTabs=true</screen
 > <guimenu
 >Modifica</guimenu
 ><guimenuitem
->Rinomina scheda</guimenuitem
+>Configura impostazioni scheda...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Apre una finestra che permette di cambiare il nome della scheda attuale</action
-> (<link linkend="rename-tab-dialog"
+>Apre una finestra che consente di cambiare il formato del nome, il formato del titolo della scheda remota e il colore della scheda attuale</action
+> (<link linkend="configure-tab-settings-dialog"
 >maggiori informazioni</link
 >). </para
 ></listitem>
@@ -1465,6 +1467,31 @@ Various search improvements
 ><guimenuitem
 >Attività rilevata in una sessione sorvegliata</guimenuitem
 ></menuchoice
+>. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Controlla la fine del processo</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Commuta la rilevazione della fine del processo nella scheda attuale</action
+>. </para
+><para
+>Se selezionata, al termine del processo attuale, &konsole; mostrerà una notifica <guilabel
+>Il processo «<replaceable
+>nome del processo</replaceable
+>» ha terminato l'esecuzione nella sessione «<replaceable
+>nome della sessione</replaceable
+>»</guilabel
 >. </para
 ></listitem>
 </varlistentry>
@@ -1949,15 +1976,94 @@ Various search improvements
 >Apre l'editor delle impostazioni di &konsole;.</action
 ></para>
 <para
->Questa finestra contiene opzioni che influenzano l'aspetto e il comportamento della <guilabel
->Barra delle schede</guilabel
-> e opzioni generali della finestra di &konsole;. </para
-></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+>Questa finestra contiene opzioni che influenzano l'aspetto e il comportamento della finestra di &konsole;. </para>
+<itemizedlist>
+    <listitem>
+        <para
+>La pagina <guilabel
+>Generale</guilabel
+> consente di configurare la visibilità della barra dei menu, ricordando la dimensione della finestra di &konsole;, eseguendo tutte le finestre di &konsole; in un unico processo, abilitando gli acceleratori dei menu, mostrando il titolo della finestra sulla barra del titolo, rimuovendo la barra del titolo e la cornice della finestra. È anche possibile configurare la distinzione tra maiuscole e minuscole, l'uso delle espressioni regolari, l'evidenziazione di tutte le corrispondenze e la direzione di ricerca (<guilabel
+>Cerca indietro</guilabel
+> è l'impostazione predefinita). La pagina <guilabel
+>Generale</guilabel
+> è anche il posto in cui è possibile attivare <guibutton
+>Abilita tutti i messaggi «Non chiedermelo più»</guibutton
+> se sono stati disattivati in precedenza. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pagina <guilabel
+>Profili</guilabel
+> è pensata per creare e gestire <link linkend="profiles"
+>profili</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>Utilizzando la pagina <guilabel
+>Barra delle schede/Divisori</guilabel
+> è possibile configurare la visibilità e il posizionamento della barra delle schede, definire il comportamento delle schede e regolare le opzioni dei pulsanti delle schede. È possibile configurare se si desidera <guilabel
+>Mostra il pulsante «Nuova scheda»</guilabel
+> e <guilabel
+>Espandi la larghezza delle singole schede alla finestra intera</guilabel
+> o configurare <guilabel
+>Usa foglio di stile definito dall'utente</guilabel
+>. La scheda <guilabel
+>Comportamento</guilabel
+> può essere utilizzata per definire la posizione per le nuove schede (<guilabel
+>Alla fine</guilabel
+> o <guilabel
+>Dopo la scheda attuale</guilabel
+>) e la chiusura delle schede con un clic del tasto centrale del mouse. </para>
+        <para
+>È inoltre possibile configurare la visibilità delle intestazioni dei divisori (<guilabel
+>Se necessario</guilabel
+> (predefinito), <guilabel
+>Sempre</guilabel
+>, o <guilabel
+>Mai</guilabel
+>) e definire le dimensioni della maniglia di trascinamento  dei divisori (<guilabel
+>Piccola</guilabel
+> (predefinita), <guilabel
+>Media</guilabel
+>, o <guilabel
+>Grande</guilabel
+>) utilizzando la scheda <guilabel
+>Divisioni</guilabel
+> di questa pagina di configurazione. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pagina <guilabel
+>File temporanei</guilabel
+> è utilizzata per definire la posizione del file di <link linkend="scrollback"
+>scorrimento</link
+>. </para>
+    </listitem>
+    <listitem>
+        <para
+>La pagina <guilabel
+>Miniature</guilabel
+> può essere utilizzata per definire le dimensioni delle miniature e le opzioni di attivazione (è possibile scegliere il tasto di controllo dell'attivazione da &Shift;, &Alt; e &Ctrl;). </para>
+        <note>
+            <para
+>Per utilizzare la funzionalità delle miniature che mostra le miniature delle immagini in oggetti a comparsa quando si passa il puntatore del mouse sugli elementi delle immagini, è necessario abilitare la sottolineatura dei file per il profilo attuale: <menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Modifica il profilo attuale...</guimenuitem
+><guimenuitem
+>Mouse</guimenuitem
+><guimenuitem
+>Varie</guimenuitem
+><guimenuitem
+>Sottolinea i file</guimenuitem
+></menuchoice
+>. </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -1969,7 +2075,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >&konsole; ha alcuni dei normali elementi del menu di &kde; <guimenu
 >Aiuto</guimenu
->; per maggiori informazioni leggi le sezioni sul <ulink url="help:/fundamentals/ui.html#menus-help"
+>; per maggiori informazioni leggere le sezioni sul <ulink url="help:/fundamentals/menus.html#menus-help"
 >menu Aiuto</ulink
 > dei Fondamentali di &kde;. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
@@ -1981,16 +2087,16 @@ When the window title from current session is emtpy, fallback to using
 <title
 >Finestre di &konsole;</title>
 
-<sect2 id="rename-tab-dialog">
+<sect2 id="configure-tab-settings-dialog">
 <title
->La finestra di rinomina delle schede</title>
+>Finestra Configura impostazioni scheda</title>
 
 <para
->Il nome della scheda attuale può essere cambiato da questa finestra. Essa può venire visualizzata dal menu, con la scorciatoia <keycombo action="simul"
+>Il formato del nome, il formato del titolo della scheda remota e il colore della scheda attuale può essere cambiato da questa finestra. La finestra può essere visualizzata dal menu, con la scorciatoia <keycombo action="simul"
 >&Ctrl;&Alt;<keycap
 >S</keycap
 ></keycombo
-> o facendo doppio clic sulla linguetta nella barra delle linguette. Queste modifiche possono essere rese permanenti modificando il profilo attuale. </para>
+> o facendo doppio clic sulla linguetta nella barra delle schede. Queste modifiche sono temporanee e possono essere rese permanenti modificando il profilo attuale. </para>
 
 <para
 >&konsole; sostituirà questi segnaposti per le schede locali: </para>
@@ -2935,7 +3041,7 @@ Barra spaziatrice+Ctrl
 >\xHH : dove HH sono due cifre esadecimali</para>
 <tip>
 <para
->Questo può essere utilizzato per inviare caratteri di controllo ASCII, &eg; <quote
+>Questo può essere utilizzato per inviare caratteri di controllo &ASCII;, &eg; <quote
 >\x00</quote
 > che è il carattere NUL</para>
 </tip>
@@ -3291,12 +3397,12 @@ CommonDirNames=nome1,nome2,nome3...
 > DocBook da &Mike.McBride; e &Lauri.Watts;</para>
 
 <para
->Traduzione di Federico Zenith <email
->federico.zenith@member.fsf.org</email
+>Traduzione: Vincenzo Reale <email
+>smart2128@baslug.org</email
 ></para
 ><para
->Traduzione della documentazione di Vincenzo Reale <email
->smart2128@baslug.org</email
+>Traduzione: Federico Zenith <email
+>federico.zenith@member.fsf.org</email
 ></para
 > &underFDL; &underGPL; </chapter>
 

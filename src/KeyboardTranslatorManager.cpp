@@ -71,10 +71,9 @@ bool KeyboardTranslatorManager::deleteTranslator(const QString &name)
     if (QFile::remove(path)) {
         _translators.remove(name);
         return true;
-    } else {
-        qCDebug(KonsoleDebug) << "Failed to remove translator - " << path;
-        return false;
-    }
+    } 
+    qCDebug(KonsoleDebug) << "Failed to remove translator - " << path;
+    return false;
 }
 
 bool KeyboardTranslatorManager::isTranslatorDeletable(const QString &name) const
@@ -85,7 +84,7 @@ bool KeyboardTranslatorManager::isTranslatorDeletable(const QString &name) const
 
 bool KeyboardTranslatorManager::isTranslatorResettable(const QString &name) const
 {
-    const QStringList &paths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QLatin1String("konsole/") + name + QLatin1String(".keytab"));
+    const QStringList &paths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + name + QStringLiteral(".keytab"));
 
     return (paths.count() > 1);
 }
@@ -112,7 +111,7 @@ void KeyboardTranslatorManager::findTranslators()
     // add the name of each translator to the list and associated
     // the name with a null pointer to indicate that the translator
     // has not yet been loaded from disk
-    foreach (const QString &translatorPath, list) {
+    for (const QString &translatorPath : qAsConst(list)) {
         QString name = QFileInfo(translatorPath).completeBaseName();
 
         if (!_translators.contains(name)) {
@@ -163,8 +162,8 @@ bool KeyboardTranslatorManager::saveTranslator(const KeyboardTranslator *transla
     {
         KeyboardTranslatorWriter writer(&destination);
         writer.writeHeader(translator->description());
-
-        foreach (const KeyboardTranslator::Entry &entry, translator->entries()) {
+        const QList<KeyboardTranslator::Entry> entriesList = translator->entries();
+        for (const KeyboardTranslator::Entry &entry : entriesList) {
             writer.writeEntry(entry);
         }
     }
@@ -200,10 +199,9 @@ KeyboardTranslator *KeyboardTranslatorManager::loadTranslator(QIODevice *source,
 
     if (!reader.parseError()) {
         return translator;
-    } else {
-        delete translator;
-        return nullptr;
-    }
+    } 
+    delete translator;
+    return nullptr;
 }
 
 const KeyboardTranslator *KeyboardTranslatorManager::defaultTranslator()

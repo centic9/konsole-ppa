@@ -77,7 +77,6 @@ Vt102Emulation::Vt102Emulation() :
                      &Konsole::Vt102Emulation::updateSessionAttributes);
 
     initTokenizer();
-    reset();
 }
 
 Vt102Emulation::~Vt102Emulation() = default;
@@ -292,7 +291,7 @@ void Vt102Emulation::initTokenizer()
     for (i = 32; i < 256; ++i) {
         charClass[i] |= CHR;
     }
-    for (s = (quint8 *)"@ABCDGHILMPSTXZbcdfry"; *s != 0u; ++s) {
+    for (s = (quint8 *)"@ABCDEFGHILMPSTXZbcdfry"; *s != 0u; ++s) {
         charClass[*s] |= CPN;
     }
     // resize = \e[8;<row>;<col>t
@@ -564,7 +563,7 @@ void Vt102Emulation::processToken(int token, int p, int q)
     case token_ctl('D'      ) : /* EOT: ignored                      */ break;
     case token_ctl('E'      ) :      reportAnswerBack     (          ); break; //VT100
     case token_ctl('F'      ) : /* ACK: ignored                      */ break;
-    case token_ctl('G'      ) : emit stateSet(NOTIFYBELL);
+    case token_ctl('G'      ) : emit bell();
                                 break; //VT100
     case token_ctl('H'      ) : _currentScreen->backspace            (          ); break; //VT100
     case token_ctl('I'      ) : _currentScreen->tab                  (          ); break; //VT100
@@ -754,8 +753,8 @@ void Vt102Emulation::processToken(int token, int p, int q)
     case token_csi_pn('B'      ) : _currentScreen->cursorDown           (p         ); break; //VT100
     case token_csi_pn('C'      ) : _currentScreen->cursorRight          (p         ); break; //VT100
     case token_csi_pn('D'      ) : _currentScreen->cursorLeft           (p         ); break; //VT100
-    case token_csi_pn('E'      ) : /* Not implemented: cursor next p lines */         break; //VT100
-    case token_csi_pn('F'      ) : /* Not implemented: cursor preceding p lines */    break; //VT100
+    case token_csi_pn('E'      ) : _currentScreen->cursorNextLine       (p         ); break; //VT100
+    case token_csi_pn('F'      ) : _currentScreen->cursorPreviousLine   (p         ); break; //VT100
     case token_csi_pn('G'      ) : _currentScreen->setCursorX           (p         ); break; //LINUX
     case token_csi_pn('H'      ) : _currentScreen->setCursorYX          (p,      q); break; //VT100
     case token_csi_pn('I'      ) : _currentScreen->tab                  (p         ); break;
@@ -956,7 +955,7 @@ void Vt102Emulation::processToken(int token, int p, int q)
     default:
         reportDecodingError();
         break;
-  };
+  }
 }
 
 void Vt102Emulation::clearScreenAndSetColumns(int columnCount)
@@ -1007,7 +1006,7 @@ void Vt102Emulation::reportSecondaryAttributes()
 /* DECREPTPARM – Report Terminal Parameters
     ESC [ <sol>; <par>; <nbits>; <xspeed>; <rspeed>; <clkmul>; <flags> x
 
-    http://vt100.net/docs/vt100-ug/chapter3.html
+    https://vt100.net/docs/vt100-ug/chapter3.html
 */
 void Vt102Emulation::reportTerminalParms(int p)
 {
@@ -1098,30 +1097,16 @@ void Vt102Emulation::sendMouseEvent(int cb, int cx, int cy, int eventType)
 }
 
 /**
- * The focus lost event can be used by Vim (or other terminal applications)
- * to recognize that the konsole window has lost focus.
+ * The focus change event can be used by Vim (or other terminal applications)
+ * to recognize that the konsole window has changed focus.
  * The escape sequence is also used by iTerm2.
  * Vim needs the following plugin to be installed to convert the escape
- * sequence into the FocusLost autocmd: https://github.com/sjl/vitality.vim
+ * sequence into the FocusLost/FocusGained autocmd:
+ * https://github.com/sjl/vitality.vim
  */
-void Vt102Emulation::focusLost()
-{
+void Vt102Emulation::focusChanged(bool focused) {
     if (_reportFocusEvents) {
-        sendString("\033[O");
-    }
-}
-
-/**
- * The focus gained event can be used by Vim (or other terminal applications)
- * to recognize that the konsole window has gained focus again.
- * The escape sequence is also used by iTerm2.
- * Vim needs the following plugin to be installed to convert the escape
- * sequence into the FocusGained autocmd: https://github.com/sjl/vitality.vim
- */
-void Vt102Emulation::focusGained()
-{
-    if (_reportFocusEvents) {
-        sendString("\033[I");
+        sendString(focused ? "\033[I" : "\033[O");
     }
 }
 
@@ -1504,8 +1489,8 @@ char Vt102Emulation::eraseChar() const
 {
     KeyboardTranslator::Entry entry = _keyTranslator->findEntry(
         Qt::Key_Backspace,
-        nullptr,
-        nullptr);
+        Qt::NoModifier,
+        KeyboardTranslator::NoState);
     if (entry.text().count() > 0) {
         return entry.text().at(0);
     } else {

@@ -72,7 +72,7 @@ public:
      * and added to the specified @p collection.
      */
     ViewManager(QObject *parent, KActionCollection *collection);
-    ~ViewManager() Q_DECL_OVERRIDE;
+    ~ViewManager() override;
 
     /**
      * Creates a new view to display the output from and deliver input to @p session.
@@ -285,6 +285,10 @@ public Q_SLOTS:
     Q_SCRIPTABLE QString defaultProfile();
 
     // TODO: its semantic is application-wide. Move it to more appropriate place
+    // DBus slot that sets the default profile
+    Q_SCRIPTABLE void setDefaultProfile(const QString &profile);
+
+    // TODO: its semantic is application-wide. Move it to more appropriate place
     // DBus slot that returns a string list of defined (known) profiles
     Q_SCRIPTABLE QStringList profileList();
 
@@ -333,7 +337,7 @@ private Q_SLOTS:
 
     // called when the active view in a ViewContainer changes, so
     // that we can plug the appropriate actions into the UI
-    void viewActivated(TerminalDisplay *view);
+    void activateView(TerminalDisplay *view);
 
     void focusUp();
     void focusDown();

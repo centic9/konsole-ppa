@@ -63,7 +63,7 @@ public:
      * between all views on a session.
      */
     explicit ScreenWindow(Screen *screen, QObject *parent = nullptr);
-    ~ScreenWindow() Q_DECL_OVERRIDE;
+    ~ScreenWindow() override;
 
     /** Sets the screen which this window looks onto */
     void setScreen(Screen *screen);
@@ -256,6 +256,11 @@ Q_SIGNALS:
 
     /** Emitted when the selection is changed. */
     void selectionChanged();
+
+    /** Emitted when e. g. Screen is changed (to alternate or primary), so
+     * initial selection offsets etc. are invalidated.
+     */
+    void screenAboutToChange();
 
 private:
     Q_DISABLE_COPY(ScreenWindow)

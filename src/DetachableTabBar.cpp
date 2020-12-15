@@ -27,6 +27,9 @@
 
 #include <KAcceleratorManager>
 
+#include <QPainter>
+#include <QColor>
+
 namespace Konsole {
 
 DetachableTabBar::DetachableTabBar(QWidget *parent) :
@@ -36,8 +39,18 @@ DetachableTabBar::DetachableTabBar(QWidget *parent) :
     tabId(-1)
 {
     setAcceptDrops(true);
-    setElideMode(Qt::TextElideMode::ElideMiddle);
+    setElideMode(Qt::TextElideMode::ElideLeft);
     KAcceleratorManager::setNoAccel(this);
+}
+
+void DetachableTabBar::setColor(int idx, const QColor &color)
+{
+    setTabData(idx, color);
+}
+
+void DetachableTabBar::removeColor(int idx)
+{
+    setTabData(idx, QVariant());
 }
 
 void DetachableTabBar::middleMouseButtonClickAt(const QPoint& pos)
@@ -122,14 +135,15 @@ void DetachableTabBar::mouseReleaseEvent(QMouseEvent *event)
 void DetachableTabBar::dragEnterEvent(QDragEnterEvent* event)
 {
     const auto dragId = QStringLiteral("konsole/terminal_display");
-    if (event->mimeData()->hasFormat(dragId)) {
-        auto other_pid = event->mimeData()->data(dragId).toInt();
-        // don't accept the drop if it's another instance of konsole
-        if (qApp->applicationPid() != other_pid) {
-            return;
-        }
-        event->accept();
+    if (!event->mimeData()->hasFormat(dragId)) {
+        return;
     }
+    auto other_pid = event->mimeData()->data(dragId).toInt();
+    // don't accept the drop if it's another instance of konsole
+    if (qApp->applicationPid() != other_pid) {
+        return;
+    }
+    event->accept();
 }
 
 void DetachableTabBar::dragMoveEvent(QDragMoveEvent* event)
@@ -137,6 +151,37 @@ void DetachableTabBar::dragMoveEvent(QDragMoveEvent* event)
     int tabIdx = tabAt(event->pos());
     if (tabIdx != -1) {
         setCurrentIndex(tabIdx);
+    }
+}
+
+void DetachableTabBar::paintEvent(QPaintEvent *event)
+{
+    QTabBar::paintEvent(event);
+    if (!event->isAccepted()) {
+        return;       // Reduces repainting
+    }
+
+    QPainter painter(this);
+    painter.setPen(Qt::NoPen);
+
+    for (int tabIndex = 0; tabIndex < count(); tabIndex++) {
+        const QVariant data = tabData(tabIndex);
+        if (!data.isValid() || data.isNull()) {
+            continue;
+        }
+
+        QColor varColor = data.value<QColor>();
+        if (!varColor.isValid()) {
+            continue;
+        }
+
+        painter.setBrush(varColor);
+        QRect tRect = tabRect(tabIndex);
+        tRect.setTop(painter.fontMetrics().height() + 6);   // Color bar top position consider a height the font and fixed spacing of 6px
+        tRect.setHeight(4);
+        tRect.setLeft(tRect.left() + 6);
+        tRect.setWidth(tRect.width() - 6);
+        painter.drawRect(tRect);
     }
 }
 

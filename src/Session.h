@@ -85,7 +85,7 @@ public:
      * variable.
      */
     explicit Session(QObject *parent = nullptr);
-    ~Session() Q_DECL_OVERRIDE;
+    ~Session() override;
 
     /**
      * Connect to an existing terminal.  When a new Session() is constructed it
@@ -96,14 +96,22 @@ public:
      * Calling openTeletype() while a session is running has no effect.
      *
      * @param fd The file descriptor of the pseudo-teletype master (See KPtyProcess::KPtyProcess())
+     * @param runShell When true, runs the teletype in a shell session environment.
+     * When false, the session is not run, so that the KPtyProcess can be standalone.
      */
-    void openTeletype(int fd);
+    void openTeletype(int fd, bool runShell);
 
     /**
      * Returns true if the session is currently running.  This will be true
      * after run() has been called successfully.
      */
     bool isRunning() const;
+
+    /**
+     * Returns true if the tab holding this session is currently selected
+     * and Konsole is the foreground window.
+     */
+    bool hasFocus() const;
 
     /**
      * Adds a new view for this session.
@@ -173,10 +181,25 @@ public:
     QString tabTitleFormat(TabTitleContext context) const;
 
     /**
+     * Sets the color user by this session for tab.
+     * 
+     * @param color The background color for the tab.
+     */
+    void setColor(const QColor &color);
+    /** Returns the color used by this session for tab. */
+    QColor color() const;
+
+    /**
      * Returns true if the tab title has been changed by the user via the
      * rename-tab dialog.
      */
     bool isTabTitleSetByUser() const;
+
+    /**
+     * Returns true if the tab color has been changed by the user via the
+     * rename-tab dialog.
+     */
+    bool isTabColorSetByUser() const;
 
     /** Returns the arguments passed to the shell process when run() is called. */
     QStringList arguments() const;
@@ -349,7 +372,7 @@ public:
     /**
       * Possible values of the @p what parameter for setSessionAttribute().
       * See the "Operating System Commands" section at:
-      * http://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h2-Operating-System-Commands
+      * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Operating-System-Commands
       */
     enum SessionAttributes {
         IconNameAndWindowTitle = 0,
@@ -372,6 +395,8 @@ public:
 
     void sendSignal(int signal);
 
+    void reportColor(SessionAttributes r, const QColor &c);
+    void reportForegroundColor(const QColor &c);
     void reportBackgroundColor(const QColor &c);
 
     bool isReadOnly() const;
@@ -381,6 +406,18 @@ public:
     // or false if it's the primary/normal buffer
     bool isPrimaryScreen();
     void tabTitleSetByUser(bool set);
+    void tabColorSetByUser(bool set);
+
+    enum Notification {
+        NoNotification = 0,
+        Activity = 1,
+        Silence = 2,
+        Bell = 4,
+    };
+    Q_DECLARE_FLAGS(Notifications, Notification)
+
+    /** Returns active notifications. */
+    Notifications activeNotifications() const { return _activeNotifications; }
 
 public Q_SLOTS:
 
@@ -618,23 +655,22 @@ Q_SIGNALS:
     void readOnlyChanged();
 
     /**
-     * Emitted when the activity state of this session changes.
-     *
-     * @param state The new state of the session.  This may be one
-     * of NOTIFYNORMAL, NOTIFYSILENCE or NOTIFYACTIVITY
-     */
-    void stateChanged(int state);
-
-    /**
      * Emitted when the current working directory of this session changes.
      *
      * @param dir The new current working directory of the session.
      */
     void currentDirectoryChanged(const QString &dir);
 
+    /**
+     * Emitted when the session text encoding changes.
+     */
+    void sessionCodecChanged(QTextCodec *codec);
+
     /** Emitted when a bell event occurs in the session. */
     void bellRequest(const QString &message);
 
+    /** Emitted when @p notification state changed to @p enabled */
+    void notificationsChanged(Notification notification, bool enabled);
 
     /**
      * Requests that the background color of views on this session
@@ -698,6 +734,12 @@ Q_SIGNALS:
     void selectionChanged(const QString &text);
 
     /**
+     * Emitted when foreground request ("\033]10;?\a") terminal code received.
+     * Terminal is expected send "\033]10;rgb:RRRR/GGGG/BBBB\a" response.
+     */
+    void getForegroundColor();
+
+    /**
      * Emitted when background request ("\033]11;?\a") terminal code received.
      * Terminal is expected send "\033]11;rgb:RRRR/GGGG/BBBB\a" response.
      *
@@ -715,10 +757,9 @@ private Q_SLOTS:
     void onReceiveBlock(const char *buf, int len);
     void silenceTimerDone();
     void activityTimerDone();
+    void resetNotifications();
 
     void onViewSizeChange(int height, int width);
-
-    void activityStateSet(int);
 
     //automatically detach views from sessions when view is destroyed
     void viewDestroyed(QObject *view);
@@ -780,6 +821,11 @@ private:
     QTimer *_silenceTimer;
     QTimer *_activityTimer;
 
+    void setPendingNotification(Notification notification, bool enable = true);
+    void handleActivity();
+
+    Notifications _activeNotifications;
+
     bool _autoClose;
     bool _closePerUserRequest;
 
@@ -789,8 +835,10 @@ private:
 
     QString _localTabTitleFormat;
     QString _remoteTabTitleFormat;
+    QColor _tabColor;
 
     bool _tabTitleSetByUser;
+    bool _tabColorSetByUser;
 
     QString _iconName;
     QString _iconText;        // not actually used
@@ -826,79 +874,6 @@ private:
     bool _isPrimaryScreen;
 };
 
-/**
- * Provides a group of sessions which is divided into master and slave sessions.
- * Activity in master sessions can be propagated to all sessions within the group.
- * The type of activity which is propagated and method of propagation is controlled
- * by the masterMode() flags.
- */
-class SessionGroup : public QObject
-{
-    Q_OBJECT
-
-public:
-    /** Constructs an empty session group. */
-    explicit SessionGroup(QObject *parent);
-    /** Destroys the session group and removes all connections between master and slave sessions. */
-    ~SessionGroup() Q_DECL_OVERRIDE;
-
-    /** Adds a session to the group. */
-    void addSession(Session *session);
-    /** Removes a session from the group. */
-    void removeSession(Session *session);
-
-    /** Returns the list of sessions currently in the group. */
-    QList<Session *> sessions() const;
-
-    /**
-     * Sets whether a particular session is a master within the group.
-     * Changes or activity in the group's master sessions may be propagated
-     * to all the sessions in the group, depending on the current masterMode()
-     *
-     * @param session The session whose master status should be changed.
-     * @param master True to make this session a master or false otherwise
-     */
-    void setMasterStatus(Session *session, bool master);
-    /** Returns the master status of a session.  See setMasterStatus() */
-    bool masterStatus(Session *session) const;
-
-    /**
-     * This enum describes the options for propagating certain activity or
-     * changes in the group's master sessions to all sessions in the group.
-     */
-    enum MasterMode {
-        /**
-         * Any input key presses in the master sessions are sent to all
-         * sessions in the group.
-         */
-        CopyInputToAll = 1
-    };
-
-    /**
-     * Specifies which activity in the group's master sessions is propagated
-     * to all sessions in the group.
-     *
-     * @param mode A bitwise OR of MasterMode flags.
-     */
-    void setMasterMode(int mode);
-    /**
-     * Returns a bitwise OR of the active MasterMode flags for this group.
-     * See setMasterMode()
-     */
-    int masterMode() const;
-
-private Q_SLOTS:
-    void sessionFinished();
-    void forwardData(const QByteArray &data);
-
-private:
-    QList<Session *> masters() const;
-
-    // maps sessions to their master status
-    QHash<Session *, bool> _sessions;
-
-    int _masterMode;
-};
 }
 
 #endif

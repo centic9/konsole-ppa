@@ -62,15 +62,15 @@ public:
      * @param parent The parent object
      */
     BookmarkHandler(KActionCollection *collection, QMenu *menu, bool toplevel, QObject *parent);
-    ~BookmarkHandler() Q_DECL_OVERRIDE;
+    ~BookmarkHandler() override;
 
-    QUrl currentUrl() const Q_DECL_OVERRIDE;
-    QString currentTitle() const Q_DECL_OVERRIDE;
-    QString currentIcon() const Q_DECL_OVERRIDE;
-    bool enableOption(BookmarkOption option) const Q_DECL_OVERRIDE;
-    QList<KBookmarkOwner::FutureBookmark> currentBookmarkList() const Q_DECL_OVERRIDE;
-    bool supportsTabs() const Q_DECL_OVERRIDE;
-    void openFolderinTabs(const KBookmarkGroup &group) Q_DECL_OVERRIDE;
+    QUrl currentUrl() const override;
+    QString currentTitle() const override;
+    QString currentIcon() const override;
+    bool enableOption(BookmarkOption option) const override;
+    bool supportsTabs() const override;
+    QList<KBookmarkOwner::FutureBookmark> currentBookmarkList() const override;
+    void openFolderinTabs(const KBookmarkGroup &group) override;
 
     /**
      * Returns the menu which this bookmark handler inserts its actions into.
@@ -109,7 +109,7 @@ Q_SIGNALS:
     void openUrls(const QList<QUrl> &urls);
 
 private Q_SLOTS:
-    void openBookmark(const KBookmark &bm, Qt::MouseButtons, Qt::KeyboardModifiers) Q_DECL_OVERRIDE;
+    void openBookmark(const KBookmark &bm, Qt::MouseButtons, Qt::KeyboardModifiers) override;
 
 private:
     Q_DISABLE_COPY(BookmarkHandler)

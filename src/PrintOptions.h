@@ -15,7 +15,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program. If not, see http://www.gnu.org/licenses/.
+  along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 #ifndef PRINTOPTIONS_H
@@ -30,7 +30,7 @@ class PrintOptions : public QWidget, private Ui::PrintOptions
 
 public:
     explicit PrintOptions(QWidget *parent = nullptr);
-    ~PrintOptions() Q_DECL_OVERRIDE;
+    ~PrintOptions() override;
 
 public Q_SLOTS:
     void saveSettings();

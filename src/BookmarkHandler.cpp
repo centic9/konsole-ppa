@@ -65,13 +65,11 @@ BookmarkHandler::BookmarkHandler(KActionCollection *collection, QMenu *menu, boo
     KBookmarkManager *manager = KBookmarkManager::managerForFile(_file, QStringLiteral("konsole"));
     manager->setUpdate(true);
 
-    BookmarkMenu *bookmarkMenu = new BookmarkMenu(manager, this, _menu, toplevel ? collection : nullptr);
+    auto *bookmarkMenu = new BookmarkMenu(manager, this, _menu, toplevel ? collection : nullptr);
     bookmarkMenu->setParent(this);
 }
 
-BookmarkHandler::~BookmarkHandler()
-{
-}
+BookmarkHandler::~BookmarkHandler() = default;
 
 void BookmarkHandler::openBookmark(const KBookmark &bm, Qt::MouseButtons, Qt::KeyboardModifiers)
 {
@@ -149,7 +147,8 @@ QList<KBookmarkOwner::FutureBookmark> BookmarkHandler::currentBookmarkList() con
     QList<KBookmarkOwner::FutureBookmark> list;
     list.reserve(_views.size());
 
-    foreach (ViewProperties *view, _views) {
+    const QList<ViewProperties *> views = _views;
+    for (ViewProperties* view : views) {
         list << KBookmarkOwner::FutureBookmark(titleForView(view), urlForView(view), iconForView(view));
     }
 

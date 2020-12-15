@@ -74,7 +74,7 @@ class KONSOLEPRIVATE_EXPORT EditProfileDialog: public KPageDialog
 public:
     /** Constructs a new dialog with the specified parent. */
     explicit EditProfileDialog(QWidget *parent = nullptr);
-    ~EditProfileDialog() Q_DECL_OVERRIDE;
+    ~EditProfileDialog() override;
 
     /**
      * Initializes the dialog with the settings for the specified session
@@ -98,14 +98,14 @@ public:
 
 public Q_SLOTS:
     // reimplemented
-    void accept() Q_DECL_OVERRIDE;
+    void accept() override;
     // reimplemented
-    void reject() Q_DECL_OVERRIDE;
+    void reject() override;
 
     void apply();
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private Q_SLOTS:
     QSize sizeHint() const override;
@@ -124,15 +124,18 @@ private Q_SLOTS:
     void initialDirChanged(const QString &dir);
     void startInSameDir(bool);
     void commandChanged(const QString &command);
+
+    // tab page
     void tabTitleFormatChanged(const QString &format);
     void remoteTabTitleFormatChanged(const QString &format);
+    void tabColorChanged(const QColor &color);
+    void silenceSecondsChanged(int);
 
     void terminalColumnsEntryChanged(int);
     void terminalRowsEntryChanged(int);
     void showTerminalSizeHint(bool);
     void setDimWhenInactive(bool);
     void showEnvironmentEditor();
-    void silenceSecondsChanged(int);
 
     // appearance page
     void setAntialiasText(bool enable);
@@ -149,6 +152,7 @@ private Q_SLOTS:
     void autoCursorColor();
     void customCursorColor();
     void customCursorColorChanged(const QColor &);
+    void customCursorTextColorChanged(const QColor &);
     void terminalMarginChanged(int margin);
     void lineSpacingChanged(int);
     void setTerminalCenter(bool enable);
@@ -172,6 +176,7 @@ private Q_SLOTS:
 
     void scrollFullPage();
     void scrollHalfPage();
+    void toggleHighlightScrolledLines(bool enable);
 
     // keyboard page
     void editKeyBinding();
@@ -359,9 +364,9 @@ public:
 
     // reimplemented
     void paint(QPainter *painter, const QStyleOptionViewItem &option,
-               const QModelIndex &index) const Q_DECL_OVERRIDE;
+               const QModelIndex &index) const override;
     QSize sizeHint(const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const Q_DECL_OVERRIDE;
+                   const QModelIndex &index) const override;
 };
 
 /**

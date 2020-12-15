@@ -100,7 +100,9 @@
 ><year
 >2017</year
 ><year
->2018</year>
+>2018</year
+><year
+>2020</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -116,9 +118,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2019-06-16</date>
+>2020-07-02</date>
 <releaseinfo
->Anwendungen 19.08</releaseinfo>
+>Anwendungen 20.08</releaseinfo>
 
 <abstract
 ><para
@@ -1053,13 +1055,13 @@ CloseAllTabs=true</screen
 > <guimenu
 >Bearbeiten</guimenu
 ><guimenuitem
->Unterfenster umbenennen ...</guimenuitem
+>Aktuelle Unterfenster-Einstellungen</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
->Öffnet ein Dialogfenster, mit dem der Name der aktuellen Sitzung geändert werden kann. Weitere Informationen dazu finden Sie im Kapitel <link linkend="rename-tab-dialog"
->Unterfenster umbenennen</link
+>Öffnet ein Dialogfenster, in dem das Namensformat, das Titelformat entfernter Unterfenster und die Farbe des aktuellen Unterfensters geändert werden kann. Weitere Informationen dazu finden Sie im Kapitel <link linkend="configure-tab-settings-dialog"
+>Unterfenster-Einstellungen</link
 >. </para
 ></listitem>
 </varlistentry>
@@ -1458,6 +1460,35 @@ Various search improvements
 >Aktivität in überwachter Sitzung</guimenuitem
 ></menuchoice
 > einstellen. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>A</keycap
+></keycombo
+></shortcut
+><guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Auf Prozessende überwachen</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+>Schaltet die Überwachung des aktuellen Unterfensters auf das Beenden von Prozessen ein und aus. </para
+><para
+>Ist diese Einstellung aktiviert, wird beim Beenden eines Prozesse die Benachrichtigung <guilabel
+>Der Prozess <replaceable
+>Prozessname</replaceable
+> in der Sitzung <replaceable
+>Sitzungsname</replaceable
+> wurde beendet</guilabel
+> angezeigt. </para
 ></listitem>
 </varlistentry>
 
@@ -1941,15 +1972,94 @@ Various search improvements
 >Öffnet einen Dialog zur Einrichtung von &konsole;.</action
 ></para>
 <para
->In diesem Dialog finden Sie Einstellungen zum Erscheinungsbild und Verhalten der <guilabel
->Unterfensterleiste</guilabel
-> und allgemeine Einstellungen für das &konsole;-Fenster. </para
-></listitem>
-<!-- FIXME
-since 4.9 Move options influencing tabbar from profiles into global setting
-Add global option for showing window title on titlebar
-When the window title from current session is emtpy, fallback to using
-  tab title-->
+>In diesem Dialog finden Sie Einstellungen zum Erscheinungsbild und Verhalten für das &konsole;-Fenster. </para>
+<itemizedlist>
+    <listitem>
+        <para
+>Auf der Seite <guilabel
+>Allgemein</guilabel
+> können Sie die Anzeige der Menüleiste, das Speichern der Fenstergröße, die Ausführung aller &konsole;-Fenster in einem Prozess, die Kurzbefehle in Menüeinträgen, die Anzeige der Fenstertitel in der Titelleiste und die Anzeige von Titelleiste und Rahmen festlegen. Im Abschnitt <guilabel
+>Suchen</guilabel
+> legen Sie fest, ob Groß/Kleinschreibung beachtet wird, ob reguläre Ausdrücke verwendet werden, ob Treffer hervorgehoben werden und wie die Richtung der Suche mit <guilabel
+>Rückwärts suchen</guilabel
+> als Standard verläuft. Außerdem können Sie die Anzeige der Meldungen wieder aktivieren, die Sie vorher im Dialog <guilabel
+>Diese Nachfrage nicht mehr anzeigen</guilabel
+> ausgeschaltet haben </para>
+    </listitem>
+    <listitem>
+        <para
+>Auf der Seite <guilabel
+>Profile</guilabel
+> können <link linkend="profiles"
+>Profile</link
+> erstellt und bearbeitet werden. </para>
+    </listitem>
+    <listitem>
+        <para
+>Auf der Seite <guilabel
+>Unterfensterleiste / Geteilte Ansicht</guilabel
+> können Sie die Anzeige und Anordnung der Unterfensterleiste, das Verhalten von Unterfenstern und die Anzeige von Knöpfen auf der Unterfensterleiste einstellen. Sie können <guilabel
+>Knöpfe „Neues Unterfenster“ anzeigen</guilabel
+> und <guilabel
+>Breite einzelner Unterfenster auf die volle Fensterbreite erweitern</guilabel
+> oder <guilabel
+>Benutzerdefinierte Stilvorlage verwenden</guilabel
+> auswählen. Auf der Karteikarte <guilabel
+>Verhalten</guilabel
+>kann die Anordnung neuer Unterfenster (<guilabel
+>Am Ende</guilabel
+> oder <guilabel
+>Nach dem aktuelles Unterfenster</guilabel
+>) und das Schließen von Unterfenstern durch Klicken mit der &MMBn; eingestellt werden. </para>
+        <para
+>Sie können auch die Anzeige von Titelzeilen (<guilabel
+>Wenn nötig</guilabel
+> (Standard), <guilabel
+>Immer</guilabel
+> oder <guilabel
+>Niemals</guilabel
+>) einstellen und auf der Karteikarte  <guilabel
+>Geteilte Ansicht</guilabel
+> die Größe der Teilung (<guilabel
+>Klein</guilabel
+> (Standard), <guilabel
+>Mittel</guilabel
+> oder <guilabel
+>Groß</guilabel
+>) festlegen. </para>
+    </listitem>
+    <listitem>
+        <para
+>Auf der Seite <guilabel
+>Temporäre Dateien</guilabel
+> kann der Speicherort der <link linkend="scrollback"
+>Verlaufsdatei</link
+> eingestellt werden. </para>
+    </listitem>
+    <listitem>
+        <para
+>Auf der Seite <guilabel
+>Vorschaubilder</guilabel
+> können Sie die Größe der Vorschaubilder und Aktivierungseinstellungen (Tasten &Shift;, &Alt;, and &Ctrl;) festlegen. </para>
+        <note>
+            <para
+>Um diese Funktion zur Anzeige von Vorschaubildern in Aufklappfenstern heim Überfahren von Bildereinträgen mit dem Mauszeiger zu verwenden, müssen Sie das Unterstreichen von Dateinamen im aktuellen Profil einschalten:  <menuchoice
+><guimenu
+>Einstellungen</guimenu
+><guimenuitem
+>Aktuelles Profil bearbeiten ...</guimenuitem
+><guimenuitem
+>Maus</guimenuitem
+><guimenuitem
+>Verschiedenes</guimenuitem
+><guimenuitem
+>Dateien unterstreichen</guimenuitem
+></menuchoice
+>. </para>
+        </note>
+    </listitem>
+</itemizedlist>
+</listitem>
 </varlistentry>
 
 </variablelist>
@@ -1961,7 +2071,7 @@ When the window title from current session is emtpy, fallback to using
 <para
 >&konsole; benutzt einige der bekannten &kde;-Einträge im Menü <guimenu
 >Hilfe</guimenu
->, weitere Informationen dazu finden Sie im Abschnitt über das Menü <ulink url="help:/fundamentals/ui.html#menus-help"
+>, weitere Informationen dazu finden Sie im Abschnitt über das Menü <ulink url="help:/fundamentals/menus.html#menus-help"
 >Hilfe</ulink
 > der &kde;-Grundlagen. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
@@ -1973,16 +2083,16 @@ When the window title from current session is emtpy, fallback to using
 <title
 >&konsole;s Dialoge</title>
 
-<sect2 id="rename-tab-dialog">
+<sect2 id="configure-tab-settings-dialog">
 <title
->Der Dialog „Unterfenster umbenennen“</title>
+>Dialog Unterfenster-Einstellungen</title>
 
 <para
->In diesem Dialog kann der Name des aktuellen Unterfensters geändert werden. Dieser Dialog kann über das Menü, den Kurzbefehl <keycombo action="simul"
+>In diesem Dialog kann das Namensformat, das Titelformat entfernter Unterfenster und die Farbe des aktuellen Unterfensters geändert werden. Dieser Dialog kann über das Menü, den Kurzbefehl <keycombo action="simul"
 >&Ctrl;&Alt;<keycap
 >S</keycap
 ></keycombo
-> oder durch Doppelklicken auf den Karteireiter des Unterfensters geöffnet werden. Werden die Namen der Unterfenster im aktuellen Profil geändert, so bleiben diese Einstellungen dauerhaft erhalten. </para>
+> oder durch Doppelklicken auf den Karteireiter des Unterfensters geöffnet werden. Diese Änderungen sind nur temporär. Werden die Einstellungen der Unterfenster im aktuellen Profil geändert, so bleiben diese dauerhaft erhalten. </para>
 
 <para
 >&konsole; ersetzt in lokalen Unterfenstern folgende Zeichen durch Werte: </para>
@@ -2925,7 +3035,7 @@ Space+Ctrl
 >\xHH : Dabei sind HH zwei hexadezimale  Ziffern</para>
 <tip>
 <para
->Damit können Sie ASCII-Steuerzeichen wie &eg; <quote
+>Damit können Sie &ASCII;-Steuerzeichen wie &eg; <quote
 >\x00</quote
 > = Zeichen NUL senden</para>
 </tip>
@@ -3284,8 +3394,7 @@ CommonDirNames=name1,name2,name3...
 >Deutsche Übersetzung von Stefan Doll <email
 >stefan@laugenweck.de</email
 ></para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title

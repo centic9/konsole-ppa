@@ -1,41 +1,40 @@
-# translation of konsole.po to
-# Translation of konsole.po to Slovenian
-# SLOVENIAN TRANSLATION OF KONSOLE.
-# $Id: konsole.po 1559666 2020-01-07 08:44:38Z scripty $
-# $Source$
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the konsole package.
 #
-# Copyright (C) 2001, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+#
 # Roman Maurer <roman.maurer@hermes.si>, 2000.
 # Marko Samastur <markos@elite.org>, 1999.
 # Gregor Rakar <gregor.rakar@kiss.si>, 2003, 2004, 2005.
 # Jure Repinc <jlp@holodeck1.com>, 2006, 2007, 2008, 2009, 2010, 2011, 2013.
 # Andrej Vernekar <andrej.vernekar@moj.net>, 2007, 2011.
 # Andrej Mernik <andrejm@ubuntu.si>, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
+# Matjaž Jeran <matjaz.jeran@amis.net>, 2019, 2020.
 msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-01-07 08:33+0100\n"
-"PO-Revision-Date: 2018-02-18 11:59+0100\n"
-"Last-Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
+"POT-Creation-Date: 2020-09-07 08:25+0200\n"
+"PO-Revision-Date: 2020-07-08 08:12+0200\n"
+"Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 2.0\n"
+"Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
+"X-Generator: Poedit 2.3.1\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "Jure Repinc,Andrej Mernik"
+msgstr "Jure Repinc,Andrej Mernik,Matjaž Jeran"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "jlp@holodeck1.com,andrejm@ubuntu.si"
+msgstr "jlp@holodeck1.com,andrejm@ubuntu.si,matjaz.jeran@amis.net"
 
 #. i18n: ectx: Menu (file)
 #: ../desktop/konsoleui.rc:5
@@ -62,13 +61,13 @@ msgid "Split View"
 msgstr "Razdeli pogled"
 
 #. i18n: ectx: Menu (settings)
-#: ../desktop/konsoleui.rc:34
+#: ../desktop/konsoleui.rc:35
 #, kde-format
 msgid "Settings"
 msgstr "Nastavitve"
 
 #. i18n: ectx: Menu (help)
-#: ../desktop/konsoleui.rc:45
+#: ../desktop/konsoleui.rc:46
 #, kde-format
 msgid "Help"
 msgstr "Pomoč"
@@ -77,13 +76,13 @@ msgstr "Pomoč"
 #: ../desktop/partui.rc:13
 #, kde-format
 msgid "S&crollback"
-msgstr "P&omnilnik vrstic"
+msgstr "Pomakni se nazaj"
 
 #: Application.cpp:62
 #, kde-format
 msgctxt "@info:shell"
 msgid "Name of profile to use for new Konsole instance"
-msgstr "Ime profila za uporabo v novem primerku Konsole"
+msgstr "Ime profila za uporabo v novem pojavku Konsole"
 
 #: Application.cpp:66
 #, kde-format
@@ -167,7 +166,7 @@ msgstr "Zaženi Konsole v celozaslonskem načinu"
 #, kde-format
 msgctxt "@info:shell"
 msgid "Disable transparent backgrounds, even if the system supports them."
-msgstr "Onemogoči prosojno ozadje, četudi to sistem podpira"
+msgstr "Onemogoči prosojno ozadje, četudi to sistem podpira."
 
 #: Application.cpp:107
 #, kde-format
@@ -186,7 +185,7 @@ msgstr ""
 #, kde-format
 msgctxt "@info:shell"
 msgid "Change the value of a profile property."
-msgstr "Spremeni vrednost lastnosti profila"
+msgstr "Spremeni vrednost lastnosti profila."
 
 #: Application.cpp:117
 #, kde-format
@@ -204,19 +203,19 @@ msgctxt "@info:shell"
 msgid "Arguments passed to command"
 msgstr "Argumenti, podani ukazu"
 
-#: Application.cpp:559
+#: Application.cpp:572
 #, kde-format
 msgctxt "@item"
 msgid "Toggle Background Window"
 msgstr "Preklopi okno v ozadju"
 
-#: BookmarkHandler.cpp:126
+#: BookmarkHandler.cpp:124
 #, kde-format
 msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
 msgid "%1 on %2"
 msgstr "%1 na %2"
 
-#: BookmarkHandler.cpp:128
+#: BookmarkHandler.cpp:126
 #, kde-format
 msgctxt "@item:inmenu The host the user is connected to via ssh"
 msgid "%1"
@@ -500,12 +499,15 @@ msgid ""
 "settings.\n"
 "To see any effect, set colors with saturation value greater than 0."
 msgstr ""
+"Odtenek in nasičenosti barv ospredja in ozadja sta privzeto naključni. "
+"Nekatere barvne sheme lahko uporabljajo drugačne nastavitve slučajnosti.\n"
+"Če želite videti učinek, nastavite barve z nasičenostjo večjo od 0."
 
 #. i18n: ectx: property (text), widget (QCheckBox, randomizedBackgroundCheck)
 #: ColorSchemeEditor.ui:53
 #, kde-format
 msgid "Randomly adjust colors for each session"
-msgstr ""
+msgstr "Slučajno prilagodite barve za vsako sejo"
 
 #. i18n: ectx: property (text), widget (QCheckBox, blurCheckBox)
 #: ColorSchemeEditor.ui:60
@@ -578,59 +580,54 @@ msgstr "Odstrani izbiro"
 #: EditProfileAdvancedPage.ui:37
 #, kde-format
 msgid "Key combination to show URL hints:"
-msgstr ""
+msgstr "Kombinacija tipk za prikaz namigov spletnih naslovov:"
 
 #. i18n: ectx: property (text), widget (QToolButton, urlHintsModifierShift)
 #: EditProfileAdvancedPage.ui:69
-#, fuzzy, kde-format
-#| msgid "Shift"
+#, kde-format
 msgctxt "key on keyboard"
 msgid "Shift"
-msgstr "Shift"
+msgstr "Pomik"
 
 #. i18n: ectx: property (text), widget (QToolButton, urlHintsModifierCtrl)
 #: EditProfileAdvancedPage.ui:88
 #, kde-format
 msgctxt "key on keyboard"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. i18n: ectx: property (text), widget (QToolButton, urlHintsModifierAlt)
 #: EditProfileAdvancedPage.ui:107
-#, fuzzy, kde-format
-#| msgid "Alt"
+#, kde-format
 msgctxt "key on keyboard"
 msgid "Alt"
 msgstr "Alt"
 
 #. i18n: ectx: property (text), widget (QToolButton, urlHintsModifierMeta)
 #: EditProfileAdvancedPage.ui:126
-#, fuzzy, kde-format
-#| msgid "Meta"
+#, kde-format
 msgctxt "key on keyboard"
 msgid "Meta"
 msgstr "Meta"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: EditProfileAdvancedPage.ui:172
-#, fuzzy, kde-format
-#| msgid "Miscellaneous"
+#, kde-format
 msgctxt "Items that do not fit in other categories"
 msgid "Miscellaneous:"
-msgstr "Razno"
+msgstr "Razno:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableReverseUrlHints)
 #: EditProfileAdvancedPage.ui:182
-#, fuzzy, kde-format
-#| msgid "Sets whether search should start from the bottom"
+#, kde-format
 msgid "Number URL hints in reverse, starting from the bottom"
-msgstr "Nastavi ali se naj iskanje začne od spodaj."
+msgstr "Število namigov spletnih strani v obratnem redu z začetkom od spodaj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableReverseUrlHints)
 #: EditProfileAdvancedPage.ui:185
 #, kde-format
 msgid "Reverse URL hint numbering"
-msgstr ""
+msgstr "Obratno številčenje namigov spletnih strani"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingTextButton)
 #: EditProfileAdvancedPage.ui:198
@@ -652,10 +649,9 @@ msgstr "Dovoli prestavitev izpisovanja v pripravljenost s pritiskom na Ctrl+S"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableFlowControlButton)
 #: EditProfileAdvancedPage.ui:217
-#, fuzzy, kde-format
-#| msgid "Control"
+#, kde-format
 msgid "Flow control"
-msgstr "Control"
+msgstr "Kontrola toka"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBidiRenderingButton)
 #: EditProfileAdvancedPage.ui:230
@@ -669,23 +665,21 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableBidiRenderingButton)
 #: EditProfileAdvancedPage.ui:233
-#, fuzzy, kde-format
-#| msgid "Enable Bi-Directional text rendering"
+#, kde-format
 msgid "Bi-Directional text rendering"
-msgstr "Omogoči dvosmeren prikaz besedila"
+msgstr "Dvosmeren prikaz besedila"
 
 #. i18n: ectx: property (text), widget (QLabel, label_14)
 #: EditProfileAdvancedPage.ui:256
 #, kde-format
 msgid "Default character encoding:"
-msgstr "Privzeto kodiranje znakov"
+msgstr "Privzeto kodiranje znakov:"
 
 #. i18n: ectx: attribute (title), widget (QWidget, colorSchemeTab)
 #: EditProfileAppearancePage.ui:33
-#, fuzzy, kde-format
-#| msgid "Color Scheme && Background"
+#, kde-format
 msgid "Color scheme && font"
-msgstr "Barvna shema in ozadje"
+msgstr "Barvna shema && pisava"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, newColorSchemeButton)
 #: EditProfileAppearancePage.ui:66
@@ -745,25 +739,22 @@ msgstr "Privzete vrednosti"
 
 #. i18n: ectx: property (text), widget (KNS3::Button, downloadColorSchemeButton)
 #: EditProfileAppearancePage.ui:106
-#, fuzzy, kde-format
-#| msgctxt "@action:button Create an alternate color scheme"
-#| msgid "New..."
+#, kde-format
 msgid "Get New..."
-msgstr "Nova ..."
+msgstr "Dobi novo..."
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
 #: EditProfileAppearancePage.ui:139
-#, fuzzy, kde-format
-#| msgid "Font"
+#, kde-format
 msgid "Font:"
-msgstr "Pisava"
+msgstr "Pisava:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseFontButton)
 #: EditProfileAppearancePage.ui:174
 #, kde-format
 msgctxt "@action:button open a dialog with list of fonts"
 msgid "Choose..."
-msgstr ""
+msgstr "Izberi..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
 #: EditProfileAppearancePage.ui:181
@@ -799,43 +790,35 @@ msgstr "Kazalka"
 #: EditProfileAppearancePage.ui:226
 #, kde-format
 msgid "Shape:"
-msgstr ""
+msgstr "Oblika:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeBlock)
 #: EditProfileAppearancePage.ui:236
-#, fuzzy, kde-format
-#| msgctxt "The shape of the cursor"
-#| msgid "Block"
+#, kde-format
 msgctxt "A solid rectangular"
 msgid "Block"
 msgstr "Kvadratek"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeIBeam)
 #: EditProfileAppearancePage.ui:246
-#, fuzzy, kde-format
-#| msgctxt "The shape of the cursor, similar to a capital I"
-#| msgid "I-Beam"
+#, kde-format
 msgctxt "A vertical line on the left edge"
 msgid "I-Beam"
-msgstr "Črtica |"
+msgstr "Žarek"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeUnderline)
 #: EditProfileAppearancePage.ui:256
-#, fuzzy, kde-format
-#| msgctxt "The shape of the cursor"
-#| msgid "Underline"
+#, kde-format
 msgctxt "A hortizonal line on the bottom edge"
 msgid "Underline"
 msgstr "Podčrtaj"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: EditProfileAppearancePage.ui:288
-#, fuzzy, kde-format
-#| msgctxt "@label:listbox Column header text for the actual colors"
-#| msgid "Color"
+#, kde-format
 msgctxt "Cursor color options"
 msgid "Color:"
-msgstr "Barva"
+msgstr "Barva:"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
 #: EditProfileAppearancePage.ui:304
@@ -845,109 +828,121 @@ msgstr "Barva kazalke naj se ujema z barvo znaka, ki se nahaja pod njim."
 
 #. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
 #: EditProfileAppearancePage.ui:307
-#, fuzzy, kde-format
-#| msgid "Set cursor color to match current character"
+#, kde-format
 msgid "Match current character"
-msgstr "Barva kazalke naj se ujema z barvo znaka"
+msgstr "Izberi znak, ki ustreza trenutnemu"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
-#: EditProfileAppearancePage.ui:328
+#: EditProfileAppearancePage.ui:323
 #, kde-format
 msgid "Use a custom, fixed color for the cursor"
 msgstr "Za kazalko uporabi stalno barvo po meri"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
-#: EditProfileAppearancePage.ui:331
+#: EditProfileAppearancePage.ui:326
 #, kde-format
-msgid "Custom cursor color:"
-msgstr "Barva kazalke po meri:"
+msgid "Custom cursor color"
+msgstr "Barva kazalke po meri"
+
+#. i18n: ectx: property (text), widget (QLabel, customCursorColorLabel)
+#: EditProfileAppearancePage.ui:357
+#, kde-format
+msgid "Cursor:"
+msgstr "Kazalka:"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
-#: EditProfileAppearancePage.ui:347
+#: EditProfileAppearancePage.ui:370
 #, kde-format
 msgid "Select the color used to draw the cursor"
 msgstr "Izberite barvo ki se naj uporabi za izris kazalke"
 
+#. i18n: ectx: property (text), widget (QLabel, customCursorTextColorLabel)
+#: EditProfileAppearancePage.ui:390
+#, kde-format
+msgid "Text:"
+msgstr "Besedilo:"
+
+#. i18n: ectx: property (toolTip), widget (KColorButton, customTextColorSelectButton)
+#: EditProfileAppearancePage.ui:403
+#, kde-format
+msgid "Select the color used to draw the character underneath the cursor"
+msgstr "Izberite barvo, za izris znaka pod kazalko"
+
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: EditProfileAppearancePage.ui:388
-#, fuzzy, kde-format
-#| msgid "Blinking cursor"
+#: EditProfileAppearancePage.ui:428
+#, kde-format
 msgid "Blinking:"
-msgstr "Utripajoča kazalka"
+msgstr "Utripajoča kazalka:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
-#: EditProfileAppearancePage.ui:404
+#: EditProfileAppearancePage.ui:444
 #, kde-format
 msgid "Make the cursor blink regularly"
 msgstr "Povzroči, da kazalka redno utripa"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
 #. i18n: ectx: property (text), widget (QCheckBox, alignToCenterButton)
-#: EditProfileAppearancePage.ui:407 EditProfileAppearancePage.ui:576
+#: EditProfileAppearancePage.ui:447 EditProfileAppearancePage.ui:616
 #, kde-format
 msgid "Enabled"
-msgstr ""
+msgstr "Omogočeno"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #. i18n: ectx: attribute (title), widget (QWidget, miscTab)
-#: EditProfileAppearancePage.ui:430 EditProfileMousePage.ui:249
-#, fuzzy, kde-format
-#| msgid "Miscellaneous"
+#: EditProfileAppearancePage.ui:470 EditProfileMousePage.ui:249
+#, kde-format
 msgctxt "Items that do not fit in other categories"
 msgid "Miscellaneous"
 msgstr "Razno"
 
 #. i18n: ectx: property (title), widget (QGroupBox, contentsGroup)
-#: EditProfileAppearancePage.ui:444
-#, fuzzy, kde-format
-#| msgid "Terminal Features"
+#: EditProfileAppearancePage.ui:484
+#, kde-format
 msgctxt "@title:group"
 msgid "Terminal contents"
-msgstr "Zmožnosti terminala"
+msgstr "Vsebine terminala"
 
 #. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
-#: EditProfileAppearancePage.ui:456
-#, fuzzy, kde-format
-#| msgid "Line Spacing:"
+#: EditProfileAppearancePage.ui:496
+#, kde-format
 msgid "Line spacing:"
 msgstr "Razmik vrstic:"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
-#: EditProfileAppearancePage.ui:474
+#: EditProfileAppearancePage.ui:514
 #, kde-format
 msgid "The number of pixels between two lines"
 msgstr "Število točk med dvema vrsticama"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, lineSpacingSpinner)
 #. i18n: ectx: property (suffix), widget (QSpinBox, marginsSpinner)
-#: EditProfileAppearancePage.ui:477 EditProfileAppearancePage.ui:529
+#: EditProfileAppearancePage.ui:517 EditProfileAppearancePage.ui:569
 #, kde-format
 msgctxt "(pixels) visual size unit"
 msgid " px"
-msgstr ""
+msgstr " px"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: EditProfileAppearancePage.ui:511
+#: EditProfileAppearancePage.ui:551
 #, kde-format
 msgid "Margins:"
-msgstr ""
+msgstr "Robovi:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: EditProfileAppearancePage.ui:563
+#: EditProfileAppearancePage.ui:603
 #, kde-format
 msgid "Align to center:"
-msgstr ""
+msgstr "Usredini:"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: EditProfileAppearancePage.ui:602
-#, fuzzy, kde-format
-#| msgid "Window"
+#: EditProfileAppearancePage.ui:642
+#, kde-format
 msgid "Window:"
-msgstr "Okno"
+msgstr "Okno:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
 #. i18n: ectx: tooltip, entry (ShowTerminalSizeHint), group (KonsoleWindow)
-#: EditProfileAppearancePage.ui:609 settings/konsole.kcfg:29
+#: EditProfileAppearancePage.ui:649 settings/konsole.kcfg:29
 #, kde-format
 msgid ""
 "Show terminal size in columns and lines in the center of window after "
@@ -959,23 +954,23 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowTerminalSizeHint)
 #. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
 #. i18n: ectx: label, entry (ShowTerminalSizeHint), group (KonsoleWindow)
-#: EditProfileAppearancePage.ui:612 settings/GeneralSettings.ui:184
+#: EditProfileAppearancePage.ui:652 settings/GeneralSettings.ui:184
 #: settings/konsole.kcfg:28
 #, kde-format
 msgid "Show hint for terminal size after resizing"
 msgstr "Prikaži namig za velikost terminala po spremembi velikosti"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: EditProfileAppearancePage.ui:619
+#: EditProfileAppearancePage.ui:659
 #, kde-format
 msgid "Indicate whether the window is active by dimming the colors"
-msgstr ""
+msgstr "Z zatemnitvijo barv označi, ali je okno aktivno"
 
 #. i18n: ectx: property (text), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: EditProfileAppearancePage.ui:622
+#: EditProfileAppearancePage.ui:662
 #, kde-format
 msgid "Dim the colors when the window loses focus"
-msgstr ""
+msgstr "Zatemni barve, ko okno ni več aktivno"
 
 #: EditProfileDialog.cpp:83
 #, kde-format
@@ -1009,10 +1004,9 @@ msgid "Keyboard"
 msgstr "Tipkovnica"
 
 #: EditProfileDialog.cpp:177
-#, fuzzy, kde-format
-#| msgid "Key Bindings"
+#, kde-format
 msgid "Key bindings"
-msgstr "Tipkovne bližnjice"
+msgstr "Povezave tipk"
 
 #: EditProfileDialog.cpp:189
 #, kde-format
@@ -1052,36 +1046,49 @@ msgstr "<p>Profil s tem imenom že obstaja.</p>"
 #, kde-format
 msgid "Editing profile: %2"
 msgid_plural "Editing %1 profiles: %2"
-msgstr[0] "Urejanje %1 profilov: %2"
-msgstr[1] "Urejanje %1 profila: %2"
+msgstr[0] "Urejanje %1 profila: %2"
+msgstr[1] "Urejanje %1 profilov: %2"
 msgstr[2] "Urejanje %1 profilov: %2"
 msgstr[3] "Urejanje %1 profilov: %2"
 
 #: EditProfileDialog.cpp:367
 #, kde-format
 msgid "Edit Profile \"%1\""
-msgstr "Uredi profil »%1«"
+msgstr "Uredi profil \"%1\""
 
 #: EditProfileDialog.cpp:455
 #, fuzzy, kde-format
-#| msgid "Columns"
-msgctxt "Suffix of the number of columns (N columns)"
+#| msgctxt ""
+#| "Suffix of the number of columns (N columns). The leading space is needed "
+#| "to separate it from the number value."
+#| msgid " column"
+#| msgid_plural " columns"
+msgctxt ""
+"Suffix of the number of columns (N columns). The leading space is needed to "
+"separate it from the number value."
 msgid " column"
 msgid_plural " columns"
-msgstr[0] "Stolpci"
-msgstr[1] "Stolpci"
-msgstr[2] "Stolpci"
-msgstr[3] "Stolpci"
+msgstr[0] " stolpec"
+msgstr[1] " stolpca"
+msgstr[2] " stolpci"
+msgstr[3] " stolpcev"
 
 #: EditProfileDialog.cpp:456
-#, kde-format
-msgctxt "Suffix of the number of rows (N rows)"
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "Suffix of the number of rows (N rows). The leading space is needed to "
+#| "separate it from the number value."
+#| msgid " row"
+#| msgid_plural " rows"
+msgctxt ""
+"Suffix of the number of rows (N rows). The leading space is needed to "
+"separate it from the number value."
 msgid " row"
 msgid_plural " rows"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] " vrstica"
+msgstr[1] " vrstici"
+msgstr[2] " vrstice"
+msgstr[3] " vrstic"
 
 #: EditProfileDialog.cpp:508
 #, kde-format
@@ -1093,28 +1100,28 @@ msgstr "Uredi okolje"
 msgid "One environment variable per line"
 msgstr "Ena okoljska spremenljivka na vrstico"
 
-#: EditProfileDialog.cpp:540
+#: EditProfileDialog.cpp:543
 #, kde-format
 msgctxt "Unit of time"
 msgid " second"
 msgid_plural " seconds"
-msgstr[0] " sekund"
-msgstr[1] " sekunda"
-msgstr[2] " sekundi"
-msgstr[3] " sekunde"
+msgstr[0] " sekunda"
+msgstr[1] " sekundi"
+msgstr[2] " sekunde"
+msgstr[3] " sekund"
 
-#: EditProfileDialog.cpp:623
+#: EditProfileDialog.cpp:631
 #, kde-format
 msgid "Select Initial Directory"
 msgstr "Izberi začetno mapo"
 
-#: EditProfileDialog.cpp:1151
+#: EditProfileDialog.cpp:1164
 #, kde-kuit-format
 msgctxt "@info"
 msgid "Scheme <resource>%1</resource> failed to load."
-msgstr ""
+msgstr "Shema <resource>%1</resource> se ni uspela naložiti."
 
-#: EditProfileDialog.cpp:1335
+#: EditProfileDialog.cpp:1349
 #, kde-format
 msgid ""
 "This color scheme uses a transparent background which does not appear to be "
@@ -1122,7 +1129,7 @@ msgid ""
 msgstr ""
 "Ta barvna shema uporablja prozorno ozadje, kar na tem sistemu ni podprto"
 
-#: EditProfileDialog.cpp:1341
+#: EditProfileDialog.cpp:1355
 #, kde-format
 msgid ""
 "Konsole was started before desktop effects were enabled. You need to restart "
@@ -1131,7 +1138,7 @@ msgstr ""
 "Program Konsole je bil začet preden so bili omogočeni učinki namizja. Da bi "
 "lahko videli prozorno ozadje, ga morate znova zagnati."
 
-#: EditProfileDialog.cpp:1898
+#: EditProfileDialog.cpp:1927
 #, kde-format
 msgid "AaZz09..."
 msgstr "AaZz09 ..."
@@ -1150,11 +1157,10 @@ msgstr "Opisno ime profila"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, profileNameEdit)
 #: EditProfileGeneralPage.ui:74
-#, fuzzy, kde-format
-#| msgid "Profile name:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Profile name"
-msgstr "Ime profila:"
+msgstr "Ime profila"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: EditProfileGeneralPage.ui:87
@@ -1175,7 +1181,7 @@ msgstr ""
 #: EditProfileGeneralPage.ui:106
 #, kde-format
 msgid "/bin/sh"
-msgstr ""
+msgstr "/bin/sh"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
 #: EditProfileGeneralPage.ui:119
@@ -1194,7 +1200,7 @@ msgstr "Začetna delovna mapa za nove terminalske seje s tem profilom"
 #: EditProfileGeneralPage.ui:138
 #, kde-format
 msgid "/home/username"
-msgstr ""
+msgstr "/home/username"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
 #: EditProfileGeneralPage.ui:145
@@ -1204,10 +1210,9 @@ msgstr "Izberite začetno mapo"
 
 #. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
 #: EditProfileGeneralPage.ui:155
-#, fuzzy, kde-format
-#| msgid "Start in same directory as current tab"
+#, kde-format
 msgid "Start in same directory as current session"
-msgstr "Začni v isti mapi kot trenutni zavihek"
+msgstr "Začni v isti mapi kot trenutno sejo"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: EditProfileGeneralPage.ui:168
@@ -1223,33 +1228,26 @@ msgstr "Uredi seznam okoljskih spremenljivk in povezanih vrednosti"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
 #: EditProfileGeneralPage.ui:233
-#, fuzzy, kde-format
-#| msgid "Terminal Size"
+#, kde-format
 msgid "Initial terminal size:"
-msgstr "Velikost terminala"
+msgstr "Začetna velikost terminala:"
 
 #. i18n: ectx: property (text), widget (QLabel, useCurrentWindowSizeNote)
 #: EditProfileGeneralPage.ui:308
-#, fuzzy, kde-format
-#| msgid ""
-#| "Configure Konsole->General->Use current window size on next startup must "
-#| "be disabled for these entries to work."
+#, kde-format
 msgctxt "@info"
 msgid ""
 "<html><head/><body><p><span style=\" font-style:italic;\">Settings → "
 "Configure Konsole → General → Remember window size</span> must be disabled "
 "for these entries to work.</p></body></html>"
 msgstr ""
-"Da bodo ti vnosi delovali, morate onemogočiti Konsole->Splošno->Uporabi "
-"trenutno velikost okna ob naslednjem zagonu."
+"<html><head/><body><p><span style=\" font-style:italic;\">Nastavitve → "
+"Nastavi Konsole → Splošno → Zapomni si velikost okna</span> mora biti "
+"onemogočeno, da ti vnosi delujejo.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, note)
 #: EditProfileKeyboardPage.ui:29
-#, fuzzy, kde-format
-#| msgid ""
-#| "Key bindings control how combinations of keystrokes in the terminal "
-#| "window are converted into the stream of characters which are sent to the "
-#| "current terminal program."
+#, kde-format
 msgctxt "@info"
 msgid ""
 "Key bindings control how combinations of keystrokes in the terminal window "
@@ -1257,16 +1255,17 @@ msgid ""
 "terminal program. For more information on how to customize the key bindings "
 "check the Konsole Handbook."
 msgstr ""
-"Tipkovne bližnjice nadzirajo, kako se kombinacije pritisnjenih tipk v "
-"terminalskem oknu spremenijo v niz znakov, ki se pošlje trenutnemu "
-"terminalskemu programu."
+"Tipkovne povezave določajo, kako se kombinacije pritisnjenih tipk v "
+"terminalskem oknu spremenijo v niz znakov, ki se pošlje trenutnemu programu "
+"v terminalu. Za več informacij, kako prilagoditi tipkovne povezave, "
+"preverite v Priročniku za Konsole."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, newKeyBindingsButton)
 #: EditProfileKeyboardPage.ui:72
-#, fuzzy, kde-format
-#| msgid "Create a new key bindings list based upon the selected bindings"
+#, kde-format
 msgid "Create a new key bindings scheme based upon the selected bindings"
-msgstr "Ustvari nov seznam tipkovnih bližnjic, ki temelji na izbranih vezavah"
+msgstr ""
+"Ustvari novo shemo tipkovnih bližnjic, ki temelji na izbranih povezavah"
 
 #. i18n: ectx: property (text), widget (QPushButton, newKeyBindingsButton)
 #: EditProfileKeyboardPage.ui:75
@@ -1277,65 +1276,57 @@ msgstr "Nov ..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, editKeyBindingsButton)
 #: EditProfileKeyboardPage.ui:82
-#, fuzzy, kde-format
-#| msgid "Edit the selected key bindings list"
+#, kde-format
 msgid "Edit the selected key bindings scheme"
-msgstr "Uredi izbrani seznam tipkovnih bližnjic"
+msgstr "Uredi izbrano shemo tipkovnih bližnjic"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, removeKeyBindingsButton)
 #: EditProfileKeyboardPage.ui:92
-#, fuzzy, kde-format
-#| msgid "Delete the selected key bindings list"
+#, kde-format
 msgid "Delete the selected key bindings scheme"
-msgstr "Izbriši izbrani seznam tipkovnih bližnjic"
+msgstr "Izbriši izbrano shemo tipkovnih bližnjic"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, resetKeyBindingsButton)
 #: EditProfileKeyboardPage.ui:102
-#, fuzzy, kde-format
-#| msgid "Reset the selected color scheme settings to the default values"
+#, kde-format
 msgid "Reset the selected key bindings scheme to its default values"
-msgstr "Ponastavi nastavitve izbrane barvne sheme na privzete"
+msgstr "Ponastavi izbrane sheme tipkovnih bližnjic na privzete"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab)
 #: EditProfileMousePage.ui:33
 #, kde-format
 msgid "Text interaction"
-msgstr ""
+msgstr "Interakcija besedila"
 
 #. i18n: ectx: property (toolTip), widget (QLabel, label_11)
 #. i18n: ectx: property (toolTip), widget (QLineEdit, wordCharacterEdit)
 #: EditProfileMousePage.ui:47 EditProfileMousePage.ui:68
-#, fuzzy, kde-format
-#| msgid ""
-#| "Characters which are considered part of a word when double-clicking to "
-#| "select whole words in the terminal"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid ""
 "Characters which are considered part of a word when double-clicking to "
 "select whole words in the terminal."
 msgstr ""
 "Znaki, ki se obravnavajo kot del besede, ko dvokliknete, da bi v terminalu "
-"izbrali celotne besede"
+"izbrali celotno besedo."
 
 #. i18n: ectx: property (text), widget (QLabel, label_11)
 #: EditProfileMousePage.ui:50
 #, kde-format
 msgid "Word characters:"
-msgstr ""
+msgstr "Znaki besede:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_17)
 #: EditProfileMousePage.ui:91
-#, fuzzy, kde-format
-#| msgid "Triple-click select:"
+#, kde-format
 msgid "Triple-click selects:"
-msgstr "Izbor s troklikom:"
+msgstr "Izbor s trojnim klikom:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tripleClickSelectsTheWholeLine)
 #: EditProfileMousePage.ui:101
-#, fuzzy, kde-format
-#| msgid "The whole current line"
+#, kde-format
 msgid "The whole line"
-msgstr "Celotna trenutna vrstica"
+msgstr "Celotna vrstica"
 
 #. i18n: ectx: property (text), widget (QRadioButton, tripleClickSelectsFromMousePosition)
 #: EditProfileMousePage.ui:111
@@ -1345,31 +1336,27 @@ msgstr "Od položaja miške do konca vrstice"
 
 #. i18n: ectx: property (text), widget (QLabel, label_13)
 #: EditProfileMousePage.ui:137
-#, fuzzy, kde-format
-#| msgid "Triple-click select:"
+#, kde-format
 msgid "Middle-click pastes:"
-msgstr "Izbor s troklikom:"
+msgstr "Lepljenje z srednjim gumbom:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pasteFromClipboardButton)
 #: EditProfileMousePage.ui:147
-#, fuzzy, kde-format
-#| msgid "Paste from clipboard"
+#, kde-format
 msgid "From clipboard"
-msgstr "Prilepi iz odložišča"
+msgstr "Iz odložišča"
 
 #. i18n: ectx: property (text), widget (QRadioButton, pasteFromX11SelectionButton)
 #: EditProfileMousePage.ui:157
-#, fuzzy, kde-format
-#| msgid "Paste from selection"
+#, kde-format
 msgid "From selection"
-msgstr "Prilepi izbiro"
+msgstr "Iz izbire"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: EditProfileMousePage.ui:183
-#, fuzzy, kde-format
-#| msgid "Copy Input To"
+#, kde-format
 msgid "Copy options:"
-msgstr "Kopiraj vnos v"
+msgstr "Možnosti kopiranja:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, copyTextToClipboardButton)
 #: EditProfileMousePage.ui:193
@@ -1452,10 +1439,9 @@ msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, openLinksByDirectClickButton)
 #: EditProfileMousePage.ui:301
-#, fuzzy, kde-format
-#| msgid "Open files and links by direct click"
+#, kde-format
 msgid "Open by direct click"
-msgstr "Odpri datoteke in povezave z neposrednim klikom"
+msgstr "Odpri z neposrednim klikom"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, underlineFilesButton)
 #: EditProfileMousePage.ui:308
@@ -1481,30 +1467,25 @@ msgstr "Izbrano besedilo boste lahko povlekli s Ctrl+klik."
 
 #. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
 #: EditProfileMousePage.ui:321
-#, fuzzy, kde-format
-#| msgid "Require Ctrl key for drag and drop"
+#, kde-format
 msgid "Require Ctrl key for drag && drop"
-msgstr "Za povleci in spusti zahtevaj tipko Ctrl"
+msgstr "Zahtevaj tipko Ctrl za povlek in && spust"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
 #: EditProfileMousePage.ui:328
-#, fuzzy, kde-format
-#| msgid ""
-#| "Always paste dropped URLs as text without offering move, copy and link "
-#| "actions."
+#, kde-format
 msgid ""
 "Always paste dropped files and URLs as text without offering move, copy and "
 "link actions."
 msgstr ""
-"Vedno prilepi spuščene URL-je kot besedilo, brez ponujanja dejanj za premik, "
-"kopiranje in povezovanje."
+"Vedno prilepi spuščene datoteke in spletne naslove kot besedilo, brez "
+"ponujanja premikov, kopiranja in povezovanja."
 
 #. i18n: ectx: property (text), widget (QCheckBox, dropUrlsAsText)
 #: EditProfileMousePage.ui:331
-#, fuzzy, kde-format
-#| msgid "Disable drag and drop menu for URLs and files"
+#, kde-format
 msgid "Disable drag && drop menu for files && URLs"
-msgstr "Prepreči meni vlečenja in spuščanja za URL-je in datoteke"
+msgstr "Prepreči menu vlečenja in spuščanja za datoteke in spletne naslove"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableMouseWheelZoomButton)
 #: EditProfileMousePage.ui:338
@@ -1526,26 +1507,26 @@ msgid ""
 "Mouse scroll wheel will emulate up/down key presses in programs that use the "
 "Alternate Screen buffer (e.g. less)"
 msgstr ""
+"Miškino kolesce bo posnemalo tipko gor/dol v programih, ki uporabljajo "
+"alternativni medpomnilnik zaslona (npr. program less)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableAlternateScrollingButton)
 #: EditProfileMousePage.ui:351
 #, kde-format
 msgid "Enable Alternate Screen buffer scrolling"
-msgstr ""
+msgstr "Omogoči pomikanje po medpomnilniku zaslona"
 
 #. i18n: ectx: property (text), widget (QLabel, historySizeLabel)
 #: EditProfileScrollingPage.ui:43
-#, fuzzy, kde-format
-#| msgid "Scrollback"
+#, kde-format
 msgid "Scrollback:"
-msgstr "Pomnilnik vrstic"
+msgstr "Pomik nazaj:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: EditProfileScrollingPage.ui:85
-#, fuzzy, kde-format
-#| msgid "Scroll Page Up/Down Amount"
+#, kde-format
 msgid "Scroll Page Up/Down:"
-msgstr "Količina drsenja strani gor/dol"
+msgstr "Pomik po strani navzgor/navzdol:"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, scrollHalfPage)
 #: EditProfileScrollingPage.ui:101
@@ -1555,10 +1536,9 @@ msgstr "Premakni stran za polovico višine okna"
 
 #. i18n: ectx: property (text), widget (QRadioButton, scrollHalfPage)
 #: EditProfileScrollingPage.ui:104
-#, fuzzy, kde-format
-#| msgid "Half Page Height"
+#, kde-format
 msgid "Half screen height"
-msgstr "Polovica višine okna"
+msgstr "Polovica višine zaslona"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, scrollFullPage)
 #: EditProfileScrollingPage.ui:114
@@ -1568,17 +1548,15 @@ msgstr "Premakni stran za celotno višino okna"
 
 #. i18n: ectx: property (text), widget (QRadioButton, scrollFullPage)
 #: EditProfileScrollingPage.ui:117
-#, fuzzy, kde-format
-#| msgid "Full Page Height"
+#, kde-format
 msgid "Full screen height"
-msgstr "Celotna višina okna"
+msgstr "Celotna višina zaslona"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: EditProfileScrollingPage.ui:149
-#, fuzzy, kde-format
-#| msgid "Tab bar position:"
+#, kde-format
 msgid "Scrollbar position:"
-msgstr "Položaj vrstice z zavihki:"
+msgstr "Položaj drsnika:"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarRightButton)
 #: EditProfileScrollingPage.ui:159
@@ -1588,11 +1566,10 @@ msgstr "Prikaže drsnik na desni strani terminalskega okna"
 
 #. i18n: ectx: property (text), widget (QRadioButton, scrollBarRightButton)
 #: EditProfileScrollingPage.ui:162
-#, fuzzy, kde-format
-#| msgid "Show on right side"
+#, kde-format
 msgctxt "@option:radio Show scrollbar on the right side"
 msgid "Right side"
-msgstr "Prikaži na desni strani"
+msgstr "Na desni strani"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarLeftButton)
 #: EditProfileScrollingPage.ui:172
@@ -1602,18 +1579,29 @@ msgstr "Prikaže drsnik na levi strani terminalskega okna"
 
 #. i18n: ectx: property (text), widget (QRadioButton, scrollBarLeftButton)
 #: EditProfileScrollingPage.ui:175
-#, fuzzy, kde-format
-#| msgid "Text size:"
+#, kde-format
 msgctxt "@option:radio Show scrollbar on the left side"
 msgid "Left side"
-msgstr "Velikost pisave:"
+msgstr "Na levi strani"
 
 #. i18n: ectx: property (text), widget (QRadioButton, scrollBarHiddenButton)
 #: EditProfileScrollingPage.ui:185
 #, kde-format
 msgctxt "@option:radio Hide the scroll bar"
 msgid "Hidden"
-msgstr ""
+msgstr "Skrit"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: EditProfileScrollingPage.ui:217
+#, kde-format
+msgid "Highlighting:"
+msgstr "Osvetljevanje:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, highlightScrolledLinesButton)
+#: EditProfileScrollingPage.ui:227
+#, kde-format
+msgid "Highlight the lines coming into view"
+msgstr "Osvetli vrstice, ki prihajajo v pogled"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
 #: EditProfileTabsPage.ui:43
@@ -1639,41 +1627,49 @@ msgstr "Prag za neprekinjeno nedejavnost:"
 msgid "The threshold for continuous silence to be detected by Konsole"
 msgstr "Prag za neprekinjeno nedejavnost, ki jo zazna Konsole"
 
-#: Filter.cpp:489
+#: Filter.cpp:474
 #, kde-format
 msgid "Open Link"
 msgstr "Odpri povezavo"
 
-#: Filter.cpp:490
+#: Filter.cpp:476
 #, kde-format
 msgid "Copy Link Address"
 msgstr "Kopiraj naslov povezave"
 
-#: Filter.cpp:492
+#: Filter.cpp:479
 #, kde-format
 msgid "Send Email To..."
 msgstr "Pošlji e-pošto na ..."
 
-#: Filter.cpp:493
+#: Filter.cpp:481
 #, kde-format
 msgid "Copy Email Address"
 msgstr "Kopiraj e-poštni naslov"
 
-#: Filter.cpp:631
+#: Filter.cpp:606
 #, kde-format
-msgid "Open File"
-msgstr "Odpri datoteko"
+msgid "Copy Location"
+msgstr "Kopiraj lokacijo"
+
+#: Filter.cpp:620 Filter.cpp:638
+#, kde-format
+msgid "open with"
+msgstr "odpri z"
+
+#: Filter.cpp:725
+#, kde-format
+msgid "Generating Thumbnail"
+msgstr "Ustvarjam predogled"
 
 #: FontDialog.cpp:38
-#, fuzzy, kde-format
-#| msgid "Select Font..."
+#, kde-format
 msgctxt "@title:window"
 msgid "Select font"
-msgstr "Izberi pisavo ..."
+msgstr "Izberi pisavo"
 
 #: FontDialog.cpp:41
-#, fuzzy, kde-format
-#| msgid "Show All Fonts"
+#, kde-format
 msgctxt "@action:button"
 msgid "Show all fonts"
 msgstr "Pokaži vse pisave"
@@ -1686,6 +1682,9 @@ msgid ""
 "equal width (monospace). Any non monospaced font may cause display issues. "
 "This should not be necessary except in rare cases."
 msgstr ""
+"Zaradi narave delovanja terminal potrebuje pisavo enake širine (monospace). "
+"Pisave neenake širine lahko povzročajo težave. To sicer v redkih primerih ni "
+"nujno."
 
 #: HistorySizeDialog.cpp:39
 #, kde-format
@@ -1704,37 +1703,25 @@ msgstr "Katerekoli nastavitve so samo začasne za to sejo."
 msgctxt "@label:textbox Unit of scrollback"
 msgid " line"
 msgid_plural " lines"
-msgstr[0] " vrstic"
-msgstr[1] " vrstica"
-msgstr[2] " vrstici"
-msgstr[3] " vrstice"
+msgstr[0] " vrstica"
+msgstr[1] " vrstici"
+msgstr[2] " vrstice"
+msgstr[3] " vrstic"
 
 #: HistorySizeWidget.cpp:72
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "When using this option, the scrollback data will be saved to RAM.  If you "
-#| "choose a huge value, your system may run out of free RAM and cause "
-#| "serious issues with your system."
+#, kde-format
 msgctxt "@info:whatsthis"
 msgid ""
 "When using this option, the scrollback data will be saved to RAM. If you "
 "choose a huge value, your system may run out of free RAM and cause serious "
 "issues with your system."
 msgstr ""
-"Če uporabite to možnost, bodo podatki pomnjenih vrstic zapisani v pomnilnik. "
-"Če izberete previsoko vrednost, lahko vašemu sistemu zmanjka pomnilnika, kar "
-"lahko vodi v resne težave."
+"Če uporabite to možnost, bodo podatki že pobeglih vrstic zaslona vrstic "
+"zapisani v pomnilnik. Če izberete previsoko vrednost, lahko vašemu sistemu "
+"zmanjka prostega pomnilnika, kar lahko vodi v resne težave."
 
 #: HistorySizeWidget.cpp:81
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:status"
-#| msgid ""
-#| "When using this option, the scrollback data will be written unencrypted "
-#| "to temporary files. Those temporary files will be deleted automatically "
-#| "when Konsole is closed in a normal manner.\n"
-#| "Use Settings->Configure Konsole->File Location to select the location of "
-#| "the temporary files."
+#, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
 "When using this option, the scrollback data will be written unencrypted to "
@@ -1743,11 +1730,11 @@ msgid ""
 "Konsole → File Location</emphasis> to select the location of the temporary "
 "files."
 msgstr ""
-"Če uporabite to možnost, bodo podatki pomnjenih vrstic zapisani v začasne "
-"datoteke nešifrirani. Če se Konsole zapre na običajen način, bodo te začasne "
-"datoteke samodejno izbrisane.\n"
-"Uporabite Nastavitve->Nastavi Konsole->Mesta datotek, da izberete mesta "
-"začasnih datotek."
+"Če uporabite to možnost, bodo podatki že pobeglih vrstic nešifrirano "
+"zapisani v začasne datoteke. Če se Konsole zapre na običajen način, bodo te "
+"začasne datoteke samodejno izbrisane. <nl/>Uporabite <emphasis>Nastavitve → "
+"Nastavi Konsole → Mesta datotek</emphasis> da izberete mesto začasnih "
+"datotek."
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, fixedSizeHistoryButton)
 #: HistorySizeWidget.ui:60
@@ -1757,10 +1744,9 @@ msgstr "Omeji pomnjen izpis na fiksno število vrstic"
 
 #. i18n: ectx: property (text), widget (QRadioButton, fixedSizeHistoryButton)
 #: HistorySizeWidget.ui:63
-#, fuzzy, kde-format
-#| msgid "Fixed size scrollback:"
+#, kde-format
 msgid "Fixed size:"
-msgstr "Fiksna velikost pomnjenih vrstic:"
+msgstr "Fiksna velikost:"
 
 #. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, historyLineSpinner)
 #: HistorySizeWidget.ui:73
@@ -1776,11 +1762,10 @@ msgstr "Zapomni si ves izpis, ki ga ustvari terminal"
 
 #. i18n: ectx: property (text), widget (QRadioButton, unlimitedHistoryButton)
 #: HistorySizeWidget.ui:138
-#, fuzzy, kde-format
-#| msgid "Unlimited scrollback"
+#, kde-format
 msgctxt "Save all lines to the scrollback history"
 msgid "Unlimited"
-msgstr "Neomejeno število pomnjenih vrstic"
+msgstr "Neomejeno"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, noHistoryButton)
 #: HistorySizeWidget.ui:174
@@ -1790,20 +1775,16 @@ msgstr "Ne zapomni si predhodnega izpisa"
 
 #. i18n: ectx: property (text), widget (QRadioButton, noHistoryButton)
 #: HistorySizeWidget.ui:177
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu Do not select any tabs"
-#| msgid "&None"
+#, kde-format
 msgctxt "Do not save any lines to the scrollback history"
 msgid "None"
-msgstr "&Nobenega"
+msgstr "Noben"
 
 #: IncrementalSearchBar.cpp:60
-#, fuzzy, kde-format
-#| msgctxt "@label:textbox"
-#| msgid "Find:"
+#, kde-format
 msgctxt "@label:textbox"
 msgid "Find..."
-msgstr "Najdi:"
+msgstr "Najdi..."
 
 #: IncrementalSearchBar.cpp:62
 #, kde-format
@@ -1905,7 +1886,7 @@ msgstr "Poišči trenutno iskalno frazo od zgoraj navzdol"
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Enter descriptive label"
-msgstr ""
+msgstr "Vnesite opisno značko"
 
 #: KeyBindingEditor.cpp:77
 #, kde-format
@@ -1930,7 +1911,7 @@ msgstr "Uredi seznam tipkovnih bližnjic"
 #: KeyBindingEditor.cpp:308
 #, kde-format
 msgid "A key bindings scheme cannot be saved with an empty description."
-msgstr ""
+msgstr "Sheme povezave tipk ne morem shraniti s praznim opisom."
 
 #. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
 #: KeyBindingEditor.ui:65
@@ -1957,160 +1938,158 @@ msgstr "Vhod:"
 msgid "Output:"
 msgstr "Izpis:"
 
-#: main.cpp:139
+#: main.cpp:135
 #, kde-format
 msgctxt "@title"
 msgid "Konsole"
 msgstr "Konsole"
 
-#: main.cpp:141
+#: main.cpp:137
 #, kde-format
 msgctxt "@title"
 msgid "Terminal emulator"
 msgstr "Posnemovalnik terminala"
 
-#: main.cpp:143
-#, fuzzy, kde-format
-#| msgctxt "@info:credit"
-#| msgid "(c) 1997-2017, The Konsole Developers"
+#: main.cpp:139
+#, kde-format
 msgctxt "@info:credit"
 msgid "(c) 1997-2020, The Konsole Developers"
-msgstr "(c) 1997-2017, razvijalci Konsole"
+msgstr "(c) 1997-2020, razvijalci Konsole"
 
-#: main.cpp:311
+#: main.cpp:313
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kurt Hindenburg"
 msgstr "Kurt Hindenburg"
 
-#: main.cpp:312
+#: main.cpp:314
 #, kde-format
 msgctxt "@info:credit"
 msgid "General maintainer, bug fixes and general improvements"
 msgstr "Splošni vzdrževalec, odpravljanje hroščev in splošne izboljšave"
 
-#: main.cpp:315
+#: main.cpp:317
 #, kde-format
 msgctxt "@info:credit"
 msgid "Robert Knight"
 msgstr "Robert Knight"
 
-#: main.cpp:316
+#: main.cpp:318
 #, kde-format
 msgctxt "@info:credit"
 msgid "Previous maintainer, ported to KDE4"
 msgstr "Prejšnji vzdrževalec, predelava za KDE4"
 
-#: main.cpp:318
+#: main.cpp:320
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Doelle"
 msgstr "Lars Doelle"
 
-#: main.cpp:319
+#: main.cpp:321
 #, kde-format
 msgctxt "@info:credit"
 msgid "Original author"
 msgstr "Prvotni avtor"
 
-#: main.cpp:321
+#: main.cpp:323
 #, kde-format
 msgctxt "@info:credit"
 msgid "Jekyll Wu"
 msgstr "Jekyll Wu"
 
-#: main.cpp:322 main.cpp:325 main.cpp:328
+#: main.cpp:324 main.cpp:327 main.cpp:330
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and general improvements"
 msgstr "Odpravljanje hroščev in splošne izboljšave"
 
-#: main.cpp:324
+#: main.cpp:326
 #, kde-format
 msgctxt "@info:credit"
 msgid "Waldo Bastian"
 msgstr "Waldo Bastian"
 
-#: main.cpp:327
+#: main.cpp:329
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Binner"
 msgstr "Stephan Binner"
 
-#: main.cpp:330
+#: main.cpp:332
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Dreibholz"
 msgstr "Thomas Dreibholz"
 
-#: main.cpp:331
+#: main.cpp:333
 #, kde-format
 msgctxt "@info:credit"
 msgid "General improvements"
 msgstr "Splošne izboljšave"
 
-#: main.cpp:333
+#: main.cpp:335
 #, kde-format
 msgctxt "@info:credit"
 msgid "Chris Machemer"
 msgstr "Chris Machemer"
 
-#: main.cpp:334 main.cpp:337 main.cpp:373 main.cpp:376 main.cpp:379
-#: main.cpp:382
+#: main.cpp:336 main.cpp:339 main.cpp:375 main.cpp:378 main.cpp:381
+#: main.cpp:384
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes"
 msgstr "Popravki hroščev"
 
-#: main.cpp:336
+#: main.cpp:338
 #, kde-format
 msgctxt "@info:credit"
 msgid "Francesco Cecconi"
 msgstr "Francesco Cecconi"
 
-#: main.cpp:339
+#: main.cpp:341
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Kulow"
 msgstr "Stephan Kulow"
 
-#: main.cpp:340
+#: main.cpp:342
 #, kde-format
 msgctxt "@info:credit"
 msgid "Solaris support and history"
 msgstr "Podpora Solarisu in zgodovini"
 
-#: main.cpp:342
+#: main.cpp:344
 #, kde-format
 msgctxt "@info:credit"
 msgid "Alexander Neundorf"
 msgstr "Alexander Neundorf"
 
-#: main.cpp:343
+#: main.cpp:345
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and improved startup performance"
 msgstr "Popravki hroščev in pohitren zagon"
 
-#: main.cpp:345
+#: main.cpp:347
 #, kde-format
 msgctxt "@info:credit"
 msgid "Peter Silva"
 msgstr "Peter Silva"
 
-#: main.cpp:346
+#: main.cpp:348
 #, kde-format
 msgctxt "@info:credit"
 msgid "Marking improvements"
 msgstr "Izboljšave označevanja"
 
-#: main.cpp:348
+#: main.cpp:350
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lotzi Boloni"
 msgstr "Lotzi Boloni"
 
-#: main.cpp:349
+#: main.cpp:351
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -2120,13 +2099,13 @@ msgstr ""
 "Vgrajen program Konsole\n"
 "Orodna vrstica in imena sej"
 
-#: main.cpp:352
+#: main.cpp:354
 #, kde-format
 msgctxt "@info:credit"
 msgid "David Faure"
 msgstr "David Faure"
 
-#: main.cpp:353
+#: main.cpp:355
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -2136,25 +2115,25 @@ msgstr ""
 "Vgrajen program Konsole\n"
 "Splošne izboljšave"
 
-#: main.cpp:356
+#: main.cpp:358
 #, kde-format
 msgctxt "@info:credit"
 msgid "Antonio Larrosa"
 msgstr "Antonio Larrosa"
 
-#: main.cpp:357
+#: main.cpp:359
 #, kde-format
 msgctxt "@info:credit"
 msgid "Visual effects"
 msgstr "Vidni učinki"
 
-#: main.cpp:359
+#: main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Matthias Ettrich"
 msgstr "Matthias Ettrich"
 
-#: main.cpp:360
+#: main.cpp:362
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -2164,176 +2143,180 @@ msgstr ""
 "Koda iz projekta kvt\n"
 "Splošne izboljšave"
 
-#: main.cpp:363
+#: main.cpp:365
 #, kde-format
 msgctxt "@info:credit"
 msgid "Warwick Allison"
 msgstr "Warwick Allison"
 
-#: main.cpp:364
+#: main.cpp:366
 #, kde-format
 msgctxt "@info:credit"
 msgid "Schema and text selection improvements"
 msgstr "Izboljšave shem in izbora besedila"
 
-#: main.cpp:366
+#: main.cpp:368
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dan Pilone"
 msgstr "Dan Pilone"
 
-#: main.cpp:367
+#: main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "SGI port"
 msgstr "Predelava za SGI"
 
-#: main.cpp:369
+#: main.cpp:371
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kevin Street"
 msgstr "Kevin Street"
 
-#: main.cpp:370
+#: main.cpp:372
 #, kde-format
 msgctxt "@info:credit"
 msgid "FreeBSD port"
 msgstr "Predelava za FreeBSD"
 
-#: main.cpp:372
+#: main.cpp:374
 #, kde-format
 msgctxt "@info:credit"
 msgid "Sven Fischer"
 msgstr "Sven Fischer"
 
-#: main.cpp:375
+#: main.cpp:377
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dale M. Flaven"
 msgstr "Dale M. Flaven"
 
-#: main.cpp:378
+#: main.cpp:380
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin Jones"
 msgstr "Martin Jones"
 
-#: main.cpp:381
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Knoll"
 msgstr "Lars Knoll"
 
-#: main.cpp:384
+#: main.cpp:386
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thanks to many others.\n"
 msgstr "Zahvala gre še mnogim drugim.\n"
 
-#: MainWindow.cpp:317
+#: MainWindow.cpp:311
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&New Tab"
 msgstr "&Nov zavihek"
 
-#: MainWindow.cpp:327
+#: MainWindow.cpp:321
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Clone Tab"
-msgstr "&Podvoji zavihek"
+msgstr "Podvoji zavihek"
 
-#: MainWindow.cpp:334
+#: MainWindow.cpp:328
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "New &Window"
-msgstr "Novo o&kno"
+msgstr "Novo okno"
 
-#: MainWindow.cpp:341
+#: MainWindow.cpp:335
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Window"
 msgstr "Zapri okno"
 
-#: MainWindow.cpp:346
+#: MainWindow.cpp:340
 #, kde-format
 msgctxt "@title:menu"
 msgid "&Bookmarks"
-msgstr "&Zaznamki"
+msgstr "Zaznamki"
 
-#: MainWindow.cpp:365
+#: MainWindow.cpp:359
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
 msgstr "Upravljaj profile ..."
 
-#: MainWindow.cpp:371
+#: MainWindow.cpp:365
 #, kde-format
 msgctxt "@item"
 msgid "Activate Menu"
 msgstr "Omogoči meni"
 
-#: MainWindow.cpp:600 MainWindow.cpp:619
+#: MainWindow.cpp:599 MainWindow.cpp:618
 #, kde-format
 msgctxt "@info"
 msgid "There is a process running in this window. Do you still want to quit?"
 msgid_plural ""
 "There are %1 processes running in this window. Do you still want to quit?"
-msgstr[0] "V oknu teče %1 opravil. Ali res želite končati?"
-msgstr[1] "V oknu teče %1 opravilo. Ali res želite končati?"
-msgstr[2] "V oknu tečeta %1 opravili. Ali res želite končati?"
-msgstr[3] "V oknu tečejo %1 opravila. Ali res želite končati?"
+msgstr[0] "V oknu teče %1 opravilo. Ali res želite končati?"
+msgstr[1] "V oknu tečeta %1 opravili. Ali res želite končati?"
+msgstr[2] "V oknu tečejo %1 opravila. Ali res želite končati?"
+msgstr[3] "V oknu teče %1 opravil. Ali res želite končati?"
 
-#: MainWindow.cpp:606 MainWindow.cpp:625 MainWindow.cpp:643
+#: MainWindow.cpp:605 MainWindow.cpp:624 MainWindow.cpp:642
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Close"
 msgstr "Potrdi zaprtje"
 
-#: MainWindow.cpp:608 MainWindow.cpp:627 MainWindow.cpp:644
+#: MainWindow.cpp:607 MainWindow.cpp:626 MainWindow.cpp:643
 #, kde-format
 msgctxt "@action:button"
 msgid "Close &Window"
-msgstr "Zapri &okno"
+msgstr "Zapri okno"
 
-#: MainWindow.cpp:630 MainWindow.cpp:647
+#: MainWindow.cpp:629 MainWindow.cpp:646
 #, kde-format
 msgctxt "@action:button"
 msgid "Close Current &Tab"
-msgstr "&Zapri trenutni zavihek"
+msgstr "Zapri &trenutni zavihek"
 
-#: MainWindow.cpp:640
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "There are %1 open tabs in this window. Do you still want to quit?"
+#: MainWindow.cpp:639
+#, kde-format
 msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
-msgstr "V tem oknu je %1 odprtih zavihkov. Ali res želite končati?"
+msgstr "V tem oknu je %1 odprtih terminalov. Ali res želite končati?"
 
-#: MainWindow.cpp:754
+#: MainWindow.cpp:757
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Splošno"
 
-#: MainWindow.cpp:759 Part.cpp:332
+#: MainWindow.cpp:762 Part.cpp:330
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profili"
 
-#: MainWindow.cpp:764
+#: MainWindow.cpp:767
 #, kde-format
 msgctxt "@title Preferences page name"
-msgid "Tab Bar"
+msgid "Tab Bar / Splitters"
 msgstr ""
 
-#: MainWindow.cpp:769
+#: MainWindow.cpp:772
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
-msgstr ""
+msgstr "Začasne datoteke"
 
-#: Part.cpp:338
+#: MainWindow.cpp:777
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "Thumbnails"
+msgstr "Predogledne sličice"
+
+#: Part.cpp:336
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Part Info"
@@ -2348,19 +2331,19 @@ msgstr "Možnosti izpisa"
 
 #. i18n: ectx: property (text), widget (QCheckBox, printerFriendly)
 #. i18n: ectx: label, entry (PrinterFriendly), group (PrintOptions)
-#: PrintOptions.ui:39 settings/konsole.kcfg:126
+#: PrintOptions.ui:39 settings/konsole.kcfg:168
 #, kde-format
 msgid "Printer &friendly mode (black text, no background)"
 msgstr "Prijazen način do tiskalnika (črno besedilo, brez ozadja)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, scaleOutput)
 #. i18n: ectx: label, entry (ScaleOutput), group (PrintOptions)
-#: PrintOptions.ui:46 settings/konsole.kcfg:130
+#: PrintOptions.ui:46 settings/konsole.kcfg:172
 #, kde-format
 msgid "&Scale output"
-msgstr "&Umeri izpis"
+msgstr "Umeri izpis"
 
-#: Profile.cpp:157
+#: Profile.cpp:160
 #, kde-format
 msgctxt "Name of the default/builtin profile"
 msgid "Default"
@@ -2384,29 +2367,16 @@ msgstr "Profil št. %1"
 
 #: RenameTabDialog.cpp:38
 #, kde-format
-msgid "Rename Tab"
-msgstr "Preimenuj zavihek"
+msgid "Current Tab Settings"
+msgstr "Trenutne nastavitve zavihkov"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: RenameTabWidget.ui:41
+#: RenameTabWidget.cpp:47
 #, kde-format
-msgid "Tab title format:"
-msgstr "Oblika imena zavihka:"
-
-#. i18n: ectx: property (toolTip), widget (QLineEdit, tabTitleEdit)
-#: RenameTabWidget.ui:60
-#, kde-format
-msgid "Normal tab title format"
-msgstr "Oblika imena običajnega zavihka"
-
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: RenameTabWidget.ui:76
-#, kde-format
-msgid "Remote tab title format:"
-msgstr "Oblika imena oddaljenega zavihka:"
+msgid "Color from theme"
+msgstr "Barva iz teme"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, remoteTabTitleEdit)
-#: RenameTabWidget.ui:95
+#: RenameTabWidget.ui:41
 #, kde-format
 msgid ""
 "Tab title format used when a remote command (e.g. connection to another "
@@ -2415,17 +2385,41 @@ msgstr ""
 "Oblika imena zavihka, ko se izvaja oddaljen ukaz (npr. povezava na oddaljen "
 "računalnik prek SSH)"
 
-#: SaveHistoryTask.cpp:80
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: RenameTabWidget.ui:60
+#, kde-format
+msgid "Remote tab title format:"
+msgstr "Oblika imena oddaljenega zavihka:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: RenameTabWidget.ui:79
+#, kde-format
+msgid "Tab title format:"
+msgstr "Oblika imena zavihka:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, tabTitleEdit)
+#: RenameTabWidget.ui:98
+#, kde-format
+msgid "Normal tab title format"
+msgstr "Oblika imena običajnega zavihka"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: RenameTabWidget.ui:105
+#, kde-format
+msgid "Tab Color:"
+msgstr "Barva zavihka:"
+
+#: SaveHistoryTask.cpp:81
 #, kde-format
 msgid "Save Output From %1"
 msgstr "Shrani izpis iz %1"
 
-#: SaveHistoryTask.cpp:92
+#: SaveHistoryTask.cpp:93
 #, kde-format
 msgid "%1 is an invalid URL, the output could not be saved."
 msgstr "%1 ni veljaven URL. Izpisa ni bilo mogoče shraniti."
 
-#: SaveHistoryTask.cpp:174
+#: SaveHistoryTask.cpp:175
 #, kde-format
 msgid ""
 "A problem occurred when saving the output.\n"
@@ -2509,18 +2503,23 @@ msgstr "Konzola Linuxa"
 msgid "Solaris console"
 msgstr "Konzola Solarisa"
 
-#: Session.cpp:390
+#: Session.cpp:127
+#, kde-format
+msgid "Bell in session '%1'"
+msgstr "Zvonec v seji »%1«"
+
+#: Session.cpp:409
 #, kde-format
 msgid "Could not find binary: "
-msgstr "Ni bilo mogoče najti programa:"
+msgstr "Ni bilo mogoče najti programa: "
 
-#: Session.cpp:399
+#: Session.cpp:418
 #, kde-format
 msgctxt "@info:shell Alert the user with red color text"
 msgid "Warning: "
 msgstr "Opozorilo: "
 
-#: Session.cpp:457
+#: Session.cpp:476
 #, kde-format
 msgid ""
 "Could not find '%1', starting '%2' instead.  Please check your profile "
@@ -2529,32 +2528,22 @@ msgstr ""
 "Ni bilo mogoče najti »%1«, namesto tega zaganjam »%2«. Preverite nastavitve "
 "profila."
 
-#: Session.cpp:460
+#: Session.cpp:479
 #, kde-format
 msgid "Could not find an interactive shell to start."
 msgstr "Ni bilo mogoče najti interaktivne lupine, ki bi jo lahko zagnali."
 
-#: Session.cpp:498
+#: Session.cpp:517
 #, kde-format
 msgid "Could not start program '%1' with arguments '%2'."
 msgstr "Ni bilo mogoče zagnati programa »%1« z argumenti »%2«."
 
-#: Session.cpp:634
+#: Session.cpp:657
 #, kde-format
 msgid "Silence in session '%1'"
 msgstr "Nedejavnost v seji »%1«"
 
-#: Session.cpp:694
-#, kde-format
-msgid "Bell in session '%1'"
-msgstr "Zvonec v seji »%1«"
-
-#: Session.cpp:707
-#, kde-format
-msgid "Activity in session '%1'"
-msgstr "Dejavnost v seji »%1«"
-
-#: Session.cpp:918
+#: Session.cpp:919
 #, kde-format
 msgid ""
 "The D-Bus methods sendText/runCommand were just used.  There are security "
@@ -2567,225 +2556,245 @@ msgstr ""
 "prevodom programa Konsole pretvorite v zasebne. <p>To opozorilo bo v tem "
 "primerku Konsole pokazano le enkrat.</p>"
 
-#: Session.cpp:946
+#: Session.cpp:947
 #, kde-format
 msgctxt "@info:shell This session is done"
 msgid "Finished"
 msgstr "Zaključeno"
 
-#: Session.cpp:960 Session.cpp:973
+#: Session.cpp:961 Session.cpp:974
 #, kde-format
 msgid "Program '%1' crashed."
 msgstr "Program »%1« se je sesul."
 
-#: Session.cpp:962
+#: Session.cpp:963
 #, kde-format
 msgid "Program '%1' exited with status %2."
 msgstr "Program »%1« je končal s stanjem %2."
 
-#: Session.cpp:1403
+#: Session.cpp:1406
 #, kde-format
 msgid "ZModem Progress"
 msgstr "Napredek ZModema"
 
-#: SessionController.cpp:132
+#: Session.cpp:1722
+#, kde-format
+msgid "Activity in session '%1'"
+msgstr "Dejavnost v seji »%1«"
+
+#: SessionController.cpp:126
 #, kde-format
 msgid "Konsole"
 msgstr "Konsole"
 
-#: SessionController.cpp:367
+#: SessionController.cpp:340
+#, kde-format
+msgid "The process '%1' has finished running in session '%2'"
+msgstr "Dejavnost '%1' se je končala v seji '%2'"
+
+#: SessionController.cpp:420
 #, kde-format
 msgid "Konsole does not know how to open the bookmark: "
 msgstr "Konsole ne zna odpreti zaznamka: "
 
-#: SessionController.cpp:427
+#: SessionController.cpp:487
 #, kde-format
 msgid "Search for '%1' with"
 msgstr "Poišči »%1« z"
 
-#: SessionController.cpp:441
+#: SessionController.cpp:501
 #, kde-format
 msgid "Configure Web Shortcuts..."
 msgstr "Nastavi spletne bližnjice ..."
 
-#: SessionController.cpp:550
+#: SessionController.cpp:592
 #, kde-format
 msgid "&Close Session"
-msgstr "&Zapri sejo"
+msgstr "Zapri sejo"
 
-#: SessionController.cpp:557
+#: SessionController.cpp:599
 #, kde-format
 msgid "Open File Manager"
 msgstr "Odpri upravljalnik datotek"
 
-#: SessionController.cpp:584
+#: SessionController.cpp:617
+#, kde-format
+msgid "Copy"
+msgstr "Kopiraj"
+
+#: SessionController.cpp:634
 #, kde-format
 msgid "Paste Selection"
 msgstr "Prilepi izbiro"
 
-#: SessionController.cpp:591
+#: SessionController.cpp:641
 #, kde-format
 msgid "Web Search"
 msgstr "Spletno iskanje"
 
-#: SessionController.cpp:598
+#: SessionController.cpp:648
 #, kde-format
 msgid "&Select All"
-msgstr "Izberi &vse"
+msgstr "Izberi vse"
 
-#: SessionController.cpp:602
+#: SessionController.cpp:652
 #, kde-format
 msgid "Select &Line"
-msgstr "Izberi vrst&ico"
+msgstr "Izberi vrstico"
 
-#: SessionController.cpp:605
+#: SessionController.cpp:655
 #, kde-format
 msgid "Save Output &As..."
-msgstr "Shrani izpis &kot ..."
+msgstr "Shrani izpis kot..."
 
-#: SessionController.cpp:611
+#: SessionController.cpp:661
 #, kde-format
 msgid "&Print Screen..."
-msgstr "&Natisni zaslon ..."
+msgstr "Natisni zaslon..."
 
-#: SessionController.cpp:615
+#: SessionController.cpp:665
 #, kde-format
 msgid "Adjust Scrollback..."
 msgstr "Nastavi pomnilnik vrstic ..."
 
-#: SessionController.cpp:619
+#: SessionController.cpp:669
 #, kde-format
 msgid "Clear Scrollback"
 msgstr "Počisti pomnilnik vrstic"
 
-#: SessionController.cpp:623
+#: SessionController.cpp:673
 #, kde-format
 msgid "Clear Scrollback and Reset"
 msgstr "Počisti pomnilnik vrstic in ponastavi"
 
-#: SessionController.cpp:629
+#: SessionController.cpp:679
 #, kde-format
 msgid "Edit Current Profile..."
 msgstr "Uredi trenutni profil ..."
 
-#: SessionController.cpp:632
+#: SessionController.cpp:682
 #, kde-format
 msgid "Switch Profile"
 msgstr "Preklopi profil"
 
-#: SessionController.cpp:656
+#: SessionController.cpp:706
 #, kde-format
 msgid "Set &Encoding"
 msgstr "Nastavi kodiranj&e"
 
-#: SessionController.cpp:666
+#: SessionController.cpp:717
 #, kde-format
 msgctxt "@item:inmenu A read only (locked) session"
 msgid "Read-only"
-msgstr ""
+msgstr "Samo za branje"
 
-#: SessionController.cpp:677
+#: SessionController.cpp:728
 #, kde-format
-msgid "&Rename Tab..."
-msgstr "P&reimenuj zavihek ..."
+msgid "&Current Tab Settings..."
+msgstr "Trenutne nastavitve zavihkov..."
 
-#: SessionController.cpp:683
+#: SessionController.cpp:734
 #, kde-format
 msgid "&All Tabs in Current Window"
-msgstr "&Vse zavihke v trenutnem oknu"
+msgstr "Vsi zavihki v trenutnem oknu"
 
-#: SessionController.cpp:690
+#: SessionController.cpp:741
 #, kde-format
 msgid "&Select Tabs..."
-msgstr "&Izbor zavihkov ..."
+msgstr "Izbor zavihkov..."
 
-#: SessionController.cpp:696
+#: SessionController.cpp:747
 #, kde-format
 msgctxt "@action:inmenu Do not select any tabs"
 msgid "&None"
 msgstr "&Nobenega"
 
-#: SessionController.cpp:704
+#: SessionController.cpp:755
 #, kde-format
 msgid "Copy Input To"
 msgstr "Kopiraj vnos v"
 
-#: SessionController.cpp:713
+#: SessionController.cpp:764
 #, kde-format
 msgid "&ZModem Upload..."
-msgstr "Pošiljanje prek &ZModema ..."
+msgstr "Pošiljanje prek &ZModema..."
 
-#: SessionController.cpp:718
+#: SessionController.cpp:769
 #, kde-format
 msgid "Monitor for &Activity"
 msgstr "Spremljaj dej&avnost"
 
-#: SessionController.cpp:723
+#: SessionController.cpp:774
 #, kde-format
 msgid "Monitor for &Silence"
 msgstr "Spremljaj nedejavno&st"
 
-#: SessionController.cpp:730
+#: SessionController.cpp:779
+#, kde-format
+msgid "Monitor for Process Finishing"
+msgstr "Spremljaj dej&avnost dokler ne konča"
+
+#: SessionController.cpp:785
 #, kde-format
 msgid "Enlarge Font"
 msgstr "Povečaj velikost pisave"
 
-#: SessionController.cpp:738
+#: SessionController.cpp:793
 #, kde-format
 msgid "Shrink Font"
 msgstr "Zmanjšaj velikost pisave"
 
-#: SessionController.cpp:743
+#: SessionController.cpp:798
 #, kde-format
 msgid "Reset Font Size"
-msgstr ""
+msgstr "Ponastavi velikost pisave"
 
-#: SessionController.cpp:748
+#: SessionController.cpp:803
 #, kde-format
 msgid "Send Signal"
 msgstr "Pošlji signal"
 
-#: SessionController.cpp:754
+#: SessionController.cpp:809
 #, kde-format
 msgid "&Suspend Task"
 msgstr "Po&stavi opravilo v pripravljenost"
 
-#: SessionController.cpp:759
+#: SessionController.cpp:814
 #, kde-format
 msgid "&Continue Task"
-msgstr "&Nadaljuj opravilo"
+msgstr "Nadaljuj opravilo"
 
-#: SessionController.cpp:764
+#: SessionController.cpp:819
 #, kde-format
 msgid "&Hangup"
-msgstr "&Odloži"
+msgstr "Odloži"
 
-#: SessionController.cpp:769
+#: SessionController.cpp:824
 #, kde-format
 msgid "&Interrupt Task"
-msgstr "&Prekini opravilo"
+msgstr "Prekini opravilo"
 
-#: SessionController.cpp:774
+#: SessionController.cpp:829
 #, kde-format
 msgid "&Terminate Task"
-msgstr "&Končaj opravilo"
+msgstr "Končaj opravilo"
 
-#: SessionController.cpp:779
+#: SessionController.cpp:834
 #, kde-format
 msgid "&Kill Task"
-msgstr "U&niči opravilo"
+msgstr "Uniči opravilo"
 
-#: SessionController.cpp:784
+#: SessionController.cpp:839
 #, kde-format
 msgid "User Signal &1"
 msgstr "Uporabniški signal &1"
 
-#: SessionController.cpp:789
+#: SessionController.cpp:844
 #, kde-format
 msgid "User Signal &2"
 msgstr "Uporabniški signal &2"
 
-#: SessionController.cpp:904
+#: SessionController.cpp:968
 #, kde-format
 msgid ""
 "A program is currently running in this session.  Are you sure you want to "
@@ -2794,7 +2803,7 @@ msgstr ""
 "V tej seji trenutno teče nek program. Ali ste prepričani, da jo želite "
 "zapreti?"
 
-#: SessionController.cpp:907
+#: SessionController.cpp:971
 #, kde-format
 msgid ""
 "The program '%1' is currently running in this session.  Are you sure you "
@@ -2803,12 +2812,12 @@ msgstr ""
 "V tej seji trenutno teče program »%1«. Ali ste prepričani, da jo želite "
 "zapreti?"
 
-#: SessionController.cpp:913 SessionController.cpp:943
+#: SessionController.cpp:977 SessionController.cpp:1007
 #, kde-format
 msgid "Confirm Close"
 msgstr "Potrdi zaprtje"
 
-#: SessionController.cpp:936
+#: SessionController.cpp:1000
 #, kde-format
 msgid ""
 "A program in this session would not die.  Are you sure you want to kill it "
@@ -2817,7 +2826,7 @@ msgstr ""
 "V tej seji teče program, ki ga ni mogoče uničiti. Ali ste prepričani, da ga "
 "želite uničiti nasilno?"
 
-#: SessionController.cpp:939
+#: SessionController.cpp:1003
 #, kde-format
 msgid ""
 "The program '%1' is in this session would not die.  Are you sure you want to "
@@ -2826,17 +2835,17 @@ msgstr ""
 "V tej seji teče program '%1', ki ga ni mogoče uničiti. Ali ste prepričani, "
 "da ga želite uničiti nasilno?"
 
-#: SessionController.cpp:1478
+#: SessionController.cpp:1569
 #, kde-format
 msgid "Print Shell"
 msgstr "Natisni lupino"
 
-#: SessionController.cpp:1748
+#: SessionController.cpp:1840
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "Shrani prejemanje prek ZModema v ..."
 
-#: SessionController.cpp:1758
+#: SessionController.cpp:1850
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2847,13 +2856,13 @@ msgstr ""
 "ni bilo mogoče najti ustreznega programa za ZModem.</p><p>Morda bi želeli "
 "namestiti paket »rzsz« ali »lrzsz«.</p>"
 
-#: SessionController.cpp:1769
+#: SessionController.cpp:1861
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr "<p>V trenutni seji že poteka datotečni prenos prek ZModema.</p>"
 
-#: SessionController.cpp:1779
+#: SessionController.cpp:1871
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2862,7 +2871,7 @@ msgstr ""
 "<p>Na tem sistemu ni bilo mogoče najti ustreznega programa za ZModem.</"
 "p><p>Morda bi  želeli namestiti paket »rzsz« ali »lrzsz«.</p>"
 
-#: SessionController.cpp:1785
+#: SessionController.cpp:1877
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Izberite datoteke za pošiljanje prek ZModema"
@@ -2880,25 +2889,24 @@ msgid "Title"
 msgstr "Naslov"
 
 #: settings/ConfigurationDialog.cpp:46
-#, fuzzy, kde-format
-#| msgid "Confirm Close"
+#, kde-format
 msgctxt "@title:window"
 msgid "Configure"
-msgstr "Potrdi zaprtje"
+msgstr "Nastavi"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchReverseSearch)
 #. i18n: ectx: tooltip, entry (SearchReverseSearch), group (SearchSettings)
-#: settings/GeneralSettings.ui:61 settings/konsole.kcfg:60
+#: settings/GeneralSettings.ui:61 settings/konsole.kcfg:82
 #, kde-format
 msgid "Sets whether search should start from the bottom"
-msgstr "Nastavi ali se naj iskanje začne od spodaj."
+msgstr "Nastavi ali se naj iskanje začne od spodaj"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchReverseSearch)
 #. i18n: ectx: label, entry (SearchReverseSearch), group (SearchSettings)
-#: settings/GeneralSettings.ui:64 settings/konsole.kcfg:59
+#: settings/GeneralSettings.ui:64 settings/konsole.kcfg:81
 #, kde-format
 msgid "Search backwards"
-msgstr "Poišči vzvratno."
+msgstr "Poišči vzvratno"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowMenuAccelerators)
 #. i18n: ectx: label, entry (AllowMenuAccelerators), group (KonsoleWindow)
@@ -2909,25 +2917,22 @@ msgstr "Omogoči pospeševalnike menija"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchCaseSensitive)
 #. i18n: ectx: tooltip, entry (SearchCaseSensitive), group (SearchSettings)
-#: settings/GeneralSettings.ui:90 settings/konsole.kcfg:46
+#: settings/GeneralSettings.ui:90 settings/konsole.kcfg:68
 #, kde-format
 msgid "Sets whether the search is case sensitive"
 msgstr "Ali naj se pri iskanju upošteva velikost črk"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchCaseSensitive)
 #: settings/GeneralSettings.ui:93
-#, fuzzy, kde-format
-#| msgctxt "@item:inmenu"
-#| msgid "Case sensitive"
+#, kde-format
 msgid "Case sensitive"
-msgstr "Ločevanje velikosti črk"
+msgstr "Ločevanje med malimi in velikimi črkami"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowMenuBarByDefault)
 #: settings/GeneralSettings.ui:106
-#, fuzzy, kde-format
-#| msgid "Show menubar by default"
+#, kde-format
 msgid "Show menubar"
-msgstr "Privzeto pokaži menijsko vrstico"
+msgstr "Pokaži menijsko vrstico"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SaveGeometryOnExit)
 #: settings/GeneralSettings.ui:119
@@ -2939,7 +2944,7 @@ msgstr "Če je omogočeno, bodo nastavitve profila prezrte"
 #: settings/GeneralSettings.ui:122
 #, kde-format
 msgid "Remember window size"
-msgstr ""
+msgstr "Zapomni si velikost okna"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowWindowTitleOnTitleBar)
 #. i18n: ectx: label, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
@@ -2967,30 +2972,26 @@ msgstr "Zaženi vsa okna Konsole v enojnem opravilu"
 #: settings/GeneralSettings.ui:158 settings/konsole.kcfg:14
 #, kde-format
 msgid "Remove window titlebar and frame"
-msgstr ""
+msgstr "Odstrani naslov okna in okvir"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchHighlightMatches)
 #: settings/GeneralSettings.ui:171
-#, fuzzy, kde-format
-#| msgctxt "@item:inmenu"
-#| msgid "Highlight all matches"
+#, kde-format
 msgid "Highlight all matches"
 msgstr "Poudari vsa ujemanja"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settings/GeneralSettings.ui:191
-#, fuzzy, kde-format
-#| msgid "Notifications"
+#, kde-format
 msgid "Notifications:"
-msgstr "Obvestila"
+msgstr "Obvestila:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: settings/GeneralSettings.ui:198
-#, fuzzy, kde-format
-#| msgid "Web Search"
+#, kde-format
 msgctxt "@item:intext Search options"
 msgid "Search:"
-msgstr "Spletno iskanje"
+msgstr "Išči:"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, enableAllMessagesButton)
 #: settings/GeneralSettings.ui:232
@@ -3008,11 +3009,11 @@ msgstr "Omogoči vsa sporočila \"Ne vprašaj več\""
 #: settings/GeneralSettings.ui:257
 #, kde-format
 msgid "Process and window:"
-msgstr ""
+msgstr "Obdeluj in okno:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchRegExpression)
 #. i18n: ectx: label, entry (SearchRegExpression), group (SearchSettings)
-#: settings/GeneralSettings.ui:273 settings/konsole.kcfg:50
+#: settings/GeneralSettings.ui:273 settings/konsole.kcfg:72
 #, kde-format
 msgid "Match using regular expressions"
 msgstr "Ujemanje naj upošteva regularne izraze"
@@ -3055,105 +3056,145 @@ msgstr "Uporabi trenutno velikost okna ob naslednjem zagonu"
 msgid "The window size will be saved upon exiting Konsole"
 msgstr "Ob izhodu bo shranjena velikost okna programa Konsole"
 
-#. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
+#. i18n: ectx: label, entry (ThumbnailSize), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:45
+#, kde-format
+msgid "Thumbnail Width"
+msgstr "Širina predogledne sličice"
+
+#. i18n: ectx: tooltip, entry (ThumbnailSize), group (ThumbnailsSettings)
+#: settings/konsole.kcfg:46
+#, kde-format
+msgid "Sets the width of the thumbnail"
+msgstr "Določi širino predogledne sličice"
+
+#. i18n: ectx: label, entry (ThumbnailShift), group (ThumbnailsSettings)
+#. i18n: ectx: tooltip, entry (ThumbnailShift), group (ThumbnailsSettings)
+#: settings/konsole.kcfg:50 settings/konsole.kcfg:51
+#, fuzzy, kde-format
+#| msgid "Use Alt to display a thumbnail"
+msgid "Use Shift to display a thumbnail"
+msgstr "Uporabi Alt za prikaz predogledne sličice"
+
+#. i18n: ectx: label, entry (ThumbnailAlt), group (ThumbnailsSettings)
+#. i18n: ectx: tooltip, entry (ThumbnailAlt), group (ThumbnailsSettings)
+#: settings/konsole.kcfg:55 settings/konsole.kcfg:56
+#, kde-format
+msgid "Use Alt to display a thumbnail"
+msgstr "Uporabi Alt za prikaz predogledne sličice"
+
+#. i18n: ectx: label, entry (ThumbnailCtrl), group (ThumbnailsSettings)
+#. i18n: ectx: tooltip, entry (ThumbnailCtrl), group (ThumbnailsSettings)
+#: settings/konsole.kcfg:60 settings/konsole.kcfg:61
+#, kde-format
+msgid "Use Ctrl to display a thumbnail"
+msgstr "Uporabi Ctrl za prikaz predogledne sličice"
+
+#. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
+#: settings/konsole.kcfg:67
 #, kde-format
 msgid "Search is case sensitive"
 msgstr "Iskanje upošteva velikost črk"
 
 #. i18n: ectx: label, entry (SearchHighlightMatches), group (SearchSettings)
-#: settings/konsole.kcfg:54
+#: settings/konsole.kcfg:76
 #, kde-format
 msgid "Highlight all search matches"
 msgstr "Poudari vsa ujemanja"
 
 #. i18n: ectx: tooltip, entry (SearchHighlightMatches), group (SearchSettings)
-#: settings/konsole.kcfg:55
+#: settings/konsole.kcfg:77
 #, kde-format
 msgid "Sets whether matching text should be highlighted"
 msgstr "Ali naj se ujemajoče besedilo poudari"
 
+#. i18n: ectx: label, entry (SplitViewVisibility), group (SplitView)
 #. i18n: ectx: label, entry (TabBarVisibility), group (TabBar)
-#: settings/konsole.kcfg:66
+#: settings/konsole.kcfg:88 settings/konsole.kcfg:108
 #, kde-format
 msgid "Control the visibility of the whole tab bar"
 msgstr "Nadziraj vidnost celotne vrstice z zavihki"
 
+#. i18n: ectx: label, entry (SplitDragHandleSize), group (SplitView)
+#: settings/konsole.kcfg:97
+#, kde-format
+msgid "Control the size of the handle between panels"
+msgstr "Nadzoruj velikost ročaja med ploščami"
+
 #. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
-#: settings/konsole.kcfg:75
+#: settings/konsole.kcfg:117
 #, kde-format
 msgid "Control the position of the tab bar"
 msgstr "Nadziraj položaj vrstice z zavihki"
 
 #. i18n: ectx: label, entry (TabBarStyleSheet), group (TabBar)
-#: settings/konsole.kcfg:83
+#: settings/konsole.kcfg:125
 #, kde-format
 msgid "Control the visual style of the tab bar"
 msgstr "Nadziraj vidni slog vrstice z zavihki"
 
 #. i18n: ectx: label, entry (TabBarUseUserStyleSheet), group (TabBar)
-#: settings/konsole.kcfg:87
+#: settings/konsole.kcfg:129
 #, kde-format
 msgid "Use a user-defined .css file for the tab bar"
 msgstr "Uporabi uporabniško določeno datoteko .css za vrstico z zavihki"
 
 #. i18n: ectx: label, entry (TabBarUserStyleSheetFile), group (TabBar)
-#: settings/konsole.kcfg:91
+#: settings/konsole.kcfg:133
 #, kde-format
 msgid "The .css file to use for the tab bar style"
 msgstr "Datoteka .css, ki bo uporabljena za slog vrstice z zavihki"
 
 #. i18n: ectx: label, entry (CloseTabOnMiddleMouseButton), group (TabBar)
-#: settings/konsole.kcfg:95
+#: settings/konsole.kcfg:137
 #, kde-format
 msgid "Allow middle-clicking on open tabs to close them"
-msgstr ""
+msgstr "Dovoli klik s srednjo tipko na odprte zavihke, da jih zapreš"
 
 #. i18n: ectx: label, entry (NewTabButton), group (TabBar)
-#: settings/konsole.kcfg:99
-#, fuzzy, kde-format
-#| msgid "Control the visibility of quick buttons on the tab bar"
+#: settings/konsole.kcfg:141
+#, kde-format
 msgid "Control the visibility of 'New Tab' button on the tab bar"
-msgstr "Nadziraj vidnost hitrih gumbov vrstice z zavihki"
+msgstr "Nadziraj vidnost gumba \"Nov zavihek\" na vrstici z zavihki"
 
 #. i18n: ectx: label, entry (CloseTabButton), group (TabBar)
-#: settings/konsole.kcfg:103
+#: settings/konsole.kcfg:145
 #, kde-format
 msgid "Control where the \"Close tab\" button will be displayed"
-msgstr ""
+msgstr "Upravljaj, kje naj bo prikazan gumb Zapri zavihek"
 
 #. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
-#: settings/konsole.kcfg:112
+#: settings/konsole.kcfg:154
 #, kde-format
 msgid "Control where to put the new tab"
 msgstr "Nadziraj kam bo postavljen nov zavihek"
 
 #. i18n: ectx: label, entry (ExpandTabWidth), group (TabBar)
-#: settings/konsole.kcfg:120
+#: settings/konsole.kcfg:162
 #, kde-format
 msgid "Expand the tab widths"
-msgstr ""
+msgstr "Razširi širine zavihkov"
 
 #. i18n: ectx: label, entry (scrollbackUseSystemLocation), group (FileLocation)
-#: settings/konsole.kcfg:136
+#: settings/konsole.kcfg:178
 #, kde-format
 msgid "For scrollback files, use system-wide folder location"
 msgstr "Uporabi sistemsko mapo za datoteke s pomnilnikom vrstic"
 
 #. i18n: ectx: label, entry (scrollbackUseCacheLocation), group (FileLocation)
-#: settings/konsole.kcfg:140
+#: settings/konsole.kcfg:182
 #, kde-format
 msgid "For scrollback files, use user's specific folder location"
 msgstr "Uporabi uporabniško določeno mapo za datoteke s pomnilnikom vrstic"
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocation), group (FileLocation)
-#: settings/konsole.kcfg:144
+#: settings/konsole.kcfg:186
 #, kde-format
 msgid "For scrollback files, use specified folder location"
 msgstr "Uporabi navedeno mapo za datoteke s pomnilnikom vrstic"
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocationDirectory), group (FileLocation)
-#: settings/konsole.kcfg:148
+#: settings/konsole.kcfg:190
 #, kde-format
 msgid "For scrollback files, use this folder"
 msgstr "Uporabi to mapo za datoteke s pomnilnikom vrstic"
@@ -3186,43 +3227,35 @@ msgstr "Dvokliknite, da spremenite bližnjico"
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Shortcut won't work while the profile is not marked as visible."
-msgstr ""
+msgstr "Bližnjica ne bo delovala dokler profil ni označen kot viden."
 
 #: settings/ProfileSettings.cpp:144 settings/ProfileSettings.cpp:207
-#, fuzzy, kde-format
-#| msgctxt "@title:column Display profile in file menu"
-#| msgid "Show in Menu"
+#, kde-format
 msgctxt ""
 "@info:tooltip List item's checkbox for making item (profile) visible in a "
 "menu"
 msgid "Show profile in menu"
-msgstr "Prikaži v meniju"
+msgstr "Prikaži profil v meniju"
 
 #: settings/ProfileSettings.cpp:199
-#, fuzzy, kde-format
-#| msgctxt "@label:listbox Column header text for color names"
-#| msgid "Name"
+#, kde-format
 msgctxt "@title:column Profile name"
 msgid "Name"
 msgstr "Ime"
 
 #: settings/ProfileSettings.cpp:200
-#, fuzzy, kde-format
-#| msgctxt "@title:column Profile shortcut text"
-#| msgid "Shortcut"
+#, kde-format
 msgctxt "@title:column Profile keyboard shortcut"
 msgid "Shortcut"
 msgstr "Bližnjica"
 
 #: settings/ProfileSettings.cpp:262
-#, fuzzy, kde-format
-#| msgctxt "Name of the default/builtin profile"
-#| msgid "Default"
+#, kde-format
 msgctxt "@item:intable Default list item's name suffix (with separator)"
 msgid " (default)"
-msgstr "Privzet"
+msgstr " (privzeto)"
 
-#: settings/ProfileSettings.cpp:334
+#: settings/ProfileSettings.cpp:335
 #, kde-format
 msgctxt "@item This will be used as part of the file name"
 msgid "New Profile"
@@ -3236,6 +3269,9 @@ msgid ""
 "for creating a new tab can be assigned to each entry. However, only "
 "shortcuts of visible profiles will work."
 msgstr ""
+"Profili, ki so označeni kot vidni se bodo prikazali v kontekstu in v menuju "
+"Datoteka. Bližnjica za tvorbo novega zavihka bo dodeljena vsakemu vnosu. A "
+"le bližnjice vidnih zavihkov bodo tudi delovale."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, newProfileButton)
 #: settings/ProfileSettings.ui:49
@@ -3245,11 +3281,9 @@ msgstr "Ustvari nov profil, ki temelji na izbranem profilu"
 
 #. i18n: ectx: property (text), widget (QPushButton, newProfileButton)
 #: settings/ProfileSettings.ui:52
-#, fuzzy, kde-format
-#| msgctxt "@action:button Create an alternate color scheme"
-#| msgid "New..."
+#, kde-format
 msgid "&New..."
-msgstr "Nova ..."
+msgstr "&Nova..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, editProfileButton)
 #: settings/ProfileSettings.ui:62
@@ -3259,10 +3293,9 @@ msgstr "Uredi izbrane profile"
 
 #. i18n: ectx: property (text), widget (QPushButton, editProfileButton)
 #: settings/ProfileSettings.ui:65
-#, fuzzy, kde-format
-#| msgid "Edit..."
+#, kde-format
 msgid "&Edit..."
-msgstr "Uredi ..."
+msgstr "Ur&edi..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, deleteProfileButton)
 #: settings/ProfileSettings.ui:75
@@ -3272,10 +3305,9 @@ msgstr "Izbriši izbrane profile"
 
 #. i18n: ectx: property (text), widget (QPushButton, deleteProfileButton)
 #: settings/ProfileSettings.ui:78
-#, fuzzy, kde-format
-#| msgid "Remove"
+#, kde-format
 msgid "&Remove"
-msgstr "Odstrani"
+msgstr "Odst&rani"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, setAsDefaultButton)
 #: settings/ProfileSettings.ui:88
@@ -3291,120 +3323,103 @@ msgstr "Na&stavi kot privzeto"
 
 #. i18n: ectx: attribute (title), widget (QWidget, appearanceTab)
 #: settings/TabBarSettings.ui:36
-#, fuzzy, kde-format
-#| msgid "Appearance"
+#, kde-format
 msgctxt "@title:tab Tab bar settings"
 msgid "Appearance"
 msgstr "Videz"
 
 #. i18n: ectx: property (text), widget (QLabel, showTabBarLabel)
 #: settings/TabBarSettings.ui:50
-#, fuzzy, kde-format
-#| msgctxt "@title:column Display profile in file menu"
-#| msgid "Show"
+#, kde-format
 msgid "Show:"
-msgstr "Pokaži"
+msgstr "Pokaži:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, ShowTabBarWhenNeeded)
 #: settings/TabBarSettings.ui:60
 #, kde-format
 msgid "When needed"
-msgstr ""
+msgstr "Kadar je potrebno"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysShowTabBar)
 #: settings/TabBarSettings.ui:70
 #, kde-format
 msgid "Alwa&ys"
-msgstr ""
+msgstr "Vedno"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysHideTabBar)
 #: settings/TabBarSettings.ui:80
 #, kde-format
 msgid "&Never"
-msgstr ""
+msgstr "&Nikoli"
 
 #. i18n: ectx: property (text), widget (QLabel, positionLabel)
 #: settings/TabBarSettings.ui:106
-#, fuzzy, kde-format
-#| msgid "Description:"
+#, kde-format
 msgid "Position:"
-msgstr "Opis:"
+msgstr "Pozicija:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, Bottom)
 #: settings/TabBarSettings.ui:116
-#, fuzzy, kde-format
-#| msgid "Below Terminal Area"
+#, kde-format
 msgid "Be&low terminal area"
 msgstr "Pod območjem terminala"
 
 #. i18n: ectx: property (text), widget (QRadioButton, Top)
 #: settings/TabBarSettings.ui:126
-#, fuzzy, kde-format
-#| msgid "Above Terminal Area"
+#, kde-format
 msgid "Above terminal area"
 msgstr "Nad območjem terminala"
 
 #. i18n: ectx: property (text), widget (QLabel, showCloseTabButtonLabel)
 #: settings/TabBarSettings.ui:152
-#, fuzzy, kde-format
-#| msgid "&Close Tab"
+#, kde-format
 msgid "Show Close Tab button:"
-msgstr "&Zapri zavihek"
+msgstr "Pokaži gumb Zapri zavihek:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, OnEachTab)
 #: settings/TabBarSettings.ui:162
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu"
-#| msgid "&Detach Tab"
+#, kde-format
 msgid "&On each tab"
-msgstr "O&dpni zavihek"
+msgstr "Na vsakem zavihku"
 
 #. i18n: ectx: property (text), widget (QRadioButton, OnTabBar)
 #: settings/TabBarSettings.ui:172
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu"
-#| msgid "&Detach Tab"
+#, kde-format
 msgid "On &the tab bar"
-msgstr "O&dpni zavihek"
+msgstr "Na letvici zavihkov"
 
 #. i18n: ectx: property (text), widget (QRadioButton, None)
 #: settings/TabBarSettings.ui:182
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu Do not select any tabs"
-#| msgid "&None"
+#, kde-format
 msgctxt "Do not show a close button"
 msgid "None"
-msgstr "&Nobenega"
+msgstr "Noben"
 
 #. i18n: ectx: property (text), widget (QLabel, miscellaneousAppearanceLabel)
 #. i18n: ectx: property (text), widget (QLabel, miscellaneousBehaviorLabel)
 #: settings/TabBarSettings.ui:208 settings/TabBarSettings.ui:344
-#, fuzzy, kde-format
-#| msgid "Miscellaneous"
+#, kde-format
 msgctxt "@item:intext Miscellaneous Options"
 msgid "Miscellaneous:"
-msgstr "Razno"
+msgstr "Razno:"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_NewTabButton)
 #: settings/TabBarSettings.ui:218
-#, fuzzy, kde-format
-#| msgid "Show 'New Tab' and 'Close Tab' buttons"
+#, kde-format
 msgid "Show 'New Tab' button"
-msgstr "Pokaži gumba \"Nov zavihek\" in \"Zapri zavihek\""
+msgstr "Pokaži gumb 'Nov zavihek'"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExpandTabWidth)
 #: settings/TabBarSettings.ui:225
-#, fuzzy, kde-format
-#| msgid "Expand Individual Tab Widths to Full Window"
+#, kde-format
 msgid "Expand individual tab widths to full window"
-msgstr "Razširi posamezne širine zavihkov na polno okno"
+msgstr "Razširi posamezne širine zavihkov do polnega okna"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_TabBarUseUserStyleSheet)
 #: settings/TabBarSettings.ui:232
-#, fuzzy, kde-format
-#| msgid "Use user-defined stylesheet"
+#, kde-format
 msgid "Use user-defined stylesheet:"
-msgstr "Uporabniško določena slogovna predloga"
+msgstr "Uporabniško določena slogovna predloga:"
 
 #. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
 #. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_scrollbackUseSpecifiedLocationDirectory)
@@ -3418,42 +3433,104 @@ msgstr "text/css"
 #, kde-format
 msgctxt "@item:intext Optional file path is empty"
 msgid "(none)"
-msgstr ""
+msgstr "(noben)"
 
 #. i18n: ectx: attribute (title), widget (QWidget, behaviorTab)
 #: settings/TabBarSettings.ui:284
-#, fuzzy, kde-format
-#| msgid "Behavior"
+#, kde-format
 msgctxt "@title:tab Tab bar settings"
 msgid "Behavior"
 msgstr "Obnašanje"
 
 #. i18n: ectx: property (text), widget (QLabel, putNewTabsLabel)
 #: settings/TabBarSettings.ui:298
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid "Create new tab"
+#, kde-format
 msgid "Put new tabs:"
-msgstr "Ustvari nov zavihek"
+msgstr "Postavi nove zavihke:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, PutNewTabAtTheEnd)
 #: settings/TabBarSettings.ui:308
 #, kde-format
 msgid "At &the end"
-msgstr ""
+msgstr "Na konec"
 
 #. i18n: ectx: property (text), widget (QRadioButton, PutNewTabAfterCurrentTab)
 #: settings/TabBarSettings.ui:318
-#, fuzzy, kde-format
-#| msgid "Put New Tab After Current Tab"
+#, kde-format
 msgid "After current &tab"
-msgstr "Postavi nov zavihek za trenutnim"
+msgstr "Za trenutnim zavihkom"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_CloseTabOnMiddleMouseButton)
 #: settings/TabBarSettings.ui:354
 #, kde-format
 msgid "Close tab on middle-click"
-msgstr ""
+msgstr "Zavihek zapremo s srednjo tipko"
+
+#. i18n: ectx: attribute (title), widget (QWidget, splitTab)
+#: settings/TabBarSettings.ui:377
+#, kde-format
+msgid "Splits"
+msgstr "Razdeli"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/TabBarSettings.ui:383
+#, kde-format
+msgid "Show Header:"
+msgstr "Pokaži glavo:"
+
+#. i18n: ectx: property (text), widget (QRadioButton, ShowSplitHeaderWhenNeeded)
+#: settings/TabBarSettings.ui:390
+#, fuzzy, kde-format
+#| msgid "When needed"
+msgctxt "@option:radio When needed show the split header"
+msgid "When needed"
+msgstr "Kadar je potrebno"
+
+#. i18n: ectx: property (text), widget (QRadioButton, AlwaysHideSplitHeader)
+#: settings/TabBarSettings.ui:400
+#, fuzzy, kde-format
+#| msgid "Never"
+msgctxt "@option:radio Never show the split header"
+msgid "Never"
+msgstr "Nikoli"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/TabBarSettings.ui:426
+#, kde-format
+msgid "Drag Handle Size:"
+msgstr "Vleci velikost ročaja:"
+
+#. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleSmall)
+#: settings/TabBarSettings.ui:436
+#, fuzzy, kde-format
+#| msgid "Small"
+msgctxt "@option:radio Small height/width of splitter widget"
+msgid "Small"
+msgstr "Majhno"
+
+#. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleMedium)
+#: settings/TabBarSettings.ui:446
+#, fuzzy, kde-format
+#| msgid "Medium"
+msgctxt "@option:radio Medium height/width of splitter widget"
+msgid "Medium"
+msgstr "Srednje"
+
+#. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleLarge)
+#: settings/TabBarSettings.ui:456
+#, fuzzy, kde-format
+#| msgid "Large"
+msgctxt "@option:radio Large height/width of splitter widget"
+msgid "Large"
+msgstr "Veliko"
+
+#. i18n: ectx: property (text), widget (QRadioButton, AlwaysShowSplitHeader)
+#: settings/TabBarSettings.ui:479
+#, fuzzy, kde-format
+#| msgid "Always"
+msgctxt "@option:radio Always show the split header"
+msgid "Always"
+msgstr "Vedno"
 
 #: settings/TemporaryFilesSettings.cpp:49
 #, kde-format
@@ -3461,7 +3538,7 @@ msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
 "placeholder"
 msgid "System temporary directory (%1)"
-msgstr ""
+msgstr "Sistemska začasna mapa (%1)"
 
 #: settings/TemporaryFilesSettings.cpp:52
 #, kde-format
@@ -3469,21 +3546,64 @@ msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
 "placeholder"
 msgid "User cache directory (%1)"
-msgstr ""
+msgstr "Mapa uporabnikovega predpomnilnika (%1)"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: settings/TemporaryFilesSettings.ui:37
-#, fuzzy, kde-format
-#| msgid "Scrollback File Location"
+#, kde-format
 msgid "Scrollback file location:"
-msgstr "Mesto datoteke s pomnilnikom vrstic"
+msgstr "Mesto datoteke s pomnilnikom vrstic:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseSpecifiedLocation)
 #: settings/TemporaryFilesSettings.ui:79
 #, kde-format
 msgctxt "@option:radio Custom (file location); followed by text entry field"
 msgid "Custom:"
+msgstr "Po meri:"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/ThumbnailsSettings.ui:17
+#, kde-format
+msgid "Size:"
+msgstr "Velikost:"
+
+#. i18n: ectx: property (suffix), widget (QSpinBox, kcfg_ThumbnailSize)
+#: settings/ThumbnailsSettings.ui:24
+#, kde-format
+msgid "px"
+msgstr "px"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/ThumbnailsSettings.ui:37
+#, kde-format
+msgid "Activation:"
+msgstr "Aktivacija:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: settings/ThumbnailsSettings.ui:44
+#, kde-format
+msgid "Mouse hover plus"
 msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailShift)
+#: settings/ThumbnailsSettings.ui:51
+#, fuzzy, kde-format
+#| msgctxt "key on keyboard"
+#| msgid "Shift"
+msgid "Shift"
+msgstr "Pomik"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailAlt)
+#: settings/ThumbnailsSettings.ui:58
+#, kde-format
+msgid "Alt"
+msgstr "Alt"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailCtrl)
+#: settings/ThumbnailsSettings.ui:65
+#, kde-format
+msgid "Ctrl"
+msgstr "Ctrl"
 
 #: TabTitleFormatButton.cpp:33
 #, kde-format
@@ -3523,7 +3643,7 @@ msgstr "Krajevni gostitelj: %h"
 #: TabTitleFormatButton.cpp:40
 #, kde-format
 msgid "User's Bourne prompt sigil: %B"
-msgstr ""
+msgstr "Bournov magični uporabnikov poziv: %B"
 
 #: TabTitleFormatButton.cpp:47
 #, kde-format
@@ -3562,293 +3682,278 @@ msgctxt "@info:tooltip"
 msgid "Insert remote title format"
 msgstr "Vstavi obliko naslova oddaljenega"
 
-#: TerminalDisplay.cpp:1268 TerminalDisplay.cpp:1269
+#: TerminalDisplay.cpp:1302 TerminalDisplay.cpp:1303
 #, kde-format
 msgid "Size: XXX x XXX"
 msgstr "Velikost: XXX × XXX"
 
-#: TerminalDisplay.cpp:1280
+#: TerminalDisplay.cpp:1314
 #, kde-format
 msgid "Size: %1 x %2"
 msgstr "Velikost: %1 × %2"
 
-#: TerminalDisplay.cpp:3156
+#: TerminalDisplay.cpp:3289
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
-msgstr[0] "Ali res želite prilepiti %1 znakov?"
-msgstr[1] "Ali res želite prilepiti %1 znak?"
-msgstr[2] "Ali res želite prilepiti %1 znaka?"
-msgstr[3] "Ali res želite prilepiti %1 znake?"
+msgstr[0] "Ali res želite prilepiti %1 znak?"
+msgstr[1] "Ali res želite prilepiti %1 znaka?"
+msgstr[2] "Ali res želite prilepiti %1 znake?"
+msgstr[3] "Ali res želite prilepiti %1 znakov?"
 
-#: TerminalDisplay.cpp:3159
+#: TerminalDisplay.cpp:3292
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Potrditev lepljenja"
 
-#: TerminalDisplay.cpp:3173
+#: TerminalDisplay.cpp:3324
 #, kde-format
-msgid "^C Interrupt: May abort the current process"
-msgstr ""
+msgid "End Of Text/Interrupt: may exit the current process"
+msgstr "End Of Text/Interrupt: lahko konča trenutni proces"
 
-#: TerminalDisplay.cpp:3176
+#: TerminalDisplay.cpp:3325
 #, kde-format
-msgid "^D End of transmission: May exit the current process"
-msgstr ""
+msgid "End Of Transmission: may exit the current process"
+msgstr "End Of Transmission:  lahko konča trenutni proces"
 
-#: TerminalDisplay.cpp:3179
+#: TerminalDisplay.cpp:3326
 #, kde-format
-msgid "^G Bell: Will try to emit an audible warning"
-msgstr ""
+msgid "Bell: will try to emit an audible warning"
+msgstr "Bell: bo poskusil oddati zvočno opozorilo"
 
-#: TerminalDisplay.cpp:3182
+#: TerminalDisplay.cpp:3327
 #, kde-format
-msgid "^H Backspace"
-msgstr ""
+msgid "Backspace"
+msgstr "Backspace"
 
-#: TerminalDisplay.cpp:3185
+#: TerminalDisplay.cpp:3328
 #, kde-format
-msgid "^S Scroll lock: Locks terminal output"
-msgstr ""
+msgid "Device Control Three/XOFF: suspends output"
+msgstr "Device Control Three/XOFF: začasno prekini izhod"
 
-#: TerminalDisplay.cpp:3188
+#: TerminalDisplay.cpp:3329
 #, kde-format
-msgid "^Z Suspend: Stops current process"
-msgstr ""
+msgid "Substitute/Suspend: may suspend current process"
+msgstr "Substitute/Suspend: lahko začasno ustavi trenutni proces"
 
-#: TerminalDisplay.cpp:3191
+#: TerminalDisplay.cpp:3330
 #, kde-format
-msgid "ESC: Used for special commands to the current process"
-msgstr ""
+msgid "Escape: used for manipulating terminal state"
+msgstr "Escape: se uporablja za spremembo stanja terminala"
 
-#: TerminalDisplay.cpp:3194
+#: TerminalDisplay.cpp:3331
 #, kde-format
-msgid "Other unprintable character (\\x%1)"
-msgstr ""
+msgid "File Separator/Quit: may abort the current process"
+msgstr "File Separator/Quit:  lahko konča trenutni proces"
 
-#: TerminalDisplay.cpp:3204
+#: TerminalDisplay.cpp:3353
 #, kde-format
 msgid ""
-"The text you're trying to paste contains hidden unprintable characters, do "
-"you want to filter them out?"
+"The text you're trying to paste contains hidden control characters, do you "
+"want to filter them out?"
 msgstr ""
+"Besedilo, ki ga želite prilepiti vsebuje nekatere skrite kontrolne znake. "
+"Ali želite te znake odfiltrirati?"
 
-#: TerminalDisplay.cpp:3207
-#, fuzzy, kde-format
-#| msgid "Filter:"
+#: TerminalDisplay.cpp:3356
+#, kde-format
 msgctxt "@title"
-msgid "Filter"
-msgstr "Filter:"
+msgid "Confirm Paste"
+msgstr "Potrdi lepljenje"
 
-#: TerminalDisplay.cpp:3209
+#: TerminalDisplay.cpp:3358
 #, kde-format
 msgctxt "@action:button"
-msgid "&Remove unprintable"
-msgstr ""
+msgid "Paste &without control characters"
+msgstr "Prilepi brez kontrolnih znakov"
 
-#: TerminalDisplay.cpp:3212
-#, fuzzy, kde-format
-#| msgid "Confirm Paste"
-msgctxt "@action:button"
-msgid "Confirm &paste"
-msgstr "Potrditev lepljenja"
-
-#: TerminalDisplay.cpp:3215
+#: TerminalDisplay.cpp:3361
 #, kde-format
 msgctxt "@action:button"
-msgid "&Cancel paste"
-msgstr ""
+msgid "&Paste everything"
+msgstr "&Prilepi vse"
 
-#: TerminalDisplay.cpp:3442
-#, fuzzy, kde-format
-#| msgid ""
-#| "<qt>Output has been <a href=\"http://en.wikipedia.org/wiki/"
-#| "Software_flow_control\">suspended</a> by pressing Ctrl+S.  Press <b>Ctrl"
-#| "+Q</b> to resume.  Click <a href=\"#close\">here</a> to dismiss this "
-#| "message.</qt>"
+#: TerminalDisplay.cpp:3364
+#, kde-format
+msgctxt "@action:button"
+msgid "&Cancel"
+msgstr "Prekliči"
+
+#: TerminalDisplay.cpp:3615
+#, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
 "Software_flow_control\">suspended</a> by pressing Ctrl+S. Press <b>Ctrl+Q</"
 "b> to resume.</qt>"
 msgstr ""
-"<qt>Izpis je bil prestavljen v <a href=\"http://en.wikipedia.org/wiki/"
-"Software_flow_control\">pripravljenost</a> s pritiskom Ctrl+S.  Za "
-"nadaljevanje pritisnite <b>Ctrl+Q</b>. Kliknite <a href=\"#close\">sem</a>, "
-"da počistite to sporočilo.</qt>"
+"<qt>Izpis je bil začasno <a href=\"http://en.wikipedia.org/wiki/"
+"Software_flow_control\">suspendiran</a> s pritiskom Ctrl+S.  Pritisnite "
+"<b>Ctrl+Q</b>za nadaljevanje.</qt>"
 
-#: TerminalDisplay.cpp:3480
+#: TerminalDisplay.cpp:3656
 #, kde-format
 msgid "This terminal is read-only."
-msgstr ""
+msgstr "Ta terminal je samo za branje."
 
-#: TerminalDisplay.cpp:3775
+#: TerminalDisplay.cpp:3965
 #, kde-format
 msgid "Change &Directory To"
-msgstr "Spremeni &mapo v"
+msgstr "Spremeni mapo v"
 
-#: TerminalDisplay.cpp:3807
+#: TerminalDisplay.cpp:3997
 #, kde-format
 msgid "&Paste Location"
 msgstr "&Prilepi naslov"
 
-#: TerminalHeaderBar.cpp:49 TerminalHeaderBar.cpp:50
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid "Close tab"
-msgctxt "@info:tooltip"
-msgid "Close terminal"
-msgstr "Zapri zavihek"
-
-#: TerminalHeaderBar.cpp:58
-#, fuzzy, kde-format
-#| msgctxt "@info:tooltip"
-#| msgid "Close tab"
+#: TerminalHeaderBar.cpp:95
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Maximize terminal"
-msgstr "Zapri zavihek"
+msgstr "Maksimiziraj terminal"
 
-#: ViewContainer.cpp:112
+#: TerminalHeaderBar.cpp:106 TerminalHeaderBar.cpp:107
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Close terminal"
+msgstr "Zapri terminal"
+
+#: ViewContainer.cpp:115
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Detach Tab"
 msgstr "O&dpni zavihek"
 
-#: ViewContainer.cpp:119
+#: ViewContainer.cpp:122
 #, kde-format
 msgctxt "@action:inmenu"
-msgid "&Rename Tab..."
-msgstr "P&reimenuj zavihek ..."
+msgid "&Current Tab Settings..."
+msgstr "Trenutne nastavitve zavihkov..."
 
-#: ViewContainer.cpp:126
-#, fuzzy, kde-format
-#| msgid "&Close Tab"
+#: ViewContainer.cpp:129
+#, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Tab"
-msgstr "&Zapri zavihek"
+msgstr "Zapri zavihek"
 
-#: ViewManager.cpp:115
+#: ViewManager.cpp:114
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Split View Left/Right"
 msgstr "Razdeli pogled levo/desno"
 
-#: ViewManager.cpp:122
+#: ViewManager.cpp:121
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Split View Top/Bottom"
 msgstr "Razdeli pogled zgoraj/spodaj"
 
-#: ViewManager.cpp:128
+#: ViewManager.cpp:127
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Expand View"
 msgstr "Razširi pogled"
 
-#: ViewManager.cpp:136
+#: ViewManager.cpp:135
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Shrink View"
 msgstr "Skrči pogled"
 
-#: ViewManager.cpp:146
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu"
-#| msgid "D&etach Current Tab"
+#: ViewManager.cpp:145
+#, kde-format
 msgctxt "@action:inmenu"
 msgid "Detach Current &View"
-msgstr "Odp&ni trenutni zavihek"
+msgstr "Odpni trenutni pogled"
 
-#: ViewManager.cpp:158
-#, fuzzy, kde-format
-#| msgctxt "@action:inmenu"
-#| msgid "D&etach Current Tab"
+#: ViewManager.cpp:157
+#, kde-format
 msgctxt "@action:inmenu"
 msgid "Detach Current &Tab"
-msgstr "Odp&ni trenutni zavihek"
+msgstr "Odpni trenutni zavihek"
 
-#: ViewManager.cpp:166
+#: ViewManager.cpp:162
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Next Tab"
 msgstr "Naslednji zavihek"
 
-#: ViewManager.cpp:174
+#: ViewManager.cpp:170
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Previous Tab"
 msgstr "Predhodni zavihek"
 
-#: ViewManager.cpp:182
-#, fuzzy, kde-format
-#| msgid "Above Terminal Area"
+#: ViewManager.cpp:178
+#, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Above Terminal"
-msgstr "Nad območjem terminala"
+msgstr "Deluje na območjem terminala"
 
-#: ViewManager.cpp:189
-#, fuzzy, kde-format
-#| msgid "Below Terminal Area"
+#: ViewManager.cpp:185
+#, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Below Terminal"
-msgstr "Pod območjem terminala"
+msgstr "Deluj pod območjem terminala"
 
-#: ViewManager.cpp:196
+#: ViewManager.cpp:192
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Left Terminal"
-msgstr ""
+msgstr "Deluj na levem terminalu"
 
-#: ViewManager.cpp:202
+#: ViewManager.cpp:198
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Right Terminal"
-msgstr ""
+msgstr "Deluj na desnem terminalu"
 
-#: ViewManager.cpp:208
+#: ViewManager.cpp:204
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Switch to Last Tab"
 msgstr "Preklopi na zadnji zavihek"
 
-#: ViewManager.cpp:213
+#: ViewManager.cpp:209
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Last Used Tabs"
-msgstr ""
+msgstr "Zadnje uporabljeni zavihki"
 
-#: ViewManager.cpp:218
+#: ViewManager.cpp:214
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Toggle Between Two Tabs"
-msgstr ""
+msgstr "Preklapljaj med dvema zavihkoma"
 
-#: ViewManager.cpp:223
+#: ViewManager.cpp:219
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Last Used Tabs (Reverse)"
-msgstr ""
+msgstr "Zadnje uporabljeni zavihki (Obratno)"
 
-#: ViewManager.cpp:228
+#: ViewManager.cpp:224
 #, kde-format
 msgctxt "@action Shortcut entry"
-msgid "Maximize current Terminal"
-msgstr ""
+msgid "Toggle maximize current view"
+msgstr "Preklopi v maksimalni trenutni pogled"
 
-#: ViewManager.cpp:235
-#, fuzzy, kde-format
-#| msgctxt "@action Shortcut entry"
-#| msgid "Move Tab Right"
+#: ViewManager.cpp:225
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Toggle maximize current view"
+msgstr "Preklopi v maksimalni trenutni pogled"
+
+#: ViewManager.cpp:233
+#, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Move tab to the right"
-msgstr "Premakni zavihek desno"
+msgstr "Premakni zavihek na desno"
 
-#: ViewManager.cpp:241
-#, fuzzy, kde-format
-#| msgctxt "@action Shortcut entry"
-#| msgid "Move Tab Left"
+#: ViewManager.cpp:240
+#, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Move tab to the left"
-msgstr "Premakni zavihek levo"
+msgstr "Premakni zavihek na levo"
 
 #: ViewManager.cpp:250
 #, kde-format
@@ -3856,7 +3961,7 @@ msgctxt "@action Shortcut entry"
 msgid "Switch to Tab %1"
 msgstr "Preklopi na zavihek %1"
 
-#: Vt102Emulation.cpp:1246
+#: Vt102Emulation.cpp:1231
 #, kde-format
 msgid ""
 "No keyboard translator available.  The information needed to convert key "
@@ -3865,302 +3970,26 @@ msgstr ""
 "Na voljo ni prevajalnika tipkovnice. Manjkajo podatki za spreminjanje "
 "pritiskov tipk v znake, ki se pošljejo terminalu."
 
-#~ msgid "Vary the background color for each tab"
-#~ msgstr "Različna barva ozadja za vsak zavihek"
+#~ msgid "Open File"
+#~ msgstr "Odpri datoteko"
 
 #~ msgctxt "@title Preferences page name"
-#~ msgid "TabBar"
-#~ msgstr "Vrstica z zavihki"
+#~ msgid "Tab Bar"
+#~ msgstr "Letvica zavihkov"
 
-#~ msgctxt "@title Preferences page name"
-#~ msgid "File Location"
-#~ msgstr "Mesta datotek"
+#~ msgid "Rename Tab"
+#~ msgstr "Preimenuj zavihek"
 
-#~ msgid ""
-#~ "<b>Scrollback File Location</b><p>Use this groupbox to determine where "
-#~ "Konsole will store the scrollback files.</p>"
-#~ msgstr ""
-#~ "<b>Mesto datoteke s pomnilnikom vrstic</b><p>Uporabite to združevalno "
-#~ "polje, da določite kje bo program shranjeval datoteke s pomnilnikom "
-#~ "vrstic.</p>"
-
-#~ msgid ""
-#~ "These settings only apply when Profile->Scrolling->Unlimited scrollback "
-#~ "is selected."
-#~ msgstr ""
-#~ "Te nastavitve stopijo v veljavo le, če je izbrano Profil->Drsenje-"
-#~ ">Neomejeno število pomnjenih vrstic."
-
-#~ msgid "Use system &location"
-#~ msgstr "Uporabi sistemsko &mesto"
-
-#~ msgid "Use user specific location"
-#~ msgstr "Uporabi uporabniško določeno mesto"
-
-#~ msgid "Use specified loca&tion"
-#~ msgstr "Uporabi navedeno mes&to"
-
-#~ msgid ""
-#~ "For the 'Use user specific location', any application using KonsolePart "
-#~ "will have the app name instead of konsole."
-#~ msgstr ""
-#~ "Za »Uporabi uporabniško določeno mesto« bo imel vsak program, ki "
-#~ "uporablja KonsolePart imel ime programa namesto konsole."
-
-#~ msgid "For any changes to take effect, quit Konsole and restart."
-#~ msgstr "Da se spremembe uveljavijo, morate Konsole znova zagnati."
-
-#~ msgid "Konsole Window"
-#~ msgstr "Okno Konsole"
-
-#~ msgid "Default Search Settings"
-#~ msgstr "Privzete nastavitve iskanja"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Click to toggle status"
-#~ msgstr "Kliknite, da preklopite stanje"
-
-#~ msgctxt "@title:column Profile label"
-#~ msgid "Name"
-#~ msgstr "Ime"
-
-#~ msgid "&New Profile..."
-#~ msgstr "&Nov profil ..."
-
-#~ msgid "&Edit Profile..."
-#~ msgstr "Ur&edi profil ..."
-
-#~ msgid "&Delete Profile"
-#~ msgstr "Iz&briši profil"
-
-#~ msgid "Tab bar position:"
-#~ msgstr "Položaj vrstice z zavihki:"
-
-#~ msgid "Always Show Tab Bar"
-#~ msgstr "Vedno prikaži vrstico z zavihki"
-
-#~ msgid "Show Tab Bar When Needed"
-#~ msgstr "Vrstico z zavihki prikaži po potrebi"
-
-#~ msgid "Always Hide Tab Bar"
-#~ msgstr "Vedno skrij vrstico z zavihki"
-
-#~ msgid "Tab bar visibility:"
-#~ msgstr "Vidnost vrstice z zavihki:"
-
-#~ msgid "New tab behavior:"
-#~ msgstr "Obnašanje novih zavihkov:"
-
-#~ msgid "Put New Tab At The End"
-#~ msgstr "Postavi nov zavihek na konec"
-
-#~ msgctxt "@action Shortcut entry"
-#~ msgid "Next View Container"
-#~ msgstr "Vsebnik naslednjega pogleda"
-
-#~ msgid "&Close Tab"
-#~ msgstr "&Zapri zavihek"
-
-#~ msgctxt "@action:inmenu Close Active View"
-#~ msgid "Close Active"
-#~ msgstr "Zapri dejaven"
-
-#~ msgctxt "@action:inmenu Close Other Views"
-#~ msgid "Close Others"
-#~ msgstr "Zapri druge"
-
-#~ msgid "Expand the tab widths (Qt5.9+ uses the full window width)"
-#~ msgstr "Razširi širine zavihkov (Qt5.9+ uporablja polno širino okna)"
-
-#, fuzzy
-#~| msgid ""
-#~| "Starting with Qt 5.9, the next two options will have different affects."
-#~ msgid "Starting with Qt 5.9, the next two options have different effects."
-#~ msgstr ""
-#~ "V različici Qt novejši od 5.9 bosta imeli naslednji dve možnosti različne "
-#~ "učinke."
-
-#~ msgid "%1"
-#~ msgstr "%1"
-
-#~ msgid "Select Any Font"
-#~ msgstr "Izberite katerokoli pisavo"
-
-#~ msgid "Select Fixed Width Font"
-#~ msgstr "Izberite pisavo s fiksno širino"
-
-#~ msgctxt "@title:group Generic, common options"
-#~ msgid "General"
-#~ msgstr "Splošno"
-
-#~ msgid "Rows"
-#~ msgstr "Vrstice"
-
-#~ msgid "This will not alter any open windows."
-#~ msgstr "To ne bo spremenilo že odprtih oken."
-
-#~ msgid "Preview:"
-#~ msgstr "Predogled:"
-
-#~ msgid "Qt::ElideRight"
-#~ msgstr "Qt::ElideRight"
-
-#~ msgid "Select the font used in this profile"
-#~ msgstr "Izbere pisavo uporabljeno v tem profilu"
-
-#~ msgid "Show all fonts instead of the monospaced fonts"
-#~ msgstr "Pokaži vse pisave in ne le pisav stalne širine"
-
-#~ msgid "Scroll Bar"
-#~ msgstr "Drsnik"
-
-#~ msgid "Hide the scroll bar"
-#~ msgstr "Skrije drsnik"
-
-#~ msgctxt "@option:radio Hide the scroll bar"
-#~ msgid "Hide"
-#~ msgstr "Skrij"
-
-#~ msgid "Show on left side"
-#~ msgstr "Prikaži na levi strani"
-
-#~ msgid "Select Text"
-#~ msgstr "Izbor besedila"
-
-#~ msgid "Characters considered part of a word when double clicking:"
-#~ msgstr "Znaki, ki se obravnavajo kot del besede, ko dvokliknete: "
-
-#~ msgid "Which part of current line should be selected with triple click ."
-#~ msgstr "Kateri del trenutne vrstice naj bo izbran ob trokliku."
-
-#~ msgid "Copy && Paste"
-#~ msgstr "Kopiraj in prilepi"
-
-#~ msgid "Mouse middle button:"
-#~ msgstr "Srednji gumb miške:"
-
-#~ msgid "Show URL hints when these keys are pressed:"
-#~ msgstr "Ob pritisku naslednjih tipk prikaži namige za naslove URL:"
-
-#~ msgid "Enable flow control using Ctrl+S, Ctrl+Q"
-#~ msgstr "Omogoči nadzor pretoka z uporabo Ctrl+S in Ctrl+Q"
-
-#~ msgid "Cursor shape:"
-#~ msgstr "Oblika kazalke:"
-
-#~ msgid "Change the shape of the cursor"
-#~ msgstr "Spremeni obliko kazalke"
-
-#~ msgid "Encoding"
-#~ msgstr "Kodiranje"
-
-#~ msgctxt "@action:button Pick an encoding"
-#~ msgid "Select"
-#~ msgstr "Izberite"
-
-#~ msgid "No scrollback"
-#~ msgstr "Brez pomnjenja vrstic"
-
-#~ msgid "Show application name on the titlebar"
-#~ msgstr "V naslovni vrstici pokaži ime programa"
-
-#~ msgid "Show \"- Konsole\" on the titlebar"
-#~ msgstr "V naslovni vrstici pokaži \"- Konsole\""
+#~ msgid "&Rename Tab..."
+#~ msgstr "P&reimenuj zavihek..."
 
 #~ msgctxt "@action:inmenu"
-#~ msgid "&Close Tab"
-#~ msgstr "&Zapri zavihek"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid "Create a new tab. Press and hold to select profile from menu"
-#~ msgstr ""
-#~ "Ustvari nov zavihek. Pritisnite in držite, da izberete profil iz menija"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid "Close the active tab"
-#~ msgstr "Zapri dejaven zavihek"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid ""
-#~ "<title>Tab Bar</title><para>The tab bar allows you to switch and move "
-#~ "tabs. You can double-click a tab to change its name.</para>"
-#~ msgstr ""
-#~ "<title>Vrstica z zavihki</title><para>Vrstica z zavihki vam dovoli, da "
-#~ "preklopite in premikate zavihke. Če zavihek dvokliknete, lahko spremenite "
-#~ "njegovo ime.</para>"
-
-#~ msgctxt "@action:button Display options menu"
-#~ msgid "Options"
-#~ msgstr "Možnosti"
-
-#~ msgctxt "@action:button Search from bottom"
-#~ msgid "From bottom"
-#~ msgstr "Od spodaj"
-
-#~ msgctxt "@action:button Search from top"
-#~ msgid "From top"
-#~ msgstr "Od zgoraj"
-
-#~ msgid "Profile name is empty."
-#~ msgstr "Ime profila je prazno."
-
-#~ msgid "&Stop"
-#~ msgstr "Zau&stavi"
-
-#~ msgid "Icon:"
-#~ msgstr "Ikona:"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Click to rename profile"
-#~ msgstr "Kliknite, da preimenujete profil"
+#~ msgid "&Rename Tab..."
+#~ msgstr "P&reimenuj zavihek..."
 
 #, fuzzy
-#~| msgctxt "@title"
-#~| msgid "Konsole"
-#~ msgctxt "@title"
-#~ msgid "Demo KonsolePart"
-#~ msgstr "Konsole"
-
-#, fuzzy
-#~| msgctxt "@info:credit"
-#~| msgid "(c) 1997-2017, The Konsole Developers"
-#~ msgctxt "@info:credit"
-#~ msgid "(c) 2017, The Konsole Developers"
-#~ msgstr "(c) 1997-2017, razvijalci Konsole"
-
-#~ msgid "Show URL hint overlays that can be triggered when holding down CTRL."
-#~ msgstr "Prikaži prekrivne namige za naslove URL ob pritisku tipke Ctrl."
-
-#~ msgid "Enable URL hints"
-#~ msgstr "Omogoči namige za naslove URL"
-
-#~ msgid "DEC VT420 Terminal"
-#~ msgstr "Terminal DEC VT420"
-
-#~ msgctxt "@info:shell"
-#~ msgid "Use --nofork to run in the foreground (helpful with the -e option)."
-#~ msgstr ""
-#~ "Uporabite --nofork, da zaženete v ospredju (uporabno z možnostjo -e)."
-
-#~ msgctxt "@title:window"
-#~ msgid "Manage Profiles"
-#~ msgstr "Upravljanje profilov"
-
-#~ msgid "Manage Profiles..."
-#~ msgstr "Upravljaj profile ..."
-
-#~ msgctxt "@title"
-#~ msgid "<application>Konsole</application>"
-#~ msgstr "<application>Konzola</application>"
-
-#~ msgid "Shell"
-#~ msgstr "Lupina"
-
-#~ msgid "--- Type anything in this box ---"
-#~ msgstr "--- V to polje natipkajte karkoli ---"
-
-#~ msgid "Set the window size and position for this profile when exiting"
-#~ msgstr "Ob izhodu nastavi velikost in položaj okna za ta profil"
-
-#~ msgid "Save window size and position on exit"
-#~ msgstr "Ob izhodu shrani velikost in položaj okna"
+#~| msgctxt "@info:tooltip"
+#~| msgid "Maximize terminal"
+#~ msgctxt "@action Shortcut entry"
+#~ msgid "Maximize current Terminal"
+#~ msgstr "Maksimiziraj terminal"

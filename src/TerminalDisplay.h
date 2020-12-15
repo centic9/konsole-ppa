@@ -35,6 +35,7 @@
 #include "ScrollState.h"
 #include "Profile.h"
 #include "TerminalHeaderBar.h"
+#include "Filter.h"
 
 class QDrag;
 class QDragEnterEvent;
@@ -72,9 +73,9 @@ class KONSOLEPRIVATE_EXPORT TerminalDisplay : public QWidget
 public:
     /** Constructs a new terminal display widget with the specified parent. */
     explicit TerminalDisplay(QWidget *parent = nullptr);
-    ~TerminalDisplay() Q_DECL_OVERRIDE;
+    ~TerminalDisplay() override;
 
-    void showDragTarget(const QPoint& pos);
+    void showDragTarget(const QPoint& cursorPos);
     void hideDragTarget();
 
     void applyProfile(const Profile::Ptr& profile);
@@ -116,6 +117,8 @@ public:
 
     void setScrollFullPage(bool fullPage);
     bool scrollFullPage() const;
+    void setHighlightScrolledLines(bool highlight);
+
     /**
      * Returns the display's filter chain.  When the image for the display is updated,
      * the text is passed through each filter in the chain.  Each filter can define
@@ -149,7 +152,7 @@ public:
      * Returns a list of menu actions created by the filters for the content
      * at the given @p position.
      */
-    QList<QAction *> filterActions(const QPoint &position);
+    QSharedPointer<Filter::HotSpot> filterActions(const QPoint &position);
 
     /** Specifies whether or not the cursor can blink. */
     void setBlinkingCursorEnabled(bool blink);
@@ -174,10 +177,6 @@ public:
      * Defaults to BlockCursor
      */
     void setKeyboardCursorShape(Enum::CursorShapeEnum shape);
-    /**
-     * Returns the shape of the keyboard cursor.  See setKeyboardCursorShape()
-     */
-    Enum::CursorShapeEnum keyboardCursorShape() const;
 
     /**
      * Sets the Cursor Style (DECSCUSR) via escape sequences
@@ -207,11 +206,19 @@ public:
     void setKeyboardCursorColor(const QColor &color);
 
     /**
-     * Returns the color of the keyboard cursor, or an invalid color if the keyboard
-     * cursor color is set to change according to the foreground color of the character
-     * underneath it.
+     * Sets the color used to draw the character underneath the keyboard cursor.
+     *
+     * The keyboard cursor defaults to using the background color of the
+     * terminal cell to draw the character at the cursor position.
+     *
+     * @param color By default, the widget uses the color of the
+     * character under the cursor to draw the cursor, and inverts the
+     * color of that character to make sure it is still readable. If @p
+     * color is a valid QColor, the widget uses that color to draw the
+     * character underneath the cursor. If @p color is not an valid QColor,
+     * the widget falls back to the default behavior.
      */
-    QColor keyboardCursorColor() const;
+    void setKeyboardCursorTextColor(const QColor &color);
 
     /**
      * Returns the number of lines of text which can be displayed in the widget.
@@ -256,7 +263,7 @@ public:
     void setSize(int columns, int lines);
 
     // reimplemented
-    QSize sizeHint() const Q_DECL_OVERRIDE;
+    QSize sizeHint() const override;
 
     /**
      * Sets which characters, in addition to letters and numbers,
@@ -338,6 +345,12 @@ public:
     void printContent(QPainter &painter, bool friendly);
 
     /**
+     * Gets the foreground of the display
+     * @see setForegroundColor(), setColorTable(), setBackgroundColor()
+     */
+    QColor getForegroundColor() const;
+
+    /**
      * Gets the background of the display
      * @see setBackgroundColor(), setColorTable(), setForegroundColor()
      */
@@ -359,6 +372,11 @@ public:
 
     /** See setAlternateScrolling() */
     bool alternateScrolling() const;
+
+    bool hasCompositeFocus() const
+    {
+        return _hasCompositeFocus;
+    }
 
 public Q_SLOTS:
     /**
@@ -392,8 +410,11 @@ public Q_SLOTS:
     void copyToClipboard();
 
     /**
-     * Pastes the content of the clipboard into the
-     * display.
+     * Pastes the content of the clipboard into the display.
+     *
+     * URLs of local files are treated specially:
+     *  - The scheme part, "file://", is removed from each URL
+     *  - The URLs are pasted as a space-separated list of file paths
      */
     void pasteFromClipboard(bool appendEnter = false);
     /**
@@ -532,35 +553,34 @@ Q_SIGNALS:
 
     void sendStringToEmu(const QByteArray &local8BitString);
 
-    void focusLost();
-    void focusGained();
+    void compositeFocusChanged(bool focused);
 
 protected:
     // events
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-    void paintEvent(QPaintEvent *pe) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-    void focusInEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    void focusOutEvent(QFocusEvent *event) Q_DECL_OVERRIDE;
-    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void keyReleaseEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void leaveEvent(QEvent *event) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *ev) Q_DECL_OVERRIDE;
-    void wheelEvent(QWheelEvent *ev) Q_DECL_OVERRIDE;
-    bool focusNextPrevChild(bool next) Q_DECL_OVERRIDE;
+    bool event(QEvent *event) override;
+    void paintEvent(QPaintEvent *pe) override;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *ev) override;
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void mouseMoveEvent(QMouseEvent *ev) override;
+    void wheelEvent(QWheelEvent *ev) override;
+    bool focusNextPrevChild(bool next) override;
 
     void fontChange(const QFont &);
     void extendSelection(const QPoint &position);
 
     // drag and drop
-    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
-    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     void doDrag();
     enum DragState {
         diNone, diPending, diDragging
@@ -586,8 +606,8 @@ protected:
     void selectLine(QPoint pos, bool entireLine);
 
     // reimplemented
-    void inputMethodEvent(QInputMethodEvent *event) Q_DECL_OVERRIDE;
-    QVariant inputMethodQuery(Qt::InputMethodQuery query) const Q_DECL_OVERRIDE;
+    void inputMethodEvent(QInputMethodEvent *event) override;
+    QVariant inputMethodQuery(Qt::InputMethodQuery query) const override;
 
     void onColorsChanged();
 
@@ -596,6 +616,7 @@ protected Q_SLOTS:
     void scrollBarPositionChanged(int value);
     void blinkTextEvent();
     void blinkCursorEvent();
+    void highlightScrolledLinesEvent();
 
 private Q_SLOTS:
 
@@ -616,6 +637,11 @@ private:
     void drawContents(QPainter &painter, const QRect &rect);
     // draw a transparent rectangle over the line of the current match
     void drawCurrentResultRect(QPainter &painter);
+    // draw a thin highlight on the left of the screen for lines that have been scrolled into view
+    void highlightScrolledLines(QPainter& painter);
+    // compute which region need to be repainted for scrolled lines highlight
+    QRegion highlightScrolledLinesRegion(bool nothingChanged);
+
     // draws a section of text, all the text in this section
     // has a common color and style
     void drawTextFragment(QPainter &painter, const QRect &rect, const QString &text,
@@ -631,10 +657,10 @@ private:
                         bool useOpacitySetting);
     // draws the cursor character
     void drawCursor(QPainter &painter, const QRect &rect, const QColor &foregroundColor,
-                    const QColor &backgroundColor, bool &invertCharacterColor);
+                    const QColor &backgroundColor, QColor &characterColor);
     // draws the characters or line graphics in a text fragment
     void drawCharacters(QPainter &painter, const QRect &rect, const QString &text,
-                        const Character *style, bool invertCharacterColor);
+                        const Character *style, const QColor &characterColor);
     // draws a string of line graphics
     void drawLineCharString(QPainter &painter, int x, int y, const QString &str,
                             const Character *attributes);
@@ -660,6 +686,10 @@ private:
     // current size in columns and lines
     void showResizeNotification();
 
+    // applies changes to scrollbarLocation to the scroll bar and
+    // if @propagate is true, propagates size information
+    void applyScrollBarPosition(bool propagate = true);
+
     // scrolls the image by a number of lines.
     // 'lines' may be positive ( to scroll the image down )
     // or negative ( to scroll the image up )
@@ -674,6 +704,8 @@ private:
     void makeImage();
 
     void paintFilters(QPainter &painter);
+
+    void setupHeaderVisibility();
 
     // returns a region covering all of the areas of the widget which contain
     // a hotspot
@@ -819,6 +851,10 @@ private:
     // color of the character under the cursor is used
     QColor _cursorColor;
 
+    // cursor text color. If it is invalid (by default) then the background
+    // color of the character under the cursor is used
+    QColor _cursorTextColor;
+
     struct InputMethodData {
         QString preeditString;
         QRect previousPreeditRect;
@@ -862,6 +898,19 @@ private:
 
     bool _drawOverlay;
     Qt::Edge _overlayEdge;
+
+    struct {
+        bool enabled = false;
+        QRect rect;
+        int previousScrollCount = 0;
+        QTimer *timer = nullptr;
+        bool needToClear = false;
+    } _highlightScrolledLinesControl;
+    static const int HIGHLIGHT_SCROLLED_LINES_WIDTH = 3;
+
+    bool _hasCompositeFocus;
+
+    QSharedPointer<Filter::HotSpot> _currentlyHoveredHotspot;
 };
 
 class AutoScrollHandler : public QObject
@@ -871,8 +920,8 @@ class AutoScrollHandler : public QObject
 public:
     explicit AutoScrollHandler(QWidget *parent);
 protected:
-    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    void timerEvent(QTimerEvent *event) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 private:
     QWidget *widget() const
     {
@@ -881,6 +930,29 @@ private:
 
     int _timerId;
 };
+
+// Watches compositeWidget and all its focusable children,
+// and emits focusChanged() signal when either compositeWidget's
+// or a child's focus changed.
+// Limitation: children added after the object was created
+// will not be registered.
+class CompositeWidgetFocusWatcher : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit CompositeWidgetFocusWatcher(QWidget *compositeWidget, QObject *parent);
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+
+Q_SIGNALS:
+    void compositeFocusChanged(bool focused);
+
+private:
+    void registerWidgetAndChildren(QWidget *widget);
+
+    QWidget *_compositeWidget;
+};
+
 }
 
 #endif // TERMINALDISPLAY_H

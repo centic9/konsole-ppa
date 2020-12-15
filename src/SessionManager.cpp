@@ -61,7 +61,7 @@ SessionManager::~SessionManager()
                               <<"session(s) still alive";
         // ensure that the Session doesn't later try to call back and do things to the
         // SessionManager
-        foreach (Session *session, _sessions) {
+        for (Session *session : qAsConst(_sessions)) {
             disconnect(session, nullptr, this, nullptr);
         }
     }
@@ -81,7 +81,7 @@ bool SessionManager::isClosingAllSessions() const
 void SessionManager::closeAllSessions()
 {
     _isClosingAllSessions = true;
-    foreach (Session *session, _sessions) {
+    for (Session *session : qAsConst(_sessions)) {
         session->close();
     }
     _sessions.clear();
@@ -142,7 +142,7 @@ void SessionManager::sessionTerminated(Session *session)
 
 void SessionManager::applyProfile(const Profile::Ptr &profile, bool modifiedPropertiesOnly)
 {
-    foreach (Session *session, _sessions) {
+    for (Session *session : qAsConst(_sessions)) {
         if (_sessionProfiles[session] == profile) {
             applyProfile(session, profile, modifiedPropertiesOnly);
         }
@@ -245,6 +245,9 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
         session->setTabTitleFormat(Session::RemoteTabTitle,
                                    profile->remoteTabTitleFormat());
     }
+    if (apply.shouldApply(Profile::TabColor) && !session->isTabColorSetByUser()) {
+        session->setColor(profile->tabColor());
+    }
 
     // History
     if (apply.shouldApply(Profile::HistoryMode) || apply.shouldApply(Profile::HistorySize)) {
@@ -292,8 +295,8 @@ void SessionManager::sessionProfileCommandReceived(const QString &text)
     // store the font for each view if zoom was applied so that they can
     // be restored after applying the new profile
     QHash<TerminalDisplay *, QFont> zoomFontSizes;
-
-    foreach (TerminalDisplay *view, session->views()) {
+    const QList<TerminalDisplay *> viewsList = session->views();
+    for (TerminalDisplay *view : viewsList) {
         const QFont &viewCurFont = view->getVTFont();
         if (viewCurFont != _sessionProfiles[session]->font()) {
             zoomFontSizes.insert(view, viewCurFont);
@@ -337,7 +340,7 @@ void SessionManager::saveSessions(KConfig *config)
     int n = 1;
     _restoreMapping.clear();
 
-    foreach (Session *session, _sessions) {
+    for (Session *session : qAsConst(_sessions)) {
         QString name = QLatin1String("Session") + QString::number(n);
         KConfigGroup group(config, name);
 
@@ -379,7 +382,7 @@ void SessionManager::restoreSessions(KConfig *config)
 
 Session *SessionManager::idToSession(int id)
 {
-    foreach (Session *session, _sessions) {
+    for (Session *session : qAsConst(_sessions)) {
         if (session->sessionId() == id) {
             return session;
         }
