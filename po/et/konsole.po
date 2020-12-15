@@ -1,0 +1,4476 @@
+# translation of konsole.po to Estonian
+# Copyright (C) 1999,2002,2003 Free Software Foundation, Inc.
+#
+# Hasso Tepper <hasso@linux.ee>, 1999.
+# Hasso Tepper <hasso@estpak.ee>, 2002,2003.
+# Marek Laane <bald@smail.ee>, 2003-2009.
+# Marek Laane <bald@smail.ee>, 2009, 2010, 2011, 2012, 2013, 2014, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: konsole\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2017-11-23 04:59+0100\n"
+"PO-Revision-Date: 2016-12-09 00:04+0200\n"
+"Last-Translator: Marek Laane <qiilaq69@gmail.com>\n"
+"Language-Team: Estonian <kde-i18n-doc@kde.org>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Hasso Tepper, Marek Laane"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "hasso@linux.ee, qiikaq69@gmail.com"
+
+#. i18n: ectx: Menu (file)
+#: ../desktop/konsoleui.rc:5
+#, kde-format
+msgid "File"
+msgstr "Fail"
+
+#. i18n: ectx: Menu (edit)
+#: ../desktop/konsoleui.rc:15
+#, kde-format
+msgid "Edit"
+msgstr "Redigeerimine"
+
+#. i18n: ectx: Menu (view)
+#: ../desktop/konsoleui.rc:18
+#, kde-format
+msgid "View"
+msgstr "Vaade"
+
+#. i18n: ectx: Menu (view-split)
+#: ../desktop/konsoleui.rc:19
+#, kde-format
+msgid "Split View"
+msgstr "Vaate poolitamine"
+
+#. i18n: ectx: Menu (settings)
+#: ../desktop/konsoleui.rc:33
+#, kde-format
+msgid "Settings"
+msgstr "Seadistused"
+
+#. i18n: ectx: Menu (help)
+#: ../desktop/konsoleui.rc:44
+#, kde-format
+msgid "Help"
+msgstr "Abi"
+
+#. i18n: ectx: Menu (history)
+#: ../desktop/partui.rc:13
+#, kde-format
+msgid "S&crollback"
+msgstr "&Kerimine"
+
+#: Application.cpp:59
+#, kde-format
+msgctxt "@info:shell"
+msgid "Name of profile to use for new Konsole instance"
+msgstr "Uues Konsooli protsessis kasutatava profiili nimi"
+
+#: Application.cpp:63
+#, kde-format
+msgctxt "@info:shell"
+msgid "Use the internal FALLBACK profile"
+msgstr "Sisemise varuprofiili kasutamine"
+
+#: Application.cpp:66
+#, kde-format
+msgctxt "@info:shell"
+msgid "Set the initial working directory of the new tab or window to 'dir'"
+msgstr "Uue kaardi või akna algse töökataloogi 'dir' määramine"
+
+#: Application.cpp:72
+#, kde-format
+msgctxt "@info:shell"
+msgid "Do not close the initial session automatically when it ends."
+msgstr "Algset seanssi ei suleta lõpetamisel automaatselt."
+
+#: Application.cpp:76
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Create a new tab in an existing window rather than creating a new window"
+msgstr "Uue kaardi loomine aktiivses aknas uue akna loomise asemel"
+
+#: Application.cpp:80
+#, kde-format
+msgctxt "@info:shell"
+msgid "Create tabs as specified in given tabs configuration file"
+msgstr "Kaartide loomine vastavalt määratud kaartide seadistusfailile"
+
+#: Application.cpp:85
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Start Konsole in the background and bring to the front when Ctrl+Shift+F12 "
+"(by default) is pressed"
+msgstr ""
+"Konsooli käivitamine taustal ja muutmine aktiivseks kiirklahviga Ctrl+Shift"
+"+F12 (vaikimisi)"
+
+#: Application.cpp:90
+#, fuzzy, kde-format
+#| msgid "Run in a separate process"
+msgctxt "@info:shell"
+msgid "Run in a separate process"
+msgstr "Käivitamine eraldi protsessina"
+
+#: Application.cpp:93
+#, kde-format
+msgctxt "@info:shell"
+msgid "Show the menubar, overriding the default setting"
+msgstr "Menüüriba näitamine sõltumata vaikeseadistusest"
+
+#: Application.cpp:96
+#, kde-format
+msgctxt "@info:shell"
+msgid "Hide the menubar, overriding the default setting"
+msgstr "Menüüriba peitmine sõltumata vaikeseadistusest"
+
+#: Application.cpp:99
+#, kde-format
+msgctxt "@info:shell"
+msgid "Show the tabbar, overriding the default setting"
+msgstr "Kaardiriba näitamine sõltumata vaikeseadistusest"
+
+#: Application.cpp:102
+#, kde-format
+msgctxt "@info:shell"
+msgid "Hide the tabbar, overriding the default setting"
+msgstr "Kaardiriba peitmine sõltumata vaikeseadistusest"
+
+#: Application.cpp:104
+#, kde-format
+msgctxt "@info:shell"
+msgid "Start Konsole in fullscreen mode"
+msgstr "Konsooli käivitamine täisekraanirežiimis"
+
+#: Application.cpp:107
+#, kde-format
+msgctxt "@info:shell"
+msgid "Disable transparent backgrounds, even if the system supports them."
+msgstr "Läbipaistva tausta keelamine, isegi kui süsteem seda toetab."
+
+#: Application.cpp:110
+#, kde-format
+msgctxt "@info:shell"
+msgid "List the available profiles"
+msgstr "Saadaolevate profiilide nimekiri"
+
+#: Application.cpp:113
+#, kde-format
+msgctxt "@info:shell"
+msgid "List all the profile properties names and their type (for use with -p)"
+msgstr ""
+"Kõigi profiili omaduste nimede ja tüüpide nimekiri (kasutamiseks võtmega -p)"
+
+#: Application.cpp:117
+#, kde-format
+msgctxt "@info:shell"
+msgid "Change the value of a profile property."
+msgstr "Profiili omaduse väärtuse muutmine."
+
+#: Application.cpp:121
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Command to execute. This option will catch all following arguments, so use "
+"it as the last option."
+msgstr ""
+"Käivitatav käsk. See võtab omaks kõik edasised argumendid, nii et kasuta "
+"seda viimasena."
+
+#: Application.cpp:125
+#, kde-format
+msgctxt "@info:shell"
+msgid "Arguments passed to command"
+msgstr "Käsule edastatavad argumendid"
+
+#: BookmarkHandler.cpp:133
+#, kde-format
+msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
+msgid "%1 on %2"
+msgstr "%1 (%2)"
+
+#: BookmarkHandler.cpp:135
+#, kde-format
+msgctxt "@item:inmenu The host the user is connected to via ssh"
+msgid "%1"
+msgstr "%1"
+
+#: ColorScheme.cpp:115
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground"
+msgstr "Esiplaan"
+
+#: ColorScheme.cpp:116
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background"
+msgstr "Taust"
+
+#: ColorScheme.cpp:117
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1"
+msgstr "Värv 1"
+
+#: ColorScheme.cpp:118
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2"
+msgstr "Värv 2"
+
+#: ColorScheme.cpp:119
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3"
+msgstr "Värv 3"
+
+#: ColorScheme.cpp:120
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4"
+msgstr "Värv 4"
+
+#: ColorScheme.cpp:121
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5"
+msgstr "Värv 5"
+
+#: ColorScheme.cpp:122
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6"
+msgstr "Värv 6"
+
+#: ColorScheme.cpp:123
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7"
+msgstr "Värv 7"
+
+#: ColorScheme.cpp:124
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8"
+msgstr "Värv 8"
+
+#: ColorScheme.cpp:125
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground (Intense)"
+msgstr "Esiplaan (intensiivne)"
+
+#: ColorScheme.cpp:126
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background (Intense)"
+msgstr "Taust (intensiivne)"
+
+#: ColorScheme.cpp:127
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1 (Intense)"
+msgstr "Värv 1 (intensiivne)"
+
+#: ColorScheme.cpp:128
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2 (Intense)"
+msgstr "Värv 2 (intensiivne)"
+
+#: ColorScheme.cpp:129
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3 (Intense)"
+msgstr "Värv 3 (intensiivne)"
+
+#: ColorScheme.cpp:130
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4 (Intense)"
+msgstr "Värv 4 (intensiivne)"
+
+#: ColorScheme.cpp:131
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5 (Intense)"
+msgstr "Värv 5 (intensiivne)"
+
+#: ColorScheme.cpp:132
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6 (Intense)"
+msgstr "Värv 6 (intensiivne)"
+
+#: ColorScheme.cpp:133
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7 (Intense)"
+msgstr "Värv 7 (intensiivne)"
+
+#: ColorScheme.cpp:134
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8 (Intense)"
+msgstr "Värv 8 (intensiivne)"
+
+#: ColorScheme.cpp:135
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground (Faint)"
+msgstr "Esiplaan (nõrk)"
+
+#: ColorScheme.cpp:136
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background (Faint)"
+msgstr "Taust (nõrk)"
+
+#: ColorScheme.cpp:137
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1 (Faint)"
+msgstr "Värv 1 (nõrk)"
+
+#: ColorScheme.cpp:138
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2 (Faint)"
+msgstr "Värv 2 (nõrk)"
+
+#: ColorScheme.cpp:139
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3 (Faint)"
+msgstr "Värv 3 (nõrk)"
+
+#: ColorScheme.cpp:140
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4 (Faint)"
+msgstr "Värv 4 (nõrk)"
+
+#: ColorScheme.cpp:141
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5 (Faint)"
+msgstr "Värv 5 (nõrk)"
+
+#: ColorScheme.cpp:142
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6 (Faint)"
+msgstr "Värv 6 (nõrk)"
+
+#: ColorScheme.cpp:143
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7 (Faint)"
+msgstr "Värv 7 (nõrk)"
+
+#: ColorScheme.cpp:144
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8 (Faint)"
+msgstr "Värv 8 (nõrk)"
+
+#: ColorScheme.cpp:363
+#, fuzzy, kde-format
+#| msgid "Un-named Color Scheme"
+msgctxt "@item"
+msgid "Un-named Color Scheme"
+msgstr "Nimetu värviskeem"
+
+#: ColorSchemeEditor.cpp:120
+#, kde-format
+msgctxt "@label:listbox Column header text for color names"
+msgid "Name"
+msgstr "Nimi"
+
+#: ColorSchemeEditor.cpp:121
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual colors"
+msgid "Color"
+msgstr "Värv"
+
+#: ColorSchemeEditor.cpp:122
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual intense colors"
+msgid "Intense color"
+msgstr "Intensiivvärv"
+
+#: ColorSchemeEditor.cpp:123
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual faint colors"
+msgid "Faint color"
+msgstr "Nõrk värv"
+
+#: ColorSchemeEditor.cpp:152
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"The background transparency setting will not be used because your desktop "
+"does not appear to support transparent windows."
+msgstr ""
+"Tausta läbipaistvuse seadistust ei kasutata, sest sinu töölaud ei paista "
+"toetavat läbipaistvaid aknaid."
+
+#: ColorSchemeEditor.cpp:208
+#, kde-format
+msgctxt "@title:window"
+msgid "Select wallpaper image file"
+msgstr "Taustapildi faili valik"
+
+#: ColorSchemeEditor.cpp:211
+#, fuzzy, kde-format
+#| msgctxt "Filter in file open dialog"
+#| msgid "Supported Images"
+msgctxt "@label:textbox Filter in file open dialog"
+msgid "Supported Images"
+msgstr "Toetatud pildid"
+
+#: ColorSchemeEditor.cpp:264
+#, fuzzy, kde-format
+#| msgid "New Color Scheme"
+msgctxt "@title:window"
+msgid "New Color Scheme"
+msgstr "Uus värviskeem"
+
+#: ColorSchemeEditor.cpp:267
+#, fuzzy, kde-format
+#| msgid "Edit Color Scheme"
+msgctxt "@title:window"
+msgid "Edit Color Scheme"
+msgstr "Värviskeemi muutmine"
+
+#: ColorSchemeEditor.cpp:300
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose color"
+msgstr "Klõpsa värvi valimiseks"
+
+#: ColorSchemeEditor.cpp:306
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose intense color"
+msgstr "Klõpsa intensiivvärvi valimiseks"
+
+#: ColorSchemeEditor.cpp:311
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose Faint color"
+msgstr "Klõpsa nõrga värvi valimiseks"
+
+#. i18n: ectx: property (text), widget (QLabel, discriptionLabel)
+#. i18n: ectx: property (text), widget (QLabel, descriptionLabel)
+#: ColorSchemeEditor.ui:22 KeyBindingEditor.ui:22
+#, kde-format
+msgid "Description:"
+msgstr "Kirjeldus:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, randomizedBackgroundCheck)
+#: ColorSchemeEditor.ui:40
+#, kde-format
+msgid "Vary the background color for each tab"
+msgstr "Erinev taustavärv igale kaardile"
+
+#. i18n: ectx: property (text), widget (QLabel, transparencyLabel)
+#: ColorSchemeEditor.ui:49
+#, kde-format
+msgid "Background transparency:"
+msgstr "Tausta läbipaistvus:"
+
+#. i18n: ectx: property (text), widget (QLabel, transparencyPercentLabel)
+#: ColorSchemeEditor.ui:69
+#, kde-format
+msgid "Percent"
+msgstr "Protsent"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperLabel)
+#: ColorSchemeEditor.ui:83
+#, kde-format
+msgid "Background image:"
+msgstr "Taustapilt:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, wallpaperPath)
+#: ColorSchemeEditor.ui:90
+#, kde-format
+msgid "Edit the path of the background image"
+msgstr "Taustapildi asukoha muutmine"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, wallpaperSelectButton)
+#: ColorSchemeEditor.ui:97
+#, kde-format
+msgid "Choose the background image"
+msgstr "Taustapildi valimine"
+
+#. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
+#. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
+#: ColorSchemeEditor.ui:100 EditProfileDialog.ui:111
+#, kde-format
+msgid "..."
+msgstr "..."
+
+#: CopyInputDialog.cpp:39
+#, kde-format
+msgid "Copy Input"
+msgstr "Sisendi kopeerimine"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: CopyInputDialog.ui:19
+#, kde-format
+msgid "Filter:"
+msgstr "Filter:"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllButton)
+#: CopyInputDialog.ui:46
+#, kde-format
+msgid "Select All"
+msgstr "Vali kõik"
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllButton)
+#: CopyInputDialog.ui:53
+#, kde-format
+msgid "Deselect All"
+msgstr "Tühista valik"
+
+#: EditProfileDialog.cpp:69
+#, kde-format
+msgid "Edit Profile"
+msgstr "Profiili muutmine"
+
+#: EditProfileDialog.cpp:153
+#, kde-format
+msgid "<p>Each profile must have a name before it can be saved into disk.</p>"
+msgstr ""
+"<p>Kõigil profiilidel peab olema nimi, enne kui neid saab kettale salvestada."
+"</p>"
+
+#: EditProfileDialog.cpp:186
+#, kde-format
+msgid "Editing profile: %2"
+msgid_plural "Editing %1 profiles: %2"
+msgstr[0] "Profiili muutmine: %2"
+msgstr[1] "%1 profiili muutmine: %2"
+
+#: EditProfileDialog.cpp:191
+#, kde-format
+msgid "Edit Profile \"%1\""
+msgstr "Profiili \"%1\" muutmine"
+
+#: EditProfileDialog.cpp:273
+#, kde-format
+msgid "Profile name is empty."
+msgstr "Profiili nimi puudub."
+
+#: EditProfileDialog.cpp:344
+#, kde-format
+msgid "Edit Environment"
+msgstr "Keskkonna muutmine"
+
+#: EditProfileDialog.cpp:345
+#, kde-format
+msgid "One environment variable per line"
+msgstr "Üks keskkonnamuutuja rea kohta"
+
+#: EditProfileDialog.cpp:376
+#, kde-format
+msgctxt "Unit of time"
+msgid " second"
+msgid_plural " seconds"
+msgstr[0] " sekund"
+msgstr[1] " sekundit"
+
+#: EditProfileDialog.cpp:453
+#, kde-format
+msgid "Select Initial Directory"
+msgstr "Algkataloogi valik"
+
+#: EditProfileDialog.cpp:675
+#, kde-format
+msgid "%1"
+msgstr "%1"
+
+#: EditProfileDialog.cpp:888
+#, kde-format
+msgid ""
+"This color scheme uses a transparent background which does not appear to be "
+"supported on your desktop"
+msgstr ""
+"Sellel värviskeemil on läbipaistev taust, mida sinu töölaud ei paista "
+"toetavat."
+
+#: EditProfileDialog.cpp:894
+#, kde-format
+msgid ""
+"Konsole was started before desktop effects were enabled. You need to restart "
+"Konsole to see transparent background."
+msgstr ""
+"Konsole käivitati enne seda, kui lubati töölauaefektid. Läbipaistva tausta "
+"kasutamiseks tuleb Konsole taaskäivitada."
+
+#: EditProfileDialog.cpp:1008 EditProfileDialog.cpp:1020
+#, kde-format
+msgid "New Key Binding List"
+msgstr "Uus kiirklahvide nimekiri"
+
+#: EditProfileDialog.cpp:1010
+#, kde-format
+msgid "Edit Key Binding List"
+msgstr "Kiirklahvide nimekirja muutmine"
+
+#: EditProfileDialog.cpp:1439
+#, kde-format
+msgid "Select Any Font"
+msgstr "Suvalise fondi valimine"
+
+#: EditProfileDialog.cpp:1442
+#, kde-format
+msgid "Select Fixed Width Font"
+msgstr "Püsisammfondi valimine"
+
+#: EditProfileDialog.cpp:1494
+#, kde-format
+msgid "AaZz09..."
+msgstr "AaZz09..."
+
+#. i18n: ectx: attribute (title), widget (QWidget, generalTab)
+#: EditProfileDialog.ui:33
+#, kde-format
+msgctxt "@title:tab Generic, common options"
+msgid "General"
+msgstr "Üldine"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_10)
+#: EditProfileDialog.ui:39
+#, kde-format
+msgctxt "@title:group Generic, common options"
+msgid "General"
+msgstr "Üldine"
+
+#. i18n: ectx: property (text), widget (QLabel, profileNameLabel)
+#: EditProfileDialog.ui:48
+#, kde-format
+msgid "Profile name:"
+msgstr "Profiili nimi:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, profileNameEdit)
+#: EditProfileDialog.ui:58
+#, kde-format
+msgid "A descriptive name for the profile"
+msgstr "Profiili kirjeldav nimi"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: EditProfileDialog.ui:68
+#, kde-format
+msgid "Command:"
+msgstr "Käsk:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, commandEdit)
+#: EditProfileDialog.ui:78
+#, kde-format
+msgid ""
+"The command to execute when new terminal sessions are created using this "
+"profile"
+msgstr ""
+"Käsk, mis käivitatakse, kui selle profiiliga luuakse uued terminaliseansid"
+
+#. i18n: ectx: property (text), widget (QLabel, label_9)
+#: EditProfileDialog.ui:88
+#, kde-format
+msgid "Initial directory:"
+msgstr "Algkataloog:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, initialDirEdit)
+#: EditProfileDialog.ui:98
+#, kde-format
+msgid ""
+"The initial working directory for new terminal sessions using this profile"
+msgstr "Algne töökataloog selle profiiliga loodud uutes terminaliseanssides"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
+#: EditProfileDialog.ui:108
+#, kde-format
+msgid "Choose the initial directory"
+msgstr "Algkataloogi valimine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
+#: EditProfileDialog.ui:118
+#, kde-format
+msgid "Start in same directory as current tab"
+msgstr "Käivitamine aktiivse kaardiga samas kataloogis"
+
+#. i18n: ectx: property (text), widget (QLabel, label_10)
+#: EditProfileDialog.ui:125
+#, kde-format
+msgid "Icon:"
+msgstr "Ikoon:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, iconSelectButton)
+#: EditProfileDialog.ui:153
+#, kde-format
+msgid "Select the icon displayed on tabs using this profile"
+msgstr "Vali ikoon, mida näidatakse selle profiili korral kaartidel"
+
+#. i18n: ectx: property (text), widget (QLabel, environmentLabel)
+#: EditProfileDialog.ui:182
+#, kde-format
+msgid "Environment:"
+msgstr "Keskkond:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, environmentEditButton)
+#: EditProfileDialog.ui:192
+#, kde-format
+msgid "Edit the list of environment variables and associated values"
+msgstr "Muuda keskkonnamuutujate nimekirja ja nende väärtusi"
+
+#. i18n: ectx: property (text), widget (QPushButton, environmentEditButton)
+#. i18n: ectx: property (text), widget (QPushButton, editColorSchemeButton)
+#. i18n: ectx: property (text), widget (QPushButton, editKeyBindingsButton)
+#: EditProfileDialog.ui:195 EditProfileDialog.ui:470 EditProfileDialog.ui:808
+#, kde-format
+msgid "Edit..."
+msgstr "&Muuda..."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_16)
+#: EditProfileDialog.ui:205
+#, kde-format
+msgid "Terminal Size"
+msgstr "Terminali suurus"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: EditProfileDialog.ui:214
+#, kde-format
+msgid "Columns"
+msgstr "Veerud"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: EditProfileDialog.ui:231
+#, kde-format
+msgid "Rows"
+msgstr "Read"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: EditProfileDialog.ui:261
+#, kde-format
+msgid "This will not alter any open windows."
+msgstr "See ei muuda ühtegi avatud akent."
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: EditProfileDialog.ui:297
+#, kde-format
+msgid ""
+"Configure Konsole->General->Use current window size on next startup must be "
+"disabled for these entries to work."
+msgstr ""
+"Nende määrangute toimimiseks peab Konsooli seadistamine->Üldine->Aktiivse "
+"aknasuuruse kasutamine järgmisel käivitamisel olema välja lülitatud."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_12)
+#: EditProfileDialog.ui:310
+#, kde-format
+msgid "Window"
+msgstr "Aken"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
+#. i18n: ectx: tooltip, entry (ShowTerminalSizeHint), group (KonsoleWindow)
+#: EditProfileDialog.ui:319 settings/konsole.kcfg:30
+#, kde-format
+msgid ""
+"Show terminal size in columns and lines in the center of window after "
+"resizing"
+msgstr ""
+"Terminali suuruse näitamime veergude ja ridadena akna keskel pärast suuruse "
+"muutmist"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowTerminalSizeHint)
+#. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
+#. i18n: ectx: label, entry (ShowTerminalSizeHint), group (KonsoleWindow)
+#: EditProfileDialog.ui:322 settings/GeneralSettings.ui:53
+#: settings/konsole.kcfg:29
+#, kde-format
+msgid "Show hint for terminal size after resizing"
+msgstr "Terminali suuruse vihje näitamine pärast suuruse muutmist"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tabsTab)
+#: EditProfileDialog.ui:346
+#, kde-format
+msgid "Tabs"
+msgstr "Kaardid"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
+#: EditProfileDialog.ui:352
+#, kde-format
+msgid "Tab Titles"
+msgstr "Kaartide nimetused"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_13)
+#: EditProfileDialog.ui:367
+#, kde-format
+msgid "Tab Monitoring"
+msgstr "Kaartide jälgimine"
+
+#. i18n: ectx: property (text), widget (QLabel, silenceSecondsLabel)
+#: EditProfileDialog.ui:376
+#, kde-format
+msgid "Threshold for continuous silence:"
+msgstr "Püsiva vaikuse lävi:"
+
+#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, silenceSecondsSpinner)
+#: EditProfileDialog.ui:386
+#, kde-format
+msgid "The threshold for continuous silence to be detected by Konsole"
+msgstr "Püsiva vaikuse läbi, mida Konsole peab arvestama"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_1)
+#. i18n: ectx: attribute (title), widget (QWidget, appearanceTab)
+#: EditProfileDialog.ui:429 settings/TabBarSettings.ui:17
+#, kde-format
+msgid "Appearance"
+msgstr "Välimus"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: EditProfileDialog.ui:441
+#, kde-format
+msgid "Color Scheme && Background"
+msgstr "Värviskeem ja taust"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newColorSchemeButton)
+#: EditProfileDialog.ui:457
+#, kde-format
+msgid "Create a new color scheme based upon the selected scheme"
+msgstr "Loo uus värviskeem valitud skeemi põhjal"
+
+#. i18n: ectx: property (text), widget (QPushButton, newColorSchemeButton)
+#: EditProfileDialog.ui:460
+#, kde-format
+msgctxt "@action:button Create an alternate color scheme"
+msgid "New..."
+msgstr "Uus..."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editColorSchemeButton)
+#: EditProfileDialog.ui:467
+#, kde-format
+msgid "Edit the selected color scheme"
+msgstr "Muuda valitud värviskeemi"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, removeColorSchemeButton)
+#: EditProfileDialog.ui:477
+#, kde-format
+msgid "Delete the selected color scheme"
+msgstr "Kustuta valitud värviskeem"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeEntryButton)
+#. i18n: ectx: property (text), widget (QPushButton, removeColorSchemeButton)
+#. i18n: ectx: property (text), widget (QPushButton, removeKeyBindingsButton)
+#: EditProfileDialog.ui:480 EditProfileDialog.ui:818 KeyBindingEditor.ui:53
+#, kde-format
+msgid "Remove"
+msgstr "Eemalda"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
+#: EditProfileDialog.ui:506
+#, kde-format
+msgid "Font"
+msgstr "Font"
+
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: EditProfileDialog.ui:517
+#, kde-format
+msgid "Preview:"
+msgstr "Eelvaatlus:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: EditProfileDialog.ui:544
+#, kde-format
+msgid "Text size:"
+msgstr "Teksti suurus:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, selectFontButton)
+#: EditProfileDialog.ui:570
+#, kde-format
+msgid "Select the font used in this profile"
+msgstr "Profiilis kasutatava fondi valimine"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectFontButton)
+#: EditProfileDialog.ui:573
+#, kde-format
+msgid "Select Font..."
+msgstr "Vali font..."
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, showAllFontsButton)
+#: EditProfileDialog.ui:580
+#, kde-format
+msgid "Show all fonts instead of the monospaced fonts"
+msgstr "Kõigi fontide näitamine püsisammfontide asemel"
+
+#. i18n: ectx: property (text), widget (QCheckBox, showAllFontsButton)
+#: EditProfileDialog.ui:583
+#, kde-format
+msgid "Show All Fonts"
+msgstr "Kõigi fontide näitamine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
+#: EditProfileDialog.ui:605
+#, kde-format
+msgid "Smooth fonts"
+msgstr "Mahedad fondid"
+
+#. i18n: ectx: property (text), widget (QCheckBox, boldIntenseButton)
+#: EditProfileDialog.ui:612
+#, kde-format
+msgid "Draw intense colors in bold font"
+msgstr "Jõuliste värvide kasutamine rasvase kirja puhul"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, useFontLineCharactersButton)
+#: EditProfileDialog.ui:619
+#, kde-format
+msgid "Use the selected font for line characters instead of the builtin code"
+msgstr ""
+"Joonestuselementide puhul sisseehitatud koodi asemel valitud fondi kasutamine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, useFontLineCharactersButton)
+#: EditProfileDialog.ui:622
+#, kde-format
+msgid "Use line characters contained in font"
+msgstr "Fondi joonestuselementide kasutamine"
+
+#. i18n: ectx: attribute (title), widget (QWidget, scrollingTab)
+#: EditProfileDialog.ui:633
+#, kde-format
+msgid "Scrolling"
+msgstr "Kerimine"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_6)
+#: EditProfileDialog.ui:639
+#, kde-format
+msgid "Scrollback"
+msgstr "Kerimine ehk ajalugu"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_7)
+#: EditProfileDialog.ui:654
+#, kde-format
+msgid "Scroll Bar"
+msgstr "Kerimisriba"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarLeftButton)
+#: EditProfileDialog.ui:669
+#, kde-format
+msgid "Show the scroll bar on the left side of the terminal window"
+msgstr "Kerimisriba näidatakse terminaliakna vasakus servas"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarLeftButton)
+#: EditProfileDialog.ui:672
+#, kde-format
+msgid "Show on left side"
+msgstr "Näitamine vasakus servas"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarRightButton)
+#: EditProfileDialog.ui:685
+#, kde-format
+msgid "Show the scroll bar on the right side of the terminal window"
+msgstr "Kerimisriba näidatakse terminaliakna paremas servas"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarRightButton)
+#: EditProfileDialog.ui:688
+#, kde-format
+msgid "Show on right side"
+msgstr "Näitamine paremas servas"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarHiddenButton)
+#: EditProfileDialog.ui:701
+#, kde-format
+msgid "Hide the scroll bar"
+msgstr "Kerimisriba ei näidata"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarHiddenButton)
+#: EditProfileDialog.ui:704
+#, kde-format
+msgctxt "@option:radio Hide the scroll bar"
+msgid "Hide"
+msgstr "Peidetakse"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_15)
+#: EditProfileDialog.ui:714
+#, kde-format
+msgid "Scroll Page Up/Down Amount"
+msgstr "Lehekülje üles-alla kerimise maht"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollHalfPage)
+#: EditProfileDialog.ui:723
+#, kde-format
+msgid "Scroll the page the half height of window"
+msgstr "Lehte keritakse poole akna kaupa"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollHalfPage)
+#: EditProfileDialog.ui:726
+#, kde-format
+msgid "Half Page Height"
+msgstr "Poole lehe jagu"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollFullPage)
+#: EditProfileDialog.ui:733
+#, kde-format
+msgid "Scroll the page the full height of window"
+msgstr "Lehte keritakse kogu akna jagu"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollFullPage)
+#: EditProfileDialog.ui:736
+#, kde-format
+msgid "Full Page Height"
+msgstr "Täislehe jagu"
+
+#. i18n: ectx: attribute (title), widget (QWidget, keyboardTab)
+#: EditProfileDialog.ui:760
+#, kde-format
+msgid "Keyboard"
+msgstr "Klaviatuur"
+
+#. i18n: ectx: property (title), widget (QGroupBox, keyBindingsGroup)
+#: EditProfileDialog.ui:766
+#, kde-format
+msgid "Key Bindings"
+msgstr "Kiirklahvid"
+
+#. i18n: ectx: property (text), widget (QLabel, label_15)
+#: EditProfileDialog.ui:775
+#, kde-format
+msgid ""
+"Key bindings control how combinations of keystrokes in the terminal window "
+"are converted into the stream of characters which are sent to the current "
+"terminal program."
+msgstr ""
+"Kiirklahvidega saab määrata, millised terminaliaknas sooritatud "
+"klahvikombinatsioonid teisendatakse aktiivsele terminaliprogrammile "
+"saadetavaks märgivooks."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newKeyBindingsButton)
+#: EditProfileDialog.ui:795
+#, kde-format
+msgid "Create a new key bindings list based upon the selected bindings"
+msgstr "Uute kiirklahvide nimekirja loomine valitud kiirklahvide alusel"
+
+#. i18n: ectx: property (text), widget (QPushButton, newKeyBindingsButton)
+#: EditProfileDialog.ui:798
+#, kde-format
+msgctxt "@action:button Create an alternate key binding"
+msgid "New..."
+msgstr "Uus..."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editKeyBindingsButton)
+#: EditProfileDialog.ui:805
+#, kde-format
+msgid "Edit the selected key bindings list"
+msgstr "Valitud kiirklahvide nimekirja muutmine"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, removeKeyBindingsButton)
+#: EditProfileDialog.ui:815
+#, kde-format
+msgid "Delete the selected key bindings list"
+msgstr "Valitud kiirklahvide nimekirja kustutamine"
+
+#. i18n: ectx: attribute (title), widget (QWidget, mouseTab)
+#: EditProfileDialog.ui:842
+#, kde-format
+msgid "Mouse"
+msgstr "Hiir"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_9)
+#: EditProfileDialog.ui:848
+#, kde-format
+msgid "Select Text"
+msgstr "Teksti valimine"
+
+#. i18n: ectx: property (text), widget (QLabel, label_11)
+#: EditProfileDialog.ui:859
+#, kde-format
+msgid "Characters considered part of a word when double clicking:"
+msgstr "Märgid, mis arvestatakse topeltklõpsu puhul sõna osaks:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, wordCharacterEdit)
+#: EditProfileDialog.ui:872
+#, kde-format
+msgid ""
+"Characters which are considered part of a word when double-clicking to "
+"select whole words in the terminal"
+msgstr "Märgid, mis arvestatakse terminalis topeltklõpsu puhul sõna osaks"
+
+#. i18n: ectx: property (text), widget (QLabel, label_17)
+#: EditProfileDialog.ui:883
+#, kde-format
+msgid "Triple-click select:"
+msgstr "Kolmikklõps valib:"
+
+#. i18n: ectx: property (toolTip), widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:890
+#, kde-format
+msgid "Which part of current line should be selected with triple click ."
+msgstr "Milline osa aktiivsest reast valida kolmikklõpsuga."
+
+#. i18n: ectx: property (text), item, widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:894
+#, kde-format
+msgid "The whole current line"
+msgstr "kogu aktiivse rea"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:899
+#, kde-format
+msgid "From mouse position to the end of line"
+msgstr "hiire asukohast rea lõpuni"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_14)
+#: EditProfileDialog.ui:912
+#, kde-format
+msgid "Copy && Paste"
+msgstr "Kopeerimine ja asetamine"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, copyTextToClipboardButton)
+#: EditProfileDialog.ui:921
+#, kde-format
+msgid "Automatically copy selected text into clipboard"
+msgstr "Valitud tekst kopeeritakse automaatselt lõikepuhvrisse"
+
+#. i18n: ectx: property (text), widget (QCheckBox, copyTextToClipboardButton)
+#: EditProfileDialog.ui:924
+#, kde-format
+msgid "Copy on select"
+msgstr "Kopeeritakse valimisel"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, trimTrailingSpacesButton)
+#: EditProfileDialog.ui:931
+#, kde-format
+msgid "Trim trailing spaces in selected text, useful in some instances"
+msgstr "Lõputühikute eemaldamine valitud tekstis, võib mõnikord kasulik olla"
+
+#. i18n: ectx: property (text), widget (QCheckBox, trimTrailingSpacesButton)
+#: EditProfileDialog.ui:934
+#, kde-format
+msgid "Trim trailing spaces"
+msgstr "Lõputühikute eemaldamine"
+
+#. i18n: ectx: property (text), widget (QLabel, label_13)
+#: EditProfileDialog.ui:954
+#, kde-format
+msgid "Mouse middle button:"
+msgstr "Hiire keskmine nupp:"
+
+#. i18n: ectx: property (text), widget (QRadioButton, pasteFromX11SelectionButton)
+#: EditProfileDialog.ui:961
+#, kde-format
+msgid "Paste from selection"
+msgstr "Asetab valikust"
+
+#. i18n: ectx: property (text), widget (QRadioButton, pasteFromClipboardButton)
+#: EditProfileDialog.ui:968
+#, kde-format
+msgid "Paste from clipboard"
+msgstr "Asetab lõikepuhvrist"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: EditProfileDialog.ui:978
+#, kde-format
+msgid "Miscellaneous"
+msgstr "Muu"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, underlineLinksButton)
+#: EditProfileDialog.ui:987
+#, kde-format
+msgid ""
+"Text recognized as a link or an email address will be underlined when "
+"hovered by the mouse pointer."
+msgstr ""
+"Lingi või e-posti aadressina tuvastatud tekst tõstetakse esile, kui viia "
+"selle kohale hiirekursor."
+
+#. i18n: ectx: property (text), widget (QCheckBox, underlineLinksButton)
+#: EditProfileDialog.ui:990
+#, kde-format
+msgid "Underline links"
+msgstr "Linkide allajoonimine"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, underlineFilesButton)
+#: EditProfileDialog.ui:997
+#, kde-format
+msgid ""
+"Text recognized as a file will be underlined when hovered by the mouse "
+"pointer."
+msgstr ""
+"Failina tuvastatud tekst tõstetakse esile, kui viia selle kohale hiirekursor."
+
+#. i18n: ectx: property (text), widget (QCheckBox, underlineFilesButton)
+#: EditProfileDialog.ui:1000
+#, kde-format
+msgid "Underline files"
+msgstr "Failide allajoonimine"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, openLinksByDirectClickButton)
+#: EditProfileDialog.ui:1028
+#, kde-format
+msgid ""
+"Text recognized as a file, link or an email address can be opened by direct "
+"mouse click."
+msgstr ""
+"Faili, lingi või e-posti aadressina tuvastatud teksti saab avada "
+"hiireklõpsuga"
+
+#. i18n: ectx: property (text), widget (QCheckBox, openLinksByDirectClickButton)
+#: EditProfileDialog.ui:1031
+#, kde-format
+msgid "Open files and links by direct click"
+msgstr "Failide ja linkide avamine neile klõpsates"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, ctrlRequiredForDragButton)
+#: EditProfileDialog.ui:1040
+#, kde-format
+msgid "Selected text will require control key plus click to drag."
+msgstr "Valitud tekst nõuab lohistamiseks klahvi Ctrl ja klõpsu."
+
+#. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
+#: EditProfileDialog.ui:1043
+#, kde-format
+msgid "Require Ctrl key for drag and drop"
+msgstr "Klahvi Ctrl nõudmine lohistamiseks"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
+#: EditProfileDialog.ui:1050
+#, kde-format
+msgid ""
+"Always paste dropped URLs as text without offering move, copy and link "
+"actions."
+msgstr ""
+"Lohistatud URL-id asetatakse alati tekstina, pakkumata liigutamise, "
+"kopeerimise ja linkimise toimingut."
+
+#. i18n: ectx: property (text), widget (QCheckBox, dropUrlsAsText)
+#: EditProfileDialog.ui:1053
+#, kde-format
+msgid "Disable drag and drop menu for URLs and files"
+msgstr "URL-ide ja failide lohistamismenüü keelamine"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableMouseWheelZoomButton)
+#: EditProfileDialog.ui:1060
+#, kde-format
+msgid "Pressing Ctrl+scrollwheel will increase/decrease the text size."
+msgstr "Ctrl+hiireratas vähendab või suurendab teksti suurust."
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableMouseWheelZoomButton)
+#: EditProfileDialog.ui:1063
+#, kde-format
+msgid "Allow Ctrl+scrollwheel to zoom text size"
+msgstr "Ctrl+hiireratas muudab teksti suurust"
+
+#. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
+#: EditProfileDialog.ui:1087
+#, kde-format
+msgctxt "@title:tab Complex options"
+msgid "Advanced"
+msgstr "Muu"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_4)
+#: EditProfileDialog.ui:1093
+#, kde-format
+msgid "Terminal Features"
+msgstr "Terminali omadused"
+
+#. i18n: ectx: property (text), widget (QLabel, urlHintsLabel)
+#: EditProfileDialog.ui:1102
+#, kde-format
+msgid "Show URL hints when these keys are pressed:"
+msgstr "URL-i vihje näitamine järgmise klahvi vajutamisel:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierShift)
+#: EditProfileDialog.ui:1127
+#, kde-format
+msgid "Shift"
+msgstr "Shift"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierCtrl)
+#: EditProfileDialog.ui:1134
+#, kde-format
+msgid "Control"
+msgstr "Control"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierAlt)
+#: EditProfileDialog.ui:1141
+#, kde-format
+msgid "Alt"
+msgstr "Alt"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierMeta)
+#: EditProfileDialog.ui:1148
+#, kde-format
+msgid "Meta"
+msgstr "Meta"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingTextButton)
+#: EditProfileDialog.ui:1163
+#, kde-format
+msgid "Allow terminal programs to create blinking sections of text"
+msgstr "Terminaliprogrammidel lubatakse luua vilkuvaid tekstiosi"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingTextButton)
+#: EditProfileDialog.ui:1166
+#, kde-format
+msgid "Allow blinking text"
+msgstr "Vilkuva teksti lubamine"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableFlowControlButton)
+#: EditProfileDialog.ui:1179
+#, kde-format
+msgid "Allow the output to be suspended by pressing Ctrl+S"
+msgstr "Väljundi peatamise lubamine kiirklahviga Ctrl+S"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableFlowControlButton)
+#: EditProfileDialog.ui:1182
+#, kde-format
+msgid "Enable flow control using Ctrl+S, Ctrl+Q"
+msgstr "Vookontrolli lubamine kiirklahvidega Ctrl+S ja Ctrl+Q"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBidiRenderingButton)
+#: EditProfileDialog.ui:1195
+#, kde-format
+msgid ""
+"Enable Bi-Directional display on terminals (valid for Arabic, Farsi or "
+"Hebrew only)"
+msgstr ""
+"Kahesuunalise kuva lubamine terminalis (ainult araabia, farsi või heebrea "
+"keele puhul)"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBidiRenderingButton)
+#: EditProfileDialog.ui:1198
+#, kde-format
+msgid "Enable Bi-Directional text rendering"
+msgstr "Kahesuunalise teksti renderdamise lubamine"
+
+#. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
+#: EditProfileDialog.ui:1207
+#, kde-format
+msgid "Line Spacing:"
+msgstr "Reavahe:"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
+#: EditProfileDialog.ui:1214
+#, kde-format
+msgid "The number of pixels between two lines"
+msgstr "Pikslite arv kahe rea vahel"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_8)
+#: EditProfileDialog.ui:1245
+#, kde-format
+msgid "Cursor"
+msgstr "Kursor"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
+#: EditProfileDialog.ui:1260
+#, kde-format
+msgid "Make the cursor blink regularly"
+msgstr "Kursor pannakse regulaarselt vilkuma"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
+#: EditProfileDialog.ui:1263
+#, kde-format
+msgid "Blinking cursor"
+msgstr "Vilkuv kursor"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: EditProfileDialog.ui:1272
+#, kde-format
+msgid "Cursor shape:"
+msgstr "Kursori kuju:"
+
+#. i18n: ectx: property (toolTip), widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1279
+#, kde-format
+msgid "Change the shape of the cursor"
+msgstr "Kursori kuju muutmine"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1283
+#, kde-format
+msgctxt "The shape of the cursor"
+msgid "Block"
+msgstr "Plokk"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1288
+#, kde-format
+msgctxt "The shape of the cursor, similar to a capital I"
+msgid "I-Beam"
+msgstr "I-tala"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1293
+#, kde-format
+msgctxt "The shape of the cursor"
+msgid "Underline"
+msgstr "Alajoon"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
+#: EditProfileDialog.ui:1322
+#, kde-format
+msgid "Set the cursor to match the color of the character underneath it."
+msgstr "Kursori värv määratakse vastavalt selle all olevale märgile."
+
+#. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
+#: EditProfileDialog.ui:1325
+#, kde-format
+msgid "Set cursor color to match current character"
+msgstr "Kursori värviks määratakse aktiivse märgi värv"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
+#: EditProfileDialog.ui:1340
+#, kde-format
+msgid "Use a custom, fixed color for the cursor"
+msgstr "Kursori kohandatud värvi kasutamine"
+
+#. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
+#: EditProfileDialog.ui:1343
+#, kde-format
+msgid "Custom cursor color:"
+msgstr "Kohandatud kursori värv:"
+
+#. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
+#: EditProfileDialog.ui:1356
+#, kde-format
+msgid "Select the color used to draw the cursor"
+msgstr "Vali kursori jaoks kasutatav värv"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_11)
+#: EditProfileDialog.ui:1384
+#, kde-format
+msgid "Encoding"
+msgstr "Kodeering"
+
+#. i18n: ectx: property (text), widget (QLabel, label_14)
+#: EditProfileDialog.ui:1393
+#, kde-format
+msgid "Default character encoding:"
+msgstr "Vaikimisi kodeering:"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectEncodingButton)
+#: EditProfileDialog.ui:1413
+#, kde-format
+msgctxt "@action:button Pick an encoding"
+msgid "Select"
+msgstr "Vali"
+
+#: Filter.cpp:504
+#, kde-format
+msgid "Open Link"
+msgstr "Ava link"
+
+#: Filter.cpp:505
+#, kde-format
+msgid "Copy Link Address"
+msgstr "Kopeeri lingi aadress"
+
+#: Filter.cpp:507
+#, kde-format
+msgid "Send Email To..."
+msgstr "Saada kiri..."
+
+#: Filter.cpp:508
+#, kde-format
+msgid "Copy Email Address"
+msgstr "Kopeeri e-posti aadress"
+
+#: Filter.cpp:646
+#, kde-format
+msgid "Open File"
+msgstr "Ava fail"
+
+#: HistorySizeDialog.cpp:38
+#, kde-format
+msgctxt "@title:window"
+msgid "Adjust Scrollback"
+msgstr "Ajaloo kohandamine"
+
+#: HistorySizeDialog.cpp:61
+#, kde-format
+msgctxt "@info:status"
+msgid "Any adjustments are only temporary to this session."
+msgstr "Kõik kohandused kehtivad ainult käesoleva seansi ajal."
+
+#: HistorySizeWidget.cpp:46
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"When using this option, the scrollback data will be saved to RAM.  If you "
+"choose a huge value, your system may run out of free RAM and cause serious "
+"issues with your system."
+msgstr ""
+"Selle valimisel salvestatakse ajalooandmed mällu. Kui valid siin hiiglasliku "
+"väärtuse, võib süsteemil hakata mälu nappima, mis võib põhjustada tõsiseid "
+"probleeme kogu süsteemis."
+
+#: HistorySizeWidget.cpp:55
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"When using this option, the scrollback data will be written unencrypted to "
+"temporary files. Those temporary files will be deleted automatically when "
+"Konsole is closed in a normal manner.\n"
+"Use Settings->Configure Konsole->File Location to select the location of the "
+"temporary files."
+msgstr ""
+"Selle valimisel kirjutatakse ajalooandmed krüptimata kujul ajutistesse "
+"failidesse. Ajutised failid kustutatakse automaatselt, kui Konsole suletakse "
+"normaalselt.\n"
+"Ajutiste failide asukoha valimiseks kasuta Seadistused->Konsooli "
+"seadistamine->Faili asukoht."
+
+#: HistorySizeWidget.cpp:75
+#, fuzzy, kde-format
+#| msgctxt "Unit of scrollback"
+#| msgid " line"
+#| msgid_plural " lines"
+msgctxt "@label:textbox Unit of scrollback"
+msgid " line"
+msgid_plural " lines"
+msgstr[0] " rida"
+msgstr[1] " rida"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, noHistoryButton)
+#: HistorySizeWidget.ui:29
+#, kde-format
+msgid "Do not remember previous output"
+msgstr "Varasemat väljundit meelde ei jäeta"
+
+#. i18n: ectx: property (text), widget (QRadioButton, noHistoryButton)
+#: HistorySizeWidget.ui:32
+#, kde-format
+msgid "No scrollback"
+msgstr "Kerimist ei kasutata"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, fixedSizeHistoryButton)
+#: HistorySizeWidget.ui:50
+#, kde-format
+msgid "Limit the remembered output to a fixed number of lines"
+msgstr "Meelespeetava väljundi piiramine kindla ridade arvuga"
+
+#. i18n: ectx: property (text), widget (QRadioButton, fixedSizeHistoryButton)
+#: HistorySizeWidget.ui:53
+#, kde-format
+msgid "Fixed size scrollback:"
+msgstr "Kerimise maht:"
+
+#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, historyLineSpinner)
+#: HistorySizeWidget.ui:60
+#, kde-format
+msgid "Number of lines of output to remember"
+msgstr "Väljundi meelespeetavate ridade arv"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, unlimitedHistoryButton)
+#: HistorySizeWidget.ui:104
+#, kde-format
+msgid "Remember all output produced by the terminal"
+msgstr "Kogu terminali väljundi meelespidamine"
+
+#. i18n: ectx: property (text), widget (QRadioButton, unlimitedHistoryButton)
+#: HistorySizeWidget.ui:107
+#, kde-format
+msgid "Unlimited scrollback"
+msgstr "Piiramatu kerimine"
+
+#: IncrementalSearchBar.cpp:54
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Close the search bar"
+msgstr "Otsinguriba sulgemine"
+
+#: IncrementalSearchBar.cpp:59
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Find:"
+msgstr "Otsing:"
+
+#: IncrementalSearchBar.cpp:64
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Enter the text to search for here"
+msgstr "Kirjuta siia otsitav tekst"
+
+#: IncrementalSearchBar.cpp:84
+#, kde-format
+msgctxt "@action:button Go to the next phrase"
+msgid "Next"
+msgstr "Järgmine"
+
+#: IncrementalSearchBar.cpp:87
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Find the next match for the current search phrase"
+msgstr "Aktiivse otsingusõna järgmise esinemise otsimine"
+
+#: IncrementalSearchBar.cpp:93
+#, kde-format
+msgctxt "@action:button Go to the previous phrase"
+msgid "Previous"
+msgstr "Eelmine"
+
+#: IncrementalSearchBar.cpp:96
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Find the previous match for the current search phrase"
+msgstr "Aktiivse otsingusõna eelmise esinemise otsimine"
+
+#: IncrementalSearchBar.cpp:107
+#, kde-format
+msgctxt "@action:button Display options menu"
+msgid "Options"
+msgstr "Valikud"
+
+#: IncrementalSearchBar.cpp:112
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Display the options menu"
+msgstr "Valikute menüü näitamine"
+
+#: IncrementalSearchBar.cpp:126
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Case sensitive"
+msgstr "Tõstutundlik"
+
+#: IncrementalSearchBar.cpp:128
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Sets whether the search is case sensitive"
+msgstr "Siin saab määrata, kas otsing on tõstutundlik"
+
+#: IncrementalSearchBar.cpp:132
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Match regular expression"
+msgstr "Regulaaravaldisega sobimine"
+
+#: IncrementalSearchBar.cpp:137
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Highlight all matches"
+msgstr "Kõigi vastete esiletõstmine"
+
+#: IncrementalSearchBar.cpp:140
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Sets whether matching text should be highlighted"
+msgstr "Siin saab määrata, kas leitud tekst tõstetakse esile"
+
+#: IncrementalSearchBar.cpp:144
+#, fuzzy, kde-format
+#| msgid "Search backwards"
+msgctxt "@item:inmenu"
+msgid "Search backwards"
+msgstr "Otsimine tagasisuunas"
+
+#: IncrementalSearchBar.cpp:147
+#, fuzzy, kde-format
+#| msgid "Sets whether search should start from the bottom"
+msgctxt "@info:tooltip"
+msgid "Sets whether search should start from the bottom"
+msgstr "Siin saab määrata, kas otsingut tuleb alustada alt"
+
+#: IncrementalSearchBar.cpp:169
+#, kde-format
+msgctxt "@action:button Search from bottom"
+msgid "From bottom"
+msgstr "Alt"
+
+#: IncrementalSearchBar.cpp:171
+#, fuzzy, kde-format
+#| msgid "Search for the current search phrase from the bottom"
+msgctxt "@info:tooltip"
+msgid "Search for the current search phrase from the bottom"
+msgstr "Aktiivse otsingusõna otsimine alates alt"
+
+#: IncrementalSearchBar.cpp:175
+#, kde-format
+msgctxt "@action:button Search from top"
+msgid "From top"
+msgstr "Ülalt"
+
+#: IncrementalSearchBar.cpp:177
+#, fuzzy, kde-format
+#| msgid "Search for the current search phrase from the top"
+msgctxt "@info:tooltip"
+msgid "Search for the current search phrase from the top"
+msgstr "Aktiivse otsingusõna otsimine alates ülalt"
+
+#: KeyBindingEditor.cpp:51
+#, kde-format
+msgid "Key Combination"
+msgstr "Klahvikombinatsioon"
+
+#: KeyBindingEditor.cpp:51
+#, kde-format
+msgid "Output"
+msgstr "Väljund"
+
+#. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
+#: KeyBindingEditor.ui:46
+#, kde-format
+msgid "Add"
+msgstr "Lisa"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: KeyBindingEditor.ui:75
+#, kde-format
+msgctxt "Title of the area where you test your keys are properly configured"
+msgid "Test Area"
+msgstr "Testimisala"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: KeyBindingEditor.ui:84
+#, kde-format
+msgid "Input:"
+msgstr "Sisend:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: KeyBindingEditor.ui:97
+#, kde-format
+msgid "Output:"
+msgstr "Väljund:"
+
+#: main.cpp:97
+#, kde-format
+msgctxt "@title"
+msgid "Konsole"
+msgstr "Konsool"
+
+#: main.cpp:99
+#, kde-format
+msgctxt "@title"
+msgid "Terminal emulator"
+msgstr "Terminaliemulaator"
+
+#: main.cpp:101
+#, fuzzy, kde-format
+#| msgid "(c) 1997-2015, The Konsole Developers"
+msgctxt "@info:credit"
+msgid "(c) 1997-2017, The Konsole Developers"
+msgstr "(c) 1997-2015: Konsole arendajad"
+
+#: main.cpp:273
+#, kde-format
+msgctxt "@info:credit"
+msgid "Kurt Hindenburg"
+msgstr "Kurt Hindenburg"
+
+#: main.cpp:274
+#, kde-format
+msgctxt "@info:credit"
+msgid "General maintainer, bug fixes and general improvements"
+msgstr "Üldine hooldaja, veaparandused ja üldised parandused"
+
+#: main.cpp:277
+#, kde-format
+msgctxt "@info:credit"
+msgid "Robert Knight"
+msgstr "Robert Knight"
+
+#: main.cpp:278
+#, kde-format
+msgctxt "@info:credit"
+msgid "Previous maintainer, ported to KDE4"
+msgstr "Endine hooldaja, port KDE4 peale"
+
+#: main.cpp:280
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lars Doelle"
+msgstr "Lars Doelle"
+
+#: main.cpp:281
+#, kde-format
+msgctxt "@info:credit"
+msgid "Original author"
+msgstr "Algne autor"
+
+#: main.cpp:283
+#, kde-format
+msgctxt "@info:credit"
+msgid "Jekyll Wu"
+msgstr "Jekyll Wu"
+
+#: main.cpp:284 main.cpp:287 main.cpp:290
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes and general improvements"
+msgstr "Veaparandused ja üldised parandused"
+
+#: main.cpp:286
+#, kde-format
+msgctxt "@info:credit"
+msgid "Waldo Bastian"
+msgstr "Waldo Bastian"
+
+#: main.cpp:289
+#, kde-format
+msgctxt "@info:credit"
+msgid "Stephan Binner"
+msgstr "Stephan Binner"
+
+#: main.cpp:292
+#, kde-format
+msgctxt "@info:credit"
+msgid "Thomas Dreibholz"
+msgstr "Thomas Dreibholz"
+
+#: main.cpp:293
+#, kde-format
+msgctxt "@info:credit"
+msgid "General improvements"
+msgstr "Üldised parandused"
+
+#: main.cpp:295
+#, kde-format
+msgctxt "@info:credit"
+msgid "Chris Machemer"
+msgstr "Chris Machemer"
+
+#: main.cpp:296 main.cpp:299 main.cpp:335 main.cpp:338 main.cpp:341
+#: main.cpp:344
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes"
+msgstr "Veaparandused"
+
+#: main.cpp:298
+#, kde-format
+msgctxt "@info:credit"
+msgid "Francesco Cecconi"
+msgstr "Francesco Cecconi"
+
+#: main.cpp:301
+#, kde-format
+msgctxt "@info:credit"
+msgid "Stephan Kulow"
+msgstr "Stephan Kulow"
+
+#: main.cpp:302
+#, kde-format
+msgctxt "@info:credit"
+msgid "Solaris support and history"
+msgstr "Solarise toetus ning ajalugu"
+
+#: main.cpp:304
+#, kde-format
+msgctxt "@info:credit"
+msgid "Alexander Neundorf"
+msgstr "Alexander Neundorf"
+
+#: main.cpp:305
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes and improved startup performance"
+msgstr "Veaparandused ja käivitamise parandamine"
+
+#: main.cpp:307
+#, kde-format
+msgctxt "@info:credit"
+msgid "Peter Silva"
+msgstr "Peter Silva"
+
+#: main.cpp:308
+#, kde-format
+msgctxt "@info:credit"
+msgid "Marking improvements"
+msgstr "Märgistamise parandused"
+
+#: main.cpp:310
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lotzi Boloni"
+msgstr "Lotzi Boloni"
+
+#: main.cpp:311
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Embedded Konsole\n"
+"Toolbar and session names"
+msgstr ""
+"Põimitud Konsool\n"
+"Tööriistariba ja seansside nimed"
+
+#: main.cpp:314
+#, kde-format
+msgctxt "@info:credit"
+msgid "David Faure"
+msgstr "David Faure"
+
+#: main.cpp:315
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Embedded Konsole\n"
+"General improvements"
+msgstr ""
+"Põimitud Konsool\n"
+"Üldised parandused"
+
+#: main.cpp:318
+#, kde-format
+msgctxt "@info:credit"
+msgid "Antonio Larrosa"
+msgstr "Antonio Larrosa"
+
+#: main.cpp:319
+#, kde-format
+msgctxt "@info:credit"
+msgid "Visual effects"
+msgstr "Visuaalsed efektid"
+
+#: main.cpp:321
+#, kde-format
+msgctxt "@info:credit"
+msgid "Matthias Ettrich"
+msgstr "Matthias Ettrich"
+
+#: main.cpp:322
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Code from the kvt project\n"
+"General improvements"
+msgstr ""
+"Kvt projekti kood\n"
+"Üldised parandused"
+
+#: main.cpp:325
+#, kde-format
+msgctxt "@info:credit"
+msgid "Warwick Allison"
+msgstr "Warwick Allison"
+
+#: main.cpp:326
+#, kde-format
+msgctxt "@info:credit"
+msgid "Schema and text selection improvements"
+msgstr "Skeemi ja teksti valiku täiustamine"
+
+#: main.cpp:328
+#, kde-format
+msgctxt "@info:credit"
+msgid "Dan Pilone"
+msgstr "Dan Pilone"
+
+#: main.cpp:329
+#, kde-format
+msgctxt "@info:credit"
+msgid "SGI port"
+msgstr "SGI port"
+
+#: main.cpp:331
+#, kde-format
+msgctxt "@info:credit"
+msgid "Kevin Street"
+msgstr "Kevin Street"
+
+#: main.cpp:332
+#, kde-format
+msgctxt "@info:credit"
+msgid "FreeBSD port"
+msgstr "FreeBSD port"
+
+#: main.cpp:334
+#, kde-format
+msgctxt "@info:credit"
+msgid "Sven Fischer"
+msgstr "Sven Fischer"
+
+#: main.cpp:337
+#, kde-format
+msgctxt "@info:credit"
+msgid "Dale M. Flaven"
+msgstr "Dale M. Flaven"
+
+#: main.cpp:340
+#, kde-format
+msgctxt "@info:credit"
+msgid "Martin Jones"
+msgstr "Martin Jones"
+
+#: main.cpp:343
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lars Knoll"
+msgstr "Lars Knoll"
+
+#: main.cpp:346
+#, kde-format
+msgctxt "@info:credit"
+msgid "Thanks to many others.\n"
+msgstr "Tänu ka kõigile teistele.\n"
+
+#: MainWindow.cpp:313
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&New Tab"
+msgstr "&Uus kaart"
+
+#: MainWindow.cpp:323
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Clone Tab"
+msgstr "&Klooni kaart"
+
+#: MainWindow.cpp:330
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "New &Window"
+msgstr "Uus &aken"
+
+#: MainWindow.cpp:337
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Close Window"
+msgstr "Sulge aken"
+
+#: MainWindow.cpp:342
+#, kde-format
+msgctxt "@title:menu"
+msgid "&Bookmarks"
+msgstr "&Järjehoidjad"
+
+#: MainWindow.cpp:361
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Manage Profiles..."
+msgstr "Profiilide haldamine..."
+
+#: MainWindow.cpp:367
+#, kde-format
+msgctxt "@item"
+msgid "Activate Menu"
+msgstr "Aktiveeri menüü"
+
+#: MainWindow.cpp:606
+#, kde-format
+msgctxt "@info"
+msgid "There is a process running in this window. Do you still want to quit?"
+msgid_plural ""
+"There are %1 processes running in this window. Do you still want to quit?"
+msgstr[0] "Selles aknas töötab üks protsess. Kas tõesti väljuda?"
+msgstr[1] "Selles aknas töötab %1 protsessi. Kas tõesti väljuda?"
+
+#: MainWindow.cpp:612 MainWindow.cpp:627
+#, kde-format
+msgctxt "@title"
+msgid "Confirm Close"
+msgstr "Sulgemise kinnitus"
+
+#: MainWindow.cpp:614 MainWindow.cpp:628
+#, kde-format
+msgctxt "@action:button"
+msgid "Close &Window"
+msgstr "Sulge ake&n"
+
+#: MainWindow.cpp:617 MainWindow.cpp:631
+#, kde-format
+msgctxt "@action:button"
+msgid "Close Current &Tab"
+msgstr "Sulge ak&tiivne kaart"
+
+#: MainWindow.cpp:624
+#, kde-format
+msgctxt "@info"
+msgid "There are %1 open tabs in this window. Do you still want to quit?"
+msgstr "Selles aknas on avatud %1 kaarti. Kas tõesti soovid väljuda?"
+
+#: MainWindow.cpp:734
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "General"
+msgstr "Üldine"
+
+#: MainWindow.cpp:740 Part.cpp:295
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "Profiles"
+msgstr "Profiilid"
+
+#: MainWindow.cpp:745
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "TabBar"
+msgstr "Kaardiriba"
+
+#: MainWindow.cpp:750
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "File Location"
+msgstr "Faili asukoht"
+
+#: Part.cpp:301
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "Part Info"
+msgstr ""
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, PrintOptions)
+#. i18n: ectx: property (title), widget (QGroupBox, OutputOptions)
+#: PrintOptions.ui:14 PrintOptions.ui:20
+#, kde-format
+msgid "Output Options"
+msgstr "Väljundi valikud"
+
+#. i18n: ectx: property (text), widget (QCheckBox, printerFriendly)
+#. i18n: ectx: label, entry (PrinterFriendly), group (PrintOptions)
+#: PrintOptions.ui:39 settings/konsole.kcfg:114
+#, kde-format
+msgid "Printer &friendly mode (black text, no background)"
+msgstr "Printerisõ&bralik režiim (must tekst, taustata)"
+
+#. i18n: ectx: property (text), widget (QCheckBox, scaleOutput)
+#. i18n: ectx: label, entry (ScaleOutput), group (PrintOptions)
+#: PrintOptions.ui:46 settings/konsole.kcfg:118
+#, kde-format
+msgid "&Scale output"
+msgstr "Väljundi &skaleerimine"
+
+#: Profile.cpp:151
+#, kde-format
+msgctxt "Name of the default/builtin profile"
+msgid "Default"
+msgstr "Vaikimisi"
+
+#: ProfileList.cpp:46
+#, kde-format
+msgid "Default profile"
+msgstr "Vaikeprofiil"
+
+#: ProfileManager.cpp:333
+#, kde-format
+msgid "Konsole does not have permission to save this profile to %1"
+msgstr ""
+
+#: ProfileManager.cpp:369
+#, kde-format
+msgctxt "The default name of a profile"
+msgid "Profile #%1"
+msgstr "Profiil #%1"
+
+#: RenameTabDialog.cpp:37
+#, kde-format
+msgid "Rename Tab"
+msgstr "Kaardi ümbernimetamine"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: RenameTabWidget.ui:26
+#, kde-format
+msgid "Tab title format:"
+msgstr "Kaardinimetuse vorming:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, tabTitleEdit)
+#: RenameTabWidget.ui:36
+#, kde-format
+msgid "Normal tab title format"
+msgstr "Tavaline kaardinimetuse vorming"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: RenameTabWidget.ui:46
+#, kde-format
+msgid "Remote tab title format:"
+msgstr "Kaugühenduse kaardinimetuse vorming:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, remoteTabTitleEdit)
+#: RenameTabWidget.ui:56
+#, kde-format
+msgid ""
+"Tab title format used when a remote command (e.g. connection to another "
+"computer via SSH) is being executed"
+msgstr ""
+"Kaardinimetuse vorming, mida kasutatakse juhul kui käivitatakse kaugkäsk "
+"(nt. ühendus teise masinaga SSH vahendusel)"
+
+#: schemas.cpp:1
+#, kde-format
+msgid "Black on Light Yellow"
+msgstr "Must helekollasel"
+
+#: schemas.cpp:2
+#, kde-format
+msgid "Black on Random Light"
+msgstr "Must heledal värvil"
+
+#: schemas.cpp:3
+#, kde-format
+msgid "Black on White"
+msgstr "Must valgel"
+
+#: schemas.cpp:4
+#, kde-format
+msgid "Blue on Black"
+msgstr "Sinine mustal"
+
+#: schemas.cpp:5
+#, kde-format
+msgid "Breeze"
+msgstr "Breeze"
+
+#: schemas.cpp:6
+#, kde-format
+msgid "Dark Pastels"
+msgstr "Tumedad pastellvärvid"
+
+#: schemas.cpp:7
+#, kde-format
+msgid "Green on Black"
+msgstr "Roheline mustal"
+
+#: schemas.cpp:8
+#, kde-format
+msgid "Linux Colors"
+msgstr "Linuxi värvid"
+
+#: schemas.cpp:9
+#, kde-format
+msgid "Red on Black"
+msgstr "Punane mustal"
+
+#: schemas.cpp:10
+#, kde-format
+msgid "Solarized"
+msgstr "Ülesäritatud"
+
+#: schemas.cpp:11
+#, kde-format
+msgid "Solarized Light"
+msgstr "Ülesäritatud valgus"
+
+#: schemas.cpp:12
+#, kde-format
+msgid "White on Black"
+msgstr "Valge mustal"
+
+#: schemas.cpp:13
+#, kde-format
+msgid "Default (XFree 4)"
+msgstr "Vaikimisi (XFree 4)"
+
+#: schemas.cpp:14
+#, kde-format
+msgid "Linux console"
+msgstr "Linuxi konsool"
+
+#: schemas.cpp:15
+#, kde-format
+msgid "Solaris console"
+msgstr "Solarise konsool"
+
+#: Session.cpp:348
+#, kde-format
+msgid "Could not find binary: "
+msgstr "Binaarfaili ei leitud: "
+
+#: Session.cpp:357
+#, kde-format
+msgctxt "@info:shell Alert the user with red color text"
+msgid "Warning: "
+msgstr "Hoiatus: "
+
+#: Session.cpp:414
+#, kde-format
+msgid ""
+"Could not find '%1', starting '%2' instead.  Please check your profile "
+"settings."
+msgstr ""
+"'%1' ei leitud, selle asemel käivitatakse '%2'. Palun kontrolli profiili "
+"seadistusi."
+
+#: Session.cpp:417
+#, kde-format
+msgid "Could not find an interactive shell to start."
+msgstr "Käivitamiseks ei leitud interaktiivset shelli."
+
+#: Session.cpp:455
+#, kde-format
+msgid "Could not start program '%1' with arguments '%2'."
+msgstr "Programmi '%1' ei saa argumentidega '%2' käivitada."
+
+#: Session.cpp:584
+#, kde-format
+msgid "Silence in session '%1'"
+msgstr "Vaikus seansis '%1'"
+
+#: Session.cpp:632
+#, kde-format
+msgid "Bell in session '%1'"
+msgstr "Signaal seansis '%1'"
+
+#: Session.cpp:645
+#, kde-format
+msgid "Activity in session '%1'"
+msgstr "Aktiivsus seansis '%1'"
+
+#: Session.cpp:840
+#, kde-format
+msgid ""
+"The D-Bus methods sendText/runCommand were just used.  There are security "
+"concerns about allowing these methods to be public.  If desired, these "
+"methods can be changed to internal use only by re-compiling Konsole. <p>This "
+"warning will only show once for this Konsole instance.</p>"
+msgstr ""
+"Äsja kasutati D-Busi meetodeid sendText/runCommand. Nende meetodite avaliku "
+"kasutamisega on seotud mõningad turbeprobleemid. Soovi korral võib need "
+"meetodid muuta Konsooli ümber kompileerides ainult sisemiseks kasutamiseks "
+"mõelduks. <p>Seda hoiatust näidatakse antud Konsooli isendi korral ainult "
+"ühel korral.</p>"
+
+#: Session.cpp:867
+#, kde-format
+msgctxt "@info:shell This session is done"
+msgid "Finished"
+msgstr "Lõpetatud"
+
+#: Session.cpp:881 Session.cpp:893
+#, kde-format
+msgid "Program '%1' crashed."
+msgstr "Programmi '%1' tabas krahh."
+
+#: Session.cpp:883
+#, kde-format
+msgid "Program '%1' exited with status %2."
+msgstr "Programm '%1' lõpetas töö staatusega %2."
+
+#: Session.cpp:1280
+#, kde-format
+msgid "ZModem Progress"
+msgstr "Zmodemi edenemine"
+
+#: SessionController.cpp:127
+#, kde-format
+msgid "Konsole"
+msgstr "Konsool"
+
+#: SessionController.cpp:339
+#, kde-format
+msgid "Konsole does not know how to open the bookmark: "
+msgstr "Konsole ei tea, kuidas avada järjehoidjat: "
+
+#: SessionController.cpp:397
+#, kde-format
+msgid "Search for '%1' with"
+msgstr "Otsi \"%1\" mootoriga"
+
+#: SessionController.cpp:411
+#, kde-format
+msgid "Configure Web Shortcuts..."
+msgstr "Seadista veebikiirklahve..."
+
+#: SessionController.cpp:530
+#, kde-format
+msgid "&Close Session"
+msgstr "Sul&ge seanss"
+
+#: SessionController.cpp:532
+#, kde-format
+msgid "&Close Tab"
+msgstr "&Sulge kaart"
+
+#: SessionController.cpp:539
+#, kde-format
+msgid "Open File Manager"
+msgstr "Ava failihaldur"
+
+#: SessionController.cpp:566
+#, kde-format
+msgid "Paste Selection"
+msgstr "Aseta valik"
+
+#: SessionController.cpp:573
+#, kde-format
+msgid "Web Search"
+msgstr "Veebiotsing"
+
+#: SessionController.cpp:580
+#, kde-format
+msgid "&Select All"
+msgstr "&Vali kõik"
+
+#: SessionController.cpp:584
+#, kde-format
+msgid "Select &Line"
+msgstr "Vali &rida"
+
+#: SessionController.cpp:587
+#, kde-format
+msgid "Save Output &As..."
+msgstr "S&alvesta väljund..."
+
+#: SessionController.cpp:593
+#, kde-format
+msgid "&Print Screen..."
+msgstr "&Trüki ekraan..."
+
+#: SessionController.cpp:597
+#, kde-format
+msgid "Adjust Scrollback..."
+msgstr "Ajaloo kohandamine..."
+
+#: SessionController.cpp:601
+#, kde-format
+msgid "Clear Scrollback"
+msgstr "Puhasta ajalugu"
+
+#: SessionController.cpp:605
+#, kde-format
+msgid "Clear Scrollback and Reset"
+msgstr "Puhasta ajalugu ja lähtesta"
+
+#: SessionController.cpp:611
+#, kde-format
+msgid "Edit Current Profile..."
+msgstr "Aktiivse profiili muutmine..."
+
+#: SessionController.cpp:614
+#, kde-format
+msgid "Switch Profile"
+msgstr "Profiili vahetamine"
+
+#: SessionController.cpp:631
+#, kde-format
+msgid "Set &Encoding"
+msgstr "Kod&eering"
+
+#: SessionController.cpp:646
+#, kde-format
+msgid "&Rename Tab..."
+msgstr "Nimeta kaa&rt ümber..."
+
+#: SessionController.cpp:652
+#, kde-format
+msgid "&All Tabs in Current Window"
+msgstr "Kõik &aktiivse akna kaardid"
+
+#: SessionController.cpp:659
+#, kde-format
+msgid "&Select Tabs..."
+msgstr "Vali kaar&did..."
+
+#: SessionController.cpp:665
+#, kde-format
+msgctxt "@action:inmenu Do not select any tabs"
+msgid "&None"
+msgstr "&Mitte ükski"
+
+#: SessionController.cpp:673
+#, kde-format
+msgid "Copy Input To"
+msgstr "Kopeeri sisend"
+
+#: SessionController.cpp:680
+#, kde-format
+msgid "&ZModem Upload..."
+msgstr "Saada &Zmodemiga..."
+
+#: SessionController.cpp:685
+#, kde-format
+msgid "Monitor for &Activity"
+msgstr "Jälgi &aktiivsust"
+
+#: SessionController.cpp:690
+#, kde-format
+msgid "Monitor for &Silence"
+msgstr "Jälgi &vaikust"
+
+#: SessionController.cpp:697
+#, kde-format
+msgid "Enlarge Font"
+msgstr "Suurenda fonti"
+
+#: SessionController.cpp:705
+#, kde-format
+msgid "Shrink Font"
+msgstr "Vähenda fonti"
+
+#: SessionController.cpp:712
+#, kde-format
+msgid "Send Signal"
+msgstr "Signaali saatmine"
+
+#: SessionController.cpp:716
+#, kde-format
+msgid "&Suspend Task"
+msgstr "Prot&sess passiivseks"
+
+#: SessionController.cpp:721
+#, kde-format
+msgid "&Continue Task"
+msgstr "&Jätka protsessi tööd"
+
+#: SessionController.cpp:726
+#, kde-format
+msgid "&Hangup"
+msgstr "Toru ma&ha"
+
+#: SessionController.cpp:731
+#, kde-format
+msgid "&Interrupt Task"
+msgstr "Katk&esta protsess"
+
+#: SessionController.cpp:736
+#, kde-format
+msgid "&Terminate Task"
+msgstr "Lõpe&ta protsess"
+
+#: SessionController.cpp:741
+#, kde-format
+msgid "&Kill Task"
+msgstr "Ta&pa protsess"
+
+#: SessionController.cpp:746
+#, kde-format
+msgid "User Signal &1"
+msgstr "Kasutaja signaal &1"
+
+#: SessionController.cpp:751
+#, kde-format
+msgid "User Signal &2"
+msgstr "Kasutaja signaal &2"
+
+#: SessionController.cpp:863
+#, kde-format
+msgid ""
+"A program is currently running in this session.  Are you sure you want to "
+"close it?"
+msgstr ""
+"Selles seansis töötab praegu programm. Kas tõesti soovid seansi sulgeda?"
+
+#: SessionController.cpp:866
+#, kde-format
+msgid ""
+"The program '%1' is currently running in this session.  Are you sure you "
+"want to close it?"
+msgstr ""
+"Selles seansis töötab praegu programm '%1'. Kas tõesti soovid seansi sulgeda"
+
+#: SessionController.cpp:869 SessionController.cpp:894
+#, kde-format
+msgid "Confirm Close"
+msgstr "Sulgemise kinnitus"
+
+#: SessionController.cpp:888
+#, kde-format
+msgid ""
+"A program in this session would not die.  Are you sure you want to kill it "
+"by force?"
+msgstr ""
+"Üks selles seansi programm ei taha tööd lõpetada. Kas tõesti lõpetada selle "
+"töö vägisi?"
+
+#: SessionController.cpp:891
+#, kde-format
+msgid ""
+"The program '%1' is in this session would not die.  Are you sure you want to "
+"kill it by force?"
+msgstr ""
+"Selle seansi programm '%1' ei taha tööd lõpetada. Kas tõesti lõpetada selle "
+"töö vägisi?"
+
+#: SessionController.cpp:1418
+#, kde-format
+msgid "Print Shell"
+msgstr "Shelli trükkimine"
+
+#: SessionController.cpp:1620
+#, kde-format
+msgid "Save ZModem Download to..."
+msgstr "Salvesta Zmodemi allalaadimine..."
+
+#: SessionController.cpp:1630
+#, kde-format
+msgid ""
+"<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
+"software was found on this system.</p><p>You may wish to install the 'rzsz' "
+"or 'lrzsz' package.</p>"
+msgstr ""
+"<p>Tuvastati Zmodemi failiedastuse katse, kuid süsteemis ei leitud kõlbuliku "
+"Zmodemi tarkvara.</p><p>Võiksid paigaldada paketi 'rzsz' või 'lrzsz'.</p>"
+
+#: SessionController.cpp:1642
+#, kde-format
+msgid ""
+"<p>The current session already has a ZModem file transfer in progress.</p>"
+msgstr "<p>Praegusel seansil on juba käsil Zmodemi failiedastus.</p>"
+
+#: SessionController.cpp:1651
+#, kde-format
+msgid ""
+"<p>No suitable ZModem software was found on this system.</p><p>You may wish "
+"to install the 'rzsz' or 'lrzsz' package.</p>"
+msgstr ""
+"<p>Süsteemist ei leitud kõlblikku Zmodemi tarkvara.</p><p>Võiksid paigaldada "
+"paketi 'rzsz' või 'lrzsz'.</p>"
+
+#: SessionController.cpp:1657
+#, kde-format
+msgid "Select Files for ZModem Upload"
+msgstr "Failide valimine ZModemiga üleslaadimiseks"
+
+#: SessionController.cpp:1718
+#, kde-format
+msgid "Save Output From %1"
+msgstr "%1 - väljundi salvestamine"
+
+#: SessionController.cpp:1729
+#, kde-format
+msgid "%1 is an invalid URL, the output could not be saved."
+msgstr "%1 ei ole korrektne URL, väljundit ei saa salvestada."
+
+#: SessionController.cpp:1804
+#, kde-format
+msgid ""
+"A problem occurred when saving the output.\n"
+"%1"
+msgstr ""
+"Väljundi salvestamisel tekkis probleem.\n"
+"%1"
+
+#: SessionListModel.cpp:103
+#, kde-format
+msgctxt "@item:intable The session index"
+msgid "Number"
+msgstr "Number"
+
+#: SessionListModel.cpp:105
+#, kde-format
+msgctxt "@item:intable The session title"
+msgid "Title"
+msgstr "Nimi"
+
+#. i18n: ectx: property (whatsThis), widget (QGroupBox, ButtonGroup1)
+#: settings/FileLocationSettings.ui:23
+#, kde-format
+msgid ""
+"<b>Scrollback File Location</b><p>Use this groupbox to determine where "
+"Konsole will store the scrollback files.</p>"
+msgstr ""
+"<b>Ajaloofaili asukoht</b><p>Selles kastis saab määrata, kus salvestab "
+"Konsole ajaloofaile.</p>"
+
+#. i18n: ectx: property (title), widget (QGroupBox, ButtonGroup1)
+#: settings/FileLocationSettings.ui:26
+#, kde-format
+msgid "Scrollback File Location"
+msgstr "Ajaloofaili asukoht"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/FileLocationSettings.ui:32
+#, kde-format
+msgid ""
+"These settings only apply when Profile->Scrolling->Unlimited scrollback is "
+"selected."
+msgstr ""
+"Need seadistused rakenduvad ainult siis, kui on valitud Profiil->Ajalugu-"
+">Piiramatu ajalugu"
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseSystemLocation)
+#: settings/FileLocationSettings.ui:42
+#, kde-format
+msgid "Use system &location"
+msgstr "Süsteemse asuko&ha kasutamine"
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseCacheLocation)
+#: settings/FileLocationSettings.ui:85
+#, kde-format
+msgid "Use user specific location"
+msgstr "Kasutaja määratud asukoha kasutamine"
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseSpecifiedLocation)
+#: settings/FileLocationSettings.ui:125
+#, fuzzy, kde-format
+#| msgid "Use user specific location"
+msgid "Use specified loca&tion"
+msgstr "Kasutaja määratud asukoha kasutamine"
+
+#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_scrollbackUseSpecifiedLocationDirectory)
+#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
+#: settings/FileLocationSettings.ui:156 settings/TabBarSettings.ui:81
+#, kde-format
+msgid "text/css"
+msgstr "text/css"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: settings/FileLocationSettings.ui:187
+#, kde-format
+msgid ""
+"For the 'Use user specific location', any application using KonsolePart will "
+"have the app name instead of konsole."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/FileLocationSettings.ui:211
+#, kde-format
+msgid "For any changes to take effect, quit Konsole and restart."
+msgstr "Muudatuste rakendamiseks välju Konsoolist ja käivita see uuesti."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_1)
+#: settings/GeneralSettings.ui:28
+#, kde-format
+msgid "Konsole Window"
+msgstr "Konsooli aken"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowMenuBarByDefault)
+#. i18n: ectx: label, entry (ShowMenuBarByDefault), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:40 settings/konsole.kcfg:9
+#, kde-format
+msgid "Show menubar by default"
+msgstr "Vaikimisi näidatakse menüüriba"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SaveGeometryOnExit)
+#: settings/GeneralSettings.ui:66
+#, kde-format
+msgid "If enabled, profile settings will be ignored"
+msgstr "Sisselülitamisel eiratakse profiili seadistusi"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SaveGeometryOnExit)
+#. i18n: ectx: label, entry (SaveGeometryOnExit), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:69 settings/konsole.kcfg:34
+#, kde-format
+msgid "Use current window size on next startup"
+msgstr "Aktiivse aknasuuruse kasutamine järgmisel käivitamisel"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: tooltip, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:82 settings/konsole.kcfg:40
+#, kde-format
+msgid "When launching Konsole re-use existing process if possible"
+msgstr ""
+"Konsooli käivitamisel kasutatakse võimaluse korral juba töötavat protsessi"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: label, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:85 settings/konsole.kcfg:39
+#, kde-format
+msgid "Run all Konsole windows in a single process"
+msgstr "Kõigi Konsooli akende käitamine ühe protsessina"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowMenuAccelerators)
+#. i18n: ectx: label, entry (AllowMenuAccelerators), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:98 settings/konsole.kcfg:24
+#, kde-format
+msgid "Enable menu accelerators"
+msgstr "Menüü kiirklahvide lubamine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowWindowTitleOnTitleBar)
+#. i18n: ectx: label, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:111 settings/konsole.kcfg:14
+#, kde-format
+msgid "Show window title on the titlebar"
+msgstr "Akna tiitli näitamine tiitliribal"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowAppNameOnTitleBar)
+#: settings/GeneralSettings.ui:124
+#, kde-format
+msgid "Show application name on the titlebar"
+msgstr "Rakenduse nime näitamine tiitliribal"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: settings/GeneralSettings.ui:141
+#, fuzzy, kde-format
+#| msgid "Default character encoding:"
+msgid "Default Search Settings"
+msgstr "Vaikimisi kodeering:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchCaseSensitive)
+#. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
+#: settings/GeneralSettings.ui:153 settings/konsole.kcfg:46
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid "Sets whether the search is case sensitive"
+msgid "Search is case sensitive"
+msgstr "Siin saab määrata, kas otsing on tõstutundlik"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchCaseSensitive)
+#. i18n: ectx: tooltip, entry (SearchCaseSensitive), group (SearchSettings)
+#: settings/GeneralSettings.ui:156 settings/konsole.kcfg:47
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid "Sets whether the search is case sensitive"
+msgid "Sets whether the search is case sensitive"
+msgstr "Siin saab määrata, kas otsing on tõstutundlik"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchRegExpression)
+#. i18n: ectx: label, entry (SearchRegExpression), group (SearchSettings)
+#: settings/GeneralSettings.ui:169 settings/konsole.kcfg:51
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu"
+#| msgid "Match regular expression"
+msgid "Match using regular expressions"
+msgstr "Regulaaravaldisega sobimine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchHighlightMatches)
+#. i18n: ectx: label, entry (SearchHighlightMatches), group (SearchSettings)
+#: settings/GeneralSettings.ui:182 settings/konsole.kcfg:55
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu"
+#| msgid "Highlight all matches"
+msgid "Highlight all search matches"
+msgstr "Kõigi vastete esiletõstmine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: label, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:195 settings/konsole.kcfg:60
+#, kde-format
+msgid "Search backwards"
+msgstr "Otsimine tagasisuunas"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: tooltip, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:198 settings/konsole.kcfg:61
+#, kde-format
+msgid "Sets whether search should start from the bottom"
+msgstr "Siin saab määrata, kas otsingut tuleb alustada alt"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
+#: settings/GeneralSettings.ui:216
+#, kde-format
+msgid "Notifications"
+msgstr "Märguanded"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, enableAllMessagesButton)
+#: settings/GeneralSettings.ui:241
+#, kde-format
+msgid "All dialogs will be shown again"
+msgstr "Kõiki dialooge näidatakse uuesti"
+
+#. i18n: ectx: property (text), widget (QPushButton, enableAllMessagesButton)
+#: settings/GeneralSettings.ui:244
+#, kde-format
+msgid "Enable all \"Don't Ask Again\" messages"
+msgstr "Kõigi \"Rohkem ei küsita\" teadete lubamine"
+
+#. i18n: ectx: tooltip, entry (ShowMenuBarByDefault), group (KonsoleWindow)
+#: settings/konsole.kcfg:10
+#, kde-format
+msgid "Show menubar by default in each Konsole window"
+msgstr "Menüüriba näitamine vaikimisi igas Konsooli aknas"
+
+#. i18n: ectx: tooltip, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
+#: settings/konsole.kcfg:15
+#, kde-format
+msgid "Show window title set by escape sequence on the titlebar"
+msgstr "Paojadaga määratud akna tiitli näitamine tiitliribal"
+
+#. i18n: ectx: label, entry (ShowAppNameOnTitleBar), group (KonsoleWindow)
+#. i18n: ectx: tooltip, entry (ShowAppNameOnTitleBar), group (KonsoleWindow)
+#: settings/konsole.kcfg:19 settings/konsole.kcfg:20
+#, kde-format
+msgid "Show \"- Konsole\" on the titlebar"
+msgstr "\" - Konsool\" näitamine tiitliribal"
+
+#. i18n: ectx: tooltip, entry (AllowMenuAccelerators), group (KonsoleWindow)
+#: settings/konsole.kcfg:25
+#, kde-format
+msgid "Allow users to access top menu through Alt+Key combination"
+msgstr ""
+"Võimaldab kasutajatel pääseda tippmenüüle ligi Alt+klahv kombinatsioonidega"
+
+#. i18n: ectx: tooltip, entry (SaveGeometryOnExit), group (KonsoleWindow)
+#: settings/konsole.kcfg:35
+#, kde-format
+msgid "The window size will be saved upon exiting Konsole"
+msgstr "Akna suuruse salvestamine väljumisel"
+
+#. i18n: ectx: tooltip, entry (SearchHighlightMatches), group (SearchSettings)
+#: settings/konsole.kcfg:56
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid "Sets whether matching text should be highlighted"
+msgid "Sets whether matching text should be highlighted"
+msgstr "Siin saab määrata, kas leitud tekst tõstetakse esile"
+
+#. i18n: ectx: label, entry (TabBarVisibility), group (TabBar)
+#: settings/konsole.kcfg:67
+#, kde-format
+msgid "Control the visibility of the whole tab bar"
+msgstr "Kogu kaardiriba nähtavuse kontrollimine"
+
+#. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
+#: settings/konsole.kcfg:76
+#, kde-format
+msgid "Control the position of the tab bar"
+msgstr "Kaardiriba asukoha kontrollimine"
+
+#. i18n: ectx: label, entry (TabBarStyleSheet), group (TabBar)
+#: settings/konsole.kcfg:84
+#, kde-format
+msgid "Control the visual style of the tab bar"
+msgstr "Kaardiriba visuaalse stiili kontrollimine"
+
+#. i18n: ectx: label, entry (TabBarUseUserStyleSheet), group (TabBar)
+#: settings/konsole.kcfg:88
+#, kde-format
+msgid "Use a user-defined .css file for the tab bar"
+msgstr "Kasutaja määratud .css-faili kasutamine kaardiribal"
+
+#. i18n: ectx: label, entry (TabBarUserStyleSheetFile), group (TabBar)
+#: settings/konsole.kcfg:92
+#, kde-format
+msgid "The .css file to use for the tab bar style"
+msgstr ".css-fail kaardiriba stiili määramiseks"
+
+#. i18n: ectx: label, entry (ShowQuickButtons), group (TabBar)
+#: settings/konsole.kcfg:96
+#, kde-format
+msgid "Control the visibility of quick buttons on the tab bar"
+msgstr "Kaardiriba kiirnuppude nähtavuse kontrollimine"
+
+#. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
+#: settings/konsole.kcfg:100
+#, kde-format
+msgid "Control where to put the new tab"
+msgstr "Kontrollimine, kuhu asetada uus kaart"
+
+#. i18n: ectx: label, entry (ExpandTabWidth), group (TabBar)
+#: settings/konsole.kcfg:108
+#, kde-format
+msgid "Expand the tab widths (Qt5.9+ uses the full window width)"
+msgstr ""
+
+#. i18n: ectx: label, entry (scrollbackUseSystemLocation), group (FileLocation)
+#: settings/konsole.kcfg:124
+#, kde-format
+msgid "For scrollback files, use system-wide folder location"
+msgstr "Ajaloofailid salvestatakse süsteemsesse kataloogi"
+
+#. i18n: ectx: label, entry (scrollbackUseCacheLocation), group (FileLocation)
+#: settings/konsole.kcfg:128
+#, kde-format
+msgid "For scrollback files, use user's specific folder location"
+msgstr "Ajaloofailid salvestatakse kasutaja määratud kataloogi"
+
+#. i18n: ectx: label, entry (scrollbackUseSpecifiedLocation), group (FileLocation)
+#: settings/konsole.kcfg:132
+#, fuzzy, kde-format
+#| msgid "For scrollback files, use user's specific folder location"
+msgid "For scrollback files, use specified folder location"
+msgstr "Ajaloofailid salvestatakse kasutaja määratud kataloogi"
+
+#. i18n: ectx: label, entry (scrollbackUseSpecifiedLocationDirectory), group (FileLocation)
+#: settings/konsole.kcfg:136
+#, fuzzy, kde-format
+#| msgid "For scrollback files, use system-wide folder location"
+msgid "For scrollback files, use this folder"
+msgstr "Ajaloofailid salvestatakse süsteemsesse kataloogi"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/PartInfo.ui:29
+#, kde-format
+msgid ""
+"<html><head/><body><p>Applications that use KonsolePart share profiles.</"
+"p><p>They do not share with Konsole or other applications:<ul><li>default "
+"profile</li><li>show in menu</li><li>shortcuts</li></ul></p><p>Feel free to "
+"open a Konsole <a href=\"https://bugs.kde.org/enter_bug.cgi?"
+"format=guided&product=konsole&component=kpart\">bug report</a> if you desire "
+"a change to how these are handled.</body></html>"
+msgstr ""
+
+#: settings/ProfileSettings.cpp:147
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to rename profile"
+msgstr "Klõpsa profiili nime muutmiseks"
+
+#: settings/ProfileSettings.cpp:156
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to toggle status"
+msgstr "Klõpsa oleku lülitamiseks"
+
+#: settings/ProfileSettings.cpp:162
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Double click to change shortcut"
+msgstr "Tee topeltklõps kiirklahvi muutmiseks"
+
+#: settings/ProfileSettings.cpp:185
+#, kde-format
+msgctxt "@title:column Profile label"
+msgid "Name"
+msgstr "Nimi"
+
+#: settings/ProfileSettings.cpp:186
+#, kde-format
+msgctxt "@title:column Display profile in file menu"
+msgid "Show"
+msgstr ""
+
+#: settings/ProfileSettings.cpp:187
+#, kde-format
+msgctxt "@title:column Profile shortcut text"
+msgid "Shortcut"
+msgstr "Kiirklahv"
+
+#: settings/ProfileSettings.cpp:300
+#, kde-format
+msgctxt "@item This will be used as part of the file name"
+msgid "New Profile"
+msgstr "Uus profiil"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newProfileButton)
+#: settings/ProfileSettings.ui:20
+#, kde-format
+msgid "Create a new profile based upon the selected profile"
+msgstr "Uue profiili loomine valitud profiili põhjal"
+
+#. i18n: ectx: property (text), widget (QPushButton, newProfileButton)
+#: settings/ProfileSettings.ui:23
+#, kde-format
+msgid "&New Profile..."
+msgstr "&Uus profiil..."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editProfileButton)
+#: settings/ProfileSettings.ui:33
+#, kde-format
+msgid "Edit the selected profile(s)"
+msgstr "Muuda valitud profiili"
+
+#. i18n: ectx: property (text), widget (QPushButton, editProfileButton)
+#: settings/ProfileSettings.ui:36
+#, kde-format
+msgid "&Edit Profile..."
+msgstr "&Muuda profiili..."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, deleteProfileButton)
+#: settings/ProfileSettings.ui:46
+#, kde-format
+msgid "Delete the selected profile(s)"
+msgstr "Kustuta valitud profiil"
+
+#. i18n: ectx: property (text), widget (QPushButton, deleteProfileButton)
+#: settings/ProfileSettings.ui:49
+#, kde-format
+msgid "&Delete Profile"
+msgstr "&Kustuta profiil"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, setAsDefaultButton)
+#: settings/ProfileSettings.ui:59
+#, kde-format
+msgid "Set the selected profile as the default for new terminal sessions"
+msgstr ""
+"Valitud profiili määramine uute terminaliseansside vaikimisi profiiliks"
+
+#. i18n: ectx: property (text), widget (QPushButton, setAsDefaultButton)
+#: settings/ProfileSettings.ui:62
+#, kde-format
+msgid "&Set as Default"
+msgstr "Määra &vaikeväärtuseks"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/TabBarSettings.ui:23
+#, kde-format
+msgid "Tab bar position:"
+msgstr "Kaardiriba asukoht:"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:40
+#, kde-format
+msgid "Always Show Tab Bar"
+msgstr "Kaardiriba on alati nähtaval"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:45
+#, kde-format
+msgid "Show Tab Bar When Needed"
+msgstr "Kaardiriba näidatakse vajadusel"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:50
+#, kde-format
+msgid "Always Hide Tab Bar"
+msgstr "Kaardiriba on alati peidetud"
+
+#. i18n: ectx: property (text), widget (QLabel, label_1)
+#: settings/TabBarSettings.ui:58
+#, kde-format
+msgid "Tab bar visibility:"
+msgstr "Kaardiriba näitamine:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExpandTabWidth)
+#: settings/TabBarSettings.ui:68
+#, kde-format
+msgid "Expand Individual Tab Widths to Full Window"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowQuickButtons)
+#: settings/TabBarSettings.ui:88
+#, kde-format
+msgid "Show 'New Tab' and 'Close Tab' buttons"
+msgstr "Nuppude 'Uus kaart' ja 'Sulge kaart' näitamine"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_TabBarUseUserStyleSheet)
+#: settings/TabBarSettings.ui:95
+#, kde-format
+msgid "Use user-defined stylesheet"
+msgstr "Kasutaja määratud laaditabeli kasutamine"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarPosition)
+#: settings/TabBarSettings.ui:109
+#, kde-format
+msgid "Above Terminal Area"
+msgstr "Terminaliala kohal"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarPosition)
+#: settings/TabBarSettings.ui:114
+#, kde-format
+msgid "Below Terminal Area"
+msgstr "Terminaliala all"
+
+#. i18n: ectx: property (text), widget (QLabel, Qt59label)
+#: settings/TabBarSettings.ui:128
+#, kde-format
+msgid "Starting with Qt 5.9, the next two options will have different affects."
+msgstr ""
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: settings/TabBarSettings.ui:144
+#, kde-format
+msgid "Behavior"
+msgstr "Käitumine"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: settings/TabBarSettings.ui:150
+#, kde-format
+msgid "New tab behavior:"
+msgstr "Uue kaardi käitumine:"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_NewTabBehavior)
+#: settings/TabBarSettings.ui:167
+#, kde-format
+msgid "Put New Tab At The End"
+msgstr "Uus kaart lõppu"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_NewTabBehavior)
+#: settings/TabBarSettings.ui:172
+#, kde-format
+msgid "Put New Tab After Current Tab"
+msgstr "Uus kaart aktiivse kaardi järel"
+
+#: TabTitleFormatButton.cpp:33
+#, kde-format
+msgid "Program Name: %n"
+msgstr "Programmi nimi: %n"
+
+#: TabTitleFormatButton.cpp:34
+#, kde-format
+msgid "Current Directory (Short): %d"
+msgstr "Aktiivne kataloog (lühidalt): %d"
+
+#: TabTitleFormatButton.cpp:35
+#, kde-format
+msgid "Current Directory (Long): %D"
+msgstr "Aktiivne kataloog (pikalt): %D"
+
+#: TabTitleFormatButton.cpp:36 TabTitleFormatButton.cpp:50
+#, kde-format
+msgid "Window Title Set by Shell: %w"
+msgstr "Shelli määratud akna nimetus: %w"
+
+#: TabTitleFormatButton.cpp:37 TabTitleFormatButton.cpp:51
+#, kde-format
+msgid "Session Number: %#"
+msgstr "Seansi number: %#"
+
+#: TabTitleFormatButton.cpp:38 TabTitleFormatButton.cpp:45
+#, kde-format
+msgid "User Name: %u"
+msgstr "Kasutajanimi: %u"
+
+#: TabTitleFormatButton.cpp:39
+#, kde-format
+msgid "Local Host: %h"
+msgstr "Kohalik masin: %h"
+
+#: TabTitleFormatButton.cpp:46
+#, kde-format
+msgid "User Name@ (if given): %U"
+msgstr "Kasutajanimi@ (kui on antud): %U"
+
+#: TabTitleFormatButton.cpp:47
+#, kde-format
+msgid "Remote Host (Short): %h"
+msgstr "Kaugmasin (lühidalt): %h"
+
+#: TabTitleFormatButton.cpp:48
+#, kde-format
+msgid "Remote Host (Long): %H"
+msgstr "Kaugmasin (pikalt): %H"
+
+#: TabTitleFormatButton.cpp:49
+#, kde-format
+msgid "Command and arguments: %c"
+msgstr "Käsk ja argumendid: %c"
+
+#: TabTitleFormatButton.cpp:60
+#, kde-format
+msgid "Insert"
+msgstr "Lisa"
+
+#: TabTitleFormatButton.cpp:85
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Insert title format"
+msgstr "Tiitli vormingu lisamine"
+
+#: TabTitleFormatButton.cpp:89
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Insert remote title format"
+msgstr "Võrgutiitli vormingu lisamine"
+
+#: TerminalDisplay.cpp:1265 TerminalDisplay.cpp:1266
+#, kde-format
+msgid "Size: XXX x XXX"
+msgstr "Suurus: XXX x XXX"
+
+#: TerminalDisplay.cpp:1277
+#, kde-format
+msgid "Size: %1 x %2"
+msgstr "Suurus: %1 x %2"
+
+#: TerminalDisplay.cpp:2859
+#, kde-format
+msgid "Are you sure you want to paste %1 character?"
+msgid_plural "Are you sure you want to paste %1 characters?"
+msgstr[0] "Kas tõesti asetada %1 märk?"
+msgstr[1] "Kas tõesti asetada %1 märki?"
+
+#: TerminalDisplay.cpp:2862
+#, kde-format
+msgid "Confirm Paste"
+msgstr "Asetamise kinnitus"
+
+#: TerminalDisplay.cpp:3050
+#, kde-format
+msgid ""
+"<qt>Output has been <a href=\"http://en.wikipedia.org/wiki/"
+"Software_flow_control\">suspended</a> by pressing Ctrl+S.  Press <b>Ctrl+Q</"
+"b> to resume.  Click <a href=\"#close\">here</a> to dismiss this message.</"
+"qt>"
+msgstr ""
+"<qt>Väljund on <a href=\"http://en.wikipedia.org/wiki/Software_flow_control"
+"\">peatatud</a> kiirklahviga Ctrl+S. Taasalustamiseks vajuta <b>Ctrl+Q</b>. "
+"Sõnumi kaotamiseks vajuta <a href=\"#close\">siia</a>.</qt>"
+
+#: TerminalDisplay.cpp:3356
+#, kde-format
+msgid "&Paste Location"
+msgstr "Aseta asuko&ht"
+
+#: TerminalDisplay.cpp:3373
+#, kde-format
+msgid "Change &Directory To"
+msgstr "Muu&da kataloogiks"
+
+#: ViewContainer.cpp:306
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Detach Tab"
+msgstr "&Haagi kaart lahti"
+
+#: ViewContainer.cpp:311
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Rename Tab..."
+msgstr "Nimeta kaa&rt ümber..."
+
+#: ViewContainer.cpp:317
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Close Tab"
+msgstr "&Sulge kaart"
+
+#: ViewContainer.cpp:324
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Create new tab"
+msgstr "Uue kaardi loomine"
+
+#: ViewContainer.cpp:326
+#, kde-format
+msgctxt "@info:whatsthis"
+msgid "Create a new tab. Press and hold to select profile from menu"
+msgstr "Uue kaardi loomine. Vajuta ja hoia all profiili valimiseks menüüst"
+
+#: ViewContainer.cpp:340
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Close tab"
+msgstr "Sulge kaart"
+
+#: ViewContainer.cpp:341
+#, kde-format
+msgctxt "@info:whatsthis"
+msgid "Close the active tab"
+msgstr "Aktiivse kaardi sulgemine"
+
+#: ViewContainerTabBar.cpp:60
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"<title>Tab Bar</title><para>The tab bar allows you to switch and move tabs. "
+"You can double-click a tab to change its name.</para>"
+msgstr ""
+"<title>Kaardiriba</title><para>Kaardiriba võimaldab lülituda kaartide vahel "
+"ja neid liigutada. Kaardi nime muutmiseks tee sakil topeltklõps.</para>"
+
+#: ViewManager.cpp:139
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Next Tab"
+msgstr "Järgmine kaart"
+
+#: ViewManager.cpp:140
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Previous Tab"
+msgstr "Eelmine kaart"
+
+#: ViewManager.cpp:142
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Switch to Last Tab"
+msgstr "Lülitu viimasele kaardile"
+
+#: ViewManager.cpp:144
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Next View Container"
+msgstr "Järgmine vaatekonteiner"
+
+#: ViewManager.cpp:146
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Move Tab Left"
+msgstr "Liiguta kaart vasakule"
+
+#: ViewManager.cpp:148
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Move Tab Right"
+msgstr "Liiguta kaart paremale"
+
+#: ViewManager.cpp:156
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Split View Left/Right"
+msgstr "Poolita vaade vertikaalselt"
+
+#: ViewManager.cpp:164
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Split View Top/Bottom"
+msgstr "Poolita vaade horisontaalselt"
+
+#: ViewManager.cpp:169
+#, kde-format
+msgctxt "@action:inmenu Close Active View"
+msgid "Close Active"
+msgstr "Sulge aktiivne"
+
+#: ViewManager.cpp:180
+#, kde-format
+msgctxt "@action:inmenu Close Other Views"
+msgid "Close Others"
+msgstr "Sulge teised"
+
+#: ViewManager.cpp:190
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Expand View"
+msgstr "Laienda vaadet"
+
+#: ViewManager.cpp:200
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Shrink View"
+msgstr "Vähenda vaadet"
+
+#: ViewManager.cpp:213
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "D&etach Current Tab"
+msgstr "Haagi aktiivn&e kaart lahti"
+
+#: ViewManager.cpp:237
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Switch to Tab %1"
+msgstr "Lülitu kaardile %1"
+
+#: Vt102Emulation.cpp:1131
+#, kde-format
+msgid ""
+"No keyboard translator available.  The information needed to convert key "
+"presses into characters to send to the terminal is missing."
+msgstr ""
+"Klaviatuuri tõlgendaja puudub. Infot, mida on vaja klahvivajutuste "
+"teisendamiseks terminali saadetavateks märkideks, ei ole."
+
+#: ZModemDialog.cpp:47
+#, kde-format
+msgid "&Stop"
+msgstr "&Peata"
+
+#, fuzzy
+#~| msgctxt "@title"
+#~| msgid "Konsole"
+#~ msgctxt "@title"
+#~ msgid "Demo KonsolePart"
+#~ msgstr "Konsool"
+
+#, fuzzy
+#~| msgid "(c) 1997-2015, The Konsole Developers"
+#~ msgctxt "@info:credit"
+#~ msgid "(c) 2017, The Konsole Developers"
+#~ msgstr "(c) 1997-2015: Konsole arendajad"
+
+#~ msgctxt "@title:column Display profile in file menu"
+#~ msgid "Show in Menu"
+#~ msgstr "Näitamine menüüs"
+
+#~ msgid "Show URL hint overlays that can be triggered when holding down CTRL."
+#~ msgstr "URL-i vihje hüpiku näitamine Ctrl allhoidmise korral"
+
+#~ msgid "Enable URL hints"
+#~ msgstr "URL-i vihje lubamine"
+
+#~ msgid "DEC VT420 Terminal"
+#~ msgstr "DEC VT420 terminal"
+
+#~ msgctxt "@info:shell"
+#~ msgid "Use --nofork to run in the foreground (helpful with the -e option)."
+#~ msgstr ""
+#~ "Esiplaanil töötamiseks kasuta võtit --nofork (tulus koos võtmega -e)."
+
+#~ msgctxt "@title:window"
+#~ msgid "Manage Profiles"
+#~ msgstr "Profiilide haldamine"
+
+#~ msgid "Manage Profiles..."
+#~ msgstr "Profiilide haldamine..."
+
+#~ msgctxt "@title"
+#~ msgid "<application>Konsole</application>"
+#~ msgstr "<application>Konsool</application>"
+
+#~ msgid "Shell"
+#~ msgstr "Shell"
+
+#~ msgid "--- Type anything in this box ---"
+#~ msgstr "--- Kirjuta midagi sellesse kasti ---"
+
+#~ msgid "Toggle Background Window"
+#~ msgstr "Lülita taustaakent"
+
+#~ msgid "Set the window size and position for this profile when exiting"
+#~ msgstr "Akna suuruse ja asukoha määramine profiilile väljumisel"
+
+#~ msgid "Save window size and position on exit"
+#~ msgstr "Akna suuruse ja asukoha salvestamine väljumisel"
+
+#~ msgid "Accessible Color Scheme"
+#~ msgstr "Saadaolev värviskeem"
+
+#~ msgid "%1, size %2"
+#~ msgstr "%1, suurus %2"
+
+#~ msgctxt "@item:inrange Minimum Size"
+#~ msgid "Small"
+#~ msgstr "Väike"
+
+#~ msgid "Adjust the font size used in this profile"
+#~ msgstr "Kohanda profiilis kasutatava fondi suurust"
+
+#~ msgctxt "@item:inrange Maximum Size"
+#~ msgid "Large"
+#~ msgstr "Suur"
+
+#~| msgid "Close Current Tab"
+#~ msgctxt "@info:tooltip"
+#~ msgid "Close current tab"
+#~ msgstr "Aktiivse kaardi sulgemine"
+
+#~ msgid ""
+#~ "Try to enable transparency, even if the system does not appear to support "
+#~ "it."
+#~ msgstr ""
+#~ "Läbipaistva tausta lubamine, isegi kui süsteem ei paista seda toetavat."
+
+#~ msgid "Input"
+#~ msgstr "Sisend"
+
+#~ msgid "Mouse Interaction"
+#~ msgstr "Hiire interaktsioonid"
+
+#~ msgid "Fixed size scrollback: "
+#~ msgstr "Kerimise maht: "
+
+#~ msgid "Edit normal tab title format"
+#~ msgstr "Muuda tavalise kaardinimetuse vormingut"
+
+#~ msgid "Edit tab title format used when executing remote commands"
+#~ msgstr "Muuda kaugkäskude puhul kasutatavat kaardinimetuse vormingut"
+
+#~ msgid "Allow terminal programs to resize the window"
+#~ msgstr "Terminaliprogrammidel lubatakse muuta akna suurust"
+
+#~ msgid "Allow programs to resize terminal window"
+#~ msgstr "Programmidel lubatakse muuta terminaliakna suurust"
+
+#~ msgid "Configure Current Profile..."
+#~ msgstr "Aktiivse profiili seadistamine..."
+
+#~ msgid "Wallpaper:"
+#~ msgstr "Taustapilt:"
+
+#~ msgid "The wallpaper picture file path"
+#~ msgstr "Taustapildi faili asukoht"
+
+#~ msgid "&Switch Profile"
+#~ msgstr "P&rofiili vahetamine"
+
+#~ msgid "Debug"
+#~ msgstr "Silumine"
+
+#~ msgid "Command to execute"
+#~ msgstr "Käivitatav käsk"
+
+#~ msgid "Show or hide the menu bar in terminal windows"
+#~ msgstr "Menüüriba näitamine või peitmine terminaliakendes"
+
+#~ msgid "Tab Bar"
+#~ msgstr "Kaardiriba"
+
+#~ msgid "Seconds to detect silence:"
+#~ msgstr "Sekundid, kuni tuvastatakse vaikus:"
+
+#~ msgid "Disable scrollback"
+#~ msgstr "Kerimine on keelatud"
+
+#~ msgid "Fixed number of lines: "
+#~ msgstr "Ridade arv: "
+
+#~ msgctxt "@option:radio Conceal the scroll bar"
+#~ msgid "Hidden"
+#~ msgstr "Peidetud"
+
+#~ msgid "&Paste as text"
+#~ msgstr "&Aseta tekstina"
+
+#~ msgid ""
+#~ "All characters from the current word to the end of line will be selected."
+#~ msgstr "Valitakse kõik märgid alates aktiivsest sõnast kuni rea lõpuni."
+
+#~ msgid "Triple click selects from current word forward"
+#~ msgstr "Kolmikklõps valik aktiivsest sõnast edasi"
+
+#~ msgid "&Change Profile"
+#~ msgstr "&Vaheta profiili"
+
+#~ msgid "Change Profile"
+#~ msgstr "Vaheta profiili"
+
+#~ msgid "Maintainer"
+#~ msgstr "Hooldaja"
+
+#~ msgid "Author"
+#~ msgstr "Autor"
+
+#~ msgid "Remote Connection..."
+#~ msgstr "Eemalda ühendus..."
+
+#~ msgid "Remote Connection"
+#~ msgstr "Kaugühendus"
+
+#~ msgid "Host:"
+#~ msgstr "Masin:"
+
+#~ msgid "User:"
+#~ msgstr "Kasutaja:"
+
+#~ msgid "Lookup..."
+#~ msgstr "Otsing..."
+
+#~ msgid "Service:"
+#~ msgstr "Teenus:"
+
+#~ msgid "SSH"
+#~ msgstr "SSH"
+
+#~ msgid "Secure FTP"
+#~ msgstr "Turvaline FTP"
+
+#~ msgid "Background color:"
+#~ msgstr "Taustavärv:"
+
+#~ msgid "Save as custom session"
+#~ msgstr "Salvesta vaikimisi seansina"
+
+#~ msgid "New Remote Connection"
+#~ msgstr "Uus kaugühendus"
+
+#~ msgid "Connect"
+#~ msgstr "Ühenda"
+
+#~ msgid "Next View"
+#~ msgstr "Järgmine vaade"
+
+#~ msgid "Previous View"
+#~ msgstr "Eelmine vaade"
+
+#~ msgid "Match case"
+#~ msgstr "Tõstutundlik"
+
+#~ msgid ""
+#~ "Sets whether the search phrase is interpreted as normal text or as a "
+#~ "regular expression"
+#~ msgstr ""
+#~ "Siin saab määrata, kas otsingusõna tõlgendatakse tavalise tekstina või "
+#~ "regulaaravaldisena"
+
+#~ msgid "Search reached bottom, continued from top."
+#~ msgstr "Otsing jõudis lõppu, jätkatakse algusest."
+
+#~ msgid "Search reached top, continued from bottom."
+#~ msgstr "Otsing jõudis algusse, jätkatakse lõpust."
+
+#~ msgid "New &Tab"
+#~ msgstr "Uus kaar&t"
+
+#~ msgid "Move the selected profile up in the menu list"
+#~ msgstr "Valitud profiili liigutamine menüüs ülespoole"
+
+#~ msgid "Move Up"
+#~ msgstr "Liiguta üles"
+
+#~ msgid "Move the selected profile down in the menu list"
+#~ msgstr "Valitud profiili liigutamine menüüs allapoole"
+
+#~ msgid "Move Down"
+#~ msgstr "Liiguta alla"
+
+#~ msgid "No profiles available"
+#~ msgstr "Profiile pole"
+
+#~ msgid "Word characters for double-click selection: "
+#~ msgstr "Sõna juurde kuuluvad märgid topeltklõpsuga valimisel: "
+
+#~ msgid "Show Menu Bar"
+#~ msgstr "Näita menüüriba"
+
+#, fuzzy
+#~| msgid "Clear && Reset"
+#~ msgid "Clear and Reset"
+#~ msgstr "Puhasta ja lähtesta"
+
+#~ msgid "Character Encoding"
+#~ msgstr "Kodeering"
+
+#~ msgid "&Detach View"
+#~ msgstr "Haagi vaa&de lahti"
+
+#~ msgid "&Copy"
+#~ msgstr "&Kopeeri"
+
+#~ msgid "Increase Text Size"
+#~ msgstr "Suurenda teksti suurust"
+
+#~ msgid "Decrease Text Size"
+#~ msgstr "Vähenda teksti suurust"
+
+#~ msgid "Search Output..."
+#~ msgstr "Otsi väljundist..."
+
+#~ msgid "Find Next"
+#~ msgstr "Otsi järgmine"
+
+#~ msgid "Find Previous"
+#~ msgstr "Otsi eelmine"
+
+#~ msgid "Open Browser Here"
+#~ msgstr "Ava brauser aktiivse asukohaga"
+
+#~ msgid "C&lear Display"
+#~ msgstr "&Puhasta vaade"
+
+#~ msgctxt "Regular expression to remove accelerators from menu items"
+#~ msgid "\\(\\s*\\&.*\\)|\\&"
+#~ msgstr "\\(\\s*\\&.*\\)|\\&"
+
+#~ msgid "KWrited - Listening on Device %1"
+#~ msgstr "KWrited - seadme %1 jälgimine"
+
+#~ msgid "FONT PREVIEW TEXT"
+#~ msgstr ""
+#~ "Põdur Zagrebi tšellomängija-följetonist Ciqo külmetas kehvas garaažis"
+
+#~ msgid "DEFAULTENCODING"
+#~ msgstr "UTF-8"
+
+#~ msgid "New"
+#~ msgstr "Uus "
+
+#~ msgid "Select &Tab Color"
+#~ msgstr "Vali kaar&di värv"
+
+#~ msgid "Basic Profile Options"
+#~ msgstr "Profiili põhivalikud"
+
+#~ msgid "Tab Bar Options"
+#~ msgstr "Kaardiriba valikud"
+
+#~ msgid "Cursor Options"
+#~ msgstr "Kursori valikud"
+
+#~ msgid "Scrollback Options..."
+#~ msgstr "Kerimise valikud"
+
+#~ msgid ""
+#~ "<p>...that right-clicking on any tab allows for the changing of the tab "
+#~ "text color?\n"
+#~ msgstr ""
+#~ "<p>... et hiire parema nupu klõpsuga suvalisele kaardile saab muuta "
+#~ "kaardi teksti värvi?\n"
+
+#~ msgid ""
+#~ "<p>...that the tab text color can be changed with the code \\e[28;COLORt "
+#~ "(COLOR: 0-16,777,215)?\n"
+#~ msgstr ""
+#~ "<p>... et kaardi teksti värvi saab muuta koodiga \\e[28;COLORt (COLOR: "
+#~ "0-16,777,215)?\n"
+
+#~ msgid "<p>...that the code \\e[8;ROW;COLUMNt will resize Konsole?\n"
+#~ msgstr "<p>... et kood \\e[8;ROW;COLUMNt muudab Konsooli suurust?\n"
+
+#~ msgid ""
+#~ "<p>...that you can start a new standard session by pressing the \"New\" "
+#~ "button in the tabbar?\n"
+#~ msgstr ""
+#~ "<p> ... et sa võid käivitada uue standardseansi, vajutades nuppu \"Uus\" "
+#~ "Konsooli tööriistaribal?\n"
+
+#~ msgid ""
+#~ "<p>...that pressing and holding the \"New\" button on the tabbar will "
+#~ "display a menu of sessions to select?\n"
+#~ msgstr ""
+#~ "<p>... et vajutades ja hoides all nuppu \"Uus\" tööriistaribal, on sul "
+#~ "võimalik\n"
+#~ "valida, millist tüüpi seanss käivitada?\n"
+
+#~ msgid "<p>...that pressing Ctrl+Alt+N will start a new standard session?\n"
+#~ msgstr ""
+#~ "<p>... et Ctrl+Alt+N klahvikombinatsiooni vajutamine käivitab "
+#~ "standardseansi?\n"
+
+#~ msgid ""
+#~ "<p>...that you can cycle through the Konsole sessions by holding down the "
+#~ "Shift key and\n"
+#~ "pressing the Left or Right Arrow keys?\n"
+#~ msgstr ""
+#~ "<p>... et Konsooli seansside vahel on võimalik liikuda, hoides all Shift\n"
+#~ "klahvi ning vajutades nooli paremale või vasakule?\n"
+
+#~ msgid ""
+#~ "<p>...that you can get a 'Linux console-like' terminal? \n"
+#~ "<p>Hide Konsole's menubar, tabbar and scrollbar, select the Linux font\n"
+#~ "and the Linux Colors schema and apply the full-screen mode. You might "
+#~ "also \n"
+#~ "want to set the KDE panel to auto-hide.\n"
+#~ msgstr ""
+#~ "<p>... et sa võid Konsooli muuta Linuxi konsooli sarnaseks?\n"
+#~ "<p> Lülita välja Konsooli menüüriba, tööriistariba ja kerimisriba, vali "
+#~ "Linuxi font\n"
+#~ "ja värviskeem \"Linuxi värvid\" ning mine täisekraani režiimi. Samuti "
+#~ "võid\n"
+#~ "sisse lülitada paneeli automaatse peitmise.\n"
+
+#~ msgid ""
+#~ "<p>...that you can rename your Konsole sessions by clicking with the "
+#~ "right mouse\n"
+#~ "button and selecting \"Rename session\"? The change will be reflected in "
+#~ "the\n"
+#~ "Konsole tabbar, making it easier to remember the content of the session.\n"
+#~ msgstr ""
+#~ "<p>... et Konsooli seansse võid ümber nimetada, klõpsates aknas hiire "
+#~ "parema\n"
+#~ "nupuga ning valides menüüst \"Nimeta seanss ümber\"? Muudatus peegeldub\n"
+#~ "ka tööriistaribal, mis teeb seansi sisu meeldejätmise lihtsamaks.\n"
+
+#~ msgid ""
+#~ "<p>...that you can rename a Konsole session by double-clicking its tab?\n"
+#~ msgstr ""
+#~ "<p>... et Konsooli seansse on võimalik ümber nimetada, tehes "
+#~ "topeltklõpsu\n"
+#~ "vastaval kaardil?\n"
+
+#~ msgid "<p>...that you can activate the menu with the Ctrl+Alt+M shortcut?\n"
+#~ msgstr ""
+#~ "<p>... et menüüd on võimalik aktiveerida klahvikombinatsiooniga Ctrl+Alt"
+#~ "+M?\n"
+
+#~ msgid ""
+#~ "<p>...that you can rename your current Konsole session with the Ctrl+Alt"
+#~ "+S shortcut?\n"
+#~ msgstr ""
+#~ "<p>... et aktiivset Konsooli seanssi on võimalik ümber nimetada\n"
+#~ "klahvikombinatsiooniga Ctrl+Alt+S?\n"
+
+#~ msgid ""
+#~ "<p>...that you can create your own session types by using the session \n"
+#~ "editor which you can find under \"Settings->Configure Konsole...\"?\n"
+#~ msgstr ""
+#~ "<p>... et sa võid luua oma seansitüüpe, kasutades seansitüübi "
+#~ "redaktorit,\n"
+#~ "mille leiad menüüst \"Seadistused -> Konsooli seadistamine...\"?\n"
+
+#~ msgid ""
+#~ "<p>...that you can create your own color schemes by using the schema "
+#~ "editor\n"
+#~ "which you can find under \"Settings->Configure Konsole...\"?\n"
+#~ "</p>\n"
+#~ msgstr ""
+#~ "<p>... et sa võid luua oma värviskeeme skeemide redaktoriga, mille leiad\n"
+#~ "menüüst \"Seadistused -> Konsooli seadistamine...\"?\n"
+#~ "</p>\n"
+
+#~ msgid ""
+#~ "<p>...that you can move a session by holding down the middle mouse button "
+#~ "over the tab?\n"
+#~ "</p>\n"
+#~ msgstr ""
+#~ "<p> ... et sa võid seanssi liigutada, hoides kaardi kohal alla hiire "
+#~ "keskmist nuppu?\n"
+#~ "</p>\n"
+
+#~ msgid ""
+#~ "<p>...that you can reorder the session tabs with \"View->Move Session "
+#~ "Left/Right\" menu\n"
+#~ "commands or by holding down the Shift and Ctrl keys and pressing the Left "
+#~ "or Right \n"
+#~ "Arrow keys?\n"
+#~ "</p>\n"
+#~ msgstr ""
+#~ "<p>... et sa võid seansside kaartide järjekorda muuta, kasutades menüü\n"
+#~ "\"Vaade\" kirjeid või hoides all Shift ja Ctrl klahve ning vajutades "
+#~ "noolt paremale\n"
+#~ "või vasakule?\n"
+#~ "</p>\n"
+
+#~ msgid ""
+#~ "<p>...that you can scroll pagewise in the history by holding down the "
+#~ "Shift key \n"
+#~ "and pressing the Page Up or Page Down keys?\n"
+#~ msgstr ""
+#~ "<p>... et sa võid ajaloos lehekülje kaupa edasi ja tagasi kerida, hoides "
+#~ "all Shift\n"
+#~ "klahvi ning vajutades Page Up ja Page Down klahve?\n"
+
+#~ msgid ""
+#~ "<p>...that you can scroll linewise in the history by holding down the "
+#~ "Shift key \n"
+#~ "and pressing the Up or Down Arrow keys?\n"
+#~ msgstr ""
+#~ "<p>... et sa võid ajaloos rea kaupa edasi ja tagasi kerida, hoides all "
+#~ "Shift klahvi\n"
+#~ "ning vajutades nooli üles ja alla?\n"
+
+#~ msgid ""
+#~ "<p>...that you can insert the clipboard by holding down the Shift key "
+#~ "and \n"
+#~ "pressing the Insert key?\n"
+#~ msgstr ""
+#~ "<p>... et sa võid lõikepuhvri sisu lisada, hoides all Shift klahvi ning "
+#~ "vajutades\n"
+#~ "Insert klahvi?\n"
+
+#~ msgid ""
+#~ "<p>...that you can insert the X selection by holding down the Shift and\n"
+#~ "Ctrl keys and pressing the Insert key?\n"
+#~ msgstr ""
+#~ "<p>... et sa võid lisada X'i valikupuhvri sisu, hoides all Shift ja Ctrl "
+#~ "klahve\n"
+#~ "ning vajutades Insert klahvi?\n"
+
+#~ msgid ""
+#~ "<p>...that pressing Ctrl while pasting the selection with the middle "
+#~ "mouse\n"
+#~ "button will append a carriage return after pasting the selection buffer?\n"
+#~ msgstr ""
+#~ "<p>... et Ctrl klahvi all hoidmine samal ajal, kui hiire keskmise "
+#~ "klahviga\n"
+#~ "valitud teksti asetada, lisab puhvri tekstile reavahetuse?\n"
+
+#~ msgid ""
+#~ "<p>...that you can turn off the terminal size hint under \"Settings-"
+#~ ">Configure Konsole...\"?\n"
+#~ msgstr ""
+#~ "<p>... et terminali suuruse näitamist on võimalik välja lülitada menüüst\n"
+#~ "\"Seaded -> Konsooli seadistamine...\"?\n"
+
+#~ msgid ""
+#~ "<p>...that pressing Ctrl while selecting text will let Konsole ignore "
+#~ "line breaks?\n"
+#~ msgstr ""
+#~ "<p>... et Ctrl klahvi all hoidmine teksti valimisel võimaldab "
+#~ "ignoreerida\n"
+#~ "reavahetusi?\n"
+
+#~ msgid ""
+#~ "<p>...that pressing the Ctrl and Alt keys while selecting text will let "
+#~ "Konsole select columns?\n"
+#~ msgstr ""
+#~ "<p>... et Ctrl ja Alt klahvi all hoidmine teksti valimisel paneb "
+#~ "Konsooli\n"
+#~ "valima veerge?\n"
+
+#~ msgid ""
+#~ "<p>...that when a program evaluates the right mouse button you can still\n"
+#~ "get the right mouse button pop-up menu while pressing the Shift key?\n"
+#~ msgstr ""
+#~ "<p>... et kui rakendus kasutab hiire paremat nuppu, on sul siiski "
+#~ "võimalus\n"
+#~ "kasutada Konsooli hüpikmenüüd, kui hoiad all Shift klahvi?\n"
+
+#~ msgid ""
+#~ "<p>...that when a program evaluates the left mouse button you can still "
+#~ "select\n"
+#~ "text while pressing the Shift key?\n"
+#~ msgstr ""
+#~ "<p>... et kui rakendus kasutab hiire vasakut nuppu, saad sa siiski teksti "
+#~ "valida,\n"
+#~ "kui hoiad all Shift klahvi?\n"
+
+#~ msgid ""
+#~ "<p>...that you can let Konsole set the current directory as the window "
+#~ "title?\n"
+#~ "For Bash, put 'export PS1=$PS1\"\\[\\e]0;\\H:\\w\\a\\]\"' in your ~/."
+#~ "bashrc .\n"
+#~ msgstr ""
+#~ "<p>... et sa võid Konsooli akna tiitliks panna aktiivse kataloogi?\n"
+#~ "Bash'i puhul pane faili ~/.bashrc rida 'export PS1=$PS1\"\\[\\e]0;\\H:\\w"
+#~ "\\a\\]\"'.\n"
+
+#~ msgid ""
+#~ "<p>...that you can let Konsole set the current directory as the session "
+#~ "name?\n"
+#~ "For Bash, put 'export PS1=$PS1\"\\[\\e]30;\\H:\\w\\a\\]\"' in your ~/."
+#~ "bashrc .\n"
+#~ msgstr ""
+#~ "<p>... et sa võid Konsooli akna tiitliks panna aktiivse kataloogi?\n"
+#~ "Bash'i puhul pane faili ~/.bashrc rida 'export PS1=$PS1\"\\[\\e]30;\\H:\\w"
+#~ "\\a\\]\"'.\n"
+
+#~ msgid ""
+#~ "<p>...that if you let your shell pass the current directory to Konsole "
+#~ "within the prompt\n"
+#~ "variable, e.g. for Bash with 'export PS1=$PS1\"\\[\\e]31;\\w\\a\\]\"' in "
+#~ "your ~/.bashrc, then\n"
+#~ "Konsole can bookmark it, and session management will remember your "
+#~ "current working directory\n"
+#~ "on non-Linux systems too?\n"
+#~ msgstr ""
+#~ "<p>... et kui lased shellil edastada aktiivse kataloogi Konsoolile "
+#~ "vastava muutujaga,\n"
+#~ "nt Bash'i puhul reaga 'export PS1=$PS1\"\\[\\e]31;\\w\\a\\]\"' failis ~/."
+#~ "bashrc,\n"
+#~ "võib Konsool selle järjehoidjaks muuta ning seansihaldur võimaldab "
+#~ "aktiivse töökataloogi\n"
+#~ "meelde jätta ka mitte-Linux süsteemidel?\n"
+
+#~ msgid ""
+#~ "<p>...that double-clicking will select a whole word?\n"
+#~ "<p>When you don't release the mouse button after the second click you\n"
+#~ "can extend your selection by additional words when moving the mouse.\n"
+#~ msgstr ""
+#~ "<p>... et topeltklõpsuga saad valida terve sõna?\n"
+#~ "<p>Kui pärast teist klõpsu hiire nuppu mitte lahti lasta, saad valikut "
+#~ "laiendada\n"
+#~ "järgmistele sõnadele hiirt liigutades.\n"
+
+#~ msgid ""
+#~ "<p>...that triple-clicking will select a whole line?\n"
+#~ "<p>When you don't release the mouse button after the third click you\n"
+#~ "can extend your selection by additional lines when moving the mouse.\n"
+#~ msgstr ""
+#~ "<p>... et kolmikklõps valib terve rea?\n"
+#~ "<p>Kui pärast kolmandat klõpsu hiire nuppu mitte lahti lasta, saad "
+#~ "valikut laiendada\n"
+#~ "järgmistele ridadele hiirt liigutades.\n"
+
+#~ msgid ""
+#~ "<p>...that if you drag &amp; drop a URL into a Konsole window you are "
+#~ "presented with a\n"
+#~ "menu giving the option to copy or move the specified file into the "
+#~ "current working directory,\n"
+#~ "as well as just pasting the URL as text.\n"
+#~ "<p>This works with any type of URL which KDE supports.\n"
+#~ msgstr ""
+#~ "<p>... et kui lohistad URL-i Konsooli aknasse, ilmub hüpikmenüü,\n"
+#~ "mis küsib, kas soovid faili kopeerida või liigutada käesolevasse "
+#~ "kataloogi\n"
+#~ "või lihtsalt asetada URL-i tekstina.\n"
+#~ "<p>See toimib suvalist tüüpi URL-iga, mida KDE toetab.\n"
+
+#~ msgid ""
+#~ "<p>...that the \"Settings->Configure Shortcuts...\" dialog allows you to "
+#~ "define keyboard shortcuts for actions\n"
+#~ "not shown in the menu, like activating menu, changing font and for "
+#~ "listing and switching sessions?\n"
+#~ msgstr ""
+#~ "<p>... et dialoog \"Seadistused -> Kiirklahvide seadistamine...\"\n"
+#~ "võimaldab määrata kiirklahve tegevustele, mida menüüs ei leidu, näiteks\n"
+#~ "menüü aktiveerimine, fondi muutmine, seansside lülitamine jne?\n"
+
+#~ msgid ""
+#~ "<p>...that right-clicking over the \"New\" button in the left corner of "
+#~ "the tabbar or in an empty tabbar space displays a menu where you can set "
+#~ "several tab options?\n"
+#~ msgstr ""
+#~ "<p>... et paremklõpsuga kaardiriba vasakus servas asuvale nupule \"Uus\" "
+#~ "või kaardiriba tühjale alale saab avada menüü, mis võimaldab seadistada "
+#~ "kaardiriba omadusi?\n"
+
+#~ msgid "Send Input to All"
+#~ msgstr "Saada sisend kõigile"
+
+#~ msgid "Click to open %1 in your browser."
+#~ msgstr "Klõpsa %1 avamiseks brauseris."
+
+#~ msgid "Click to send an email to %1."
+#~ msgstr "Klõpsa kirja saatmiseks aadressile %1."
+
+#~ msgid "Hide Menu Bar"
+#~ msgstr "Menüüriba peitmine"
+
+#~ msgid "* { background-color: #FFCCCC ; border-radius: 3px }"
+#~ msgstr "* { background-color: #FFCCCC ; border-radius: 3px }"
+
+#~ msgid "&Pixel for pixel"
+#~ msgstr "&Piksel pikslile"
+
+#~ msgid "A Fatal Error Has Occurred"
+#~ msgstr "Tekkis saatuslik viga"
+
+#~ msgid "Marble"
+#~ msgstr "Marmor"
+
+#~ msgid "Green Tint"
+#~ msgstr "Roheline varjund"
+
+#~ msgid "Green Tint with Transparent MC"
+#~ msgstr "Roheline varjund läbipaistva MC'ga"
+
+#~ msgid "Paper"
+#~ msgstr "Paber"
+
+#~ msgid "Transparent Konsole"
+#~ msgstr "Läbipaistev Konsool"
+
+#~ msgid "Transparent for MC"
+#~ msgstr "Läbipaistev MC jaoks"
+
+#~ msgid "Transparent, Light Background"
+#~ msgstr "Läbipaistev, hele taust"
+
+#~ msgid "XTerm Colors"
+#~ msgstr "XTermi värvid"
+
+#~ msgid "System Colors"
+#~ msgstr "Süsteemsed värvid"
+
+#~ msgid "Sch&ema"
+#~ msgstr "Sk&eem"
+
+#~ msgid "&Top"
+#~ msgstr "&Üleval"
+
+#~ msgid "&Left"
+#~ msgstr "&Vasakul"
+
+#~ msgid "&Right"
+#~ msgstr "&Paremal"
+
+#~ msgid "System &Bell"
+#~ msgstr "Süsteemne si&gnaal"
+
+#~ msgid "&Visible Bell"
+#~ msgstr "&Visuaalne signaal"
+
+#~ msgid "&Enlarge Font"
+#~ msgstr "Suur&enda fonti"
+
+#~ msgid "S&ize"
+#~ msgstr "Suu&rus"
+
+#~ msgid "&Custom..."
+#~ msgstr "&Kohandatud ..."
+
+#~ msgid "&Tip of the Day"
+#~ msgstr "P&äeva nõuanne"
+
+#~ msgid "Set Selection End"
+#~ msgstr "Valiku lõpp"
+
+#~ msgid "New Sess&ion"
+#~ msgstr "Uus s&eanss"
+
+#~ msgid "&Text && Icons"
+#~ msgstr "T&ekst ja ikoonid"
+
+#~ msgid "Text &Only"
+#~ msgstr "Ainult &tekst"
+
+#~ msgid "&Icons Only"
+#~ msgstr "Ainult &ikoonid"
+
+#~ msgid "&Dynamic Hide"
+#~ msgstr "&Dünaamiline peitmine"
+
+#~ msgid "&Auto Resize Tabs"
+#~ msgstr "Kaartide s&uuruse automaatne muutmine"
+
+#~ msgid ""
+#~ "Click for new standard session\n"
+#~ "Click and hold for session menu"
+#~ msgstr ""
+#~ "Klõps uue standardseansi jaoks\n"
+#~ "Klõps ja allhoidmine seansimenüü jaoks"
+
+#~ msgid "Session"
+#~ msgstr "Seanss"
+
+#~ msgid "C&lear Terminal"
+#~ msgstr "Puhasta termina&l"
+
+#~ msgid "&Reset && Clear Terminal"
+#~ msgstr "&Lähtesta ja puhasta terminal"
+
+#~ msgid "S&ave History As..."
+#~ msgstr "S&alvesta ajalugu faili..."
+
+#~ msgid "Clear All H&istories"
+#~ msgstr "Tühjenda kõ&ik ajalood"
+
+#~ msgid "&Rename Session..."
+#~ msgstr "Nimeta s&eanss ümber..."
+
+#~ msgid "Stop Monitoring for &Activity"
+#~ msgstr "Peata &aktiivsuse jälgimine"
+
+#~ msgid "Stop Monitoring for &Silence"
+#~ msgstr "Peata &vaikuse jälgimine"
+
+#~ msgid "Send &Input to All Sessions"
+#~ msgstr "Saada s&isend kõigile seanssidele"
+
+#~ msgid "List Sessions"
+#~ msgstr "Seansside nimekiri"
+
+#~ msgid "Go to Previous Session"
+#~ msgstr "Eelmisele seansile"
+
+#~ msgid "Go to Next Session"
+#~ msgstr "Järgmisele seansile"
+
+#~ msgid "Switch to Session %1"
+#~ msgstr "Lülitu seansile %1"
+
+#~ msgid "Toggle Bidi"
+#~ msgstr "Kahesuunalise teksti lülitamine"
+
+#~ msgid "Save Sessions Profile"
+#~ msgstr "Seansside profiili salvestamine"
+
+#~ msgid "Enter name under which the profile should be saved:"
+#~ msgstr "Sisesta nimi, mille alla profiil salvestada:"
+
+#~ msgid "Use the right mouse button to bring back the menu"
+#~ msgstr "Menüü tagasitoomiseks kasuta paremat hiireklahvi"
+
+#~ msgid ""
+#~ "You have chosen one or more Ctrl+<key> combinations to be used as "
+#~ "shortcuts. As a result these key combinations will no longer be passed to "
+#~ "the command shell or to applications that run inside Konsole. This can "
+#~ "have the unintended consequence that functionality that would otherwise "
+#~ "be bound to these key combinations is no longer accessible.\n"
+#~ "\n"
+#~ "You may wish to reconsider your choice of keys and use Alt+Ctrl+<key> or "
+#~ "Ctrl+Shift+<key> instead.\n"
+#~ "\n"
+#~ "You are currently using the following Ctrl+<key> combinations:"
+#~ msgstr ""
+#~ "Oled valinud kiirklahviks ühe või enam Ctrl+<klahv> kombinatsiooni. Nii "
+#~ "ei edastata enam neid klahvikombinatsioone shellile ega Konsoolis avatud "
+#~ "rakendustele. Sel võivad olla soovimatud tagajärjed, näiteks ei pruugi "
+#~ "mõned harjumuspärased kiirklahvid enam toimida.\n"
+#~ "\n"
+#~ "Võiksid oma klahvivalikud üle vaadata ja kasutada näiteks kombinatsioone "
+#~ "Alt+Ctrl+<klahv> või Ctrl+Shift+<klahv>.\n"
+#~ "\n"
+#~ "Praegu on sul kasutusel järgmised Ctrl+<klahv> kombinatsioonid:"
+
+#~ msgid "Choice of Shortcut Keys"
+#~ msgstr "Kiirklahvide valimine"
+
+#~ msgid "Session List"
+#~ msgstr "Seansside nimekiri"
+
+#~ msgid "New Shell at Bookmark"
+#~ msgstr "Uus shell järjehoidjast"
+
+#~ msgid "Shell at Bookmark"
+#~ msgstr "Shell järjehoidjast"
+
+#~ msgid "Rename Session"
+#~ msgstr "Seansi ümbernimetamine"
+
+#~ msgid "&Enable"
+#~ msgstr "L&ubatud"
+
+#~ msgid "&Set Unlimited"
+#~ msgstr "&Säti piiramatuks"
+
+#~ msgid ""
+#~ "End of history reached.\n"
+#~ "Continue from the beginning?"
+#~ msgstr ""
+#~ "Jõuti tagasikerimise puhvri lõppu.\n"
+#~ "Kas jätkata algusest?"
+
+#~ msgid ""
+#~ "Beginning of history reached.\n"
+#~ "Continue from the end?"
+#~ msgstr ""
+#~ "Jõuti tagasikerimise puhvri algusesse.\n"
+#~ "Kas jätkata lõpust?"
+
+#~ msgid ""
+#~ "A file with this name already exists.\n"
+#~ "Do you want to overwrite it?"
+#~ msgstr ""
+#~ "Sellise nimega fail eksisteerib juba.\n"
+#~ "Soovid sa selle üle kirjutada?"
+
+#~ msgid "File Exists"
+#~ msgstr "Fail on olemas"
+
+#~ msgid "Overwrite"
+#~ msgstr "Kirjuta üle"
+
+#~ msgid "Unable to write to file."
+#~ msgstr "Faili pole võimalik kirjutada."
+
+#~ msgid ""
+#~ "A ZModem file transfer attempt has been detected.\n"
+#~ "Please specify the folder you want to store the file(s):"
+#~ msgstr ""
+#~ "Tuvastati Zmodemi failiedastuse katse.\n"
+#~ "Palun määra kataloog, kuhu fail(id) salvestada:"
+
+#~ msgid "&Download"
+#~ msgstr "Laa&di alla"
+
+#~ msgid "Start downloading file to specified folder."
+#~ msgstr "Alustab faili allalaadimist määratud kataloogi."
+
+#~ msgid "Print %1"
+#~ msgstr "%1 trükkimine"
+
+#~ msgid "Size Configuration"
+#~ msgstr "Suuruse seadistamine"
+
+#~ msgid "Number of columns:"
+#~ msgstr "Veergude arv:"
+
+#~ msgid "Number of lines:"
+#~ msgstr "Ridade arv:"
+
+#~ msgid "&History..."
+#~ msgstr "&Puhver..."
+
+#~ msgid "Show Fr&ame"
+#~ msgstr "R&aami näitamine"
+
+#~ msgid "Hide Fr&ame"
+#~ msgstr "R&aami peitmine"
+
+#~ msgid "&Use Konsole's Settings"
+#~ msgstr "Konsooli seadist&uste kasutamine"
+
+#~ msgid "S&ettings"
+#~ msgstr "S&eadistused"
+
+#~ msgid "Set window class"
+#~ msgstr "Akna klassi seadmine"
+
+#~ msgid "Start login shell"
+#~ msgstr "Käivitatakse 'login' shell"
+
+#~ msgid "Set the window title"
+#~ msgstr "Akna tiitel"
+
+#~ msgid ""
+#~ "Specify terminal type as set in the TERM\n"
+#~ "environment variable"
+#~ msgstr ""
+#~ "Terminaliemulaatori tüübi määramine\n"
+#~ "vastavalt keskkonnamuutujale TERM"
+
+#~ msgid "Do not close Konsole when command exits"
+#~ msgstr "Kui käsk lõpetab töö, Konsooli ei suleta"
+
+#~ msgid "Do not save lines in history"
+#~ msgstr "Ridu ei salvestata puhvrisse"
+
+#~ msgid "Do not display menubar"
+#~ msgstr "Menüüriba ei näidata"
+
+#~ msgid "Do not display tab bar"
+#~ msgstr "Kaardiriba ei näidata"
+
+#~ msgid "Do not display frame"
+#~ msgstr "Raami ei näidata"
+
+#~ msgid "Do not use Xft (anti-aliasing)"
+#~ msgstr "Ei kasutata Xft laiendust (antialias)"
+
+#~ msgid "Terminal size in columns x lines"
+#~ msgstr "Terminali suurus (veerud x read)"
+
+#~ msgid "Start with given session type"
+#~ msgstr "Käivitamine antud seansi tüübiga"
+
+#~ msgid "List available session types"
+#~ msgstr "Saadaolevate seansitüüpide nimekiri"
+
+#~ msgid "Set keytab to 'name'"
+#~ msgstr "Keytab'iks määratakse 'nimi'"
+
+#~ msgid "List available keytabs"
+#~ msgstr "Saadaolevate keytab-failide nimekiri"
+
+#~ msgid "Start with given session profile"
+#~ msgstr "Käivitamine antud seansi profiiliga"
+
+#~ msgid "Set schema to 'name' or use 'file'"
+#~ msgstr "Skeemiks määratakse 'nimi' (või kasuta 'fail')"
+
+#~ msgid "List available schemata"
+#~ msgstr "Saadaolevate skeemide nimekiri"
+
+#~ msgid "Execute 'command' instead of shell"
+#~ msgstr "Shelli asemel käivitatakse käsk 'command'"
+
+#~ msgid "expected --vt_sz <#columns>x<#lines> e.g. 80x40\n"
+#~ msgstr "loodeti --vt_sz <veerud>x<read> nt. 80x40\n"
+
+#~ msgid "[no title]"
+#~ msgstr "[nimi puudub]"
+
+#~ msgid "Konsole Default"
+#~ msgstr "Konsooli vaikeväärtus"
+
+#~ msgid "&Install Bitmap..."
+#~ msgstr "Pa&igalda bittraster..."
+
+#~ msgid ""
+#~ "You have open sessions (besides the current one). These will be killed if "
+#~ "you continue.\n"
+#~ "Are you sure you want to quit?"
+#~ msgstr ""
+#~ "Sul on veel avatud seansse (peale aktiivse). Jätkamisel nende töö "
+#~ "katkestatakse.\n"
+#~ "Soovid sa tõesti väljuda?"
+
+#~ msgid ""
+#~ "The application running in Konsole does not respond to the close request. "
+#~ "Do you want Konsole to close anyway?"
+#~ msgstr ""
+#~ "Konsooli terminalis käivitatud rakendus ei vasta sulgemisteatele. Soovid "
+#~ "sa sulgeda Konsooli vaatamata sellele?"
+
+#~ msgid "Application Does Not Respond"
+#~ msgstr "Rakendus ei vasta"
+
+#~ msgid ""
+#~ "If you want to use the bitmap fonts distributed with Konsole, they must "
+#~ "be installed.  After installation, you must restart Konsole to use them.  "
+#~ "Do you want to install the fonts listed below into fonts:/Personal?"
+#~ msgstr ""
+#~ "Kui soovid kasutada Konsooliga levitatavaid bitmap-fonte, tuleb need "
+#~ "paigaldada. Pärast seda tuleb Konsool uuesti käivitada, et neid ka "
+#~ "tegelikult kasutada saaks. Kas soovid alltoodud fondid paigaldada "
+#~ "kataloogi fonts:/Isiklik?"
+
+#~ msgid "Install Bitmap Fonts?"
+#~ msgstr "Kas paigaldada bitmap-fondid?"
+
+#~ msgid "&Install"
+#~ msgstr "Pa&igalda"
+
+#~ msgid "Do Not Install"
+#~ msgstr "Ära paigalda"
+
+#~ msgid "Could not install %1 into fonts:/Personal/"
+#~ msgstr "%1 paigaldamine kataloogi fonts:/Isiklik ebaõnnestus"
+
+#~ msgid "This is not a local file.\n"
+#~ msgstr "See ei ole kohalik fail.\n"
+
+#~ msgid "X terminal for use with KDE."
+#~ msgstr "KDE töölaua X terminal."
+
+#~ msgid "Enable extended DCOP Qt functions"
+#~ msgstr "Laiendatud DCOP Qt funktsioonide lubamine"
+
+#~ msgid "faster startup, bug fixing"
+#~ msgstr "kiirem käivitumine, veaparandused"
+
+#~ msgid "decent marking"
+#~ msgstr "vigade parandus"
+
+#~ msgid ""
+#~ "partification\n"
+#~ "overall improvements"
+#~ msgstr ""
+#~ "kaastöö\n"
+#~ "üldised täiustused"
+
+#~ msgid ""
+#~ "most of main.C donated via kvt\n"
+#~ "overall improvements"
+#~ msgstr ""
+#~ "enamus main.C failist on võetud kvt rakendusest\n"
+#~ "üldised täiustused"
+
+#~ msgid ""
+#~ "Thanks to many others.\n"
+#~ "The above list only reflects the contributors\n"
+#~ "I managed to keep track of."
+#~ msgstr ""
+#~ "Tänud ka paljudele teistele.\n"
+#~ "Ülalolevas nimekirjas on ainult need kaastöölised,\n"
+#~ "kes veel meeles on."
+
+#~ msgid "Paper, Light"
+#~ msgstr "Hele paber"

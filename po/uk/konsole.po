@@ -1,0 +1,3756 @@
+# Translation of konsole.po to Ukrainian
+# Copyright (C) 2002-2017 This_file_is_part_of_KDE
+# This file is distributed under the license LGPL version 2.1 or
+# version 3 or later versions approved by the membership of KDE e.V.
+#
+# Dmytro Kovalov <kov@tokyo.email.ne.jp>, 2002.
+# Eugene Onischenko <oneugene@ukr.net>, 2002, 2003, 2004, 2005.
+# Andriy Rysin <rysin@kde.org>, 2002, 2003, 2004, 2006.
+# Ivan Petrouchtchak <fr.ivan@ukrainian-orthodox.org>, 2005, 2006, 2007, 2008.
+# Yuri Chornoivan <yurchor@ukr.net>, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: konsole\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2017-11-23 04:59+0100\n"
+"PO-Revision-Date: 2017-11-07 07:27+0200\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Andriy Rysin,Dmytro Kovalov"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "rysin@kde.org,kov@tokyo.email.ne.jp"
+
+#. i18n: ectx: Menu (file)
+#: ../desktop/konsoleui.rc:5
+#, kde-format
+msgid "File"
+msgstr "Файл"
+
+#. i18n: ectx: Menu (edit)
+#: ../desktop/konsoleui.rc:15
+#, kde-format
+msgid "Edit"
+msgstr "Зміни"
+
+#. i18n: ectx: Menu (view)
+#: ../desktop/konsoleui.rc:18
+#, kde-format
+msgid "View"
+msgstr "Перегляд"
+
+#. i18n: ectx: Menu (view-split)
+#: ../desktop/konsoleui.rc:19
+#, kde-format
+msgid "Split View"
+msgstr "Розділений перегляд"
+
+#. i18n: ectx: Menu (settings)
+#: ../desktop/konsoleui.rc:33
+#, kde-format
+msgid "Settings"
+msgstr "Параметри"
+
+#. i18n: ectx: Menu (help)
+#: ../desktop/konsoleui.rc:44
+#, kde-format
+msgid "Help"
+msgstr "Довідка"
+
+#. i18n: ectx: Menu (history)
+#: ../desktop/partui.rc:13
+#, kde-format
+msgid "S&crollback"
+msgstr "Го&ртання"
+
+#: Application.cpp:59
+#, kde-format
+msgctxt "@info:shell"
+msgid "Name of profile to use for new Konsole instance"
+msgstr "Назва профілю для нових екземплярів Konsole"
+
+#: Application.cpp:63
+#, kde-format
+msgctxt "@info:shell"
+msgid "Use the internal FALLBACK profile"
+msgstr "Скористатися вбудованим профілем FALLBACK"
+
+#: Application.cpp:66
+#, kde-format
+msgctxt "@info:shell"
+msgid "Set the initial working directory of the new tab or window to 'dir'"
+msgstr ""
+"Встановити початковий робочий каталог нової вкладки або вікна у значення "
+"«dir»"
+
+#: Application.cpp:72
+#, kde-format
+msgctxt "@info:shell"
+msgid "Do not close the initial session automatically when it ends."
+msgstr "Не закривати початковий сеанс автоматично, якщо його завершено."
+
+#: Application.cpp:76
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Create a new tab in an existing window rather than creating a new window"
+msgstr "Створити нову вкладку у існуючому вікні, а не створювати нове вікно"
+
+#: Application.cpp:80
+#, kde-format
+msgctxt "@info:shell"
+msgid "Create tabs as specified in given tabs configuration file"
+msgstr "Створити вкладки відповідно до вказаного файла налаштувань вкладок"
+
+#: Application.cpp:85
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Start Konsole in the background and bring to the front when Ctrl+Shift+F12 "
+"(by default) is pressed"
+msgstr ""
+"Запустити Konsole у фоновому режимі і розгорнути програму, якщо буде "
+"натиснуто Ctrl+Shift+F12 (типова комбінація)"
+
+#: Application.cpp:90
+#, kde-format
+msgctxt "@info:shell"
+msgid "Run in a separate process"
+msgstr "Запустити у окремому процесі"
+
+#: Application.cpp:93
+#, kde-format
+msgctxt "@info:shell"
+msgid "Show the menubar, overriding the default setting"
+msgstr "Показати панель меню, перевизначивши типову поведінку"
+
+#: Application.cpp:96
+#, kde-format
+msgctxt "@info:shell"
+msgid "Hide the menubar, overriding the default setting"
+msgstr "Приховати панель меню, перевизначивши типову поведінку"
+
+#: Application.cpp:99
+#, kde-format
+msgctxt "@info:shell"
+msgid "Show the tabbar, overriding the default setting"
+msgstr "Показати панель вкладок, перевизначивши типову поведінку"
+
+#: Application.cpp:102
+#, kde-format
+msgctxt "@info:shell"
+msgid "Hide the tabbar, overriding the default setting"
+msgstr "Приховати панель вкладок, перевизначивши типову поведінку"
+
+#: Application.cpp:104
+#, kde-format
+msgctxt "@info:shell"
+msgid "Start Konsole in fullscreen mode"
+msgstr "Запустити Konsole у повноекранному режимі"
+
+#: Application.cpp:107
+#, kde-format
+msgctxt "@info:shell"
+msgid "Disable transparent backgrounds, even if the system supports them."
+msgstr "Вимкнути прозорість тла, навіть якщо система її підтримує."
+
+#: Application.cpp:110
+#, kde-format
+msgctxt "@info:shell"
+msgid "List the available profiles"
+msgstr "Список наявних профілів"
+
+#: Application.cpp:113
+#, kde-format
+msgctxt "@info:shell"
+msgid "List all the profile properties names and their type (for use with -p)"
+msgstr ""
+"Показати список всіх властивостей профілю та тих цих властивостей (для "
+"використання разом з -p)"
+
+#: Application.cpp:117
+#, kde-format
+msgctxt "@info:shell"
+msgid "Change the value of a profile property."
+msgstr "Змінити значення властивості профілю."
+
+#: Application.cpp:121
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Command to execute. This option will catch all following arguments, so use "
+"it as the last option."
+msgstr ""
+"Команда, яку слід виконати. У разі використання цього параметра буде взято "
+"до уваги всі наступні параметри, отже його слід використовувати останнім."
+
+#: Application.cpp:125
+#, kde-format
+msgctxt "@info:shell"
+msgid "Arguments passed to command"
+msgstr "Параметри, що передаються команді"
+
+#: BookmarkHandler.cpp:133
+#, kde-format
+msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
+msgid "%1 on %2"
+msgstr "%1 на %2"
+
+#: BookmarkHandler.cpp:135
+#, kde-format
+msgctxt "@item:inmenu The host the user is connected to via ssh"
+msgid "%1"
+msgstr "%1"
+
+#: ColorScheme.cpp:115
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground"
+msgstr "Текст"
+
+#: ColorScheme.cpp:116
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background"
+msgstr "Тло"
+
+#: ColorScheme.cpp:117
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1"
+msgstr "Колір 1"
+
+#: ColorScheme.cpp:118
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2"
+msgstr "Колір 2"
+
+#: ColorScheme.cpp:119
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3"
+msgstr "Колір 3"
+
+#: ColorScheme.cpp:120
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4"
+msgstr "Колір 4"
+
+#: ColorScheme.cpp:121
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5"
+msgstr "Колір 5"
+
+#: ColorScheme.cpp:122
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6"
+msgstr "Колір 6"
+
+#: ColorScheme.cpp:123
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7"
+msgstr "Колір 7"
+
+#: ColorScheme.cpp:124
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8"
+msgstr "Колір 8"
+
+#: ColorScheme.cpp:125
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground (Intense)"
+msgstr "Текст (інтенсивно)"
+
+#: ColorScheme.cpp:126
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background (Intense)"
+msgstr "Тло (інтенсивно)"
+
+#: ColorScheme.cpp:127
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1 (Intense)"
+msgstr "Колір 1 (інтенсивний)"
+
+#: ColorScheme.cpp:128
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2 (Intense)"
+msgstr "Колір 2 (інтенсивний)"
+
+#: ColorScheme.cpp:129
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3 (Intense)"
+msgstr "Колір 3 (інтенсивний)"
+
+#: ColorScheme.cpp:130
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4 (Intense)"
+msgstr "Колір 4 (інтенсивний)"
+
+#: ColorScheme.cpp:131
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5 (Intense)"
+msgstr "Колір 5 (інтенсивний)"
+
+#: ColorScheme.cpp:132
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6 (Intense)"
+msgstr "Колір 6 (інтенсивний)"
+
+#: ColorScheme.cpp:133
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7 (Intense)"
+msgstr "Колір 7 (інтенсивний)"
+
+#: ColorScheme.cpp:134
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8 (Intense)"
+msgstr "Колір 8 (інтенсивний)"
+
+#: ColorScheme.cpp:135
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Foreground (Faint)"
+msgstr "Текст (тьмяно)"
+
+#: ColorScheme.cpp:136
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Background (Faint)"
+msgstr "Тло (тьмяно)"
+
+#: ColorScheme.cpp:137
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 1 (Faint)"
+msgstr "Колір 1 (тьмяний)"
+
+#: ColorScheme.cpp:138
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 2 (Faint)"
+msgstr "Колір 2 (тьмяний)"
+
+#: ColorScheme.cpp:139
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 3 (Faint)"
+msgstr "Колір 3 (тьмяний)"
+
+#: ColorScheme.cpp:140
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 4 (Faint)"
+msgstr "Колір 4 (тьмяний)"
+
+#: ColorScheme.cpp:141
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 5 (Faint)"
+msgstr "Колір 5 (тьмяний)"
+
+#: ColorScheme.cpp:142
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 6 (Faint)"
+msgstr "Колір 6 (тьмяний)"
+
+#: ColorScheme.cpp:143
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 7 (Faint)"
+msgstr "Колір 7 (тьмяний)"
+
+#: ColorScheme.cpp:144
+#, kde-format
+msgctxt "@item:intable palette"
+msgid "Color 8 (Faint)"
+msgstr "Колір 8 (тьмяний)"
+
+#: ColorScheme.cpp:363
+#, kde-format
+msgctxt "@item"
+msgid "Un-named Color Scheme"
+msgstr "Схема кольорів без назви"
+
+#: ColorSchemeEditor.cpp:120
+#, kde-format
+msgctxt "@label:listbox Column header text for color names"
+msgid "Name"
+msgstr "Назва"
+
+#: ColorSchemeEditor.cpp:121
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual colors"
+msgid "Color"
+msgstr "Колір"
+
+#: ColorSchemeEditor.cpp:122
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual intense colors"
+msgid "Intense color"
+msgstr "Інтенсивний колір"
+
+#: ColorSchemeEditor.cpp:123
+#, kde-format
+msgctxt "@label:listbox Column header text for the actual faint colors"
+msgid "Faint color"
+msgstr "Тьмяний колір"
+
+#: ColorSchemeEditor.cpp:152
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"The background transparency setting will not be used because your desktop "
+"does not appear to support transparent windows."
+msgstr ""
+"Параметр прозорості тла не буде використано, оскільки, здається, ваша "
+"стільниця не підтримує прозорих вікон."
+
+#: ColorSchemeEditor.cpp:208
+#, kde-format
+msgctxt "@title:window"
+msgid "Select wallpaper image file"
+msgstr "Виберіть файл зображення тла"
+
+#: ColorSchemeEditor.cpp:211
+#, kde-format
+msgctxt "@label:textbox Filter in file open dialog"
+msgid "Supported Images"
+msgstr "Підтримувані зображення"
+
+#: ColorSchemeEditor.cpp:264
+#, kde-format
+msgctxt "@title:window"
+msgid "New Color Scheme"
+msgstr "Нова схема кольорів"
+
+#: ColorSchemeEditor.cpp:267
+#, kde-format
+msgctxt "@title:window"
+msgid "Edit Color Scheme"
+msgstr "Зміна схеми кольорів"
+
+#: ColorSchemeEditor.cpp:300
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose color"
+msgstr "Натисніть, щоб вибрати колір"
+
+#: ColorSchemeEditor.cpp:306
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose intense color"
+msgstr "Натисніть, щоб вибрати інтенсивний колір"
+
+#: ColorSchemeEditor.cpp:311
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to choose Faint color"
+msgstr "Натисніть, щоб вибрати тьмяний колір"
+
+#. i18n: ectx: property (text), widget (QLabel, discriptionLabel)
+#. i18n: ectx: property (text), widget (QLabel, descriptionLabel)
+#: ColorSchemeEditor.ui:22 KeyBindingEditor.ui:22
+#, kde-format
+msgid "Description:"
+msgstr "Опис:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, randomizedBackgroundCheck)
+#: ColorSchemeEditor.ui:40
+#, kde-format
+msgid "Vary the background color for each tab"
+msgstr "Змінювати колір тла залежно від вкладок"
+
+#. i18n: ectx: property (text), widget (QLabel, transparencyLabel)
+#: ColorSchemeEditor.ui:49
+#, kde-format
+msgid "Background transparency:"
+msgstr "Прозорість тла:"
+
+#. i18n: ectx: property (text), widget (QLabel, transparencyPercentLabel)
+#: ColorSchemeEditor.ui:69
+#, kde-format
+msgid "Percent"
+msgstr "Відсотків"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperLabel)
+#: ColorSchemeEditor.ui:83
+#, kde-format
+msgid "Background image:"
+msgstr "Зображення тла:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, wallpaperPath)
+#: ColorSchemeEditor.ui:90
+#, kde-format
+msgid "Edit the path of the background image"
+msgstr "Змінити шлях до зображення тла"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, wallpaperSelectButton)
+#: ColorSchemeEditor.ui:97
+#, kde-format
+msgid "Choose the background image"
+msgstr "Вибрати зображення тла"
+
+#. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
+#. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
+#: ColorSchemeEditor.ui:100 EditProfileDialog.ui:111
+#, kde-format
+msgid "..."
+msgstr "…"
+
+#: CopyInputDialog.cpp:39
+#, kde-format
+msgid "Copy Input"
+msgstr "Копіювати ввід"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: CopyInputDialog.ui:19
+#, kde-format
+msgid "Filter:"
+msgstr "Фільтр:"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectAllButton)
+#: CopyInputDialog.ui:46
+#, kde-format
+msgid "Select All"
+msgstr "Вибрати все"
+
+#. i18n: ectx: property (text), widget (QPushButton, deselectAllButton)
+#: CopyInputDialog.ui:53
+#, kde-format
+msgid "Deselect All"
+msgstr "Зняти позначення з усіх"
+
+#: EditProfileDialog.cpp:69
+#, kde-format
+msgid "Edit Profile"
+msgstr "Змінити профіль"
+
+#: EditProfileDialog.cpp:153
+#, kde-format
+msgid "<p>Each profile must have a name before it can be saved into disk.</p>"
+msgstr "<p>Кожному з профілів перед збереженням на диск слід надати назву.</p>"
+
+#: EditProfileDialog.cpp:186
+#, kde-format
+msgid "Editing profile: %2"
+msgid_plural "Editing %1 profiles: %2"
+msgstr[0] "Редагування %1 профілю: %2"
+msgstr[1] "Редагування %1 профілів: %2"
+msgstr[2] "Редагування %1 профілів: %2"
+msgstr[3] "Редагування профілю: %2"
+
+#: EditProfileDialog.cpp:191
+#, kde-format
+msgid "Edit Profile \"%1\""
+msgstr "Змінити профіль «%1»"
+
+#: EditProfileDialog.cpp:273
+#, kde-format
+msgid "Profile name is empty."
+msgstr "Назва профілю є порожньою."
+
+#: EditProfileDialog.cpp:344
+#, kde-format
+msgid "Edit Environment"
+msgstr "Змінити середовище"
+
+#: EditProfileDialog.cpp:345
+#, kde-format
+msgid "One environment variable per line"
+msgstr "Одна змінна середовища на рядок"
+
+#: EditProfileDialog.cpp:376
+#, kde-format
+msgctxt "Unit of time"
+msgid " second"
+msgid_plural " seconds"
+msgstr[0] " секунда"
+msgstr[1] " секунди"
+msgstr[2] " секунд"
+msgstr[3] " секунда"
+
+#: EditProfileDialog.cpp:453
+#, kde-format
+msgid "Select Initial Directory"
+msgstr "Виберіть початковий каталог"
+
+#: EditProfileDialog.cpp:675
+#, kde-format
+msgid "%1"
+msgstr "%1"
+
+#: EditProfileDialog.cpp:888
+#, kde-format
+msgid ""
+"This color scheme uses a transparent background which does not appear to be "
+"supported on your desktop"
+msgstr ""
+"Ця схема кольорів використовує прозоре тло, яке, здається, не підтримується "
+"на вашій стільниці"
+
+#: EditProfileDialog.cpp:894
+#, kde-format
+msgid ""
+"Konsole was started before desktop effects were enabled. You need to restart "
+"Konsole to see transparent background."
+msgstr ""
+"Konsole було запущено до вмикання стільничних ефектів. Щоб побачити прозоре "
+"тло, вам слід перезапустити Konsole."
+
+#: EditProfileDialog.cpp:1008 EditProfileDialog.cpp:1020
+#, kde-format
+msgid "New Key Binding List"
+msgstr "Новий список прив’язок клавіш"
+
+#: EditProfileDialog.cpp:1010
+#, kde-format
+msgid "Edit Key Binding List"
+msgstr "Змінити список прив’язок клавіш"
+
+#: EditProfileDialog.cpp:1439
+#, kde-format
+msgid "Select Any Font"
+msgstr "Виберіть будь-який шрифт"
+
+#: EditProfileDialog.cpp:1442
+#, kde-format
+msgid "Select Fixed Width Font"
+msgstr "Виберіть моноширинний шрифт"
+
+#: EditProfileDialog.cpp:1494
+#, kde-format
+msgid "AaZz09..."
+msgstr "AaZz09…"
+
+#. i18n: ectx: attribute (title), widget (QWidget, generalTab)
+#: EditProfileDialog.ui:33
+#, kde-format
+msgctxt "@title:tab Generic, common options"
+msgid "General"
+msgstr "Загальні"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_10)
+#: EditProfileDialog.ui:39
+#, kde-format
+msgctxt "@title:group Generic, common options"
+msgid "General"
+msgstr "Загальні"
+
+#. i18n: ectx: property (text), widget (QLabel, profileNameLabel)
+#: EditProfileDialog.ui:48
+#, kde-format
+msgid "Profile name:"
+msgstr "Назва профілю:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, profileNameEdit)
+#: EditProfileDialog.ui:58
+#, kde-format
+msgid "A descriptive name for the profile"
+msgstr "Назва-опис для цього профілю"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: EditProfileDialog.ui:68
+#, kde-format
+msgid "Command:"
+msgstr "Команда:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, commandEdit)
+#: EditProfileDialog.ui:78
+#, kde-format
+msgid ""
+"The command to execute when new terminal sessions are created using this "
+"profile"
+msgstr ""
+"Команда, що виконуватиметься під час створення сеансів термінала з цим "
+"профілем"
+
+#. i18n: ectx: property (text), widget (QLabel, label_9)
+#: EditProfileDialog.ui:88
+#, kde-format
+msgid "Initial directory:"
+msgstr "Початковий каталог:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, initialDirEdit)
+#: EditProfileDialog.ui:98
+#, kde-format
+msgid ""
+"The initial working directory for new terminal sessions using this profile"
+msgstr "Початковий робочий каталог для нових сеансів термінала з цим профілем"
+
+#. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
+#: EditProfileDialog.ui:108
+#, kde-format
+msgid "Choose the initial directory"
+msgstr "Вибрати початковий каталог"
+
+#. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
+#: EditProfileDialog.ui:118
+#, kde-format
+msgid "Start in same directory as current tab"
+msgstr "Запускати у теці поточної вкладки"
+
+#. i18n: ectx: property (text), widget (QLabel, label_10)
+#: EditProfileDialog.ui:125
+#, kde-format
+msgid "Icon:"
+msgstr "Піктограма:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, iconSelectButton)
+#: EditProfileDialog.ui:153
+#, kde-format
+msgid "Select the icon displayed on tabs using this profile"
+msgstr "Виберіть піктограму вкладок цього профілю"
+
+#. i18n: ectx: property (text), widget (QLabel, environmentLabel)
+#: EditProfileDialog.ui:182
+#, kde-format
+msgid "Environment:"
+msgstr "Середовище:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, environmentEditButton)
+#: EditProfileDialog.ui:192
+#, kde-format
+msgid "Edit the list of environment variables and associated values"
+msgstr "Змінити список змінних середовища і відповідних їм значень"
+
+#. i18n: ectx: property (text), widget (QPushButton, environmentEditButton)
+#. i18n: ectx: property (text), widget (QPushButton, editColorSchemeButton)
+#. i18n: ectx: property (text), widget (QPushButton, editKeyBindingsButton)
+#: EditProfileDialog.ui:195 EditProfileDialog.ui:470 EditProfileDialog.ui:808
+#, kde-format
+msgid "Edit..."
+msgstr "Змінити…"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_16)
+#: EditProfileDialog.ui:205
+#, kde-format
+msgid "Terminal Size"
+msgstr "Розмір термінала"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: EditProfileDialog.ui:214
+#, kde-format
+msgid "Columns"
+msgstr "Стовпчиків"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: EditProfileDialog.ui:231
+#, kde-format
+msgid "Rows"
+msgstr "Рядків"
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: EditProfileDialog.ui:261
+#, kde-format
+msgid "This will not alter any open windows."
+msgstr "Це не призведе до змін у жодному з відкритих вікон."
+
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: EditProfileDialog.ui:297
+#, kde-format
+msgid ""
+"Configure Konsole->General->Use current window size on next startup must be "
+"disabled for these entries to work."
+msgstr ""
+"Щоб цими параметрами можна було скористатися, має бути знято позначення з "
+"пункту «Використовувати поточні розміри вікна під час наступного запуску» на "
+"сторінці «Налаштувати Konsole → Загальне»."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_12)
+#: EditProfileDialog.ui:310
+#, kde-format
+msgid "Window"
+msgstr "Вікно"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
+#. i18n: ectx: tooltip, entry (ShowTerminalSizeHint), group (KonsoleWindow)
+#: EditProfileDialog.ui:319 settings/konsole.kcfg:30
+#, kde-format
+msgid ""
+"Show terminal size in columns and lines in the center of window after "
+"resizing"
+msgstr ""
+"Показувати новий розмір термінала у стовпчиках і рядках тексту після зміни"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowTerminalSizeHint)
+#. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
+#. i18n: ectx: label, entry (ShowTerminalSizeHint), group (KonsoleWindow)
+#: EditProfileDialog.ui:322 settings/GeneralSettings.ui:53
+#: settings/konsole.kcfg:29
+#, kde-format
+msgid "Show hint for terminal size after resizing"
+msgstr "Показувати підказку щодо розміру термінала після зміни"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tabsTab)
+#: EditProfileDialog.ui:346
+#, kde-format
+msgid "Tabs"
+msgstr "Вкладки"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
+#: EditProfileDialog.ui:352
+#, kde-format
+msgid "Tab Titles"
+msgstr "Заголовки вкладок"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_13)
+#: EditProfileDialog.ui:367
+#, kde-format
+msgid "Tab Monitoring"
+msgstr "Спостереження за вкладками"
+
+#. i18n: ectx: property (text), widget (QLabel, silenceSecondsLabel)
+#: EditProfileDialog.ui:376
+#, kde-format
+msgid "Threshold for continuous silence:"
+msgstr "Порогова тривалість неперервної бездіяльності:"
+
+#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, silenceSecondsSpinner)
+#: EditProfileDialog.ui:386
+#, kde-format
+msgid "The threshold for continuous silence to be detected by Konsole"
+msgstr "Порогова тривалість для виявлення бездіяльності у Konsole"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_1)
+#. i18n: ectx: attribute (title), widget (QWidget, appearanceTab)
+#: EditProfileDialog.ui:429 settings/TabBarSettings.ui:17
+#, kde-format
+msgid "Appearance"
+msgstr "Вигляд"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: EditProfileDialog.ui:441
+#, kde-format
+msgid "Color Scheme && Background"
+msgstr "Схема кольорів і тло"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newColorSchemeButton)
+#: EditProfileDialog.ui:457
+#, kde-format
+msgid "Create a new color scheme based upon the selected scheme"
+msgstr "Створити нову схему кольорів на основі вибраної схеми."
+
+#. i18n: ectx: property (text), widget (QPushButton, newColorSchemeButton)
+#: EditProfileDialog.ui:460
+#, kde-format
+msgctxt "@action:button Create an alternate color scheme"
+msgid "New..."
+msgstr "Створити…"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editColorSchemeButton)
+#: EditProfileDialog.ui:467
+#, kde-format
+msgid "Edit the selected color scheme"
+msgstr "Змінити вибрану схему кольорів"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, removeColorSchemeButton)
+#: EditProfileDialog.ui:477
+#, kde-format
+msgid "Delete the selected color scheme"
+msgstr "Вилучити вибрану схему кольорів"
+
+#. i18n: ectx: property (text), widget (QPushButton, removeEntryButton)
+#. i18n: ectx: property (text), widget (QPushButton, removeColorSchemeButton)
+#. i18n: ectx: property (text), widget (QPushButton, removeKeyBindingsButton)
+#: EditProfileDialog.ui:480 EditProfileDialog.ui:818 KeyBindingEditor.ui:53
+#, kde-format
+msgid "Remove"
+msgstr "Вилучити"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
+#: EditProfileDialog.ui:506
+#, kde-format
+msgid "Font"
+msgstr "Шрифт"
+
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: EditProfileDialog.ui:517
+#, kde-format
+msgid "Preview:"
+msgstr "Перегляд:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: EditProfileDialog.ui:544
+#, kde-format
+msgid "Text size:"
+msgstr "Розмір шрифту:"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, selectFontButton)
+#: EditProfileDialog.ui:570
+#, kde-format
+msgid "Select the font used in this profile"
+msgstr "Виберіть шрифт для цього профілю"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectFontButton)
+#: EditProfileDialog.ui:573
+#, kde-format
+msgid "Select Font..."
+msgstr "Вибрати шрифт…"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, showAllFontsButton)
+#: EditProfileDialog.ui:580
+#, kde-format
+msgid "Show all fonts instead of the monospaced fonts"
+msgstr "Показувати усі шрифти, а не лише моноширинні"
+
+#. i18n: ectx: property (text), widget (QCheckBox, showAllFontsButton)
+#: EditProfileDialog.ui:583
+#, kde-format
+msgid "Show All Fonts"
+msgstr "Показувати усі шрифти"
+
+#. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
+#: EditProfileDialog.ui:605
+#, kde-format
+msgid "Smooth fonts"
+msgstr "Згладжувати шрифти"
+
+#. i18n: ectx: property (text), widget (QCheckBox, boldIntenseButton)
+#: EditProfileDialog.ui:612
+#, kde-format
+msgid "Draw intense colors in bold font"
+msgstr "Збільшувати інтенсивність для напівжирних символів"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, useFontLineCharactersButton)
+#: EditProfileDialog.ui:619
+#, kde-format
+msgid "Use the selected font for line characters instead of the builtin code"
+msgstr ""
+"Використовувати вибраний шрифт для символів лінії замість вбудованого коду"
+
+#. i18n: ectx: property (text), widget (QCheckBox, useFontLineCharactersButton)
+#: EditProfileDialog.ui:622
+#, kde-format
+msgid "Use line characters contained in font"
+msgstr "Використовувати символи лінії зі шрифту"
+
+#. i18n: ectx: attribute (title), widget (QWidget, scrollingTab)
+#: EditProfileDialog.ui:633
+#, kde-format
+msgid "Scrolling"
+msgstr "Гортання"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_6)
+#: EditProfileDialog.ui:639
+#, kde-format
+msgid "Scrollback"
+msgstr "Буфер гортання"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_7)
+#: EditProfileDialog.ui:654
+#, kde-format
+msgid "Scroll Bar"
+msgstr "Смужка гортання"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarLeftButton)
+#: EditProfileDialog.ui:669
+#, kde-format
+msgid "Show the scroll bar on the left side of the terminal window"
+msgstr "Показувати смугу прокручування на лівій стороні вікна термінала"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarLeftButton)
+#: EditProfileDialog.ui:672
+#, kde-format
+msgid "Show on left side"
+msgstr "Показувати ліворуч"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarRightButton)
+#: EditProfileDialog.ui:685
+#, kde-format
+msgid "Show the scroll bar on the right side of the terminal window"
+msgstr "Показувати смугу прокручування на правій стороні вікна термінала"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarRightButton)
+#: EditProfileDialog.ui:688
+#, kde-format
+msgid "Show on right side"
+msgstr "Показувати праворуч"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollBarHiddenButton)
+#: EditProfileDialog.ui:701
+#, kde-format
+msgid "Hide the scroll bar"
+msgstr "Ховати смужку гортання"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollBarHiddenButton)
+#: EditProfileDialog.ui:704
+#, kde-format
+msgctxt "@option:radio Hide the scroll bar"
+msgid "Hide"
+msgstr "Сховати"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_15)
+#: EditProfileDialog.ui:714
+#, kde-format
+msgid "Scroll Page Up/Down Amount"
+msgstr "Крок гортання Page Up/Page Down"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollHalfPage)
+#: EditProfileDialog.ui:723
+#, kde-format
+msgid "Scroll the page the half height of window"
+msgstr "Гортати на половину висоти вікна"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollHalfPage)
+#: EditProfileDialog.ui:726
+#, kde-format
+msgid "Half Page Height"
+msgstr "Половина висоти вікна"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, scrollFullPage)
+#: EditProfileDialog.ui:733
+#, kde-format
+msgid "Scroll the page the full height of window"
+msgstr "Гортати на всю висоту вікна"
+
+#. i18n: ectx: property (text), widget (QRadioButton, scrollFullPage)
+#: EditProfileDialog.ui:736
+#, kde-format
+msgid "Full Page Height"
+msgstr "Вся висота вікна"
+
+#. i18n: ectx: attribute (title), widget (QWidget, keyboardTab)
+#: EditProfileDialog.ui:760
+#, kde-format
+msgid "Keyboard"
+msgstr "Клавіатура"
+
+#. i18n: ectx: property (title), widget (QGroupBox, keyBindingsGroup)
+#: EditProfileDialog.ui:766
+#, kde-format
+msgid "Key Bindings"
+msgstr "Прив'язки клавіш"
+
+#. i18n: ectx: property (text), widget (QLabel, label_15)
+#: EditProfileDialog.ui:775
+#, kde-format
+msgid ""
+"Key bindings control how combinations of keystrokes in the terminal window "
+"are converted into the stream of characters which are sent to the current "
+"terminal program."
+msgstr ""
+"Прив’язки клавіш керують тими комбінаціями клавіш у вікні термінала, які "
+"перетворюються на відповідні команди програми керування терміналом."
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newKeyBindingsButton)
+#: EditProfileDialog.ui:795
+#, kde-format
+msgid "Create a new key bindings list based upon the selected bindings"
+msgstr "Створити новий список прив’язки клавіш на основі вибраного"
+
+#. i18n: ectx: property (text), widget (QPushButton, newKeyBindingsButton)
+#: EditProfileDialog.ui:798
+#, kde-format
+msgctxt "@action:button Create an alternate key binding"
+msgid "New..."
+msgstr "Створити…"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editKeyBindingsButton)
+#: EditProfileDialog.ui:805
+#, kde-format
+msgid "Edit the selected key bindings list"
+msgstr "Змінити вибраний список прив’язки клавіш"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, removeKeyBindingsButton)
+#: EditProfileDialog.ui:815
+#, kde-format
+msgid "Delete the selected key bindings list"
+msgstr "Вилучити вибраний список прив’язки клавіш"
+
+#. i18n: ectx: attribute (title), widget (QWidget, mouseTab)
+#: EditProfileDialog.ui:842
+#, kde-format
+msgid "Mouse"
+msgstr "Миша"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_9)
+#: EditProfileDialog.ui:848
+#, kde-format
+msgid "Select Text"
+msgstr "Позначення тексту"
+
+#. i18n: ectx: property (text), widget (QLabel, label_11)
+#: EditProfileDialog.ui:859
+#, kde-format
+msgid "Characters considered part of a word when double clicking:"
+msgstr "Символи, які вважаються частиною слова при подвійному клацанні:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, wordCharacterEdit)
+#: EditProfileDialog.ui:872
+#, kde-format
+msgid ""
+"Characters which are considered part of a word when double-clicking to "
+"select whole words in the terminal"
+msgstr ""
+"Символи, які вважаються частиною слова при подвійному клацанні для вибору "
+"слів у терміналі"
+
+#. i18n: ectx: property (text), widget (QLabel, label_17)
+#: EditProfileDialog.ui:883
+#, kde-format
+msgid "Triple-click select:"
+msgstr "Потрійне клацання позначає:"
+
+#. i18n: ectx: property (toolTip), widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:890
+#, kde-format
+msgid "Which part of current line should be selected with triple click ."
+msgstr ""
+"Визначає частину поточного рядка, яку має бути позначено у відповідь на "
+"потрійне клацання."
+
+#. i18n: ectx: property (text), item, widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:894
+#, kde-format
+msgid "The whole current line"
+msgstr "Весь поточний рядок"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, tripleClickModeCombo)
+#: EditProfileDialog.ui:899
+#, kde-format
+msgid "From mouse position to the end of line"
+msgstr "Від позиції вказівника миші до кінця рядка"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_14)
+#: EditProfileDialog.ui:912
+#, kde-format
+msgid "Copy && Paste"
+msgstr "Копіювання і вставлення"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, copyTextToClipboardButton)
+#: EditProfileDialog.ui:921
+#, kde-format
+msgid "Automatically copy selected text into clipboard"
+msgstr "Автоматично копіювати позначений фрагмент до буфера"
+
+#. i18n: ectx: property (text), widget (QCheckBox, copyTextToClipboardButton)
+#: EditProfileDialog.ui:924
+#, kde-format
+msgid "Copy on select"
+msgstr "Копіювання при позначенні"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, trimTrailingSpacesButton)
+#: EditProfileDialog.ui:931
+#, kde-format
+msgid "Trim trailing spaces in selected text, useful in some instances"
+msgstr ""
+"Вилучити кінцеві пробіли у позначеному тексті. Може іноді бути корисним."
+
+#. i18n: ectx: property (text), widget (QCheckBox, trimTrailingSpacesButton)
+#: EditProfileDialog.ui:934
+#, kde-format
+msgid "Trim trailing spaces"
+msgstr "Вилучити кінцеві пробіли"
+
+#. i18n: ectx: property (text), widget (QLabel, label_13)
+#: EditProfileDialog.ui:954
+#, kde-format
+msgid "Mouse middle button:"
+msgstr "Середня кнопка миші:"
+
+#. i18n: ectx: property (text), widget (QRadioButton, pasteFromX11SelectionButton)
+#: EditProfileDialog.ui:961
+#, kde-format
+msgid "Paste from selection"
+msgstr "Вставити позначене"
+
+#. i18n: ectx: property (text), widget (QRadioButton, pasteFromClipboardButton)
+#: EditProfileDialog.ui:968
+#, kde-format
+msgid "Paste from clipboard"
+msgstr "Вставити з буфера"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: EditProfileDialog.ui:978
+#, kde-format
+msgid "Miscellaneous"
+msgstr "Інше"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, underlineLinksButton)
+#: EditProfileDialog.ui:987
+#, kde-format
+msgid ""
+"Text recognized as a link or an email address will be underlined when "
+"hovered by the mouse pointer."
+msgstr ""
+"Текст, який буде розпізнано як посилання або адресу електронної пошти, буде "
+"підкреслено при наведенні на нього вказівника миші."
+
+#. i18n: ectx: property (text), widget (QCheckBox, underlineLinksButton)
+#: EditProfileDialog.ui:990
+#, kde-format
+msgid "Underline links"
+msgstr "Підкреслювати посилання"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, underlineFilesButton)
+#: EditProfileDialog.ui:997
+#, kde-format
+msgid ""
+"Text recognized as a file will be underlined when hovered by the mouse "
+"pointer."
+msgstr ""
+"Текст, який буде розпізнано як файл, буде підкреслено при наведенні на нього "
+"вказівника миші."
+
+#. i18n: ectx: property (text), widget (QCheckBox, underlineFilesButton)
+#: EditProfileDialog.ui:1000
+#, kde-format
+msgid "Underline files"
+msgstr "Підкреслювати файли"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, openLinksByDirectClickButton)
+#: EditProfileDialog.ui:1028
+#, kde-format
+msgid ""
+"Text recognized as a file, link or an email address can be opened by direct "
+"mouse click."
+msgstr ""
+"Текст, який буде розпізнано як файл, посилання або адресу електронної пошти, "
+"буде відповідним чином оброблено у відповідь на клацання кнопкою миші."
+
+#. i18n: ectx: property (text), widget (QCheckBox, openLinksByDirectClickButton)
+#: EditProfileDialog.ui:1031
+#, kde-format
+msgid "Open files and links by direct click"
+msgstr "Відкривати файли і посилання безпосереднім клацанням"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, ctrlRequiredForDragButton)
+#: EditProfileDialog.ui:1040
+#, kde-format
+msgid "Selected text will require control key plus click to drag."
+msgstr ""
+"Для перетягування позначеного фрагмента тексту слід утримувати натисненою "
+"клавішу Ctrl."
+
+#. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
+#: EditProfileDialog.ui:1043
+#, kde-format
+msgid "Require Ctrl key for drag and drop"
+msgstr "Перетягувати і скидати лише з натиснутою Ctrl"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
+#: EditProfileDialog.ui:1050
+#, kde-format
+msgid ""
+"Always paste dropped URLs as text without offering move, copy and link "
+"actions."
+msgstr ""
+"Завжди вставляти скинуті адреси як текст, без пропозицій щодо пересування, "
+"копіювання чи створення посилання"
+
+#. i18n: ectx: property (text), widget (QCheckBox, dropUrlsAsText)
+#: EditProfileDialog.ui:1053
+#, kde-format
+msgid "Disable drag and drop menu for URLs and files"
+msgstr "Вимкнути меню перетягування зі скиданням для адрес і файлів"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableMouseWheelZoomButton)
+#: EditProfileDialog.ui:1060
+#, kde-format
+msgid "Pressing Ctrl+scrollwheel will increase/decrease the text size."
+msgstr ""
+"Натискання Ctrl+коліщатко гортання збільшить або зменшить розмір символів "
+"тексту."
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableMouseWheelZoomButton)
+#: EditProfileDialog.ui:1063
+#, kde-format
+msgid "Allow Ctrl+scrollwheel to zoom text size"
+msgstr ""
+"Дозволити змінювати масштаб тексту за допомогою Ctrl+коліщатко гортання"
+
+#. i18n: ectx: attribute (title), widget (QWidget, advancedTab)
+#: EditProfileDialog.ui:1087
+#, kde-format
+msgctxt "@title:tab Complex options"
+msgid "Advanced"
+msgstr "Додатково"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_4)
+#: EditProfileDialog.ui:1093
+#, kde-format
+msgid "Terminal Features"
+msgstr "Можливості термінала"
+
+#. i18n: ectx: property (text), widget (QLabel, urlHintsLabel)
+#: EditProfileDialog.ui:1102
+#, kde-format
+msgid "Show URL hints when these keys are pressed:"
+msgstr "Показувати підказки щодо адрес, коли натиснуто такі клавіші:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierShift)
+#: EditProfileDialog.ui:1127
+#, kde-format
+msgid "Shift"
+msgstr "Shift"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierCtrl)
+#: EditProfileDialog.ui:1134
+#, kde-format
+msgid "Control"
+msgstr "Ctrl"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierAlt)
+#: EditProfileDialog.ui:1141
+#, kde-format
+msgid "Alt"
+msgstr "Alt"
+
+#. i18n: ectx: property (text), widget (QCheckBox, urlHintsModifierMeta)
+#: EditProfileDialog.ui:1148
+#, kde-format
+msgid "Meta"
+msgstr "Meta"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingTextButton)
+#: EditProfileDialog.ui:1163
+#, kde-format
+msgid "Allow terminal programs to create blinking sections of text"
+msgstr "Дозволити термінальним програмам створювати текст з блиманням"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingTextButton)
+#: EditProfileDialog.ui:1166
+#, kde-format
+msgid "Allow blinking text"
+msgstr "Дозволити блимання тексту"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableFlowControlButton)
+#: EditProfileDialog.ui:1179
+#, kde-format
+msgid "Allow the output to be suspended by pressing Ctrl+S"
+msgstr "Дозволити призупинку виводу за допомогою Ctrl+S"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableFlowControlButton)
+#: EditProfileDialog.ui:1182
+#, kde-format
+msgid "Enable flow control using Ctrl+S, Ctrl+Q"
+msgstr "Увімкнути керування потоком за Ctrl+S, Ctrl+Q"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBidiRenderingButton)
+#: EditProfileDialog.ui:1195
+#, kde-format
+msgid ""
+"Enable Bi-Directional display on terminals (valid for Arabic, Farsi or "
+"Hebrew only)"
+msgstr ""
+"Увімкнути показ терміналів у двох напрямках (лише для арабської, фарсі і "
+"єврейської)"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBidiRenderingButton)
+#: EditProfileDialog.ui:1198
+#, kde-format
+msgid "Enable Bi-Directional text rendering"
+msgstr "Увімкнути показ тексту у двох напрямках"
+
+#. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
+#: EditProfileDialog.ui:1207
+#, kde-format
+msgid "Line Spacing:"
+msgstr "Міжрядковий проміжок:"
+
+#. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
+#: EditProfileDialog.ui:1214
+#, kde-format
+msgid "The number of pixels between two lines"
+msgstr "Кількість пікселів між двома рядками"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_8)
+#: EditProfileDialog.ui:1245
+#, kde-format
+msgid "Cursor"
+msgstr "Курсор"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
+#: EditProfileDialog.ui:1260
+#, kde-format
+msgid "Make the cursor blink regularly"
+msgstr "Блимання курсора"
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
+#: EditProfileDialog.ui:1263
+#, kde-format
+msgid "Blinking cursor"
+msgstr "Миготливий курсор"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: EditProfileDialog.ui:1272
+#, kde-format
+msgid "Cursor shape:"
+msgstr "Форма курсора:"
+
+#. i18n: ectx: property (toolTip), widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1279
+#, kde-format
+msgid "Change the shape of the cursor"
+msgstr "Змінити форму курсора"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1283
+#, kde-format
+msgctxt "The shape of the cursor"
+msgid "Block"
+msgstr "Блок"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1288
+#, kde-format
+msgctxt "The shape of the cursor, similar to a capital I"
+msgid "I-Beam"
+msgstr "I-подібний"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, cursorShapeCombo)
+#: EditProfileDialog.ui:1293
+#, kde-format
+msgctxt "The shape of the cursor"
+msgid "Underline"
+msgstr "Підкреслення"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
+#: EditProfileDialog.ui:1322
+#, kde-format
+msgid "Set the cursor to match the color of the character underneath it."
+msgstr "Встановити колір курсора у відповідність з символом під ним."
+
+#. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
+#: EditProfileDialog.ui:1325
+#, kde-format
+msgid "Set cursor color to match current character"
+msgstr "Встановити колір курсора у відповідність до поточного символу"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
+#: EditProfileDialog.ui:1340
+#, kde-format
+msgid "Use a custom, fixed color for the cursor"
+msgstr "Використовувати свій, фіксований колір"
+
+#. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
+#: EditProfileDialog.ui:1343
+#, kde-format
+msgid "Custom cursor color:"
+msgstr "Нетиповий колір курсора:"
+
+#. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
+#: EditProfileDialog.ui:1356
+#, kde-format
+msgid "Select the color used to draw the cursor"
+msgstr "Виберіть колір курсора"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_11)
+#: EditProfileDialog.ui:1384
+#, kde-format
+msgid "Encoding"
+msgstr "Кодування"
+
+#. i18n: ectx: property (text), widget (QLabel, label_14)
+#: EditProfileDialog.ui:1393
+#, kde-format
+msgid "Default character encoding:"
+msgstr "Типове кодування символів:"
+
+#. i18n: ectx: property (text), widget (QPushButton, selectEncodingButton)
+#: EditProfileDialog.ui:1413
+#, kde-format
+msgctxt "@action:button Pick an encoding"
+msgid "Select"
+msgstr "Вибрати"
+
+#: Filter.cpp:504
+#, kde-format
+msgid "Open Link"
+msgstr "Відкрити посилання"
+
+#: Filter.cpp:505
+#, kde-format
+msgid "Copy Link Address"
+msgstr "Скопіювати адресу посилання"
+
+#: Filter.cpp:507
+#, kde-format
+msgid "Send Email To..."
+msgstr "Надіслати пошту…"
+
+#: Filter.cpp:508
+#, kde-format
+msgid "Copy Email Address"
+msgstr "Скопіювати адресу ел. пошти"
+
+#: Filter.cpp:646
+#, kde-format
+msgid "Open File"
+msgstr "Відкрити файл"
+
+#: HistorySizeDialog.cpp:38
+#, kde-format
+msgctxt "@title:window"
+msgid "Adjust Scrollback"
+msgstr "Налаштування буфера гортання"
+
+#: HistorySizeDialog.cpp:61
+#, kde-format
+msgctxt "@info:status"
+msgid "Any adjustments are only temporary to this session."
+msgstr "Всі коригування використовуватимуться лише протягом цього сеансу."
+
+#: HistorySizeWidget.cpp:46
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"When using this option, the scrollback data will be saved to RAM.  If you "
+"choose a huge value, your system may run out of free RAM and cause serious "
+"issues with your system."
+msgstr ""
+"Якщо буде позначено цей пункт, дані гортання зберігатимуться у оперативній "
+"пам’яті. Якщо вами буде вибрано надто велике значення, вільну оперативну "
+"пам’ять може бути вичерпано, що спричинить серйозні проблеми у роботі "
+"системи."
+
+#: HistorySizeWidget.cpp:55
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"When using this option, the scrollback data will be written unencrypted to "
+"temporary files. Those temporary files will be deleted automatically when "
+"Konsole is closed in a normal manner.\n"
+"Use Settings->Configure Konsole->File Location to select the location of the "
+"temporary files."
+msgstr ""
+"Якщо ви позначите цей пункт, дані буфера гортання буде записано без "
+"шифрування до тимчасових файлів. Ці тимчасові файли буде автоматично "
+"вилучено, якщо роботу Konsole буде завершено у типовий спосіб.\n"
+"Для вибору місця зберігання тимчасових файлів скористайтеся пунктом меню "
+"«Параметри → Налаштувати Konsole → Розташування файлів»."
+
+#: HistorySizeWidget.cpp:75
+#, kde-format
+msgctxt "@label:textbox Unit of scrollback"
+msgid " line"
+msgid_plural " lines"
+msgstr[0] " рядок"
+msgstr[1] " рядки"
+msgstr[2] " рядків"
+msgstr[3] " рядок"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, noHistoryButton)
+#: HistorySizeWidget.ui:29
+#, kde-format
+msgid "Do not remember previous output"
+msgstr "Не запам’ятовувати попередній вивід"
+
+#. i18n: ectx: property (text), widget (QRadioButton, noHistoryButton)
+#: HistorySizeWidget.ui:32
+#, kde-format
+msgid "No scrollback"
+msgstr "Без буфера гортання"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, fixedSizeHistoryButton)
+#: HistorySizeWidget.ui:50
+#, kde-format
+msgid "Limit the remembered output to a fixed number of lines"
+msgstr "Обмежити пам’ять виводу заданою кількістю рядків"
+
+#. i18n: ectx: property (text), widget (QRadioButton, fixedSizeHistoryButton)
+#: HistorySizeWidget.ui:53
+#, kde-format
+msgid "Fixed size scrollback:"
+msgstr "Буфер гортання з фіксованим розміром:"
+
+#. i18n: ectx: property (toolTip), widget (KPluralHandlingSpinBox, historyLineSpinner)
+#: HistorySizeWidget.ui:60
+#, kde-format
+msgid "Number of lines of output to remember"
+msgstr "Кількість рядків виводу, які слід пам’ятати"
+
+#. i18n: ectx: property (toolTip), widget (QRadioButton, unlimitedHistoryButton)
+#: HistorySizeWidget.ui:104
+#, kde-format
+msgid "Remember all output produced by the terminal"
+msgstr "Запам’ятовувати все виведене у терміналі"
+
+#. i18n: ectx: property (text), widget (QRadioButton, unlimitedHistoryButton)
+#: HistorySizeWidget.ui:107
+#, kde-format
+msgid "Unlimited scrollback"
+msgstr "Необмежений буфер гортання"
+
+#: IncrementalSearchBar.cpp:54
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Close the search bar"
+msgstr "Закрити панель пошуку"
+
+#: IncrementalSearchBar.cpp:59
+#, kde-format
+msgctxt "@label:textbox"
+msgid "Find:"
+msgstr "Знайти:"
+
+#: IncrementalSearchBar.cpp:64
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Enter the text to search for here"
+msgstr "Введіть сюди текст, за яким шукати"
+
+#: IncrementalSearchBar.cpp:84
+#, kde-format
+msgctxt "@action:button Go to the next phrase"
+msgid "Next"
+msgstr "Далі"
+
+#: IncrementalSearchBar.cpp:87
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Find the next match for the current search phrase"
+msgstr "Знайти наступний збіг для фрази пошуку"
+
+#: IncrementalSearchBar.cpp:93
+#, kde-format
+msgctxt "@action:button Go to the previous phrase"
+msgid "Previous"
+msgstr "Назад"
+
+#: IncrementalSearchBar.cpp:96
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Find the previous match for the current search phrase"
+msgstr "Знайти попередній збіг для фрази пошуку"
+
+#: IncrementalSearchBar.cpp:107
+#, kde-format
+msgctxt "@action:button Display options menu"
+msgid "Options"
+msgstr "Параметри"
+
+#: IncrementalSearchBar.cpp:112
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Display the options menu"
+msgstr "Показати меню параметрів"
+
+#: IncrementalSearchBar.cpp:126
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Case sensitive"
+msgstr "З врахуванням регістру"
+
+#: IncrementalSearchBar.cpp:128
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Sets whether the search is case sensitive"
+msgstr "Встановлює регістрозалежність пошуку"
+
+#: IncrementalSearchBar.cpp:132
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Match regular expression"
+msgstr "Збіг з формальним виразом"
+
+#: IncrementalSearchBar.cpp:137
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Highlight all matches"
+msgstr "Підсвітити всі відповідники"
+
+#: IncrementalSearchBar.cpp:140
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Sets whether matching text should be highlighted"
+msgstr "Чи підсвічувати знайдений текст"
+
+#: IncrementalSearchBar.cpp:144
+#, kde-format
+msgctxt "@item:inmenu"
+msgid "Search backwards"
+msgstr "Пошук назад"
+
+#: IncrementalSearchBar.cpp:147
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Sets whether search should start from the bottom"
+msgstr "Визначає, чи має пошук виконуватися від нижньої частини даних"
+
+#: IncrementalSearchBar.cpp:169
+#, kde-format
+msgctxt "@action:button Search from bottom"
+msgid "From bottom"
+msgstr "Знизу"
+
+#: IncrementalSearchBar.cpp:171
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Search for the current search phrase from the bottom"
+msgstr "Шукати вказану ключову фразу, починаючи з нижньої частини даних"
+
+#: IncrementalSearchBar.cpp:175
+#, kde-format
+msgctxt "@action:button Search from top"
+msgid "From top"
+msgstr "Згори"
+
+#: IncrementalSearchBar.cpp:177
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Search for the current search phrase from the top"
+msgstr "Шукати вказану ключову фразу, починаючи з верхньої частини даних"
+
+#: KeyBindingEditor.cpp:51
+#, kde-format
+msgid "Key Combination"
+msgstr "Комбінація клавіш"
+
+#: KeyBindingEditor.cpp:51
+#, kde-format
+msgid "Output"
+msgstr "Вивід"
+
+#. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
+#: KeyBindingEditor.ui:46
+#, kde-format
+msgid "Add"
+msgstr "Додати"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox)
+#: KeyBindingEditor.ui:75
+#, kde-format
+msgctxt "Title of the area where you test your keys are properly configured"
+msgid "Test Area"
+msgstr "Область перевірки"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: KeyBindingEditor.ui:84
+#, kde-format
+msgid "Input:"
+msgstr "Ввід:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: KeyBindingEditor.ui:97
+#, kde-format
+msgid "Output:"
+msgstr "Вивід:"
+
+#: main.cpp:97
+#, kde-format
+msgctxt "@title"
+msgid "Konsole"
+msgstr "Konsole"
+
+#: main.cpp:99
+#, kde-format
+msgctxt "@title"
+msgid "Terminal emulator"
+msgstr "Емулятор термінала"
+
+#: main.cpp:101
+#, kde-format
+msgctxt "@info:credit"
+msgid "(c) 1997-2017, The Konsole Developers"
+msgstr "© Розробники Konsole, 1997–2017"
+
+#: main.cpp:273
+#, kde-format
+msgctxt "@info:credit"
+msgid "Kurt Hindenburg"
+msgstr "Kurt Hindenburg"
+
+#: main.cpp:274
+#, kde-format
+msgctxt "@info:credit"
+msgid "General maintainer, bug fixes and general improvements"
+msgstr "Загальний супровід, виправлення вад і загальні вдосконалення"
+
+#: main.cpp:277
+#, kde-format
+msgctxt "@info:credit"
+msgid "Robert Knight"
+msgstr "Robert Knight"
+
+#: main.cpp:278
+#, kde-format
+msgctxt "@info:credit"
+msgid "Previous maintainer, ported to KDE4"
+msgstr "Попередній супровідник, портування на KDE4"
+
+#: main.cpp:280
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lars Doelle"
+msgstr "Lars Doelle"
+
+#: main.cpp:281
+#, kde-format
+msgctxt "@info:credit"
+msgid "Original author"
+msgstr "Автор програми"
+
+#: main.cpp:283
+#, kde-format
+msgctxt "@info:credit"
+msgid "Jekyll Wu"
+msgstr "Jekyll Wu"
+
+#: main.cpp:284 main.cpp:287 main.cpp:290
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes and general improvements"
+msgstr "Налагодження і загальні вдосконалення"
+
+#: main.cpp:286
+#, kde-format
+msgctxt "@info:credit"
+msgid "Waldo Bastian"
+msgstr "Waldo Bastian"
+
+#: main.cpp:289
+#, kde-format
+msgctxt "@info:credit"
+msgid "Stephan Binner"
+msgstr "Stephan Binner"
+
+#: main.cpp:292
+#, kde-format
+msgctxt "@info:credit"
+msgid "Thomas Dreibholz"
+msgstr "Thomas Dreibholz"
+
+#: main.cpp:293
+#, kde-format
+msgctxt "@info:credit"
+msgid "General improvements"
+msgstr "Загальні вдосконалення"
+
+#: main.cpp:295
+#, kde-format
+msgctxt "@info:credit"
+msgid "Chris Machemer"
+msgstr "Chris Machemer"
+
+#: main.cpp:296 main.cpp:299 main.cpp:335 main.cpp:338 main.cpp:341
+#: main.cpp:344
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes"
+msgstr "Виправлення помилок"
+
+#: main.cpp:298
+#, kde-format
+msgctxt "@info:credit"
+msgid "Francesco Cecconi"
+msgstr "Francesco Cecconi"
+
+#: main.cpp:301
+#, kde-format
+msgctxt "@info:credit"
+msgid "Stephan Kulow"
+msgstr "Stephan Kulow"
+
+#: main.cpp:302
+#, kde-format
+msgctxt "@info:credit"
+msgid "Solaris support and history"
+msgstr "Підтримка історії і роботи на Solaris"
+
+#: main.cpp:304
+#, kde-format
+msgctxt "@info:credit"
+msgid "Alexander Neundorf"
+msgstr "Alexander Neundorf"
+
+#: main.cpp:305
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes and improved startup performance"
+msgstr "Виправлення помилок і покращення швидкодії запуску"
+
+#: main.cpp:307
+#, kde-format
+msgctxt "@info:credit"
+msgid "Peter Silva"
+msgstr "Peter Silva"
+
+#: main.cpp:308
+#, kde-format
+msgctxt "@info:credit"
+msgid "Marking improvements"
+msgstr "Покращення позначення"
+
+#: main.cpp:310
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lotzi Boloni"
+msgstr "Lotzi Boloni"
+
+#: main.cpp:311
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Embedded Konsole\n"
+"Toolbar and session names"
+msgstr ""
+"Вбудована Konsole\n"
+"Панель інструментів і назви сеансів"
+
+#: main.cpp:314
+#, kde-format
+msgctxt "@info:credit"
+msgid "David Faure"
+msgstr "David Faure"
+
+#: main.cpp:315
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Embedded Konsole\n"
+"General improvements"
+msgstr ""
+"Вбудована Konsole\n"
+"Загальні покращення"
+
+#: main.cpp:318
+#, kde-format
+msgctxt "@info:credit"
+msgid "Antonio Larrosa"
+msgstr "Antonio Larrosa"
+
+#: main.cpp:319
+#, kde-format
+msgctxt "@info:credit"
+msgid "Visual effects"
+msgstr "Візуальні ефекти"
+
+#: main.cpp:321
+#, kde-format
+msgctxt "@info:credit"
+msgid "Matthias Ettrich"
+msgstr "Matthias Ettrich"
+
+#: main.cpp:322
+#, kde-format
+msgctxt "@info:credit"
+msgid ""
+"Code from the kvt project\n"
+"General improvements"
+msgstr ""
+"Код з проекту kvt\n"
+"Загальні покращення"
+
+#: main.cpp:325
+#, kde-format
+msgctxt "@info:credit"
+msgid "Warwick Allison"
+msgstr "Warwick Allison"
+
+#: main.cpp:326
+#, kde-format
+msgctxt "@info:credit"
+msgid "Schema and text selection improvements"
+msgstr "Покращення схеми і вибору тексту"
+
+#: main.cpp:328
+#, kde-format
+msgctxt "@info:credit"
+msgid "Dan Pilone"
+msgstr "Dan Pilone"
+
+#: main.cpp:329
+#, kde-format
+msgctxt "@info:credit"
+msgid "SGI port"
+msgstr "Портування SGI"
+
+#: main.cpp:331
+#, kde-format
+msgctxt "@info:credit"
+msgid "Kevin Street"
+msgstr "Kevin Street"
+
+#: main.cpp:332
+#, kde-format
+msgctxt "@info:credit"
+msgid "FreeBSD port"
+msgstr "Порт на FreeBSD"
+
+#: main.cpp:334
+#, kde-format
+msgctxt "@info:credit"
+msgid "Sven Fischer"
+msgstr "Sven Fischer"
+
+#: main.cpp:337
+#, kde-format
+msgctxt "@info:credit"
+msgid "Dale M. Flaven"
+msgstr "Dale M. Flaven"
+
+#: main.cpp:340
+#, kde-format
+msgctxt "@info:credit"
+msgid "Martin Jones"
+msgstr "Martin Jones"
+
+#: main.cpp:343
+#, kde-format
+msgctxt "@info:credit"
+msgid "Lars Knoll"
+msgstr "Lars Knoll"
+
+#: main.cpp:346
+#, kde-format
+msgctxt "@info:credit"
+msgid "Thanks to many others.\n"
+msgstr "Подяка багатьом іншим.\n"
+
+#: MainWindow.cpp:313
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&New Tab"
+msgstr "Н&ова вкладка"
+
+#: MainWindow.cpp:323
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Clone Tab"
+msgstr "&Клонувати вкладку"
+
+#: MainWindow.cpp:330
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "New &Window"
+msgstr "Нове ві&кно"
+
+#: MainWindow.cpp:337
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Close Window"
+msgstr "Закрити вікно"
+
+#: MainWindow.cpp:342
+#, kde-format
+msgctxt "@title:menu"
+msgid "&Bookmarks"
+msgstr "&Закладки"
+
+#: MainWindow.cpp:361
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Manage Profiles..."
+msgstr "Керування профілями…"
+
+#: MainWindow.cpp:367
+#, kde-format
+msgctxt "@item"
+msgid "Activate Menu"
+msgstr "Задіяти меню"
+
+#: MainWindow.cpp:606
+#, kde-format
+msgctxt "@info"
+msgid "There is a process running in this window. Do you still want to quit?"
+msgid_plural ""
+"There are %1 processes running in this window. Do you still want to quit?"
+msgstr[0] "У цьому вікні працює %1 процес. Ви справді хочете його закрити?"
+msgstr[1] "У цьому вікні працюють %1 процеси. Ви справді хочете його закрити?"
+msgstr[2] "У цьому вікні працюють %1 процесів. Ви справді хочете його закрити?"
+msgstr[3] "У цьому вікні працює процес. Ви справді хочете його закрити?"
+
+#: MainWindow.cpp:612 MainWindow.cpp:627
+#, kde-format
+msgctxt "@title"
+msgid "Confirm Close"
+msgstr "Підтвердження закриття"
+
+#: MainWindow.cpp:614 MainWindow.cpp:628
+#, kde-format
+msgctxt "@action:button"
+msgid "Close &Window"
+msgstr "Закрити в&ікно"
+
+#: MainWindow.cpp:617 MainWindow.cpp:631
+#, kde-format
+msgctxt "@action:button"
+msgid "Close Current &Tab"
+msgstr "Закрити поточну в&кладку"
+
+#: MainWindow.cpp:624
+#, kde-format
+msgctxt "@info"
+msgid "There are %1 open tabs in this window. Do you still want to quit?"
+msgstr "У цьому вікні відкрито %1 вкладок. Ви справді хочете його закрити?"
+
+#: MainWindow.cpp:734
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "General"
+msgstr "Загальне"
+
+#: MainWindow.cpp:740 Part.cpp:295
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "Profiles"
+msgstr "Профілі"
+
+#: MainWindow.cpp:745
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "TabBar"
+msgstr "Панель вкладок"
+
+#: MainWindow.cpp:750
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "File Location"
+msgstr "Розташування файла"
+
+#: Part.cpp:301
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "Part Info"
+msgstr "Дані щодо частини"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, PrintOptions)
+#. i18n: ectx: property (title), widget (QGroupBox, OutputOptions)
+#: PrintOptions.ui:14 PrintOptions.ui:20
+#, kde-format
+msgid "Output Options"
+msgstr "Параметри виведення"
+
+#. i18n: ectx: property (text), widget (QCheckBox, printerFriendly)
+#. i18n: ectx: label, entry (PrinterFriendly), group (PrintOptions)
+#: PrintOptions.ui:39 settings/konsole.kcfg:114
+#, kde-format
+msgid "Printer &friendly mode (black text, no background)"
+msgstr "&Оптимізувати для друку (чорний текст без зображень на тлі)"
+
+#. i18n: ectx: property (text), widget (QCheckBox, scaleOutput)
+#. i18n: ectx: label, entry (ScaleOutput), group (PrintOptions)
+#: PrintOptions.ui:46 settings/konsole.kcfg:118
+#, kde-format
+msgid "&Scale output"
+msgstr "&Масштабувати результат"
+
+#: Profile.cpp:151
+#, kde-format
+msgctxt "Name of the default/builtin profile"
+msgid "Default"
+msgstr "Типовий"
+
+#: ProfileList.cpp:46
+#, kde-format
+msgid "Default profile"
+msgstr "Типовий профіль"
+
+#: ProfileManager.cpp:333
+#, kde-format
+msgid "Konsole does not have permission to save this profile to %1"
+msgstr "У Konsole недостатньо прав доступу для збереження цього профілю до %1"
+
+#: ProfileManager.cpp:369
+#, kde-format
+msgctxt "The default name of a profile"
+msgid "Profile #%1"
+msgstr "Профіль %1"
+
+#: RenameTabDialog.cpp:37
+#, kde-format
+msgid "Rename Tab"
+msgstr "Перейменувати вкладку"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: RenameTabWidget.ui:26
+#, kde-format
+msgid "Tab title format:"
+msgstr "Формат заголовків вкладок:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, tabTitleEdit)
+#: RenameTabWidget.ui:36
+#, kde-format
+msgid "Normal tab title format"
+msgstr "Формат заголовка звичайної вкладки"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: RenameTabWidget.ui:46
+#, kde-format
+msgid "Remote tab title format:"
+msgstr "Формат вкладки віддалених команд:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, remoteTabTitleEdit)
+#: RenameTabWidget.ui:56
+#, kde-format
+msgid ""
+"Tab title format used when a remote command (e.g. connection to another "
+"computer via SSH) is being executed"
+msgstr ""
+"Формат заголовка вкладки для віддалених команд (наприклад, команд, що "
+"віддаються іншому комп’ютеру за посередництва SSH)"
+
+#: schemas.cpp:1
+#, kde-format
+msgid "Black on Light Yellow"
+msgstr "Чорний на світло-жовтому"
+
+#: schemas.cpp:2
+#, kde-format
+msgid "Black on Random Light"
+msgstr "Чорний на випадковому світлі"
+
+#: schemas.cpp:3
+#, kde-format
+msgid "Black on White"
+msgstr "Чорний на білому"
+
+#: schemas.cpp:4
+#, kde-format
+msgid "Blue on Black"
+msgstr "Синій на чорному"
+
+#: schemas.cpp:5
+#, kde-format
+msgid "Breeze"
+msgstr "Breeze"
+
+#: schemas.cpp:6
+#, kde-format
+msgid "Dark Pastels"
+msgstr "Темні пастелі"
+
+#: schemas.cpp:7
+#, kde-format
+msgid "Green on Black"
+msgstr "Зелений на чорному"
+
+#: schemas.cpp:8
+#, kde-format
+msgid "Linux Colors"
+msgstr "Кольори Linux"
+
+#: schemas.cpp:9
+#, kde-format
+msgid "Red on Black"
+msgstr "Червоний на чорному"
+
+#: schemas.cpp:10
+#, kde-format
+msgid "Solarized"
+msgstr "Засвічена"
+
+#: schemas.cpp:11
+#, kde-format
+msgid "Solarized Light"
+msgstr "Засвічена світла"
+
+#: schemas.cpp:12
+#, kde-format
+msgid "White on Black"
+msgstr "Білий на чорному"
+
+#: schemas.cpp:13
+#, kde-format
+msgid "Default (XFree 4)"
+msgstr "Типовий (XFree 4)"
+
+#: schemas.cpp:14
+#, kde-format
+msgid "Linux console"
+msgstr "Консоль Linux"
+
+#: schemas.cpp:15
+#, kde-format
+msgid "Solaris console"
+msgstr "Консоль Solaris"
+
+#: Session.cpp:348
+#, kde-format
+msgid "Could not find binary: "
+msgstr "Не вдалося знайти файл програми: "
+
+#: Session.cpp:357
+#, kde-format
+msgctxt "@info:shell Alert the user with red color text"
+msgid "Warning: "
+msgstr "Попередження: "
+
+#: Session.cpp:414
+#, kde-format
+msgid ""
+"Could not find '%1', starting '%2' instead.  Please check your profile "
+"settings."
+msgstr ""
+"Не вдалося знайти «%1», замість неї запущено «%2». Будь ласка, перевірте "
+"параметри вашого профілю."
+
+#: Session.cpp:417
+#, kde-format
+msgid "Could not find an interactive shell to start."
+msgstr "Не вдалося знайти для запуску інтерактивної оболонки."
+
+#: Session.cpp:455
+#, kde-format
+msgid "Could not start program '%1' with arguments '%2'."
+msgstr "Не вдалося запустити програму «%1» з параметрами «%2»."
+
+#: Session.cpp:584
+#, kde-format
+msgid "Silence in session '%1'"
+msgstr "Тиша в сеансі «%1»"
+
+#: Session.cpp:632
+#, kde-format
+msgid "Bell in session '%1'"
+msgstr "Дзвінок в сеансі «%1»"
+
+#: Session.cpp:645
+#, kde-format
+msgid "Activity in session '%1'"
+msgstr "Діяльність в сеансі «%1»"
+
+#: Session.cpp:840
+#, kde-format
+msgid ""
+"The D-Bus methods sendText/runCommand were just used.  There are security "
+"concerns about allowing these methods to be public.  If desired, these "
+"methods can be changed to internal use only by re-compiling Konsole. <p>This "
+"warning will only show once for this Konsole instance.</p>"
+msgstr ""
+"Щойно було використано методи D-Bus sendText/runCommand. Із відкриттям цих "
+"методів для загального використання пов’язано певні проблеми із захистом. "
+"Якщо потрібно, ці методи можна зробити методами для внутрішнього "
+"використання (internal) перезбиранням Konsole. <p>Для цього екземпляра "
+"Konsole це попередження буде показано лише одного разу.</p>"
+
+#: Session.cpp:867
+#, kde-format
+msgctxt "@info:shell This session is done"
+msgid "Finished"
+msgstr "Завершено"
+
+#: Session.cpp:881 Session.cpp:893
+#, kde-format
+msgid "Program '%1' crashed."
+msgstr "Програма «%1» завершила роботу у аварійному режимі."
+
+#: Session.cpp:883
+#, kde-format
+msgid "Program '%1' exited with status %2."
+msgstr "Програма «%1» завершилась зі станом %2."
+
+#: Session.cpp:1280
+#, kde-format
+msgid "ZModem Progress"
+msgstr "Поступ ZModem"
+
+#: SessionController.cpp:127
+#, kde-format
+msgid "Konsole"
+msgstr "Konsole"
+
+#: SessionController.cpp:339
+#, kde-format
+msgid "Konsole does not know how to open the bookmark: "
+msgstr "Konsole невідомо про те, як відкрити закладку: "
+
+#: SessionController.cpp:397
+#, kde-format
+msgid "Search for '%1' with"
+msgstr "Шукати «%1» за допомогою"
+
+#: SessionController.cpp:411
+#, kde-format
+msgid "Configure Web Shortcuts..."
+msgstr "Налаштувати вебскорочення…"
+
+#: SessionController.cpp:530
+#, kde-format
+msgid "&Close Session"
+msgstr "&Завершити сеанс"
+
+#: SessionController.cpp:532
+#, kde-format
+msgid "&Close Tab"
+msgstr "З&акрити вкладку"
+
+#: SessionController.cpp:539
+#, kde-format
+msgid "Open File Manager"
+msgstr "Відкрити менеджер файлів"
+
+#: SessionController.cpp:566
+#, kde-format
+msgid "Paste Selection"
+msgstr "Вставити вибір"
+
+#: SessionController.cpp:573
+#, kde-format
+msgid "Web Search"
+msgstr "Пошук у інтернеті"
+
+#: SessionController.cpp:580
+#, kde-format
+msgid "&Select All"
+msgstr "&Позначити все"
+
+#: SessionController.cpp:584
+#, kde-format
+msgid "Select &Line"
+msgstr "Позначити &рядок"
+
+#: SessionController.cpp:587
+#, kde-format
+msgid "Save Output &As..."
+msgstr "Зберегти виведене &як…"
+
+#: SessionController.cpp:593
+#, kde-format
+msgid "&Print Screen..."
+msgstr "&Надрукувати зображення з екрана…"
+
+#: SessionController.cpp:597
+#, kde-format
+msgid "Adjust Scrollback..."
+msgstr "Виправити гортання…"
+
+#: SessionController.cpp:601
+#, kde-format
+msgid "Clear Scrollback"
+msgstr "Спорожнити буфер гортання"
+
+#: SessionController.cpp:605
+#, kde-format
+msgid "Clear Scrollback and Reset"
+msgstr "Спорожнити буфер гортання і відновити початковий стан"
+
+#: SessionController.cpp:611
+#, kde-format
+msgid "Edit Current Profile..."
+msgstr "Редагувати поточний профіль…"
+
+#: SessionController.cpp:614
+#, kde-format
+msgid "Switch Profile"
+msgstr "Перемкнути профіль"
+
+#: SessionController.cpp:631
+#, kde-format
+msgid "Set &Encoding"
+msgstr "Встановити &кодування"
+
+#: SessionController.cpp:646
+#, kde-format
+msgid "&Rename Tab..."
+msgstr "Пе&рейменувати вставку…"
+
+#: SessionController.cpp:652
+#, kde-format
+msgid "&All Tabs in Current Window"
+msgstr "&Всіх вкладок у поточному вікні"
+
+#: SessionController.cpp:659
+#, kde-format
+msgid "&Select Tabs..."
+msgstr "Ви&брати вкладки…"
+
+#: SessionController.cpp:665
+#, kde-format
+msgctxt "@action:inmenu Do not select any tabs"
+msgid "&None"
+msgstr "&Жодної"
+
+#: SessionController.cpp:673
+#, kde-format
+msgid "Copy Input To"
+msgstr "Копіювати введене до"
+
+#: SessionController.cpp:680
+#, kde-format
+msgid "&ZModem Upload..."
+msgstr "В&ивантаження ZModem…"
+
+#: SessionController.cpp:685
+#, kde-format
+msgid "Monitor for &Activity"
+msgstr "Слідкувати за &діяльністю"
+
+#: SessionController.cpp:690
+#, kde-format
+msgid "Monitor for &Silence"
+msgstr "Слідкувати за &бездіяльністю"
+
+#: SessionController.cpp:697
+#, kde-format
+msgid "Enlarge Font"
+msgstr "Збільшити шрифт"
+
+#: SessionController.cpp:705
+#, kde-format
+msgid "Shrink Font"
+msgstr "Зменшити шрифт"
+
+#: SessionController.cpp:712
+#, kde-format
+msgid "Send Signal"
+msgstr "Надіслати сигнал"
+
+#: SessionController.cpp:716
+#, kde-format
+msgid "&Suspend Task"
+msgstr "&Призупинити завдання"
+
+#: SessionController.cpp:721
+#, kde-format
+msgid "&Continue Task"
+msgstr "Про&довжити завдання"
+
+#: SessionController.cpp:726
+#, kde-format
+msgid "&Hangup"
+msgstr "Від’&єднатися"
+
+#: SessionController.cpp:731
+#, kde-format
+msgid "&Interrupt Task"
+msgstr "П&ерервати завдання"
+
+#: SessionController.cpp:736
+#, kde-format
+msgid "&Terminate Task"
+msgstr "П&рипинити завдання"
+
+#: SessionController.cpp:741
+#, kde-format
+msgid "&Kill Task"
+msgstr "&Завершити завдання"
+
+#: SessionController.cpp:746
+#, kde-format
+msgid "User Signal &1"
+msgstr "Сигнал користувача &1"
+
+#: SessionController.cpp:751
+#, kde-format
+msgid "User Signal &2"
+msgstr "Сигнал користувача &2"
+
+#: SessionController.cpp:863
+#, kde-format
+msgid ""
+"A program is currently running in this session.  Are you sure you want to "
+"close it?"
+msgstr "В цьому сеансі в даний час виконується програма. Дійсно закрити?"
+
+#: SessionController.cpp:866
+#, kde-format
+msgid ""
+"The program '%1' is currently running in this session.  Are you sure you "
+"want to close it?"
+msgstr "В цьому сеансі в даний час виконується програма «%1». Дійсно закрити?"
+
+#: SessionController.cpp:869 SessionController.cpp:894
+#, kde-format
+msgid "Confirm Close"
+msgstr "Підтвердити закриття"
+
+#: SessionController.cpp:888
+#, kde-format
+msgid ""
+"A program in this session would not die.  Are you sure you want to kill it "
+"by force?"
+msgstr ""
+"Програма у цьому сеансі не бажає завершувати роботу. Хочете завершити її "
+"роботу у примусовому режимі?"
+
+#: SessionController.cpp:891
+#, kde-format
+msgid ""
+"The program '%1' is in this session would not die.  Are you sure you want to "
+"kill it by force?"
+msgstr ""
+"Програма «%1» у цьому сеансі не бажає завершувати роботу. Хочете завершити "
+"її роботу у примусовому режимі?"
+
+#: SessionController.cpp:1418
+#, kde-format
+msgid "Print Shell"
+msgstr "Друк даних з командної оболонки"
+
+#: SessionController.cpp:1620
+#, kde-format
+msgid "Save ZModem Download to..."
+msgstr "Зберегти отримання ZModem до…"
+
+#: SessionController.cpp:1630
+#, kde-format
+msgid ""
+"<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
+"software was found on this system.</p><p>You may wish to install the 'rzsz' "
+"or 'lrzsz' package.</p>"
+msgstr ""
+"<p>Було виявлено спробу передавання файлів ZModem, але у системі не виявлено "
+"програмного забезпечення ZModem.</p><p>Вам, ймовірно, слід встановити "
+"пакунок «rzsz» або «lrzsz».</p>"
+
+#: SessionController.cpp:1642
+#, kde-format
+msgid ""
+"<p>The current session already has a ZModem file transfer in progress.</p>"
+msgstr ""
+"<p>У поточному сеансі вже виконується передавання файлів за допомогою ZModem."
+"</p>"
+
+#: SessionController.cpp:1651
+#, kde-format
+msgid ""
+"<p>No suitable ZModem software was found on this system.</p><p>You may wish "
+"to install the 'rzsz' or 'lrzsz' package.</p>"
+msgstr ""
+"<p>У системі не виявлено програмного забезпечення ZModem.</p><p>Вам, "
+"ймовірно, слід встановити пакунок «rzsz» або «lrzsz».</p>"
+
+#: SessionController.cpp:1657
+#, kde-format
+msgid "Select Files for ZModem Upload"
+msgstr "Оберіть файли для вивантаження за допомогою ZModem"
+
+#: SessionController.cpp:1718
+#, kde-format
+msgid "Save Output From %1"
+msgstr "Зберегти вивід з %1"
+
+#: SessionController.cpp:1729
+#, kde-format
+msgid "%1 is an invalid URL, the output could not be saved."
+msgstr "%1 не є коректною адресою URL, не вдалося зберегти вивід."
+
+#: SessionController.cpp:1804
+#, kde-format
+msgid ""
+"A problem occurred when saving the output.\n"
+"%1"
+msgstr ""
+"Під час спроби збереження виводу сталася помилка.\n"
+"%1"
+
+#: SessionListModel.cpp:103
+#, kde-format
+msgctxt "@item:intable The session index"
+msgid "Number"
+msgstr "Номер"
+
+#: SessionListModel.cpp:105
+#, kde-format
+msgctxt "@item:intable The session title"
+msgid "Title"
+msgstr "Заголовок"
+
+#. i18n: ectx: property (whatsThis), widget (QGroupBox, ButtonGroup1)
+#: settings/FileLocationSettings.ui:23
+#, kde-format
+msgid ""
+"<b>Scrollback File Location</b><p>Use this groupbox to determine where "
+"Konsole will store the scrollback files.</p>"
+msgstr ""
+"<b>Розташування файла буфера гортання</b><p>Цю панель призначено для "
+"встановлення місця, де Konsole зберігатиме файли буфера гортання.</p>"
+
+#. i18n: ectx: property (title), widget (QGroupBox, ButtonGroup1)
+#: settings/FileLocationSettings.ui:26
+#, kde-format
+msgid "Scrollback File Location"
+msgstr "Розташування файла буфера гортання"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/FileLocationSettings.ui:32
+#, kde-format
+msgid ""
+"These settings only apply when Profile->Scrolling->Unlimited scrollback is "
+"selected."
+msgstr ""
+"Ці параметри буде застосовано, лише якщо позначено пункт «Профіль → Гортання "
+"> Необмежене гортання»."
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseSystemLocation)
+#: settings/FileLocationSettings.ui:42
+#, kde-format
+msgid "Use system &location"
+msgstr "Використовувати &загальносистемну теку"
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseCacheLocation)
+#: settings/FileLocationSettings.ui:85
+#, kde-format
+msgid "Use user specific location"
+msgstr "Вказане користувачем місце"
+
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_scrollbackUseSpecifiedLocation)
+#: settings/FileLocationSettings.ui:125
+#, kde-format
+msgid "Use specified loca&tion"
+msgstr "Вказане &місце"
+
+#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_scrollbackUseSpecifiedLocationDirectory)
+#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
+#: settings/FileLocationSettings.ui:156 settings/TabBarSettings.ui:81
+#, kde-format
+msgid "text/css"
+msgstr "text/css"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: settings/FileLocationSettings.ui:187
+#, kde-format
+msgid ""
+"For the 'Use user specific location', any application using KonsolePart will "
+"have the app name instead of konsole."
+msgstr ""
+"Якщо використано варіант «Вказане користувачем місце», будь-яка програма, що "
+"використовує KonsolePart, матиме назву програми, а не «konsole»."
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/FileLocationSettings.ui:211
+#, kde-format
+msgid "For any changes to take effect, quit Konsole and restart."
+msgstr ""
+"Щоб застосувати внесені зміни, завершіть роботу Konsole, а потім знову "
+"запустіть програму."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_1)
+#: settings/GeneralSettings.ui:28
+#, kde-format
+msgid "Konsole Window"
+msgstr "Вікно Konsole"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowMenuBarByDefault)
+#. i18n: ectx: label, entry (ShowMenuBarByDefault), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:40 settings/konsole.kcfg:9
+#, kde-format
+msgid "Show menubar by default"
+msgstr "Типово показувати смужку меню"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SaveGeometryOnExit)
+#: settings/GeneralSettings.ui:66
+#, kde-format
+msgid "If enabled, profile settings will be ignored"
+msgstr "Якщо позначено, параметри профілю буде проігноровано"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SaveGeometryOnExit)
+#. i18n: ectx: label, entry (SaveGeometryOnExit), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:69 settings/konsole.kcfg:34
+#, kde-format
+msgid "Use current window size on next startup"
+msgstr "Використовувати поточні розміри вікна під час наступного запуску"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: tooltip, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:82 settings/konsole.kcfg:40
+#, kde-format
+msgid "When launching Konsole re-use existing process if possible"
+msgstr "Використовувати вже запущений процес Konsole, якщо це можливо"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: label, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:85 settings/konsole.kcfg:39
+#, kde-format
+msgid "Run all Konsole windows in a single process"
+msgstr "Використовувати для усіх вікон Konsole один процес"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowMenuAccelerators)
+#. i18n: ectx: label, entry (AllowMenuAccelerators), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:98 settings/konsole.kcfg:24
+#, kde-format
+msgid "Enable menu accelerators"
+msgstr "Увімкнути клавіатурні скорочення у меню"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowWindowTitleOnTitleBar)
+#. i18n: ectx: label, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:111 settings/konsole.kcfg:14
+#, kde-format
+msgid "Show window title on the titlebar"
+msgstr "Показувати заголовок вікна на смужці заголовка"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowAppNameOnTitleBar)
+#: settings/GeneralSettings.ui:124
+#, kde-format
+msgid "Show application name on the titlebar"
+msgstr "Показувати назву програми на смужці заголовка"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: settings/GeneralSettings.ui:141
+#, kde-format
+msgid "Default Search Settings"
+msgstr "Типові параметри пошуку"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchCaseSensitive)
+#. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
+#: settings/GeneralSettings.ui:153 settings/konsole.kcfg:46
+#, kde-format
+msgid "Search is case sensitive"
+msgstr "Шукати з урахуванням регістру"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchCaseSensitive)
+#. i18n: ectx: tooltip, entry (SearchCaseSensitive), group (SearchSettings)
+#: settings/GeneralSettings.ui:156 settings/konsole.kcfg:47
+#, kde-format
+msgid "Sets whether the search is case sensitive"
+msgstr "Встановлює регістрозалежність пошуку"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchRegExpression)
+#. i18n: ectx: label, entry (SearchRegExpression), group (SearchSettings)
+#: settings/GeneralSettings.ui:169 settings/konsole.kcfg:51
+#, kde-format
+msgid "Match using regular expressions"
+msgstr "Збіг з формальним виразом"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchHighlightMatches)
+#. i18n: ectx: label, entry (SearchHighlightMatches), group (SearchSettings)
+#: settings/GeneralSettings.ui:182 settings/konsole.kcfg:55
+#, kde-format
+msgid "Highlight all search matches"
+msgstr "Підсвітити усі відповідники"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: label, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:195 settings/konsole.kcfg:60
+#, kde-format
+msgid "Search backwards"
+msgstr "Пошук назад"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: tooltip, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:198 settings/konsole.kcfg:61
+#, kde-format
+msgid "Sets whether search should start from the bottom"
+msgstr "Визначає, чи має пошук виконуватися від нижньої частини даних"
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_3)
+#: settings/GeneralSettings.ui:216
+#, kde-format
+msgid "Notifications"
+msgstr "Сповіщення"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, enableAllMessagesButton)
+#: settings/GeneralSettings.ui:241
+#, kde-format
+msgid "All dialogs will be shown again"
+msgstr "Усі діалогові вікна буде показано знову"
+
+#. i18n: ectx: property (text), widget (QPushButton, enableAllMessagesButton)
+#: settings/GeneralSettings.ui:244
+#, kde-format
+msgid "Enable all \"Don't Ask Again\" messages"
+msgstr "Увімкнути усі повідомлення «Більше не питати»"
+
+#. i18n: ectx: tooltip, entry (ShowMenuBarByDefault), group (KonsoleWindow)
+#: settings/konsole.kcfg:10
+#, kde-format
+msgid "Show menubar by default in each Konsole window"
+msgstr "Типово показувати панель меню у всіх вікнах Konsole"
+
+#. i18n: ectx: tooltip, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
+#: settings/konsole.kcfg:15
+#, kde-format
+msgid "Show window title set by escape sequence on the titlebar"
+msgstr ""
+"Показувати заголовок вікна, встановлений керівною послідовністю, на смужці "
+"заголовка"
+
+#. i18n: ectx: label, entry (ShowAppNameOnTitleBar), group (KonsoleWindow)
+#. i18n: ectx: tooltip, entry (ShowAppNameOnTitleBar), group (KonsoleWindow)
+#: settings/konsole.kcfg:19 settings/konsole.kcfg:20
+#, kde-format
+msgid "Show \"- Konsole\" on the titlebar"
+msgstr "Показувати «- Konsole» на смужці заголовка"
+
+#. i18n: ectx: tooltip, entry (AllowMenuAccelerators), group (KonsoleWindow)
+#: settings/konsole.kcfg:25
+#, kde-format
+msgid "Allow users to access top menu through Alt+Key combination"
+msgstr ""
+"Надати змогу отримувати доступ до основного меню за допомогою комбінації Alt"
+"+клавіша"
+
+#. i18n: ectx: tooltip, entry (SaveGeometryOnExit), group (KonsoleWindow)
+#: settings/konsole.kcfg:35
+#, kde-format
+msgid "The window size will be saved upon exiting Konsole"
+msgstr "Розмір вікна Konsole буде збережено під час виходу"
+
+#. i18n: ectx: tooltip, entry (SearchHighlightMatches), group (SearchSettings)
+#: settings/konsole.kcfg:56
+#, kde-format
+msgid "Sets whether matching text should be highlighted"
+msgstr "Чи підсвічувати знайдений текст"
+
+#. i18n: ectx: label, entry (TabBarVisibility), group (TabBar)
+#: settings/konsole.kcfg:67
+#, kde-format
+msgid "Control the visibility of the whole tab bar"
+msgstr "Керування видимістю всієї панелі вкладок"
+
+#. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
+#: settings/konsole.kcfg:76
+#, kde-format
+msgid "Control the position of the tab bar"
+msgstr "Керування розташуванням панелі вкладок"
+
+#. i18n: ectx: label, entry (TabBarStyleSheet), group (TabBar)
+#: settings/konsole.kcfg:84
+#, kde-format
+msgid "Control the visual style of the tab bar"
+msgstr "Керування візуальним форматом панелі вкладок"
+
+#. i18n: ectx: label, entry (TabBarUseUserStyleSheet), group (TabBar)
+#: settings/konsole.kcfg:88
+#, kde-format
+msgid "Use a user-defined .css file for the tab bar"
+msgstr "Використовувати власний файл .css для панелі вкладок"
+
+#. i18n: ectx: label, entry (TabBarUserStyleSheetFile), group (TabBar)
+#: settings/konsole.kcfg:92
+#, kde-format
+msgid "The .css file to use for the tab bar style"
+msgstr "Файл .css, який слід використовувати для стилю панелі вкладок"
+
+#. i18n: ectx: label, entry (ShowQuickButtons), group (TabBar)
+#: settings/konsole.kcfg:96
+#, kde-format
+msgid "Control the visibility of quick buttons on the tab bar"
+msgstr "Керування видимістю кнопок пришвидшення дій на панелі вкладок"
+
+#. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
+#: settings/konsole.kcfg:100
+#, kde-format
+msgid "Control where to put the new tab"
+msgstr "Керування місцем для нових вкладок"
+
+#. i18n: ectx: label, entry (ExpandTabWidth), group (TabBar)
+#: settings/konsole.kcfg:108
+#, kde-format
+msgid "Expand the tab widths (Qt5.9+ uses the full window width)"
+msgstr "Розгортання ширин вкладок (з Qt5.9+ буде використано усю ширину вікна)"
+
+#. i18n: ectx: label, entry (scrollbackUseSystemLocation), group (FileLocation)
+#: settings/konsole.kcfg:124
+#, kde-format
+msgid "For scrollback files, use system-wide folder location"
+msgstr "Для файлів буфера гортання використовувати загальносистемну теку"
+
+#. i18n: ectx: label, entry (scrollbackUseCacheLocation), group (FileLocation)
+#: settings/konsole.kcfg:128
+#, kde-format
+msgid "For scrollback files, use user's specific folder location"
+msgstr "Для файлів буфера гортання використовувати вказану користувачем теку"
+
+#. i18n: ectx: label, entry (scrollbackUseSpecifiedLocation), group (FileLocation)
+#: settings/konsole.kcfg:132
+#, kde-format
+msgid "For scrollback files, use specified folder location"
+msgstr "Для файлів буфера гортання використовувати вказану теку"
+
+#. i18n: ectx: label, entry (scrollbackUseSpecifiedLocationDirectory), group (FileLocation)
+#: settings/konsole.kcfg:136
+#, kde-format
+msgid "For scrollback files, use this folder"
+msgstr "Для файлів буфера гортання використовувати цю теку"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/PartInfo.ui:29
+#, kde-format
+msgid ""
+"<html><head/><body><p>Applications that use KonsolePart share profiles.</"
+"p><p>They do not share with Konsole or other applications:<ul><li>default "
+"profile</li><li>show in menu</li><li>shortcuts</li></ul></p><p>Feel free to "
+"open a Konsole <a href=\"https://bugs.kde.org/enter_bug.cgi?"
+"format=guided&product=konsole&component=kpart\">bug report</a> if you desire "
+"a change to how these are handled.</body></html>"
+msgstr ""
+"<html><head/><body><p>Програми, які використовують спільні профілі "
+"KonsolePart.</p><p>Вони не використовуються у Konsole або інших програмах:"
+"<ul><li>типовий профіль</li><li>показ у меню</li><li>скорочення</li></ul></"
+"p><p>Ви можете створити <a href=\"https://bugs.kde.org/enter_bug.cgi?"
+"format=guided&product=konsole&component=kpart\">звіт щодо вади</a> у "
+"Konsole, якщо ви хочете змінити спосіб обробки цих профілів.</body></html>"
+
+#: settings/ProfileSettings.cpp:147
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to rename profile"
+msgstr "Натисніть, щоб перейменувати профіль"
+
+#: settings/ProfileSettings.cpp:156
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Click to toggle status"
+msgstr "Натисніть, щоб перемкнути стан"
+
+#: settings/ProfileSettings.cpp:162
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Double click to change shortcut"
+msgstr "Двічі клацніть лівою кнопкою миші, щоб змінити скорочення"
+
+#: settings/ProfileSettings.cpp:185
+#, kde-format
+msgctxt "@title:column Profile label"
+msgid "Name"
+msgstr "Назва"
+
+#: settings/ProfileSettings.cpp:186
+#, kde-format
+msgctxt "@title:column Display profile in file menu"
+msgid "Show"
+msgstr "Показати"
+
+#: settings/ProfileSettings.cpp:187
+#, kde-format
+msgctxt "@title:column Profile shortcut text"
+msgid "Shortcut"
+msgstr "Скорочення"
+
+#: settings/ProfileSettings.cpp:300
+#, kde-format
+msgctxt "@item This will be used as part of the file name"
+msgid "New Profile"
+msgstr "Новий профіль"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newProfileButton)
+#: settings/ProfileSettings.ui:20
+#, kde-format
+msgid "Create a new profile based upon the selected profile"
+msgstr "Створити новий профіль на основі вибраного профілю"
+
+#. i18n: ectx: property (text), widget (QPushButton, newProfileButton)
+#: settings/ProfileSettings.ui:23
+#, kde-format
+msgid "&New Profile..."
+msgstr "С&творити профіль…"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, editProfileButton)
+#: settings/ProfileSettings.ui:33
+#, kde-format
+msgid "Edit the selected profile(s)"
+msgstr "Змінити вибрані профілі"
+
+#. i18n: ectx: property (text), widget (QPushButton, editProfileButton)
+#: settings/ProfileSettings.ui:36
+#, kde-format
+msgid "&Edit Profile..."
+msgstr "&Змінити профіль…"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, deleteProfileButton)
+#: settings/ProfileSettings.ui:46
+#, kde-format
+msgid "Delete the selected profile(s)"
+msgstr "Вилучити вибрані профілі"
+
+#. i18n: ectx: property (text), widget (QPushButton, deleteProfileButton)
+#: settings/ProfileSettings.ui:49
+#, kde-format
+msgid "&Delete Profile"
+msgstr "&Вилучити профіль"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, setAsDefaultButton)
+#: settings/ProfileSettings.ui:59
+#, kde-format
+msgid "Set the selected profile as the default for new terminal sessions"
+msgstr "Зробити вибраний профіль типовим для нових сеансів термінала"
+
+#. i18n: ectx: property (text), widget (QPushButton, setAsDefaultButton)
+#: settings/ProfileSettings.ui:62
+#, kde-format
+msgid "&Set as Default"
+msgstr "З&робити типовим"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/TabBarSettings.ui:23
+#, kde-format
+msgid "Tab bar position:"
+msgstr "Розташування вкладок:"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:40
+#, kde-format
+msgid "Always Show Tab Bar"
+msgstr "Завжди показувати панель вкладок"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:45
+#, kde-format
+msgid "Show Tab Bar When Needed"
+msgstr "Показувати панель вкладок, якщо потрібно"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarVisibility)
+#: settings/TabBarSettings.ui:50
+#, kde-format
+msgid "Always Hide Tab Bar"
+msgstr "Завжди ховати панель вкладок"
+
+#. i18n: ectx: property (text), widget (QLabel, label_1)
+#: settings/TabBarSettings.ui:58
+#, kde-format
+msgid "Tab bar visibility:"
+msgstr "Показ панелі вкладок:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ExpandTabWidth)
+#: settings/TabBarSettings.ui:68
+#, kde-format
+msgid "Expand Individual Tab Widths to Full Window"
+msgstr "Розгортання окремих вкладок на усю ширину вікна"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowQuickButtons)
+#: settings/TabBarSettings.ui:88
+#, kde-format
+msgid "Show 'New Tab' and 'Close Tab' buttons"
+msgstr "Показувати кнопки «Нова вкладка» і «Закрити вкладку"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_TabBarUseUserStyleSheet)
+#: settings/TabBarSettings.ui:95
+#, kde-format
+msgid "Use user-defined stylesheet"
+msgstr "Використовувати таблицю стилів користувача"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarPosition)
+#: settings/TabBarSettings.ui:109
+#, kde-format
+msgid "Above Terminal Area"
+msgstr "Над областю термінала"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_TabBarPosition)
+#: settings/TabBarSettings.ui:114
+#, kde-format
+msgid "Below Terminal Area"
+msgstr "Під областю термінала"
+
+#. i18n: ectx: property (text), widget (QLabel, Qt59label)
+#: settings/TabBarSettings.ui:128
+#, kde-format
+msgid "Starting with Qt 5.9, the next two options will have different affects."
+msgstr ""
+"Починаючи з Qt 5.9, використання наступних двох параметрів призводить до "
+"різних наслідків."
+
+#. i18n: ectx: property (title), widget (QGroupBox, groupBox_2)
+#: settings/TabBarSettings.ui:144
+#, kde-format
+msgid "Behavior"
+msgstr "Поведінка"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: settings/TabBarSettings.ui:150
+#, kde-format
+msgid "New tab behavior:"
+msgstr "Розташування нової вкладки:"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_NewTabBehavior)
+#: settings/TabBarSettings.ui:167
+#, kde-format
+msgid "Put New Tab At The End"
+msgstr "Розташувати в кінці"
+
+#. i18n: ectx: property (text), item, widget (KComboBox, kcfg_NewTabBehavior)
+#: settings/TabBarSettings.ui:172
+#, kde-format
+msgid "Put New Tab After Current Tab"
+msgstr "Розташувати після поточної вкладки"
+
+#: TabTitleFormatButton.cpp:33
+#, kde-format
+msgid "Program Name: %n"
+msgstr "Назва програми: %n"
+
+#: TabTitleFormatButton.cpp:34
+#, kde-format
+msgid "Current Directory (Short): %d"
+msgstr "Поточний каталог (скорочено): %d"
+
+#: TabTitleFormatButton.cpp:35
+#, kde-format
+msgid "Current Directory (Long): %D"
+msgstr "Поточний каталог (повністю): %D"
+
+#: TabTitleFormatButton.cpp:36 TabTitleFormatButton.cpp:50
+#, kde-format
+msgid "Window Title Set by Shell: %w"
+msgstr "Заголовок вікна встановлений оболонкою: %w"
+
+#: TabTitleFormatButton.cpp:37 TabTitleFormatButton.cpp:51
+#, kde-format
+msgid "Session Number: %#"
+msgstr "Номер сеансу: %#"
+
+#: TabTitleFormatButton.cpp:38 TabTitleFormatButton.cpp:45
+#, kde-format
+msgid "User Name: %u"
+msgstr "Ім'я користувача: %u"
+
+#: TabTitleFormatButton.cpp:39
+#, kde-format
+msgid "Local Host: %h"
+msgstr "Локальний вузол: %h"
+
+#: TabTitleFormatButton.cpp:46
+#, kde-format
+msgid "User Name@ (if given): %U"
+msgstr "Ім’я користувача@ (якщо вказано): %U"
+
+#: TabTitleFormatButton.cpp:47
+#, kde-format
+msgid "Remote Host (Short): %h"
+msgstr "Віддалений вузол (скорочено): %h"
+
+#: TabTitleFormatButton.cpp:48
+#, kde-format
+msgid "Remote Host (Long): %H"
+msgstr "Віддалений вузол (повністю): %H"
+
+#: TabTitleFormatButton.cpp:49
+#, kde-format
+msgid "Command and arguments: %c"
+msgstr "Команда і параметри: %c"
+
+#: TabTitleFormatButton.cpp:60
+#, kde-format
+msgid "Insert"
+msgstr "Вставити"
+
+#: TabTitleFormatButton.cpp:85
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Insert title format"
+msgstr "Вставте формат заголовка вкладки"
+
+#: TabTitleFormatButton.cpp:89
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Insert remote title format"
+msgstr "Вставте формат заголовка вкладки віддалених команд"
+
+#: TerminalDisplay.cpp:1265 TerminalDisplay.cpp:1266
+#, kde-format
+msgid "Size: XXX x XXX"
+msgstr "Розмір: XXX x XXX"
+
+#: TerminalDisplay.cpp:1277
+#, kde-format
+msgid "Size: %1 x %2"
+msgstr "Розмір: %1 x %2"
+
+#: TerminalDisplay.cpp:2859
+#, kde-format
+msgid "Are you sure you want to paste %1 character?"
+msgid_plural "Are you sure you want to paste %1 characters?"
+msgstr[0] "Ви справді хочете вставити %1 символ?"
+msgstr[1] "Ви справді хочете вставити %1 символи?"
+msgstr[2] "Ви справді хочете вставити %1 символів?"
+msgstr[3] "Ви справді хочете вставити один символ?"
+
+#: TerminalDisplay.cpp:2862
+#, kde-format
+msgid "Confirm Paste"
+msgstr "Підтвердження закриття"
+
+#: TerminalDisplay.cpp:3050
+#, kde-format
+msgid ""
+"<qt>Output has been <a href=\"http://en.wikipedia.org/wiki/"
+"Software_flow_control\">suspended</a> by pressing Ctrl+S.  Press <b>Ctrl+Q</"
+"b> to resume.  Click <a href=\"#close\">here</a> to dismiss this message.</"
+"qt>"
+msgstr ""
+"<qt>Вивід було <a href=\"http://en.wikipedia.org/wiki/Software_flow_control"
+"\">призупинено</a> натисканням Ctrl+S. Натисніть <b>Ctrl+Q</b>, щоб його "
+"поновити. Натисніть <a href=\"#close\">тут</a>, щоб усунути це повідомлення."
+"</qt>"
+
+#: TerminalDisplay.cpp:3356
+#, kde-format
+msgid "&Paste Location"
+msgstr "&Вставити адресу"
+
+#: TerminalDisplay.cpp:3373
+#, kde-format
+msgid "Change &Directory To"
+msgstr "Змінити &каталог"
+
+#: ViewContainer.cpp:306
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Detach Tab"
+msgstr "В&ідокремити вкладку"
+
+#: ViewContainer.cpp:311
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Rename Tab..."
+msgstr "Пе&рейменувати вкладку…"
+
+#: ViewContainer.cpp:317
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "&Close Tab"
+msgstr "З&акрити вкладку"
+
+#: ViewContainer.cpp:324
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Create new tab"
+msgstr "Відкрити нову вкладку"
+
+#: ViewContainer.cpp:326
+#, kde-format
+msgctxt "@info:whatsthis"
+msgid "Create a new tab. Press and hold to select profile from menu"
+msgstr "Створити вкладку. Натисніть і утримуйте, щоб вибрати профіль з меню."
+
+#: ViewContainer.cpp:340
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Close tab"
+msgstr "Закрити вкладку"
+
+#: ViewContainer.cpp:341
+#, kde-format
+msgctxt "@info:whatsthis"
+msgid "Close the active tab"
+msgstr "Закрити активну вкладку"
+
+#: ViewContainerTabBar.cpp:60
+#, kde-kuit-format
+msgctxt "@info:whatsthis"
+msgid ""
+"<title>Tab Bar</title><para>The tab bar allows you to switch and move tabs. "
+"You can double-click a tab to change its name.</para>"
+msgstr ""
+"<title>Панель вкладок</title><para>Панель сторінок надає вам змогу "
+"перемикатися між вкладками. Ви можете двічі клацнути на вкладці, щоб змінити "
+"її назву.</para>"
+
+#: ViewManager.cpp:139
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Next Tab"
+msgstr "Наступна вкладка"
+
+#: ViewManager.cpp:140
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Previous Tab"
+msgstr "Попередня вкладка"
+
+#: ViewManager.cpp:142
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Switch to Last Tab"
+msgstr "Перемкнутися на останню вкладку"
+
+#: ViewManager.cpp:144
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Next View Container"
+msgstr "Наступний контейнер переглядів"
+
+#: ViewManager.cpp:146
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Move Tab Left"
+msgstr "Пересунути вкладку ліворуч"
+
+#: ViewManager.cpp:148
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Move Tab Right"
+msgstr "Пересунути вкладку праворуч"
+
+#: ViewManager.cpp:156
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Split View Left/Right"
+msgstr "Розділений перегляд: ліворуч/праворуч"
+
+#: ViewManager.cpp:164
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Split View Top/Bottom"
+msgstr "Розділений перегляд: вгорі/внизу"
+
+#: ViewManager.cpp:169
+#, kde-format
+msgctxt "@action:inmenu Close Active View"
+msgid "Close Active"
+msgstr "Закрити активний"
+
+#: ViewManager.cpp:180
+#, kde-format
+msgctxt "@action:inmenu Close Other Views"
+msgid "Close Others"
+msgstr "Закрити інші"
+
+#: ViewManager.cpp:190
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Expand View"
+msgstr "Розгорнути перегляд"
+
+#: ViewManager.cpp:200
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Shrink View"
+msgstr "Згорнути перегляд"
+
+#: ViewManager.cpp:213
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "D&etach Current Tab"
+msgstr "Від&окремити поточну вкладку"
+
+#: ViewManager.cpp:237
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Switch to Tab %1"
+msgstr "Перемкнутися на вкладку %1"
+
+#: Vt102Emulation.cpp:1131
+#, kde-format
+msgid ""
+"No keyboard translator available.  The information needed to convert key "
+"presses into characters to send to the terminal is missing."
+msgstr ""
+"Не знайдено таблиці відповідності для клавіатури. Відсутня інформація, "
+"потрібна для перетворення сигналу про натискання клавіші на символи, які "
+"буде показано на екрані."
+
+#: ZModemDialog.cpp:47
+#, kde-format
+msgid "&Stop"
+msgstr "&Зупинити"
+
+#~ msgid "Qt 5.9+ has changes that will affect the below two options."
+#~ msgstr ""
+#~ "У Qt 5.9+ передбачено зміни, які впливають на два наведених нижче "
+#~ "параметра."
+
+#~| msgctxt "@title"
+#~| msgid "Konsole"
+#~ msgctxt "@title"
+#~ msgid "Demo KonsolePart"
+#~ msgstr "Демонстрація KonsolePart"
+
+#~| msgctxt "@info:credit"
+#~| msgid "(c) 1997-2017, The Konsole Developers"
+#~ msgctxt "@info:credit"
+#~ msgid "(c) 2017, The Konsole Developers"
+#~ msgstr "© Розробники Konsole, 2017"
+
+#~ msgctxt "@title:column Display profile in file menu"
+#~ msgid "Show in Menu"
+#~ msgstr "Показ у меню"
+
+#~ msgid "Show URL hint overlays that can be triggered when holding down CTRL."
+#~ msgstr ""
+#~ "Показувати підказки-накладки щодо адрес, за якими можна перейти, "
+#~ "утримуючи натиснутою клавішу Ctrl."
+
+#~ msgid "Enable URL hints"
+#~ msgstr "Увімкнути підказки щодо адрес"
+
+#~ msgid "DEC VT420 Terminal"
+#~ msgstr "Термінал DEC VT420"
+
+#~ msgctxt "@info:shell"
+#~ msgid "Use --nofork to run in the foreground (helpful with the -e option)."
+#~ msgstr ""
+#~ "Скористайтеся --nofork для запуску у основному режимі (корисне разом з "
+#~ "параметром -e)."
+
+#~ msgctxt "@title:window"
+#~ msgid "Manage Profiles"
+#~ msgstr "Керування профілями"
+
+#~ msgid "Manage Profiles..."
+#~ msgstr "Керування профілями…"
+
+#~ msgctxt "@title"
+#~ msgid "<application>Konsole</application>"
+#~ msgstr "<application>Konsole</application>"
+
+#~ msgid "Shell"
+#~ msgstr "Оболонка"
+
+#~ msgid "--- Type anything in this box ---"
+#~ msgstr "--- Введіть щось у це поле ---"
+
+#~ msgid "Toggle Background Window"
+#~ msgstr "Увімкнути/Вимкнути фонове вікно"
+
+#~ msgid "Set the window size and position for this profile when exiting"
+#~ msgstr ""
+#~ "Зберегти розміри і розташування вікна для цього профілю під час виходу"
+
+#~ msgid "Save window size and position on exit"
+#~ msgstr "Зберігати розміри і розташування вікна при виході"
+
+#~ msgid "Accessible Color Scheme"
+#~ msgstr "Схема кольорів доступності"
+
+#~ msgid "%1, size %2"
+#~ msgstr "%1, розмір %2"
+
+#~ msgctxt "@item:inrange Minimum Size"
+#~ msgid "Small"
+#~ msgstr "Малий"
+
+#~ msgid "Adjust the font size used in this profile"
+#~ msgstr "Налаштувати розмір шрифту для цього профілю"
+
+#~ msgctxt "@item:inrange Maximum Size"
+#~ msgid "Large"
+#~ msgstr "Великий"
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Close current tab"
+#~ msgstr "Закрити поточну вкладку"
+
+#~ msgid ""
+#~ "Try to enable transparency, even if the system does not appear to support "
+#~ "it."
+#~ msgstr ""
+#~ "Спробувати увімкнути прозорість, навіть якщо видається, що система її не "
+#~ "підтримує."
+
+#~ msgid "Input"
+#~ msgstr "Ввід"
+
+#~ msgid "Mouse Interaction"
+#~ msgstr "Взаємодія з мишею"
+
+#~ msgid "Fixed size scrollback: "
+#~ msgstr "Буфер гортання з фіксованим розміром: "
+
+#~ msgid "Edit normal tab title format"
+#~ msgstr "Змінити формат заголовка звичайної вкладки"
+
+#~ msgid "Edit tab title format used when executing remote commands"
+#~ msgstr ""
+#~ "Змінити формат заголовка вкладки, що використовується для виконання "
+#~ "віддалених команд"
+
+#~ msgid "Allow terminal programs to resize the window"
+#~ msgstr "Дозволити програмам змінювати розмір вікна термінала"
+
+#~ msgid "Allow programs to resize terminal window"
+#~ msgstr "Дозволити програмам змінювати розмір вікна термінала"
+
+#~ msgid "Configure Current Profile..."
+#~ msgstr "Налаштувати поточний профіль…"
+
+#~ msgid "Wallpaper:"
+#~ msgstr "Тло:"
+
+#~ msgid "The wallpaper picture file path"
+#~ msgstr "Шлях до файла зображення тла"
+
+#~ msgid "&Switch Profile"
+#~ msgstr "&Перемкнути профіль"
+
+#~ msgid "Debug"
+#~ msgstr "Налагодження"
+
+#~ msgid "Command to execute"
+#~ msgstr "Виконати команду"
+
+#~ msgid "Show or hide the menu bar in terminal windows"
+#~ msgstr "Показувати чи ховати панель меню у вікнах термінала"
+
+#~ msgid "Tab Bar"
+#~ msgstr "Панель вкладок"
+
+#~ msgid "Seconds to detect silence:"
+#~ msgstr "Час встановлення бездіяльності (у с):"
+
+#~ msgid "Disable scrollback"
+#~ msgstr "Вимкнути гортання"
+
+#~ msgid "Fixed number of lines: "
+#~ msgstr "Фіксована кількість рядків: "
+
+#~ msgctxt "@option:radio Conceal the scroll bar"
+#~ msgid "Hidden"
+#~ msgstr "Сховано"
+
+#~ msgid "&Paste as text"
+#~ msgstr "&Вставити як текст"
+
+#~ msgid ""
+#~ "All characters from the current word to the end of line will be selected."
+#~ msgstr "Буде позначено всі символи від поточного слова, до кінця рядка."
+
+#~ msgid "Triple click selects from current word forward"
+#~ msgstr "Потрійне клацання позначає від поточного слова вперед"
+
+#~ msgid "&Change Profile"
+#~ msgstr "&Змінити профіль"
+
+#~ msgid "Change Profile"
+#~ msgstr "Змінити профіль"
+
+#~ msgid "Maintainer"
+#~ msgstr "Супровід"
+
+#~ msgid "Author"
+#~ msgstr "Автор"
+
+#~ msgid "Alt+E"
+#~ msgstr "Alt+З"
+
+#~ msgid "Alt+D"
+#~ msgstr "Alt+В"
+
+#~ msgid "Alt+S"
+#~ msgstr "Alt+Р"
+
+#~ msgid "Remote Connection..."
+#~ msgstr "Віддалене з’єднання..."
+
+#~ msgid "Remote Connection"
+#~ msgstr "Віддалене з’єднання"
+
+#~ msgid "Host:"
+#~ msgstr "Вузол:"
+
+#~ msgid "User:"
+#~ msgstr "Користувач:"
+
+#~ msgid "Lookup..."
+#~ msgstr "Пошук..."
+
+#~ msgid "Service:"
+#~ msgstr "Служба:"
+
+#~ msgid "SSH"
+#~ msgstr "SSH"
+
+#~ msgid "Secure FTP"
+#~ msgstr "Безпечна FTP"
+
+#~ msgid "Background color:"
+#~ msgstr "Колір тла:"
+
+#~ msgid "Save as custom session"
+#~ msgstr "Зберегти як нетиповий сеанс"
+
+#~ msgid "New Remote Connection"
+#~ msgstr "Нове віддалене з'єднання"
+
+#~ msgid "Connect"
+#~ msgstr "З'єднатися"
+
+#~ msgid "Next View"
+#~ msgstr "Наступний перегляд"
+
+#~ msgid "Previous View"
+#~ msgstr "Попередній перегляд"
+
+#~ msgid "Match case"
+#~ msgstr "З урахуванням регістру"
+
+#~ msgid ""
+#~ "Sets whether the search phrase is interpreted as normal text or as a "
+#~ "regular expression"
+#~ msgstr ""
+#~ "Вказує чи інтерпретувати фразу пошуку як звичайний текст, чи як "
+#~ "формальний вираз"
+
+#~ msgid "Search reached bottom, continued from top."
+#~ msgstr "Пошук дійшов до низу, продовжується зверху."
+
+#~ msgid "Search reached top, continued from bottom."
+#~ msgstr "Пошук дійшов до верху, продовжується знизу."
+
+#~ msgid "New &Tab"
+#~ msgstr "Нова в&кладка"
+
+#~ msgid "Move the selected profile up in the menu list"
+#~ msgstr "Пересунути вибраний профіль вгору списком меню"
+
+#~ msgid "Move Up"
+#~ msgstr "Пересунути вгору"
+
+#~ msgid "Move the selected profile down in the menu list"
+#~ msgstr "Пересунути вибраний профіль вниз списком меню"
+
+#~ msgid "Move Down"
+#~ msgstr "Пересунути вниз"
+
+#~ msgid "Copyright © 2006–2011 Konsole authors"
+#~ msgstr "© Розробники Konsole, 2006–2011"
+
+#~ msgid "Form"
+#~ msgstr "Форма"
+
+#~ msgid "Enter new tab text:"
+#~ msgstr "Введіть новий текст вкладки:"
+
+#~ msgid "No profiles available"
+#~ msgstr "Немає наявних профілів"
+
+#~ msgid "Word characters for double-click selection: "
+#~ msgstr "Символи слів для позначення подвійним клацанням: "
+
+#~ msgid "Show Menu Bar"
+#~ msgstr "Показувати смужку меню"
+
+#~ msgid "Clear and Reset"
+#~ msgstr "Спорожнити і скинути"
+
+#~ msgid "Character Encoding"
+#~ msgstr "Кодування символів"
+
+#~ msgid "&Detach View"
+#~ msgstr "В&ідокремити перегляд"
+
+#~ msgid "&Copy"
+#~ msgstr "&Скопіювати"
+
+#~ msgid "Increase Text Size"
+#~ msgstr "Збільшити розмір тексту"
+
+#~ msgid "Decrease Text Size"
+#~ msgstr "Зменшити розмір тексту"
+
+#~ msgid "Search Output..."
+#~ msgstr "Шукати у виводі..."
+
+#~ msgid "Find Next"
+#~ msgstr "Знайти далі"
+
+#~ msgid "Find Previous"
+#~ msgstr "Знайти попереднє"
+
+#~ msgid "Open Browser Here"
+#~ msgstr "Відкрити тут навігатор"
+
+#~ msgid "C&lear Display"
+#~ msgstr "О&чистити показ"
