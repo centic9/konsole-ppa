@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-09-07 08:25+0200\n"
-"PO-Revision-Date: 2020-07-21 13:39+0200\n"
+"POT-Creation-Date: 2020-10-29 08:37+0100\n"
+"PO-Revision-Date: 2020-09-16 15:59+0200\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.04.3\n"
+"X-Generator: Lokalize 20.08.1\n"
 "X-Language: cs_CZ\n"
 "X-Source-Language: en_US\n"
 
@@ -2233,31 +2233,31 @@ msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "V tomto okně je otevřeno %1 terminálů. Opravdu si přejete skončit?"
 
-#: MainWindow.cpp:757
+#: MainWindow.cpp:761
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Obecné"
 
-#: MainWindow.cpp:762 Part.cpp:330
+#: MainWindow.cpp:766 Part.cpp:330
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profily"
 
-#: MainWindow.cpp:767
+#: MainWindow.cpp:771
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr ""
 
-#: MainWindow.cpp:772
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "Dočasné soubory"
 
-#: MainWindow.cpp:777
+#: MainWindow.cpp:781
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -2779,12 +2779,12 @@ msgstr ""
 msgid "Print Shell"
 msgstr ""
 
-#: SessionController.cpp:1840
+#: SessionController.cpp:1851
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "Uložit stahování ZModem do ..."
 
-#: SessionController.cpp:1850
+#: SessionController.cpp:1861
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2795,13 +2795,13 @@ msgstr ""
 "použitelný ZModem software.</p><p>Asi si přejete nainstalovat balíček "
 "'rzsz', nebo 'lrzsz'.</p>"
 
-#: SessionController.cpp:1861
+#: SessionController.cpp:1872
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr "<p>V současném sezení již probíhá ZModem přenos.</p>"
 
-#: SessionController.cpp:1871
+#: SessionController.cpp:1882
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2810,7 +2810,7 @@ msgstr ""
 "<p>V systému  nenalezen použitelný ZModem software.</p><p>Asi si přejete "
 "nainstalovat balíček 'rzsz', nebo 'lrzsz'.</p>"
 
-#: SessionController.cpp:1877
+#: SessionController.cpp:1888
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Vyberte soubory pro odesílání ZModem"
@@ -3415,14 +3415,14 @@ msgstr "Zobrazovat hlavičku:"
 #, kde-format
 msgctxt "@option:radio When needed show the split header"
 msgid "When needed"
-msgstr ""
+msgstr "Pokud je potřeba"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysHideSplitHeader)
 #: settings/TabBarSettings.ui:400
 #, kde-format
 msgctxt "@option:radio Never show the split header"
 msgid "Never"
-msgstr ""
+msgstr "Nikdy"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: settings/TabBarSettings.ui:426
@@ -3435,28 +3435,28 @@ msgstr ""
 #, kde-format
 msgctxt "@option:radio Small height/width of splitter widget"
 msgid "Small"
-msgstr ""
+msgstr "Malý"
 
 #. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleMedium)
 #: settings/TabBarSettings.ui:446
 #, kde-format
 msgctxt "@option:radio Medium height/width of splitter widget"
 msgid "Medium"
-msgstr ""
+msgstr "Střední"
 
 #. i18n: ectx: property (text), widget (QRadioButton, SplitDragHandleLarge)
 #: settings/TabBarSettings.ui:456
 #, kde-format
 msgctxt "@option:radio Large height/width of splitter widget"
 msgid "Large"
-msgstr ""
+msgstr "Velký"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysShowSplitHeader)
 #: settings/TabBarSettings.ui:479
 #, kde-format
 msgctxt "@option:radio Always show the split header"
 msgid "Always"
-msgstr ""
+msgstr "Vždy"
 
 #: settings/TemporaryFilesSettings.cpp:49
 #, kde-format
@@ -3616,7 +3616,7 @@ msgstr "Velikost: XXX x XXX"
 msgid "Size: %1 x %2"
 msgstr "Velikost: %1 x %2"
 
-#: TerminalDisplay.cpp:3289
+#: TerminalDisplay.cpp:3297
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
@@ -3624,52 +3624,52 @@ msgstr[0] "Opravdu chcete vložit znak?"
 msgstr[1] "Opravdu chcete vložit %1 znaky?"
 msgstr[2] "Opravdu chcete vložit %1 znaků?"
 
-#: TerminalDisplay.cpp:3292
+#: TerminalDisplay.cpp:3300
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Potvrdit vložení"
 
-#: TerminalDisplay.cpp:3324
+#: TerminalDisplay.cpp:3332
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr ""
 
-#: TerminalDisplay.cpp:3325
+#: TerminalDisplay.cpp:3333
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr "Konec přenosu: může ukončit současný proces"
 
-#: TerminalDisplay.cpp:3326
+#: TerminalDisplay.cpp:3334
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr ""
 
-#: TerminalDisplay.cpp:3327
+#: TerminalDisplay.cpp:3335
 #, kde-format
 msgid "Backspace"
 msgstr "Backspace"
 
-#: TerminalDisplay.cpp:3328
+#: TerminalDisplay.cpp:3336
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr ""
 
-#: TerminalDisplay.cpp:3329
+#: TerminalDisplay.cpp:3337
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr ""
 
-#: TerminalDisplay.cpp:3330
+#: TerminalDisplay.cpp:3338
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr ""
 
-#: TerminalDisplay.cpp:3331
+#: TerminalDisplay.cpp:3339
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr ""
 
-#: TerminalDisplay.cpp:3353
+#: TerminalDisplay.cpp:3361
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
@@ -3678,31 +3678,31 @@ msgstr ""
 "Text, který se pokoušíte vložit obsahuje skryté ovládací znaky. Chcete je "
 "odfiltrovat?"
 
-#: TerminalDisplay.cpp:3356
+#: TerminalDisplay.cpp:3364
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Potvrdit vložení"
 
-#: TerminalDisplay.cpp:3358
+#: TerminalDisplay.cpp:3366
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "Vložit bez &kontrolních znaků"
 
-#: TerminalDisplay.cpp:3361
+#: TerminalDisplay.cpp:3369
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "&Vložit vše"
 
-#: TerminalDisplay.cpp:3364
+#: TerminalDisplay.cpp:3372
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "Z&rušit"
 
-#: TerminalDisplay.cpp:3615
+#: TerminalDisplay.cpp:3623
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3713,17 +3713,17 @@ msgstr ""
 "\">potlačen</a> stisknutím Ctrl+S.  Stiskněte <b>Ctrl+Q</b> pro pokračování."
 "</qt>"
 
-#: TerminalDisplay.cpp:3656
+#: TerminalDisplay.cpp:3664
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "Tento terminál je pouze pro čtení."
 
-#: TerminalDisplay.cpp:3965
+#: TerminalDisplay.cpp:3973
 #, kde-format
 msgid "Change &Directory To"
 msgstr "Změnit a&dresář na"
 
-#: TerminalDisplay.cpp:3997
+#: TerminalDisplay.cpp:4005
 #, kde-format
 msgid "&Paste Location"
 msgstr "Vložit &místo"
@@ -3734,7 +3734,7 @@ msgctxt "@info:tooltip"
 msgid "Maximize terminal"
 msgstr "Maximalizovat terminál"
 
-#: TerminalHeaderBar.cpp:106 TerminalHeaderBar.cpp:107
+#: TerminalHeaderBar.cpp:106
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close terminal"

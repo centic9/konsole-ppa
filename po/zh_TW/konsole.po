@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-09-07 08:25+0200\n"
+"POT-Creation-Date: 2020-10-29 08:37+0100\n"
 "PO-Revision-Date: 2020-05-14 23:13+0800\n"
 "Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
 "Language-Team: Chinese <zh-l10n@lists.linux.org.tw>\n"
@@ -2224,31 +2224,31 @@ msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "此視窗中目前有 %1 個開啟的終端機。您確定要離開嗎？"
 
-#: MainWindow.cpp:757
+#: MainWindow.cpp:761
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "一般"
 
-#: MainWindow.cpp:762 Part.cpp:330
+#: MainWindow.cpp:766 Part.cpp:330
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "設定檔"
 
-#: MainWindow.cpp:767
+#: MainWindow.cpp:771
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr ""
 
-#: MainWindow.cpp:772
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "暫存檔"
 
-#: MainWindow.cpp:777
+#: MainWindow.cpp:781
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -2766,12 +2766,12 @@ msgstr "程式 %1 正在此工作階段中執行。您確定要將它強制關�
 msgid "Print Shell"
 msgstr "列印 Shell"
 
-#: SessionController.cpp:1840
+#: SessionController.cpp:1851
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "儲存 ZModem 下載檔到..."
 
-#: SessionController.cpp:1850
+#: SessionController.cpp:1861
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2781,13 +2781,13 @@ msgstr ""
 "<p>偵測到要使用 ZModem 做檔案傳輸，但是此系統上找不到適合的 ZModem 軟體。</"
 "p><p>您可能需要安裝 rzsz 或 lrzsz 等軟體包。</p>"
 
-#: SessionController.cpp:1861
+#: SessionController.cpp:1872
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr "<p>目前的工作階段已經有一個 ZModem 檔案傳輸在進行中。</p>"
 
-#: SessionController.cpp:1871
+#: SessionController.cpp:1882
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2796,7 +2796,7 @@ msgstr ""
 "<p>此系統上找不到適合的 ZModem 軟體。</p><p>您可能需要安裝 rzsz 或 lrzsz 等軟"
 "體包。</p>"
 
-#: SessionController.cpp:1877
+#: SessionController.cpp:1888
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "選擇要用 ZModem 上傳的檔案"
@@ -3621,89 +3621,89 @@ msgstr "大小: XXX x XXX"
 msgid "Size: %1 x %2"
 msgstr "大小: %1 x %2"
 
-#: TerminalDisplay.cpp:3289
+#: TerminalDisplay.cpp:3297
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
 msgstr[0] "您確定要貼上這 %1 個字元嗎？"
 
-#: TerminalDisplay.cpp:3292
+#: TerminalDisplay.cpp:3300
 #, kde-format
 msgid "Confirm Paste"
 msgstr "確認貼上"
 
-#: TerminalDisplay.cpp:3324
+#: TerminalDisplay.cpp:3332
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr "文字結尾/中止：可能會退出目前程序"
 
-#: TerminalDisplay.cpp:3325
+#: TerminalDisplay.cpp:3333
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr "傳輸結尾：可能會退出目前程序"
 
-#: TerminalDisplay.cpp:3326
+#: TerminalDisplay.cpp:3334
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "鈴響 (Bell)：將嘗試發出聲音警告"
 
-#: TerminalDisplay.cpp:3327
+#: TerminalDisplay.cpp:3335
 #, kde-format
 msgid "Backspace"
 msgstr "Backspace 鍵"
 
-#: TerminalDisplay.cpp:3328
+#: TerminalDisplay.cpp:3336
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr "裝置控制 3 / XOFF: 暫停輸出"
 
-#: TerminalDisplay.cpp:3329
+#: TerminalDisplay.cpp:3337
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr "替代字元/暫停：可能會暫停目前程序"
 
-#: TerminalDisplay.cpp:3330
+#: TerminalDisplay.cpp:3338
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr "Esc 鍵：用來控制終端機狀態"
 
-#: TerminalDisplay.cpp:3331
+#: TerminalDisplay.cpp:3339
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr "檔案分隔符/退出：可能會中止目前程序"
 
-#: TerminalDisplay.cpp:3353
+#: TerminalDisplay.cpp:3361
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
 "want to filter them out?"
 msgstr "您嘗試貼上的文字有隱藏控制字元。是否過濾出這些字元？"
 
-#: TerminalDisplay.cpp:3356
+#: TerminalDisplay.cpp:3364
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "確認貼上"
 
-#: TerminalDisplay.cpp:3358
+#: TerminalDisplay.cpp:3366
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "去除控制字元後貼上(&W)"
 
-#: TerminalDisplay.cpp:3361
+#: TerminalDisplay.cpp:3369
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "全部貼上(&P)"
 
-#: TerminalDisplay.cpp:3364
+#: TerminalDisplay.cpp:3372
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "取消(&C)"
 
-#: TerminalDisplay.cpp:3615
+#: TerminalDisplay.cpp:3623
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3713,17 +3713,17 @@ msgstr ""
 "<qt>輸出已經被 Ctrl+S <a href=\"https://en.wikipedia.org/wiki/"
 "Software_flow_control\">暫停</a>。按下 <b>Ctrl+Q</b> 回復。</qt>"
 
-#: TerminalDisplay.cpp:3656
+#: TerminalDisplay.cpp:3664
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "此終端器為唯讀狀態。"
 
-#: TerminalDisplay.cpp:3965
+#: TerminalDisplay.cpp:3973
 #, kde-format
 msgid "Change &Directory To"
 msgstr "變更目錄為(&D)"
 
-#: TerminalDisplay.cpp:3997
+#: TerminalDisplay.cpp:4005
 #, kde-format
 msgid "&Paste Location"
 msgstr "貼上位置(&P)"
@@ -3734,7 +3734,7 @@ msgctxt "@info:tooltip"
 msgid "Maximize terminal"
 msgstr "最大化終端機"
 
-#: TerminalHeaderBar.cpp:106 TerminalHeaderBar.cpp:107
+#: TerminalHeaderBar.cpp:106
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close terminal"

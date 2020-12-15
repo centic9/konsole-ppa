@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2020-09-07 08:25+0200\n"
-"PO-Revision-Date: 2020-09-20 10:22+0200\n"
-"Last-Translator: Ignacy Kajdan <ignacy.kajdan@gmail.com>\n"
+"POT-Creation-Date: 2020-10-29 08:37+0100\n"
+"PO-Revision-Date: 2020-10-17 05:20+0200\n"
+"Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
 "Language-Team: Polish <kde-i18n-doc@kde.org>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr ""
 ">\n"
 ">\n"
 ">\n"
-"X-Generator: Lokalize 20.07.70\n"
+"X-Generator: Lokalize 20.08.1\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
@@ -2299,31 +2299,31 @@ msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr ""
 "Liczba otwartych terminali w tym oknie to %1. Czy zamknąć to okno mimo tego?"
 
-#: MainWindow.cpp:757
+#: MainWindow.cpp:761
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Ogólne"
 
-#: MainWindow.cpp:762 Part.cpp:330
+#: MainWindow.cpp:766 Part.cpp:330
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profile"
 
-#: MainWindow.cpp:767
+#: MainWindow.cpp:771
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr "Pasek kart / rozdzielacze"
 
-#: MainWindow.cpp:772
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "Pliki tymczasowe"
 
-#: MainWindow.cpp:777
+#: MainWindow.cpp:781
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -2379,10 +2379,9 @@ msgid "Profile #%1"
 msgstr "Profil #%1"
 
 #: RenameTabDialog.cpp:38
-#, fuzzy, kde-format
-#| msgid "Default Search Settings"
+#, kde-format
 msgid "Current Tab Settings"
-msgstr "Ustawienia domyślnego wyszukiwania"
+msgstr "Ustawienia bieżącej karty"
 
 #: RenameTabWidget.cpp:47
 #, kde-format
@@ -2704,15 +2703,14 @@ msgid "Read-only"
 msgstr "Tylko do odczytu"
 
 #: SessionController.cpp:728
-#, fuzzy, kde-format
-#| msgid "Default Search Settings"
+#, kde-format
 msgid "&Current Tab Settings..."
-msgstr "Ustawienia domyślnego wyszukiwania"
+msgstr "Ustawienia bieżą&cej karty..."
 
 #: SessionController.cpp:734
 #, kde-format
 msgid "&All Tabs in Current Window"
-msgstr "&Wszystkie karty w bieżącym oknie"
+msgstr "Wszystkie k&arty w bieżącym oknie"
 
 #: SessionController.cpp:741
 #, kde-format
@@ -2746,8 +2744,7 @@ msgid "Monitor for &Silence"
 msgstr "Wyczuwaj ci&szę"
 
 #: SessionController.cpp:779
-#, fuzzy, kde-format
-#| msgid "Monitor for &Activity"
+#, kde-format
 msgid "Monitor for Process Finishing"
 msgstr "Monitoruj kończenie procesów"
 
@@ -2854,12 +2851,12 @@ msgstr ""
 msgid "Print Shell"
 msgstr "Wydrukuj powłokę"
 
-#: SessionController.cpp:1840
+#: SessionController.cpp:1851
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "Zapisz pobranie ZModem do..."
 
-#: SessionController.cpp:1850
+#: SessionController.cpp:1861
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2870,14 +2867,14 @@ msgstr ""
 "oprogramowania wspierającego ten protokół.</p><p>Należy zainstalować pakiet "
 "„rzsz” lub „lrzsz”.</p> "
 
-#: SessionController.cpp:1861
+#: SessionController.cpp:1872
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr ""
 "<p>W bieżącej sesji już trwa przesyłanie plików przy użyciu ZModem.</p>"
 
-#: SessionController.cpp:1871
+#: SessionController.cpp:1882
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2886,7 +2883,7 @@ msgstr ""
 "<p>W systemie nie odnaleziono oprogramowania wspierającego protokół ZModem.</"
 "p><p>Należy zainstalować pakiet „rzsz” lub „lrzsz”.</p>"
 
-#: SessionController.cpp:1877
+#: SessionController.cpp:1888
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Wybierz pliki do wysłania przez ZModem"
@@ -3490,10 +3487,9 @@ msgstr "Dzieli"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings/TabBarSettings.ui:383
-#, fuzzy, kde-format
-#| msgid "Show menubar"
+#, kde-format
 msgid "Show Header:"
-msgstr "Pokaż pasek menu"
+msgstr "Pokaż nagłówek:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, ShowSplitHeaderWhenNeeded)
 #: settings/TabBarSettings.ui:390
@@ -3594,7 +3590,7 @@ msgstr "Aktywacja:"
 #: settings/ThumbnailsSettings.ui:44
 #, kde-format
 msgid "Mouse hover plus"
-msgstr ""
+msgstr "Najechanie myszą plus"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailShift)
 #: settings/ThumbnailsSettings.ui:51
@@ -3701,7 +3697,7 @@ msgstr "Rozmiar: XXX x XXX"
 msgid "Size: %1 x %2"
 msgstr "Rozmiar: %1 x %2"
 
-#: TerminalDisplay.cpp:3289
+#: TerminalDisplay.cpp:3297
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
@@ -3709,52 +3705,52 @@ msgstr[0] "Czy na pewno chcesz wkleić %1 znak?"
 msgstr[1] "Czy na pewno chcesz wkleić %1 znaki?"
 msgstr[2] "Czy na pewno chcesz wkleić %1 znaków?"
 
-#: TerminalDisplay.cpp:3292
+#: TerminalDisplay.cpp:3300
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Potwierdź wklejenie"
 
-#: TerminalDisplay.cpp:3324
+#: TerminalDisplay.cpp:3332
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr "Przerwanie: Może przerwać bieżący proces"
 
-#: TerminalDisplay.cpp:3325
+#: TerminalDisplay.cpp:3333
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr "Koniec przesyłania: Może zakończyć bieżący proces"
 
-#: TerminalDisplay.cpp:3326
+#: TerminalDisplay.cpp:3334
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "Dzwonek: Spróbuje odtworzyć ostrzeżenie dźwiękowe"
 
-#: TerminalDisplay.cpp:3327
+#: TerminalDisplay.cpp:3335
 #, kde-format
 msgid "Backspace"
 msgstr "Backspace"
 
-#: TerminalDisplay.cpp:3328
+#: TerminalDisplay.cpp:3336
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr "Device Control Three/XOFF: Wstrzymuje wyjście"
 
-#: TerminalDisplay.cpp:3329
+#: TerminalDisplay.cpp:3337
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr "Zawieszenie: Może zawiesić bieżący proces"
 
-#: TerminalDisplay.cpp:3330
+#: TerminalDisplay.cpp:3338
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
-msgstr ""
+msgstr "Escape: używane do zmiany stanu terminala"
 
-#: TerminalDisplay.cpp:3331
+#: TerminalDisplay.cpp:3339
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr "Przerwanie: Może przerwać bieżący proces"
 
-#: TerminalDisplay.cpp:3353
+#: TerminalDisplay.cpp:3361
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
@@ -3763,31 +3759,31 @@ msgstr ""
 "Tekst, który próbujesz wkleić zawiera ukryte znaki sterujące. Czy chcesz je "
 "odfiltrować?"
 
-#: TerminalDisplay.cpp:3356
+#: TerminalDisplay.cpp:3364
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Potwierdź wklejenie"
 
-#: TerminalDisplay.cpp:3358
+#: TerminalDisplay.cpp:3366
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "&Wklej bez znaków sterujących"
 
-#: TerminalDisplay.cpp:3361
+#: TerminalDisplay.cpp:3369
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "&Wklej wszystko"
 
-#: TerminalDisplay.cpp:3364
+#: TerminalDisplay.cpp:3372
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "&Anuluj"
 
-#: TerminalDisplay.cpp:3615
+#: TerminalDisplay.cpp:3623
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3798,17 +3794,17 @@ msgstr ""
 "Software_flow_control\">zawieszone</a> poprzez naciśnięcie Ctrl+S. Naciśnij "
 "<b>Ctrl+Q</b>, aby wznowić."
 
-#: TerminalDisplay.cpp:3656
+#: TerminalDisplay.cpp:3664
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "Ten terminal jest tylko do odczytu."
 
-#: TerminalDisplay.cpp:3965
+#: TerminalDisplay.cpp:3973
 #, kde-format
 msgid "Change &Directory To"
 msgstr "Zmień na ten &katalog"
 
-#: TerminalDisplay.cpp:3997
+#: TerminalDisplay.cpp:4005
 #, kde-format
 msgid "&Paste Location"
 msgstr "Wklej &położenie"
@@ -3819,7 +3815,7 @@ msgctxt "@info:tooltip"
 msgid "Maximize terminal"
 msgstr "Maksymalizuj terminal"
 
-#: TerminalHeaderBar.cpp:106 TerminalHeaderBar.cpp:107
+#: TerminalHeaderBar.cpp:106
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close terminal"
@@ -3832,11 +3828,10 @@ msgid "&Detach Tab"
 msgstr "O&dłącz kartę"
 
 #: ViewContainer.cpp:122
-#, fuzzy, kde-format
-#| msgid "Default Search Settings"
+#, kde-format
 msgctxt "@action:inmenu"
 msgid "&Current Tab Settings..."
-msgstr "Ustawienia domyślnego wyszukiwania"
+msgstr "Ustawienia bieżą&cej karty..."
 
 #: ViewContainer.cpp:129
 #, kde-format
