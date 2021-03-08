@@ -90,9 +90,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2 de juliol de 2020</date>
+>16 de setembre de 2020</date>
 <releaseinfo
->Aplicacions 20.08</releaseinfo>
+>Aplicacions 20.12</releaseinfo>
 
 <abstract
 ><para
@@ -137,25 +137,25 @@
 >Historial</title>
 
 <para
->El &konsole; utilitza la noció de desplaçar enrere per a permetre als usuaris veure la sortida mostrada anteriorment. Per omissió, el desplaçament enrere està activat i establert a desar 1.000 línies de la sortida, a més del que es mostra actualment a la pantalla. </para>
+>El &konsole; utilitza la noció de desplaçar enrere per a permetre als usuaris veure la sortida mostrada anteriorment. De manera predeterminada, el desplaçament enrere està activat i establert a desar 1.000 línies de la sortida, a més del que es mostra actualment a la pantalla. </para>
 <para
 >Segons les línies es van desplaçant fora de la part superior de la pantalla, es poden tornar a veure movent la barra de desplaçament cap a amunt, movent la roda del ratolí o usant les tecles <keycombo action="simul"
 >&Maj;<keycap
 >Re Pàg</keycap
 ></keycombo
-> (per anar una pàgina enrere), <keycombo action="simul"
+> (per a anar una pàgina enrere), <keycombo action="simul"
 >&Maj;<keycap
 >Av Pàg</keycap
 ></keycombo
-> (per anar una pàgina endavant), <keycombo action="simul"
+> (per a anar una pàgina endavant), <keycombo action="simul"
 >&Maj;<keysym
 >Fletxa amunt</keysym
 ></keycombo
-> (per anar una línia amunt) i <keycombo action="simul"
+> (per a anar una línia amunt) i <keycombo action="simul"
 >&Maj;<keysym
 >Fletxa avall</keysym
 ></keycombo
-> (per anar una línia avall). </para>
+> (per a anar una línia avall). </para>
 <para
 >Es pot canviar la quantitat de desplaçament utilitzant <keycombo action="simul"
 >&Maj;<keycap
@@ -169,7 +169,7 @@
 ><guimenuitem
 >Edita el perfil actual...</guimenuitem
 ></menuchoice
-> per obrir aquesta finestra). </para>
+> per a obrir aquesta finestra). </para>
 
 </sect1>
 
@@ -248,7 +248,7 @@
 
 <listitem
 ><para
->Sobre les altres pestanyes del diàleg, configureu l'aparença d'aquesta sessió. Podeu configurar diferents tipus de lletra, esquemes de color, tipus de $<envar
+>Sobre les altres pestanyes del diàleg, configureu l'aparença d'aquesta sessió. Podeu configurar diferents tipus de lletra, un esquema de color, tipus de $<envar
 >TERM</envar
 > i moltes altres opcions per a cada sessió.</para
 ></listitem>
@@ -274,7 +274,7 @@
 ><guisubmenu
 >Pestanya nova</guisubmenu
 ></menuchoice
->. No hi haurà submenú si només es mostra el perfil per omissió. </para>
+>. No hi haurà submenú si només es mostra el perfil predeterminat. </para>
 
 </sect1>
 
@@ -466,7 +466,7 @@
 </term
 > <listitem>
 <para
->Mou l'element arrossegat dins la carpeta actual. Aquest element només apareixerà al menú contextual si teniu els drets per eliminar el fitxer o carpeta en qüestió. </para
+>Mou l'element arrossegat dins la carpeta actual. Aquest element només apareixerà al menú contextual si teniu els drets per a eliminar el fitxer o la carpeta en qüestió. </para
 ></listitem>
 </varlistentry>
 
@@ -549,9 +549,9 @@
 >Si premeu les dreceres abans de deixar anar el &BER; durant l'arrossega i deixa, no apareixerà cap menú contextual i les accions s'executaran immediatament. </para>
 
 <para
->Si voleu utilitzar per omissió la tecla &Ctrl; per arrossegar i deixar o inhabilitar el menú contextual per inserir els &URL; com a text, activeu les opcions corresponents a la pestanya <guilabel
+>Si voleu utilitzar de manera predeterminada la tecla &Ctrl; per a arrossegar i deixar, o inhabilitar el menú contextual per a inserir els &URL; com a text, activeu les opcions corresponents a la pestanya <guilabel
 >Ratolí</guilabel
-> al diàleg d'arranjament del perfil. </para>
+> en el diàleg de configuració del perfil. </para>
 
 </sect1>
 
@@ -570,7 +570,7 @@
 >Mostra la barra de menús</guimenuitem
 > fent clic <mousebutton
 >dret</mousebutton
-> a la finestra (sempre que no hi hagi una aplicació a pantalla completa en aquesta finestra, com «vi», «minicom», &etc;) La drecera per omissió es llista després de cada element de menú. </para>
+> a la finestra (sempre que no hi hagi una aplicació a pantalla completa en aquesta finestra, com «vi», «minicom», &etc;) La drecera predeterminada es llista després de cada element de menú. </para>
 <para
 >De manera alternativa podeu utilitzar la drecera <keycombo action="simul"
 >&Ctrl;&Maj;<keycap
@@ -600,7 +600,7 @@
 <listitem
 ><para
 ><action
->Obre una finestra nova del &konsole; amb el perfil per omissió.</action>
+>Obre una finestra nova del &konsole; amb el perfil predeterminat.</action>
 </para
 ></listitem
 ></varlistentry>
@@ -623,10 +623,10 @@
 <listitem
 ><para
 ><action
->Obre una pestanya nova amb el perfil per omissió.</action>
+>Obre una pestanya nova amb el perfil predeterminat.</action>
 <note
 ><para
->El &konsole; ve amb un perfil per omissió. Qualsevol perfil nou afegit per l'usuari serà llistat al submenú. No hi haurà submenú si només es mostra el perfil per omissió. </para
+>El &konsole; ve amb un perfil predeterminat. Qualsevol perfil nou afegit per l'usuari serà llistat al submenú. No hi haurà submenú si només es mostra el perfil predeterminat. </para
 ></note>
 </para
 ></listitem
@@ -691,7 +691,7 @@
 ><para
 ><action
 >Imprimeix la pantalla actual.</action
-> Per omissió, la sortida s'escalarà per ajustar-la a la mida del paper on imprimiu amb el color del text en negre i sense fons. Es poden canviar aquestes opcions al diàleg d'impressió sobre la pestanya <guilabel
+> De manera predeterminada, la sortida s'escalarà per a ajustar-la a la mida del paper on imprimiu amb el color del text en negre i sense fons. Es poden canviar aquestes opcions al diàleg d'impressió sobre la pestanya <guilabel
 >Opcions de sortida</guilabel
 >.</para
 ></listitem>
@@ -710,7 +710,7 @@
 ><para
 ><action
 >Obre el gestor de fitxers del &kde; al directori actual</action
->. Per omissió, aquest és el <ulink url="help:/dolphin/index.html"
+>. De manera predeterminada, aquest és el <ulink url="help:/dolphin/index.html"
 >&dolphin;</ulink
 >. </para
 ></listitem>
@@ -984,7 +984,7 @@ CloseAllTabs=true</screen
 >KILL</errorcode
 ></entry>
 <entry
->senyal per matar</entry>
+>senyal per a matar</entry>
 </row>
 <row>
 <entry
@@ -1007,7 +1007,7 @@ CloseAllTabs=true</screen
 </informaltable>
 
 <para
->Referiu-vos a les pàgines del manual del sistema per obtenir més informació sobre donar l'ordre: <userinput
+>Referiu-vos a les pàgines del manual del sistema per a obtenir més informació sobre donar l'ordre: <userinput
 ><command
 >man</command
 > <option
@@ -1029,7 +1029,7 @@ CloseAllTabs=true</screen
 > <guimenu
 >Edita</guimenu
 ><guimenuitem
->Configura els ajustaments de la pestanya...</guimenuitem
+>Configura les opcions de la pestanya...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1394,7 +1394,7 @@ Various search improvements
 >Alterna la vigilància de la pestanya actual per a la manca d'activitat.</action>
 </para
 ><para
->Per omissió, després de 10 segons d'inactivitat, apareixerà una icona informativa a la pestanya de la sessió. El tipus d'alertes es pot canviar a través de <menuchoice
+>De manera predeterminada, després de 10 segons d'inactivitat, apareixerà una icona informativa a la pestanya de la sessió. El tipus d'alertes es pot canviar a través de <menuchoice
 ><guimenu
 >Arranjament</guimenu
 ><guimenuitem
@@ -1696,7 +1696,7 @@ Various search improvements
 ><para
 >El programa keditbookmarks haurà d'estar instal·lat perquè aparegui aquest element del menú.</para>
 <para
->Podeu utilitzar l'editor d'adreces d'interès per afegir manualment els &URL;. Actualment el &konsole; accepta els següents: <itemizedlist mark="opencircle">
+>Podeu utilitzar l'editor d'adreces d'interès per a afegir manualment els &URL;. Actualment el &konsole; accepta els següents: <itemizedlist mark="opencircle">
 <listitem
 ><para
 >ssh://usuari@màquina:port</para
@@ -1810,7 +1810,7 @@ Various search improvements
 <listitem
 ><para
 ><action
->Alterna el &konsole; per omplir tota la pantalla.</action
+>Alterna el &konsole; per a ocupar tota la pantalla.</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1950,7 +1950,7 @@ Various search improvements
         <para
 >La pàgina <guilabel
 >General</guilabel
-> permet configurar la visibilitat de la barra de menús, recordar la mida de la finestra del &konsole;, executar totes les finestres del &konsole; en un sol procés, habilitar els acceleradors de menú, mostrar el títol de la finestra a la barra de títol, eliminar la barra de títol i el marc de la finestra. També és possible configurar la sensibilitat de majúscules i minúscules a la cerca, l'ús d'una expressió regular, ressaltar totes les coincidències i la direcció de la cerca (<guilabel
+> permet configurar la visibilitat de la barra de menús, recordar la mida de la finestra del &konsole;, executar totes les finestres del &konsole; en un sol procés, habilitar els acceleradors de menú, mostrar el títol de la finestra a la barra de títol, eliminar la barra de títol i el marc de la finestra, i enfocar els terminals quan el punter del ratolí es troba a sobre seu. També és possible configurar la sensibilitat de majúscules i minúscules a la cerca, l'ús d'una expressió regular, ressaltar totes les coincidències i la direcció de la cerca (<guilabel
 >Cerca cap enrere</guilabel
 > és el valor predeterminat). La pàgina <guilabel
 >General</guilabel
@@ -1990,7 +1990,7 @@ Various search improvements
 >Sempre</guilabel
 >, o <guilabel
 >Mai</guilabel
->) i definir la mida de la nansa per arrossegar dels divisors (<guilabel
+>) i definir la mida de la nansa per a arrossegar els divisors (<guilabel
 >Petita</guilabel
 > (predeterminat), <guilabel
 >Mitjana</guilabel
@@ -2015,7 +2015,7 @@ Various search improvements
 > es pot utilitzar per a definir la mida de les miniatures i les opcions d'activació (podreu triar la tecla de control per a l'activació &Maj;, &Alt; i &Ctrl;). </para>
         <note>
             <para
->Per utilitzar la característica de miniatures que mostra les miniatures de les imatges als emergents quan es mostren en passar per sobre dels elements d'imatge amb el punter del ratolí, haureu d'habilitar el subratllat del fitxer per al vostre perfil actual: <menuchoice
+>Per a utilitzar la característica de miniatures que mostra les miniatures de les imatges als emergents quan es mostren en passar per sobre dels elements d'imatge amb el punter del ratolí, haureu d'habilitar el subratllat del fitxer per al vostre perfil actual: <menuchoice
 ><guimenu
 >Arranjament</guimenu
 ><guimenuitem
@@ -2043,9 +2043,9 @@ Various search improvements
 <para
 >El &konsole; té la configuració comuna al &kde; i els elements del menú <guimenu
 >Ajuda</guimenu
->, per obtenir més informació llegiu la secció sobre <ulink url="help:/fundamentals/menus.html#menus-help"
+>. Per a obtenir més informació, llegiu la secció sobre <ulink url="help:/fundamentals/menus.html#menus-help"
 >El menú Ajuda</ulink
-> dels fonaments del &kde;. </para
+> en els fonaments del &kde;. </para
 ><!-- Only negative to using this is that it shows shortcut F1 for Handbook -->
 </sect2>
 
@@ -2057,7 +2057,7 @@ Various search improvements
 
 <sect2 id="configure-tab-settings-dialog">
 <title
->Configurar el diàleg Ajustaments de la pestanya</title>
+>Configurar el diàleg Opcions de la pestanya</title>
 
 <para
 >El format del nom, el format per al títol de la pestanya remota i el color de la pestanya actual es pot canviar des d'aquest diàleg. El diàleg es pot mostrar a través del menú, la drecera <keycombo action="simul"
@@ -2234,7 +2234,7 @@ Various search improvements
 ><para
 ><action
 >Inicia el &konsole;</action
-> emprant el perfil indicat en comptes del perfil per omissió.</para
+> emprant el perfil indicat en comptes del perfil predeterminat.</para
 ></listitem>
 </varlistentry>
 
@@ -2312,7 +2312,7 @@ Various search improvements
 ><para
 >El fitxer té una pestanya per a cada línia en el següent format:</para>
 <para
->Cada línia especifica una pestanya per obrir, utilitzant un màxim de quatre camps per especificar com serà oberta. Els camps estan delimitats amb <userinput
+>Cada línia especifica una pestanya a obrir, utilitzant un màxim de quatre camps per a especificar com serà oberta. Els camps estan delimitats amb <userinput
 >;;</userinput
 > i un nom de camp haurà de tenir un <userinput
 >:</userinput
@@ -2320,13 +2320,13 @@ Various search improvements
 >#</userinput
 > al començament seran ignorades, de manera que podeu utilitzar una línia que comenci amb <userinput
 >#</userinput
-> per afegir comentaris. </para>
+> per a afegir comentaris. </para>
 
 <simplelist>
 <member
 ><userinput
 >title:</userinput
-> un nom per aquesta pestanya, si està en blanc o no es declara s'utilitzarà el valor per omissió</member>
+> un nom per a aquesta pestanya, si està en blanc o no es declara s'utilitzarà el valor predeterminat</member>
 <member
 ><userinput
 >workdir:</userinput
@@ -2336,11 +2336,11 @@ Various search improvements
 <member
 ><userinput
 >profile:</userinput
-> un perfil que utilitzarà el &konsole;, si està en blanc o no es declara s'utilitzarà el valor per omissió</member>
+> un perfil que utilitzarà el &konsole;, si està en blanc o no es declara s'utilitzarà el valor predeterminat</member>
 <member
 ><userinput
 >command:</userinput
-> una ordre per executar</member>
+> una ordre a executar</member>
 </simplelist>
 <para
 >Cada línia ha de tenir almenys un camp <userinput
@@ -2369,7 +2369,7 @@ Various search improvements
 >&Ctrl;&Maj;<keycap
 >F12</keycap
 ></keycombo
-> (per omissió). </para
+> (predeterminada). </para
 ></listitem>
 </varlistentry>
 
@@ -2399,7 +2399,7 @@ Various search improvements
 ><para
 ><action
 >Mostra</action
-> la barra de menús, anul·la el comportament per omissió. </para
+> la barra de menús, anul·la el comportament predeterminat. </para
 ></listitem>
 </varlistentry>
 
@@ -2412,7 +2412,7 @@ Various search improvements
 ><para
 ><action
 >Oculta</action
-> la barra de menús, anul·la el comportament per omissió. </para
+> la barra de menús, anul·la el comportament predeterminat. </para
 ></listitem>
 </varlistentry>
 
@@ -2425,7 +2425,7 @@ Various search improvements
 ><para
 ><action
 >Mostra</action
-> la barra de tasques, anul·la el comportament per omissió. </para
+> la barra de tasques, anul·la el comportament predeterminat. </para
 ></listitem>
 </varlistentry>
 
@@ -2438,7 +2438,7 @@ Various search improvements
 ><para
 ><action
 >Oculta</action
-> la barra de tasques, anul·la el comportament per omissió. </para
+> la barra de tasques, anul·la el comportament predeterminat. </para
 ></listitem>
 </varlistentry>
 
@@ -2533,7 +2533,7 @@ Various search improvements
 ><para
 >Aquesta opció detectarà tots els arguments passats al &konsole;, i els executarà com <parameter
 >ordre</parameter
->. Pel que aquesta opció s'ha d'utilitzar sempre com l'última opció.</para
+>. Pel que aquesta opció s'ha d'utilitzar sempre com a l'última opció.</para
 ></note>
 </listitem>
 </varlistentry>
@@ -2667,7 +2667,7 @@ Various search improvements
 </para>
 
 <para
->Per a més informació, si us plau, visiteu <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
+>Per a més informació, visiteu <ulink url="https://techbase.kde.org/Development/Tutorials/D-Bus/Introduction"
 >La guia d'aprenentatge de &DBus;</ulink
 >. </para>
 
@@ -2675,11 +2675,11 @@ Various search improvements
 
 <chapter id="key-bindings">
 <title
->Vinculació de les tecles amb la terminal</title>
+>Lligams de tecla amb la terminal</title>
 
 <sect1>
 <title
->Com utilitzar la vinculació de tecles al &konsole;</title>
+>Com utilitzar els lligams de tecla amb el &konsole;</title>
 
 <sect2 id="intro">
 <title
@@ -2694,10 +2694,10 @@ Various search improvements
 >) executant-se a l'intèrpret d'ordres.</para>
 
 <para
->Els usuaris poden personalitzar els ajustaments dels vincles de tecla al &konsole; utilitzant l'Editor per a la vinculació de tecles. Es pot configurar una combinació de tecles per enviar un control específic o una seqüència d'escapament al terminal.</para>
+>Els usuaris poden personalitzar la configuració dels vincles de tecla al &konsole; utilitzant l'Editor per als lligams de tecla. Es pot configurar una combinació de tecles per a enviar un control específic o una seqüència d'escapament al terminal.</para>
 
 <para
->Podeu obrir l'Editor per a la vinculació de tecles des de l'entrada del menú <menuchoice
+>Podeu obrir l'Editor per als lligams de tecla des de l'entrada del menú <menuchoice
 ><guimenu
 >Arranjament</guimenu
 ><guimenuitem
@@ -2705,7 +2705,7 @@ Various search improvements
 ></menuchoice
 >, i anant a la pestanya <guilabel
 >Teclat</guilabel
->. Allà hi ha els esquemes de vinculació de tecles que per omissió apareixen al &konsole;.</para>
+>. Allà hi ha els esquemes de lligams de tecla que apareixen de manera predeterminada al &konsole;.</para>
 </sect2>
 
 <sect2 id="table-fields">
@@ -2760,7 +2760,7 @@ Space+Ctrl
 </note>
 
 <para
->Els modes admesos per a les vinculacions de tecles es llisten a continuació:</para>
+>Els modes admesos per als lligams de tecla es llisten a continuació:</para>
 
 <variablelist>
 
@@ -2808,7 +2808,7 @@ Space+Ctrl
 <itemizedlist>
 <listitem>
 <para
->La memòria intermèdia d'una pantalla normal (per omissió): permet desplaçar-vos per veure les línies anteriors de la sortida, aquest és la memòria intermèdia predeterminada que normalment feu servir per executar ordres, &etc;</para>
+>La memòria intermèdia d'una pantalla normal (predeterminat): permet desplaçar-vos per a veure les línies anteriors de la sortida, aquesta és la memòria intermèdia predeterminada que normalment feu servir per a executar ordres, &etc;</para>
 </listitem>
 <listitem>
 <para
@@ -2864,7 +2864,7 @@ Space+Ctrl
 >Fletxa esquerra</keycap
 >), depenent de si aquest mode està establert o reiniciat</para>
 <para
->Per omissió, el &konsole; segueix el comportament de XTerm de tractar les tecles <keycap
+>De manera predeterminada, el &konsole; segueix el comportament de XTerm de tractar les tecles <keycap
 >Inici</keycap
 > i <keycap
 >Fi</keycap
@@ -2909,7 +2909,7 @@ Space+Ctrl
 </variablelist>
 
 <para
->Tingueu en compte que cada combinació de tecles i els modes (estableix/reinicia) haurà de ser única. Per exemple, considereu les dues regles següents:</para>
+>Cal tenir en compte que cada combinació de tecles i els modes (estableix/reinicia) haurà de ser única. Per exemple, considereu les dues regles següents:</para>
 
 <itemizedlist>
 <listitem
@@ -3009,7 +3009,7 @@ Space+Ctrl
 >\xHH : on HH són dos dígits hexadecimals</para>
 <tip>
 <para
->Això es pot utilitzar per enviar caràcters de control &ASCII;, &pex;, <quote
+>Això es pot utilitzar per a enviar caràcters de control &ASCII;, &pex;, <quote
 >\x00</quote
 > és el caràcter NUL</para>
 </tip>
@@ -3022,7 +3022,7 @@ Space+Ctrl
 <title
 >Altres recursos del sistema</title>
 <para
->Hi ha altres recursos del sistema que poden afectar les vinculacions de tecles amb la terminal:</para>
+>Hi ha altres recursos del sistema que poden afectar els lligams de tecla amb la terminal:</para>
 <itemizedlist>
 <listitem>
 <para
@@ -3047,7 +3047,7 @@ Space+Ctrl
 <title
 >Informació relacionada</title>
 <para
->Per obtenir més informació sobre les seqüències d'escapament i els caràcters de control, consulteu la documentació següent:</para>
+>Per a obtenir més informació sobre les seqüències d'escapament i els caràcters de control, consulteu la documentació següent:</para>
 <itemizedlist>
 <listitem>
 <para
@@ -3077,16 +3077,16 @@ Space+Ctrl
 <title
 >Usar els fulls d'estil per a la barra de pestanyes</title>
 <para
->El full d'estil per omissió per a la barra de pestanyes estableix l'amplada màxima i mínima de les pestanyes. L'usuari pot crear un fitxer <filename role="extension"
+>El full d'estil predeterminat per a la barra de pestanyes estableix l'amplada màxima i mínima de les pestanyes. L'usuari pot crear un fitxer <filename role="extension"
 >.css</filename
 > i fer que el &konsole; l'utilitzi com a full d'estil per a la barra de pestanyes. Al fitxer <filename role="extension"
 >.css</filename
->, l'estri a utilitzar és <userinput
+>, el giny a utilitzar és <userinput
 >QTabBar::tab</userinput
 >. </para>
 <para
 >Per a més informació, considereu llegir la <ulink url="https://doc.qt.io/qt-5/stylesheet.html"
->pàgina pels fulls d'estil de les &Qt;</ulink
+>pàgina per als fulls d'estil de les &Qt;</ulink
 > </para>
 
 <para
@@ -3223,7 +3223,7 @@ QTabBar::tab {
 
 <listitem
 ><para
->Hi ha una característica oculta per al formatador «%d» en el títol de la pestanya. Podeu indicar al &konsole; que abreugi el nom del directori al seu primer caràcter. Per exemple, «/camí/a/konsole/src» es pot abreujar a «konsole/s». Per habilitar i controlar aquesta característica oculta, obriu el <filename
+>Hi ha una característica oculta per al formatador «%d» en el títol de la pestanya. Podeu indicar al &konsole; que abreugi el nom del directori al seu primer caràcter. Per exemple, «/camí/a/konsole/src» es pot abreujar a «konsole/s». Per a habilitar i controlar aquesta característica oculta, obriu el <filename
 >konsolerc</filename
 > a <userinput
 ><command
@@ -3269,7 +3269,7 @@ CommonDirNames=nom1,nom2,nom3...
 
 <listitem>
 <para
->Alguns tipus de lletra no estan disponibles per a utilitzar-los en el &konsole;, encara que estiguin disponibles en altres aplicacions. Això no vol dir que hi hagi un error al &konsole;. El &konsole; requereix tipus de lletra mono-espaiades per oferir el millor resultat visual, de manera que sols demana a les &Qt; la llista de tipus de lletra mono-espaiades.</para>
+>Alguns tipus de lletra no estan disponibles per a utilitzar-los en el &konsole;, encara que estiguin disponibles en altres aplicacions. Això no vol dir que hi hagi un error al &konsole;. El &konsole; requereix tipus de lletra mono-espaiades per a oferir el millor resultat visual, de manera que sols demana a les &Qt; la llista de tipus de lletra mono-espaiades.</para>
 
 <para
 >A partir de la versió 16.08 (agost de 2016), el &konsole; es pot configurar per a permetre seleccionar qualsevol tipus de lletra amb l'advertiment que la visualització pot no ser correcta.</para>
@@ -3340,7 +3340,7 @@ CommonDirNames=nom1,nom2,nom3...
 >Crèdits i llicència</title>
 
 <para
->L'aplicació &konsole; actualment és mantinguda per &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
+>L'aplicació &konsole; actualment és mantinguda per en &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
 
 <para
 >Entre els anteriors mantenidors del &konsole; s'inclouen: &Robert.Knight; &Robert.Knight.mail; i &Waldo.Bastian; &Waldo.Bastian.mail;</para>
@@ -3352,10 +3352,10 @@ CommonDirNames=nom1,nom2,nom3...
 >Aquest document va ser escrit originalment per en &Jonathan.Singer; &Jonathan.Singer.mail;</para>
 
 <para
->Aquest document ha estat actualitzat per a &kde; 4.x per en &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
+>Aquest document ha estat actualitzat per al &kde; 4.x per en &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
 
 <para
->Aquest document ha estat actualitzat per a &kde; 3.4 per en &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
+>Aquest document ha estat actualitzat per al &kde; 3.4 per en &Kurt.Hindenburg; &Kurt.Hindenburg.mail;</para>
 
 <para
 >Convertit originalment a DocBook <acronym
@@ -3371,7 +3371,7 @@ CommonDirNames=nom1,nom2,nom3...
 >Enllaços</title>
 
 <para
->Per a més informació, si us plau, visiteu aquests llocs web:</para>
+>Per a més informació, visiteu aquests llocs web:</para>
 <itemizedlist>
 <listitem
 ><para

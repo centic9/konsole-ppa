@@ -37,99 +37,30 @@ option(KONSOLE_BUILD_UNI2CHARACTERWIDTH "Konsole: build uni2characterwidth execu
 # qdbuscpp2xml -M -s ViewManager.h -o org.kde.konsole.Konsole.xml
 
 # Generate dbus .xml files; do not store .xml in source folder
-qt5_generate_dbus_interface(Session.h org.kde.konsole.Session.xml OPTIONS -m)
 qt5_generate_dbus_interface(ViewManager.h org.kde.konsole.Window.xml OPTIONS -m)
 
-qt5_add_dbus_adaptor(sessionadaptors_SRCS
-                    ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Session.xml
-                    Session.h
-                    Konsole::Session)
 qt5_add_dbus_adaptor(windowadaptors_SRCS
                     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Window.xml
                     ViewManager.h
                     Konsole::ViewManager)
 
-set(konsoleprivate_SRCS ${sessionadaptors_SRCS}
-                        ${windowadaptors_SRCS}
-                        hsluv.c
-                        BookmarkHandler.cpp
-                        BookmarkMenu.cpp
-                        ColorScheme.cpp
-                        ColorSchemeManager.cpp
-                        ColorSchemeEditor.cpp
-                        CopyInputDialog.cpp
-                        EditProfileDialog.cpp
-                        FontDialog.cpp
-                        Emulation.cpp
-                        DetachableTabBar.cpp
-                        Filter.cpp
-                        History.cpp
-                        HistorySizeDialog.cpp
-                        HistorySizeWidget.cpp
-                        IncrementalSearchBar.cpp
-                        KeyBindingEditor.cpp
-                        KeyboardTranslator.cpp
-                        KeyboardTranslatorManager.cpp
-                        ProcessInfo.cpp
-                        Profile.cpp
-                        ProfileList.cpp
-                        ProfileReader.cpp
-                        ProfileWriter.cpp
-                        ProfileManager.cpp
-                        Pty.cpp
-                        RenameTabDialog.cpp
-                        RenameTabWidget.cpp
-                        SaveHistoryTask.cpp
-                        SearchHistoryTask.cpp
-                        Screen.cpp
-                        ScreenWindow.cpp
-                        ScrollState.cpp
-                        Session.cpp
-                        SessionGroup.cpp
-                        SessionController.cpp
-                        SessionManager.cpp
-                        SessionListModel.cpp
-                        SessionTask.cpp
-                        ShellCommand.cpp
-                        TabTitleFormatButton.cpp
-                        TerminalCharacterDecoder.cpp
-                        ExtendedCharTable.cpp
-                        TerminalDisplay.cpp
-                        TerminalDisplayAccessible.cpp
-                        TerminalHeaderBar.cpp
-                        LineBlockCharacters.cpp
-                        ViewContainer.cpp
-                        ViewManager.cpp
-                        ViewProperties.cpp
-                        ViewSplitter.cpp
-                        Vt102Emulation.cpp
-                        ZModemDialog.cpp
-                        PrintOptions.cpp
-                        WindowSystemInfo.cpp
-                        CharacterWidth.cpp
-                        ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Window.xml
-                        ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Session.xml)
-
-ecm_qt_declare_logging_category(konsoleprivate_SRCS HEADER konsoledebug.h IDENTIFIER KonsoleDebug CATEGORY_NAME org.kde.konsole)
-
-kconfig_add_kcfg_files(konsoleprivate_SRCS settings/KonsoleSettings.kcfgc)
 
 set(konsole_LIBS
-                 KF5::XmlGui
-                 Qt5::PrintSupport
-                 Qt5::Xml
-                 KF5::Notifications
-                 KF5::WindowSystem
-                 KF5::TextWidgets
-                 KF5::GuiAddons
-                 KF5::IconThemes
-                 KF5::Bookmarks
-                 KF5::I18n
-                 KF5::Pty
-                 KF5::KIOWidgets
-                 KF5::DBusAddons
-                 KF5::GlobalAccel
-                 KF5::NewStuff
+    KF5::XmlGui
+    Qt5::PrintSupport
+    Qt5::Xml
+    KF5::Notifications
+    KF5::WindowSystem
+    KF5::TextWidgets
+    KF5::GuiAddons
+    KF5::IconThemes
+    KF5::Bookmarks
+    KF5::I18n
+    KF5::Pty
+    KF5::KIOWidgets
+    KF5::DBusAddons
+    KF5::GlobalAccel
+    KF5::NewStuff
 )
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
@@ -137,36 +68,171 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
     list(APPEND konsole_LIBS util)
 endif()
 
+# TODO: Move this to an internal folder if it grows too much.
+# This konsoleprivate_core is the "core" library that depends in nothing from konsole itself
+# so we can start to detangle the codebase.
+set(konsoleprivate_core_SRCS
+    ShellCommand.cpp
+    WindowSystemInfo.cpp
+)
+
+ecm_qt_declare_logging_category(
+    konsoleprivate_core_SRCS
+    HEADER konsoledebug.h
+    IDENTIFIER KonsoleDebug
+    CATEGORY_NAME org.kde.konsole
+)
+
+add_library(konsoleprivate_core STATIC ${konsoleprivate_core_SRCS})
+target_link_libraries(konsoleprivate_core ${konsole_LIBS})
+
+set(konsolehelpers_SRCS
+    LabelsAligner.cpp
+)
+add_library(konsolehelpers
+    STATIC
+    ${konsolehelpers_SRCS}
+)
+target_link_libraries(konsolehelpers
+    Qt5::Core
+    Qt5::Widgets
+)
+
+add_subdirectory(colorscheme)
+add_subdirectory(keyboardtranslator)
+add_subdirectory(profile)
+add_subdirectory(session)
+add_subdirectory(characters)
+
+set(konsoleprivate_SRCS ${windowadaptors_SRCS}
+                        BookmarkHandler.cpp
+                        BookmarkMenu.cpp
+                        CheckableSessionModel.cpp
+                        CopyInputDialog.cpp
+                        Emulation.cpp
+                        EscapeSequenceUrlExtractor.cpp
+                        ExtendedCharTable.cpp
+                        FontDialog.cpp
+                        HTMLDecoder.cpp
+                        HistorySizeDialog.cpp
+                        KeyBindingEditor.cpp
+                        LabelsAligner.cpp
+                        NullProcessInfo.cpp
+                        NullProcessInfo.cpp
+                        PlainTextDecoder.cpp
+                        PrintOptions.cpp
+                        PrintOptions.cpp
+                        ProcessInfo.cpp
+                        ProcessInfo.cpp
+                        Pty.cpp
+                        Pty.cpp
+                        RenameTabDialog.cpp
+                        SSHProcessInfo.cpp
+                        SaveHistoryTask.cpp
+                        Screen.cpp
+                        ScreenWindow.cpp
+                        ScrollState.cpp
+                        SearchHistoryTask.cpp
+                        ShouldApplyProperty.cpp
+                        UnixProcessInfo.cpp
+                        ViewManager.cpp
+                        ViewProperties.cpp
+                        Vt102Emulation.cpp
+                        WindowSystemInfo.cpp
+                        ZModemDialog.cpp
+                        filterHotSpots/EscapeSequenceUrlFilter.cpp
+                        filterHotSpots/EscapeSequenceUrlFilterHotSpot.cpp
+                        filterHotSpots/FileFilter.cpp
+                        filterHotSpots/FileFilterHotspot.cpp
+                        filterHotSpots/Filter.cpp
+                        filterHotSpots/FilterChain.cpp
+                        filterHotSpots/HotSpot.cpp
+                        filterHotSpots/RegExpFilter.cpp
+                        filterHotSpots/RegExpFilterHotspot.cpp
+                        filterHotSpots/TerminalImageFilterChain.cpp
+                        filterHotSpots/UrlFilter.cpp
+                        filterHotSpots/UrlFilterHotspot.cpp
+                        history/HistoryFile.cpp
+                        history/HistoryScroll.cpp
+                        history/HistoryScrollFile.cpp
+                        history/HistoryScrollNone.cpp
+                        history/HistoryType.cpp
+                        history/HistoryTypeFile.cpp
+                        history/HistoryTypeNone.cpp
+                        history/compact/CompactHistoryBlock.cpp
+                        history/compact/CompactHistoryBlockList.cpp
+                        history/compact/CompactHistoryLine.cpp
+                        history/compact/CompactHistoryScroll.cpp
+                        history/compact/CompactHistoryType.cpp
+                        widgets/DetachableTabBar.cpp
+                        widgets/DetachableTabBar.cpp
+                        widgets/EditProfileDialog.cpp
+                        widgets/HistorySizeWidget.cpp
+                        widgets/HistorySizeWidget.cpp
+                        widgets/IncrementalSearchBar.cpp
+                        widgets/IncrementalSearchBar.cpp
+                        widgets/RenameTabWidget.cpp
+                        widgets/RenameTabWidget.cpp
+                        widgets/TabTitleFormatButton.cpp
+
+                        terminalDisplay/extras/CompositeWidgetFocusWatcher.cpp
+                        terminalDisplay/extras/AutoScrollHandler.cpp
+
+                        terminalDisplay/TerminalDisplay.cpp
+                        terminalDisplay/TerminalPainter.cpp
+                        terminalDisplay/TerminalScrollBar.cpp
+
+                        widgets/TerminalDisplayAccessible.cpp
+                        widgets/TerminalHeaderBar.cpp
+                        widgets/ViewContainer.cpp
+                        widgets/ViewSplitter.cpp
+                        widgets/KonsolePrintManager.cpp
+                        ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Window.xml)
+
+kconfig_add_kcfg_files(konsoleprivate_SRCS settings/KonsoleSettings.kcfgc)
+
 ### Konsole Application
 
-ki18n_wrap_ui(konsoleprivate_SRCS ColorSchemeEditor.ui
-                                CopyInputDialog.ui
-                                EditProfileGeneralPage.ui
-                                EditProfileTabsPage.ui
-                                EditProfileAppearancePage.ui
-                                EditProfileScrollingPage.ui
-                                EditProfileKeyboardPage.ui
-                                EditProfileMousePage.ui
-                                EditProfileAdvancedPage.ui
-                                KeyBindingEditor.ui
-                                RenameTabDialog.ui
-                                RenameTabWidget.ui
-                                HistorySizeDialog.ui
-                                HistorySizeWidget.ui
-                                PrintOptions.ui
-                                settings/TemporaryFilesSettings.ui
-                                settings/GeneralSettings.ui
-                                settings/PartInfo.ui
-                                settings/ProfileSettings.ui
-                                settings/TabBarSettings.ui
-                                settings/ThumbnailsSettings.ui)
+ki18n_wrap_ui(konsoleprivate_SRCS
+    CopyInputDialog.ui
+    HistorySizeDialog.ui
+    KeyBindingEditor.ui
+    PrintOptions.ui       # Temporary to build session static library
+    RenameTabDialog.ui
+    settings/GeneralSettings.ui
+    settings/PartInfo.ui
+    settings/ProfileSettings.ui
+    settings/TabBarSettings.ui
+    settings/TemporaryFilesSettings.ui
+    settings/ThumbnailsSettings.ui
+    widgets/EditProfileAdvancedPage.ui
+    widgets/EditProfileAppearancePage.ui
+    widgets/EditProfileGeneralPage.ui
+    widgets/EditProfileKeyboardPage.ui
+    widgets/EditProfileMousePage.ui
+    widgets/EditProfileScrollingPage.ui
+    widgets/EditProfileTabsPage.ui
+    widgets/HistorySizeWidget.ui
+    widgets/RenameTabWidget.ui
+)
 
 # add the resource files for the ui files
 qt5_add_resources( konsoleprivate_SRCS ../desktop/konsole.qrc)
 
 add_library(konsoleprivate ${konsoleprivate_SRCS})
 generate_export_header(konsoleprivate BASE_NAME konsoleprivate)
-target_link_libraries(konsoleprivate PUBLIC ${konsole_LIBS})
+
+target_link_libraries(konsoleprivate
+    PUBLIC
+    konsoleprivate_core
+    konsolecolorscheme
+    keyboardtranslator
+    konsolehelpers
+    konsolesession
+    konsoleprofile
+    konsolecharacters
+    ${konsole_LIBS}
+)
 
 set_target_properties(konsoleprivate PROPERTIES
     VERSION ${KONSOLEPRIVATE_VERSION_STRING}
@@ -180,20 +246,25 @@ set(konsole_KDEINIT_SRCS
    MainWindow.cpp
    main.cpp
    settings/ConfigurationDialog.cpp
+   settings/ConfigDialogButtonGroupManager.cpp
    settings/TemporaryFilesSettings.cpp
    settings/GeneralSettings.cpp
    settings/ProfileSettings.cpp
    settings/TabBarSettings.cpp
    settings/ThumbnailsSettings.cpp
+   delegates/ProfileShortcutDelegate.cpp
 )
 
 
 # Sets the icon on Windows and OSX
-file(GLOB ICONS_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/../data/icons/*.png")
 ecm_add_app_icon(kdeinit_konsole ICONS ${ICONS_SRCS})
 
 kf5_add_kdeinit_executable(konsole ${konsole_KDEINIT_SRCS})
-target_link_libraries(kdeinit_konsole konsoleprivate KF5::XmlGui KF5::WindowSystem KF5::Bookmarks
+target_link_libraries(kdeinit_konsole
+  konsoleprivate
+  KF5::XmlGui
+  KF5::WindowSystem
+  KF5::Bookmarks
   KF5::I18n
   KF5::KIOWidgets
   KF5::NotifyConfig
@@ -219,11 +290,18 @@ install(TARGETS kdeinit_konsole konsole
 
 set(konsolepart_PART_SRCS Part.cpp
     settings/PartInfo.cpp
-    settings/ProfileSettings.cpp)
+    settings/ProfileSettings.cpp
+    delegates/ProfileShortcutDelegate.cpp
+)
+
 add_library(konsolepart MODULE ${konsolepart_PART_SRCS})
 generate_export_header(konsolepart BASE_NAME konsole)
 kcoreaddons_desktop_to_json(konsolepart ../desktop/konsolepart.desktop)
 set_target_properties(konsolepart PROPERTIES DEFINE_SYMBOL KONSOLE_PART)
-target_link_libraries(konsolepart KF5::Parts KF5::XmlGui konsoleprivate)
+target_link_libraries(konsolepart
+    KF5::Parts
+    KF5::XmlGui
+    konsoleprivate
+)
 install(TARGETS konsolepart  DESTINATION ${KDE_INSTALL_PLUGINDIR})
 

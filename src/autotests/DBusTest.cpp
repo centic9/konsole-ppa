@@ -19,9 +19,9 @@
 
 // Own
 #include "DBusTest.h"
-#include "../Session.h"
-#include "../Profile.h"
-#include "../ProfileWriter.h"
+#include "../session/Session.h"
+#include "../profile/Profile.h"
+#include "../profile/ProfileWriter.h"
 
 // Qt
 #include <QProcess>

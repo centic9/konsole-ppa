@@ -27,9 +27,13 @@
 #include <QTextStream>
 
 // Konsole
-#include "TerminalCharacterDecoder.h"
-#include "History.h"
+#include "PlainTextDecoder.h"
+#include "HTMLDecoder.h"
+#include "history/HistoryType.h"
+#include "history/HistoryScrollNone.h"
 #include "ExtendedCharTable.h"
+#include "profile/Profile.h"
+#include "EscapeSequenceUrlExtractor.h"
 
 using namespace Konsole;
 
@@ -79,8 +83,10 @@ Screen::Screen(int lines, int columns):
     _effectiveBackground(CharacterColor()),
     _effectiveRendition(DEFAULT_RENDITION),
     _lastPos(-1),
-    _lastDrawnChar(0)
+    _lastDrawnChar(0),
+    _escapeSequenceUrlExtractor(new EscapeSequenceUrlExtractor())
 {
+    _escapeSequenceUrlExtractor->setScreen(this);
     _lineProperties.resize(_lines + 1);
     for (int i = 0; i < _lines + 1; i++) {
         _lineProperties[i] = LINE_DEFAULT;
@@ -95,6 +101,7 @@ Screen::~Screen()
 {
     delete[] _screenLines;
     delete _history;
+    delete _escapeSequenceUrlExtractor;
 }
 
 void Screen::cursorUp(int n)
@@ -784,6 +791,7 @@ void Screen::displayCharacter(uint c)
 
     // ensure current line vector has enough elements
     if (_screenLines[_cuY].size() < _cuX + w) {
+        _screenLines[_cuY].reserve(_columns);
         _screenLines[_cuY].resize(_cuX + w);
     }
 
@@ -825,6 +833,7 @@ void Screen::displayCharacter(uint c)
         w--;
     }
     _cuX = newCursorX;
+    _escapeSequenceUrlExtractor->appendUrlText(QChar(c));
 }
 
 int Screen::scrolledLines() const
@@ -998,15 +1007,17 @@ void Screen::moveImage(int dest, int sourceBegin, int sourceEnd)
     //so it matters that we do the copy in the right order -
     //forwards if dest < sourceBegin or backwards otherwise.
     //(search the web for 'memmove implementation' for details)
+    const int destY = dest / _columns;
+    const int srcY = sourceBegin / _columns;
     if (dest < sourceBegin) {
         for (int i = 0; i <= lines; i++) {
-            _screenLines[(dest / _columns) + i ] = _screenLines[(sourceBegin / _columns) + i ];
-            _lineProperties[(dest / _columns) + i] = _lineProperties[(sourceBegin / _columns) + i];
+            _screenLines[destY + i] = _screenLines[srcY + i];
+            _lineProperties[destY + i] = _lineProperties[srcY + i];
         }
     } else {
         for (int i = lines; i >= 0; i--) {
-            _screenLines[(dest / _columns) + i ] = _screenLines[(sourceBegin / _columns) + i ];
-            _lineProperties[(dest / _columns) + i] = _lineProperties[(sourceBegin / _columns) + i];
+            _screenLines[destY + i ] = std::move(_screenLines[srcY + i]);
+            _lineProperties[destY + i] = _lineProperties[srcY + i];
         }
     }
 
@@ -1245,7 +1256,7 @@ QString Screen::text(int startIndex, int endIndex, const DecodingOptions options
     PlainTextDecoder plainTextDecoder;
 
     TerminalCharacterDecoder *decoder;
-    if((options & ConvertToHtml) != 0u) {
+    if((options & ConvertToHtml) != 0U) {
         decoder = &htmlDecoder;
     } else {
         decoder = &plainTextDecoder;
@@ -1427,7 +1438,7 @@ int Screen::copyLineToStream(int line ,
         }
     }
 
-    if ((options & TrimLeadingWhitespace) != 0u) {
+    if ((options & TrimLeadingWhitespace) != 0U) {
         int spacesCount = 0;
         for (spacesCount = 0; spacesCount < count; spacesCount++) {
             if (QChar::category(characterBuffer[spacesCount].character) != QChar::Category::Separator_Space) {
@@ -1462,9 +1473,8 @@ void Screen::addHistLine()
 {
     // add line to history buffer
     // we have to take care about scrolling, too...
-
+    const int oldHistLines = _history->getLines();
     if (hasScroll()) {
-        const int oldHistLines = _history->getLines();
 
         _history->addCellsVector(_screenLines[0]);
         _history->addLine((_lineProperties[0] & LINE_WRAPPED) != 0);
@@ -1514,6 +1524,12 @@ void Screen::addHistLine()
             }
         }
     }
+
+    // We removed a line, we need to verify if we need to remove a URL.
+    const int newHistLines = _history->getLines();
+    if (oldHistLines == newHistLines) {
+        _escapeSequenceUrlExtractor->historyLinesRemoved(1);
+    }
 }
 
 int Screen::getHistLines() const
@@ -1558,3 +1574,9 @@ void Screen::fillWithDefaultChar(Character* dest, int count)
         dest[i] = Screen::DefaultChar;
     }
 }
+
+Konsole::EscapeSequenceUrlExtractor * Konsole::Screen::urlExtractor() const
+{
+    return _escapeSequenceUrlExtractor;
+}
+

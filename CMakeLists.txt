@@ -1,8 +1,11 @@
 # Konsole project
 
+# See comments in https://invent.kde.org/utilities/konsole/-/commit/9d8e47298c81fc1e47c998eda1b6e980589274eb
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+
 # KDE Application Version, managed by release script
 set (RELEASE_SERVICE_VERSION_MAJOR "20")
-set (RELEASE_SERVICE_VERSION_MINOR "08")
+set (RELEASE_SERVICE_VERSION_MINOR "12")
 set (RELEASE_SERVICE_VERSION_MICRO "3")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 
@@ -11,8 +14,8 @@ cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
 # Qt 5.12 LTS EOL May 2021
 set (QT_MIN_VERSION "5.12.0")
 
-# The exact version required is not known ATM
-set (KF5_MIN_VERSION "5.6.0")
+# Ubuntu 20.04 LTS only has KF 5.68 and Qt 5.12
+set (KF5_MIN_VERSION "5.68.0")
 
 # Release script will create bugzilla versions
 project(konsole VERSION ${RELEASE_SERVICE_VERSION})
@@ -76,6 +79,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} )
 
+file(GLOB ICONS_SRCS "data/icons/*.png")
+
 add_subdirectory( src )
 add_subdirectory( data )
 add_subdirectory( desktop )
@@ -84,6 +89,13 @@ if (KF5DocTools_FOUND)
 endif()
 
 add_subdirectory( tools )
+
+# Conditionally install icons for Linux as they may not be provided by the user theme
+option(INSTALL_ICONS "Install icons" OFF)
+if (INSTALL_ICONS)
+    include(ECMInstallIcons)
+    ecm_install_icons( ICONS ${ICONS_SRCS} DESTINATION ${KDE_INSTALL_ICONDIR} )
+endif()
 
 
 if (${ECM_VERSION} STRGREATER "5.58.0")

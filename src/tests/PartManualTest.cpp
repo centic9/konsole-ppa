@@ -34,14 +34,13 @@
 #include <KPluginLoader>
 #include <KPluginFactory>
 #include <KService>
-#include <KParts/Part>
 #include <KMainWindow>
 #include <qtest.h>
 
 // Konsole
 #include "../Pty.h"
-#include "../Session.h"
-#include "../KeyboardTranslator.h"
+#include "../session/Session.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
 
 using namespace Konsole;
 

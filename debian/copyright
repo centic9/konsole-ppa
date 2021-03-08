@@ -1,20 +1,23 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: konsole
-Source: git://anongit.kde.org/konsole
+Upstream-Name: Konsole
+Upstream-Contact: kde-devel@kde.org
+Source: https://download.kde.org/
 
 Files: *
 Copyright: 2012, Frederik Gladhorn <gladhorn@kde.org>
-           1989-1991, Free Software Foundation, Inc
            2012, Jekyll Wu <adaptee@gmail.com>
-           2010-2014, Kurt Hindenburg <kurt.hindenburg@gmail.com>
+           2020, Gustavo Carneiro <gcarneiroa@hotmail.com>
+           2018, Harald Sitter <sitter@kde.org>
+           2010-2020, Kurt Hindenburg <kurt.hindenburg@gmail.com>
            1997-1998, Lars Doelle <lars.doelle@on-line.de>
            2005, Maksim Orlovich <maksim@kde.org>
+           2018-2019, Mariusz Glebocki <mglb@arccos-1.net>
            1996, Matthias Ettrich <ettrich@kde.org>
            2007-2008, Robert Knight <robert.knight@gmail.com>
            2006-2008, Robert Knight <robertknight@gmail.com>
            2007-2008, Robert Knight <robertknight@gmail.countm>
+           2018-2020, Tomaz Canabrava <tcanabrava@kde.org>
            2009, Thomas Dreibholz <dreibh@iem.uni-due.de>
-           2018, Mariusz Glebocki <mglb@arccos-1.net>
 License: GPL-2+
 
 Files: desktop/org.kde.konsole.appdata.xml
@@ -22,28 +25,31 @@ Copyright: 2014, Matthias Klumpp <matthias@tenstral.net>
 License: CC0-1.0
 
 Files: doc/*
-Copyright: 2000-2001, Jonathan Singer
+Copyright: 2018, Ahmad Samir <a.samirh78@gmail.com>
+           2000-2001, Jonathan Singer
            2005-2020, Kurt Hindenburg <kurt.hindenburg@gmail.com>
-	   2018, Ahmad Samir <a.samirh78@gmail.com>
 License: GFDL-1.2
 
 Files: src/BookmarkHandler.cpp
        src/BookmarkHandler.h
        src/BookmarkMenu.cpp
        src/BookmarkMenu.h
-       src/TerminalCharacterDecoder.cpp
+       src/HTMLDecoder.cpp
+       src/HTMLDecoder.h
+       src/PlainTextDecoder.cpp
+       src/PlainTextDecoder.h
        src/TerminalCharacterDecoder.h
 Copyright: 2002, Carsten Pfeiffer <pfeiffer@kde.org>
+           2019, Martin Sandsmark <martin.sandsmark@kde.org>
            2006-2008, Robert Knight <robertknight@gmail.com>
            2019, Tomaz Canabrava <tcanabrava@kde.org>
-           2019, Martin Sandsmark <martin.sandsmark@kde.org>
 License: LGPL-2+
 
-Files: src/hsluv.c
-       src/hsluv.h
+Files: src/colorscheme/hsluv.c
+       src/colorscheme/hsluv.h
 Copyright: 2015, Alexei Boronine <alexei@boronine.com>
-           2015, Roger Tallada <roger.tallada@gmail.com>
            2017, Martin Mitas <mity@morous.org>
+           2015, Roger Tallada <roger.tallada@gmail.com>
 License: Expat
 
 Files: src/PrintOptions.cpp
@@ -66,9 +72,7 @@ Files: src/PrintOptions.cpp
        src/settings/ThumbnailsSettings.cpp
        src/settings/ThumbnailsSettings.h
        src/settings/ThumbnailsSettings.ui
-       src/tests/demo_konsolepart/src/demo_konsolepart.cpp
-       src/tests/demo_konsolepart/src/demo_konsolepart.h
-       src/tests/demo_konsolepart/src/main.cpp
+       src/tests/demo_konsolepart/*
 Copyright: 2012, Jekyll Wu <adaptee@gmail.com>
            2012, Kasper Laudrup <laudrup@stacktrace.dk>
            2011-2017, Kurt Hindenburg <kurt.hindenburg@gmail.com>

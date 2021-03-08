@@ -218,7 +218,7 @@ public Q_SLOTS:
      * Converts information about a mouse event into an xterm-compatible escape
      * sequence and emits the character sequence via sendData()
      */
-    virtual void sendMouseEvent(int buttons, int column, int line, int eventType);
+    virtual void sendMouseEvent(int buttons, int column, int line, int eventType) = 0;
 
     /**
      * Sends a string of characters to the foreground terminal process.
@@ -245,6 +245,8 @@ public Q_SLOTS:
      * Sends information about the focus event to the terminal.
      */
     virtual void focusChanged(bool focused) = 0;
+
+    void setPeekPrimary(const bool doPeek);
 
 Q_SIGNALS:
 
@@ -399,7 +401,7 @@ Q_SIGNALS:
     /**
      * Emitted when terminal code requiring terminal's response received.
      */
-    void sessionAttributeRequest(int id);
+    void sessionAttributeRequest(int id, uint terminator);
 
     /**
      * Emitted when Set Cursor Style (DECSCUSR) escape sequences are sent
@@ -480,6 +482,7 @@ private Q_SLOTS:
     void bracketedPasteModeChanged(bool bracketedPasteMode);
 
 private:
+    void setScreenInternal(int index);
     Q_DISABLE_COPY(Emulation)
 
     bool _usesMouseTracking;
@@ -487,6 +490,8 @@ private:
     QTimer _bulkTimer1;
     QTimer _bulkTimer2;
     bool _imageSizeInitialized;
+    bool _peekingPrimary;
+    int _activeScreenIndex;
 };
 }
 

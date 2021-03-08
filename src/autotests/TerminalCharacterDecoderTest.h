@@ -23,7 +23,7 @@
 
 #include <QObject>
 
-#include "../TerminalCharacterDecoder.h"
+#include "../characters/Character.h"
 
 namespace Konsole
 {

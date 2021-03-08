@@ -23,9 +23,8 @@
 #include "qtest.h"
 
 // Konsole
-#include "../Session.h"
+#include "../session/Session.h"
 #include "../Emulation.h"
-#include "../History.h"
 
 using namespace Konsole;
 

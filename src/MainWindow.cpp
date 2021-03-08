@@ -41,24 +41,30 @@
 #include <KNotifyConfigWidget>
 #include <KIconLoader>
 
+#include <kio_version.h>
+
 // Konsole
 #include "BookmarkHandler.h"
-#include "SessionController.h"
-#include "ProfileList.h"
-#include "Session.h"
-#include "ViewContainer.h"
-#include "ViewManager.h"
-#include "SessionManager.h"
-#include "ProfileManager.h"
 #include "KonsoleSettings.h"
+#include "ViewManager.h"
 #include "WindowSystemInfo.h"
-#include "TerminalDisplay.h"
+
+#include "profile/ProfileList.h"
+#include "profile/ProfileManager.h"
+
+#include "session/Session.h"
+#include "session/SessionController.h"
+#include "session/SessionManager.h"
+
 #include "settings/ConfigurationDialog.h"
-#include "settings/TemporaryFilesSettings.h"
 #include "settings/GeneralSettings.h"
 #include "settings/ProfileSettings.h"
 #include "settings/TabBarSettings.h"
+#include "settings/TemporaryFilesSettings.h"
 #include "settings/ThumbnailsSettings.h"
+
+#include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/ViewContainer.h"
 
 using namespace Konsole;
 
@@ -74,16 +80,27 @@ MainWindow::MainWindow() :
 {
     if (!KonsoleSettings::saveGeometryOnExit()) {
         // If we are not using the global Konsole save geometry on exit,
-        // remove all Height and Width from [MainWindow] from konsolerc
-        // Each screen resolution will have entries (Width 1280=619)
+        // remove all geometry data from [MainWindow] in Konsolerc, so KWin will
+        // manage it directly
         KSharedConfigPtr konsoleConfig = KSharedConfig::openConfig(QStringLiteral("konsolerc"));
         KConfigGroup group = konsoleConfig->group("MainWindow");
         QMap<QString, QString> configEntries = group.entryMap();
         QMapIterator<QString, QString> i(configEntries);
+
         while (i.hasNext()) {
             i.next();
+// After https://bugs.kde.org/show_bug.cgi?id=415150 was fixed in 5.74,
+// the config file keys changed
+#if KIO_VERSION < QT_VERSION_CHECK(5, 75, 0)
             if (i.key().startsWith(QLatin1String("Width"))
-                || i.key().startsWith(QLatin1String("Height"))) {
+                || i.key().startsWith(QLatin1String("Height"))
+#else
+            if (i.key().contains(QLatin1String(" Width"))
+                || i.key().contains(QLatin1String(" Height"))
+                || i.key().contains(QLatin1String(" XPosition"))
+                || i.key().contains(QLatin1String(" YPosition"))
+#endif
+            ) {
                 group.deleteEntry(i.key());
             }
         }
@@ -344,16 +361,16 @@ void MainWindow::setupActions()
             &Konsole::MainWindow::openUrls);
 
     // Settings Menu
-    _toggleMenuBarAction = KStandardAction::showMenubar(menuBar(), SLOT(setVisible(bool)), collection);
+    _toggleMenuBarAction = KStandardAction::showMenubar(menuBar(), &QMenuBar::setVisible, collection);
     collection->setDefaultShortcut(_toggleMenuBarAction, Konsole::ACCEL + Qt::SHIFT + Qt::Key_M);
 
     // Full Screen
-    menuAction = KStandardAction::fullScreen(this, SLOT(viewFullScreen(bool)), this, collection);
+    menuAction = KStandardAction::fullScreen(this, &MainWindow::viewFullScreen, this, collection);
     collection->setDefaultShortcut(menuAction, Qt::Key_F11);
 
-    KStandardAction::configureNotifications(this, SLOT(configureNotifications()), collection);
-    KStandardAction::keyBindings(this, SLOT(showShortcutsDialog()), collection);
-    KStandardAction::preferences(this, SLOT(showSettingsDialog()), collection);
+    KStandardAction::configureNotifications(this, &MainWindow::configureNotifications, collection);
+    KStandardAction::keyBindings(this, &MainWindow::showShortcutsDialog, collection);
+    KStandardAction::preferences(this, &MainWindow::showSettingsDialog, collection);
 
     menuAction = collection->addAction(QStringLiteral("manage-profiles"));
     menuAction->setText(i18nc("@action:inmenu", "Manage Profiles..."));
@@ -801,7 +818,9 @@ void MainWindow::applyKonsoleSettings()
     }
 
     _viewManager->activeContainer()->setNavigationBehavior(KonsoleSettings::newTabBehavior());
-    setAutoSaveSettings(QStringLiteral("MainWindow"), KonsoleSettings::saveGeometryOnExit());
+    if (KonsoleSettings::saveGeometryOnExit() != autoSaveSettings()) {
+        setAutoSaveSettings(QStringLiteral("MainWindow"), KonsoleSettings::saveGeometryOnExit());
+    }
     updateWindowCaption();
 }
 
@@ -836,6 +855,12 @@ void MainWindow::setBlur(bool blur)
     if (_pluggedController.isNull()) {
         return;
     }
+
+    // Saves 70-100ms when starting
+    if (blur == _blurEnabled) {
+        return;
+    }
+    _blurEnabled = blur;
 
     if (!_pluggedController->isKonsolePart()) {
         KWindowEffects::enableBlurBehind(winId(), blur);

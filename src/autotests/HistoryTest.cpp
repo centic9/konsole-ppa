@@ -23,9 +23,14 @@
 #include "qtest.h"
 
 // Konsole
-#include "../Session.h"
+#include "../session/Session.h"
 #include "../Emulation.h"
-#include "../History.h"
+#include "../history/HistoryTypeNone.h"
+#include "../history/HistoryTypeFile.h"
+#include "../history/compact/CompactHistoryType.h"
+#include "../history/HistoryScrollNone.h"
+#include "../history/HistoryScrollFile.h"
+#include "../history/compact/CompactHistoryScroll.h"
 
 using namespace Konsole;
 

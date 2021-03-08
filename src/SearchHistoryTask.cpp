@@ -23,8 +23,8 @@
 #include <QApplication>
 #include <QTextStream>
 
-#include "TerminalCharacterDecoder.h"
 #include "Emulation.h"
+#include "PlainTextDecoder.h"
 
 namespace Konsole {
 

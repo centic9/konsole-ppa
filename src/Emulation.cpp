@@ -26,8 +26,8 @@
 #include <QKeyEvent>
 
 // Konsole
-#include "KeyboardTranslator.h"
-#include "KeyboardTranslatorManager.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
+#include "keyboardtranslator/KeyboardTranslatorManager.h"
 #include "Screen.h"
 #include "ScreenWindow.h"
 
@@ -43,7 +43,9 @@ Emulation::Emulation() :
     _bracketedPasteMode(false),
     _bulkTimer1(new QTimer(this)),
     _bulkTimer2(new QTimer(this)),
-    _imageSizeInitialized(false)
+    _imageSizeInitialized(false),
+    _peekingPrimary(false),
+    _activeScreenIndex(0)
 {
     // create screens with a default size
     _screen[0] = new Screen(40, 80);
@@ -118,7 +120,24 @@ Emulation::~Emulation()
     delete _decoder;
 }
 
+void Emulation::setPeekPrimary(const bool doPeek)
+{
+    if (doPeek == _peekingPrimary) {
+        return;
+    }
+    _peekingPrimary = doPeek;
+    setScreenInternal(doPeek ? 0 : _activeScreenIndex);
+    emit outputChanged();
+}
+
 void Emulation::setScreen(int index)
+{
+    _activeScreenIndex = index;
+    _peekingPrimary = false;
+    setScreenInternal(_activeScreenIndex);
+}
+
+void Emulation::setScreenInternal(int index)
 {
     Screen *oldScreen = _currentScreen;
     _currentScreen = _screen[index & 1];
@@ -223,37 +242,24 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
     }
 }
 
-void Emulation::sendMouseEvent(int /*buttons*/, int /*column*/, int /*row*/, int /*eventType*/)
-{
-    // default implementation does nothing
-}
-
-/*
-   We are doing code conversion from locale to unicode first.
-*/
-
 void Emulation::receiveData(const char *text, int length)
 {
     bufferedUpdate();
 
-    QVector<uint> unicodeText = _decoder->toUnicode(text, length).toUcs4();
-
     //send characters to terminal emulator
-    for (auto &&i : unicodeText) {
+    for (const uint i : _decoder->toUnicode(text, length).toUcs4()) {
         receiveChar(i);
     }
 
     //look for z-modem indicator
     //-- someone who understands more about z-modems that I do may be able to move
     //this check into the above for loop?
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length - 4; i++) {
         if (text[i] == '\030') {
-            if (length - i - 1 > 3) {
-                if (qstrncmp(text + i + 1, "B00", 3) == 0) {
-                    emit zmodemDownloadDetected();
-                } else if (qstrncmp(text + i + 1, "B01", 3) == 0) {
-                    emit zmodemUploadDetected();
-                }
+            if (qstrncmp(text + i + 1, "B00", 3) == 0) {
+                emit zmodemDownloadDetected();
+            } else if (qstrncmp(text + i + 1, "B01", 3) == 0) {
+                emit zmodemUploadDetected();
             }
         }
     }
