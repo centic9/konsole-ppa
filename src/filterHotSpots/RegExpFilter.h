@@ -1,21 +1,8 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2020 by Tomaz Canabrava <tcanabrava@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2020 Tomaz Canabrava <tcanabrava@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef REGEXP_FILTER_H
@@ -26,7 +13,8 @@
 #include <QRegularExpression>
 #include <QSharedPointer>
 
-namespace Konsole {
+namespace Konsole
+{
 class HotSpot;
 /**
  * A filter which searches for sections of text matching a regular expression and creates a new RegExpFilter::HotSpot
@@ -64,8 +52,7 @@ protected:
      * Called when a match for the regular expression is encountered.  Subclasses should reimplement this
      * to return custom hotspot types
      */
-    virtual QSharedPointer<HotSpot> newHotSpot(int startLine, int startColumn, int endLine,
-                                              int endColumn, const QStringList &capturedTexts);
+    virtual QSharedPointer<HotSpot> newHotSpot(int startLine, int startColumn, int endLine, int endColumn, const QStringList &capturedTexts);
 
 private:
     QRegularExpression _searchText;

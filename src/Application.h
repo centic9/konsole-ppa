@@ -1,20 +1,7 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef APPLICATION_H
@@ -26,7 +13,12 @@
 // Konsole
 #include "widgets/ViewSplitter.h"
 
-namespace Konsole {
+#include "pluginsystem/PluginManager.h"
+
+#include "konsole_export.h"
+
+namespace Konsole
+{
 class MainWindow;
 class Session;
 class Profile;
@@ -43,14 +35,13 @@ class Profile;
  * The factory used to create new terminal sessions can be retrieved using
  * the sessionManager() accessor.
  */
-class Application : public QObject
+class KONSOLE_EXPORT Application : public QObject
 {
     Q_OBJECT
 
 public:
     /** Constructs a new Konsole application. */
-    explicit Application(QSharedPointer<QCommandLineParser> parser,
-                         const QStringList &customCommand);
+    explicit Application(QSharedPointer<QCommandLineParser> parser, const QStringList &customCommand);
 
     static void populateCommandLineParser(QCommandLineParser *parser);
     static QStringList getCustomCommand(QStringList &args);
@@ -69,7 +60,7 @@ public:
 
 private Q_SLOTS:
     void createWindow(const QExplicitlySharedDataPointer<Profile> &profile, const QString &directory);
-    void detachTerminals(ViewSplitter *splitter, const QHash<TerminalDisplay*, Session*>& sessionsMap);
+    void detachTerminals(ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap);
 
     void toggleBackgroundInstance();
 
@@ -92,6 +83,7 @@ private:
     MainWindow *_backgroundInstance;
     QSharedPointer<QCommandLineParser> m_parser;
     QStringList m_customCommand;
+    PluginManager m_pluginManager;
 };
 }
-#endif  // APPLICATION_H
+#endif // APPLICATION_H

@@ -1,22 +1,9 @@
 /*  This file was part of the KDE libraries
 
-    Copyright 2002 Carsten Pfeiffer <pfeiffer@kde.org>
-    Copyright 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2002 Carsten Pfeiffer <pfeiffer@kde.org>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation, version 2
-    or ( at your option ), any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Born as kdelibs/kio/kfile/kfilebookmarkhandler.cpp
@@ -25,14 +12,13 @@
 #include "BookmarkHandler.h"
 
 // Qt
+#include <QDir>
 #include <QFileInfo>
 #include <QStandardPaths>
-#include <QDir>
 
 // KDE
-#include <KShell>
-#include <KBookmarkOwner>
 #include <KLocalizedString>
+#include <KShell>
 
 // Konsole
 #include "BookmarkMenu.h"
@@ -40,24 +26,21 @@
 
 using namespace Konsole;
 
-BookmarkHandler::BookmarkHandler(KActionCollection *collection, QMenu *menu, bool toplevel,
-                                 QObject *parent) :
-    QObject(parent),
-    KBookmarkOwner(),
-    _menu(menu),
-    _file(QString()),
-    _toplevel(toplevel),
-    _activeView(nullptr),
-    _views(QList<ViewProperties *>())
+BookmarkHandler::BookmarkHandler(KActionCollection *collection, QMenu *menu, bool toplevel, QObject *parent)
+    : QObject(parent)
+    , KBookmarkOwner()
+    , _menu(menu)
+    , _file(QString())
+    , _toplevel(toplevel)
+    , _activeView(nullptr)
+    , _views(QList<ViewProperties *>())
 {
     setObjectName(QStringLiteral("BookmarkHandler"));
 
-    _file = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
-                                   QStringLiteral("konsole/bookmarks.xml"));
+    _file = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/bookmarks.xml"));
 
     if (_file.isEmpty()) {
-        _file = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                + QStringLiteral("/konsole");
+        _file = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/konsole");
         QDir().mkpath(_file);
         _file += QStringLiteral("/bookmarks.xml");
     }
@@ -73,12 +56,12 @@ BookmarkHandler::~BookmarkHandler() = default;
 
 void BookmarkHandler::openBookmark(const KBookmark &bm, Qt::MouseButtons, Qt::KeyboardModifiers)
 {
-    emit openUrl(bm.url());
+    Q_EMIT openUrl(bm.url());
 }
 
 void BookmarkHandler::openFolderinTabs(const KBookmarkGroup &group)
 {
-    emit openUrls(group.groupUrlList());
+    Q_EMIT openUrls(group.groupUrlList());
 }
 
 bool BookmarkHandler::enableOption(BookmarkOption option) const
@@ -120,8 +103,7 @@ QString BookmarkHandler::titleForView(ViewProperties *view) const
     }
     if (!url.host().isEmpty()) {
         if (!url.userName().isEmpty()) {
-            return i18nc("@item:inmenu The user's name and host they are connected to via ssh",
-                         "%1 on %2", url.userName(), url.host());
+            return i18nc("@item:inmenu The user's name and host they are connected to via ssh", "%1 on %2", url.userName(), url.host());
         }
         return i18nc("@item:inmenu The host the user is connected to via ssh", "%1", url.host());
     }
@@ -148,7 +130,7 @@ QList<KBookmarkOwner::FutureBookmark> BookmarkHandler::currentBookmarkList() con
     list.reserve(_views.size());
 
     const QList<ViewProperties *> views = _views;
-    for (ViewProperties* view : views) {
+    for (ViewProperties *view : views) {
         list << KBookmarkOwner::FutureBookmark(titleForView(view), urlForView(view), iconForView(view));
     }
 

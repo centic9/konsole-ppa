@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "KeyboardTranslatorReader.h"
@@ -25,8 +12,8 @@
 
 // Qt
 #include <QBuffer>
-#include <QRegularExpression>
 #include <QKeySequence>
+#include <QRegularExpression>
 
 // KDE
 #include <KLocalizedString>
@@ -52,11 +39,11 @@ using namespace Konsole;
 // already been removed)
 //
 
-KeyboardTranslatorReader::KeyboardTranslatorReader(QIODevice *source) :
-    _source(source),
-    _description(QString()),
-    _nextEntry(),
-    _hasNext(false)
+KeyboardTranslatorReader::KeyboardTranslatorReader(QIODevice *source)
+    : _source(source)
+    , _description(QString())
+    , _nextEntry()
+    , _hasNext(false)
 {
     // read input until we find the description
     while (_description.isEmpty() && !source->atEnd()) {
@@ -84,12 +71,7 @@ void KeyboardTranslatorReader::readNext()
 
             int keyCode = Qt::Key_unknown;
 
-            decodeSequence(tokens[1].text.toLower(),
-                           keyCode,
-                           modifiers,
-                           modifierMask,
-                           flags,
-                           flagMask);
+            decodeSequence(tokens[1].text.toLower(), keyCode, modifiers, modifierMask, flags, flagMask);
 
             KeyboardTranslator::Command command = KeyboardTranslator::NoCommand;
             QByteArray text;
@@ -100,8 +82,7 @@ void KeyboardTranslatorReader::readNext()
             } else if (tokens[2].type == Token::Command) {
                 // identify command
                 if (!parseAsCommand(tokens[2].text, command)) {
-                    qCDebug(KonsoleDebug) << "Key" << tokens[1].text << ", Command"
-                                          << tokens[2].text << "not understood. ";
+                    qCDebug(KonsoleDebug) << "Key" << tokens[1].text << ", Command" << tokens[2].text << "not understood. ";
                 }
             }
 
@@ -125,8 +106,7 @@ void KeyboardTranslatorReader::readNext()
     _hasNext = false;
 }
 
-bool KeyboardTranslatorReader::parseAsCommand(const QString &text,
-                                              KeyboardTranslator::Command &command)
+bool KeyboardTranslatorReader::parseAsCommand(const QString &text, KeyboardTranslator::Command &command)
 {
     if (text.compare(QLatin1String("erase"), Qt::CaseInsensitive) == 0) {
         command = KeyboardTranslator::EraseCommand;
@@ -149,7 +129,8 @@ bool KeyboardTranslatorReader::parseAsCommand(const QString &text,
     return true;
 }
 
-bool KeyboardTranslatorReader::decodeSequence(const QString &text, int &keyCode,
+bool KeyboardTranslatorReader::decodeSequence(const QString &text,
+                                              int &keyCode,
                                               Qt::KeyboardModifiers &modifiers,
                                               Qt::KeyboardModifiers &modifierMask,
                                               KeyboardTranslator::States &flags,
@@ -237,8 +218,7 @@ bool KeyboardTranslatorReader::parseAsModifier(const QString &item, Qt::Keyboard
     return true;
 }
 
-bool KeyboardTranslatorReader::parseAsStateFlag(const QString &item,
-                                                KeyboardTranslator::State &flag)
+bool KeyboardTranslatorReader::parseAsStateFlag(const QString &item, KeyboardTranslator::State &flag)
 {
     if (item == QLatin1String("appcukeys") || item == QLatin1String("appcursorkeys")) {
         flag = KeyboardTranslator::CursorKeysState;
@@ -285,8 +265,7 @@ bool KeyboardTranslatorReader::hasNextEntry() const
     return _hasNext;
 }
 
-KeyboardTranslator::Entry KeyboardTranslatorReader::createEntry(const QString &condition,
-                                                                const QString &result)
+KeyboardTranslator::Entry KeyboardTranslatorReader::createEntry(const QString &condition, const QString &result)
 {
     QString entryString(QStringLiteral("keyboard \"temporary\"\nkey "));
     entryString.append(condition);
@@ -349,50 +328,53 @@ QList<KeyboardTranslatorReader::Token> KeyboardTranslatorReader::tokenize(const 
 
     text = text.simplified();
 
-    // title line: keyboard "title"
-    static const QRegularExpression title(QStringLiteral("keyboard\\s+\"(.*)\""),
-                                          QRegularExpression::OptimizeOnFirstUsageOption);
-    // key line: key KeySequence : "output"
-    // key line: key KeySequence : command
-    static const QRegularExpression key(QStringLiteral("key\\s+(.+?)\\s*:\\s*(\"(.*)\"|\\w+)"),
-                                        QRegularExpression::OptimizeOnFirstUsageOption);
-
     QList<Token> list;
+
     if (text.isEmpty()) {
         return list;
     }
 
-    QRegularExpressionMatch titleMatch(title.match(text));
+    // Example:
+    // keyboard "Default (XFree 4)"
+    static const QLatin1String prefix("keyboard");
+    if (text.startsWith(prefix)) {
+        text.remove(0, prefix.size()).remove(QLatin1Char('"'));
+        text = text.simplified();
+        if (!text.isEmpty()) {
+            Token titleToken = {Token::TitleKeyword, QString()};
+            Token textToken = {Token::TitleText, text};
+            list << titleToken << textToken;
+        }
 
-    if (titleMatch.hasMatch()) {
-        Token titleToken = { Token::TitleKeyword, QString() };
-        Token textToken = { Token::TitleText, titleMatch.captured(1) };
-
-        list << titleToken << textToken;
         return list;
     }
+
+    // Examples:
+    // key Enter-NewLine                 : "\r"
+    // key Home        -AnyMod-AppCuKeys : "\E[H"
+    static const QRegularExpression key(QStringLiteral(R"(key\s+(.+?)\s*:\s*(\"(.*)\"|\w+))"));
 
     QRegularExpressionMatch keyMatch(key.match(text));
     if (!keyMatch.hasMatch()) {
-        qCDebug(KonsoleDebug) << "Line in keyboard translator file could not be understood:"
-                              << text;
+        qCDebug(KonsoleDebug) << "Line in keyboard translator file could not be parsed:" << text;
         return list;
     }
 
-    Token keyToken = { Token::KeyKeyword, QString() };
+    Token keyToken = {Token::KeyKeyword, QString()};
     QString sequenceTokenString = keyMatch.captured(1);
-    Token sequenceToken = { Token::KeySequence, sequenceTokenString.remove(QLatin1Char(' ')) };
+    Token sequenceToken = {Token::KeySequence, sequenceTokenString.remove(QLatin1Char(' '))};
 
     list << keyToken << sequenceToken;
 
-    if (keyMatch.capturedRef(3).isEmpty()) {
-        // capturedTexts().at(2) is a command
-        Token commandToken = { Token::Command, keyMatch.captured(2) };
-        list << commandToken;
-    } else {
-        // capturedTexts().at(3) is the output string
-        Token outputToken = { Token::OutputText, keyMatch.captured(3) };
+    // capturedTexts().at(3) is the output string
+    const QStringView outText = keyMatch.capturedView(3);
+    if (!outText.isEmpty()) {
+        Token outputToken = {Token::OutputText, outText.toString()};
         list << outputToken;
+    } else {
+        // capturedTexts().at(2) is a command
+        Token commandToken = {Token::Command, keyMatch.captured(2)};
+        list << commandToken;
     }
 
     return list;

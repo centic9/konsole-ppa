@@ -1,39 +1,25 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2009 by Thomas Dreibholz <dreibh@iem.uni-due.de>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2009 Thomas Dreibholz <dreibh@iem.uni-due.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SEARCHHISTORYTASK_H
 #define SEARCHHISTORYTASK_H
 
-#include <QPointer>
 #include <QMap>
+#include <QPointer>
 #include <QRegularExpression>
 
-#include "session/SessionTask.h"
 #include "Enumeration.h"
 #include "ScreenWindow.h"
 #include "session/Session.h"
+#include "session/SessionTask.h"
 
 namespace Konsole
 {
-
-//class SearchHistoryThread;
+// class SearchHistoryThread;
 /**
  * A task which searches through the output of sessions for matches for a given regular expression.
  * SearchHistoryTask operates on ScreenWindow instances rather than sessions added by addSession().
@@ -89,10 +75,10 @@ public:
 private:
     using ScreenWindowPtr = QPointer<ScreenWindow>;
 
-    void executeOnScreenWindow(const QPointer<Session> &session, const ScreenWindowPtr& window);
-    void highlightResult(const ScreenWindowPtr& window, int findPos);
+    void executeOnScreenWindow(const QPointer<Session> &session, const ScreenWindowPtr &window);
+    void highlightResult(const ScreenWindowPtr &window, int findPos);
 
-    QMap< QPointer<Session>, ScreenWindowPtr > _windows;
+    QMap<QPointer<Session>, ScreenWindowPtr> _windows;
     QRegularExpression _regExp;
     Enum::SearchDirection _direction;
     int _startLine;

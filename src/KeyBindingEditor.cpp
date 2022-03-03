@@ -1,48 +1,35 @@
 /*
-    Copyright 2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 // Own
 #include "KeyBindingEditor.h"
 
 // Qt
 #include <QDialogButtonBox>
-#include <QKeyEvent>
 #include <QIcon>
+#include <QKeyEvent>
 
 // KDE
 #include <KLocalizedString>
 #include <KMessageBox>
 
 // Konsole
-#include "ui_KeyBindingEditor.h"
 #include "keyboardtranslator/KeyboardTranslator.h"
-#include "keyboardtranslator/KeyboardTranslatorReader.h"
 #include "keyboardtranslator/KeyboardTranslatorManager.h"
+#include "keyboardtranslator/KeyboardTranslatorReader.h"
+#include "ui_KeyBindingEditor.h"
 
 #include "widgets/EditProfileDialog.h"
 
 using namespace Konsole;
 
-KeyBindingEditor::KeyBindingEditor(QWidget *parent) :
-    QDialog(parent),
-    _ui(nullptr),
-    _translator(new KeyboardTranslator(QString())),
-    _isNewTranslator(false)
+KeyBindingEditor::KeyBindingEditor(QWidget *parent)
+    : QDialog(parent)
+    , _ui(nullptr)
+    , _translator(new KeyboardTranslator(QString()))
+    , _isNewTranslator(false)
 {
     auto layout = new QVBoxLayout;
 
@@ -65,11 +52,9 @@ KeyBindingEditor::KeyBindingEditor(QWidget *parent) :
 
     // description edit
     _ui->descriptionEdit->setPlaceholderText(i18nc("@label:textbox", "Enter descriptive label"));
-    connect(_ui->descriptionEdit, &QLineEdit::textChanged, this,
-            &Konsole::KeyBindingEditor::setTranslatorDescription);
+    connect(_ui->descriptionEdit, &QLineEdit::textChanged, this, &Konsole::KeyBindingEditor::setTranslatorDescription);
     // filter edit
-    connect(_ui->filterEdit, &QLineEdit::textChanged, this,
-            &Konsole::KeyBindingEditor::filterRows);
+    connect(_ui->filterEdit, &QLineEdit::textChanged, this, &Konsole::KeyBindingEditor::filterRows);
 
     // key bindings table
     _ui->keyBindingTable->setColumnCount(2);
@@ -87,10 +72,8 @@ KeyBindingEditor::KeyBindingEditor(QWidget *parent) :
     _ui->addEntryButton->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
     _ui->removeEntryButton->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
 
-    connect(_ui->removeEntryButton, &QPushButton::clicked, this,
-            &Konsole::KeyBindingEditor::removeSelectedEntry);
-    connect(_ui->addEntryButton, &QPushButton::clicked, this,
-            &Konsole::KeyBindingEditor::addNewEntry);
+    connect(_ui->removeEntryButton, &QPushButton::clicked, this, &Konsole::KeyBindingEditor::removeSelectedEntry);
+    connect(_ui->addEntryButton, &QPushButton::clicked, this, &Konsole::KeyBindingEditor::addNewEntry);
 
     // test area
     _ui->testAreaInputEdit->installEventFilter(this);
@@ -126,7 +109,7 @@ void KeyBindingEditor::removeSelectedEntry()
     QList<QTableWidgetItem *> uniqueList;
     const QList<QTableWidgetItem *> selectedItems = _ui->keyBindingTable->selectedItems();
     for (QTableWidgetItem *item : selectedItems) {
-        if (item->column() == 1) { //Select item at the first column
+        if (item->column() == 1) { // Select item at the first column
             item = _ui->keyBindingTable->item(item->row(), 0);
         }
 
@@ -138,8 +121,7 @@ void KeyBindingEditor::removeSelectedEntry()
     for (QTableWidgetItem *item : qAsConst(uniqueList)) {
         // get the first item in the row which has the entry
 
-        KeyboardTranslator::Entry existing = item->data(Qt::UserRole).
-                                             value<KeyboardTranslator::Entry>();
+        KeyboardTranslator::Entry existing = item->data(Qt::UserRole).value<KeyboardTranslator::Entry>();
 
         _translator->removeEntry(existing);
 
@@ -182,9 +164,7 @@ bool KeyBindingEditor::eventFilter(QObject *watched, QEvent *event)
             //
             const KeyboardTranslator::States states = KeyboardTranslator::AnsiState;
 
-            KeyboardTranslator::Entry entry = _translator->findEntry(keyEvent->key(),
-                                                                     keyEvent->modifiers(),
-                                                                     states);
+            KeyboardTranslator::Entry entry = _translator->findEntry(keyEvent->key(), keyEvent->modifiers(), states);
 
             if (!entry.isNull()) {
                 _ui->testAreaInputEdit->setText(entry.conditionToString());
@@ -220,14 +200,13 @@ QString KeyBindingEditor::description() const
     return _ui->descriptionEdit->text();
 }
 
-void KeyBindingEditor::setup(const KeyboardTranslator *translator,
-                             const QString &currentProfileTranslator, bool isNewTranslator)
+void KeyBindingEditor::setup(const KeyboardTranslator *translator, const QString &currentProfileTranslator, bool isNewTranslator)
 {
     delete _translator;
 
     _isNewTranslator = isNewTranslator;
 
-    _currentProfileTranslator  = currentProfileTranslator;
+    _currentProfileTranslator = currentProfileTranslator;
 
     _translator = new KeyboardTranslator(*translator);
 
@@ -274,8 +253,7 @@ void KeyBindingEditor::bindingTableItemChanged(QTableWidgetItem *item)
 
 void KeyBindingEditor::setupKeyBindingTable(const KeyboardTranslator *translator)
 {
-    disconnect(_ui->keyBindingTable, &QTableWidget::itemChanged, this,
-               &Konsole::KeyBindingEditor::bindingTableItemChanged);
+    disconnect(_ui->keyBindingTable, &QTableWidget::itemChanged, this, &Konsole::KeyBindingEditor::bindingTableItemChanged);
 
     QList<KeyboardTranslator::Entry> entries = translator->entries();
     _ui->keyBindingTable->setRowCount(entries.count());
@@ -293,8 +271,7 @@ void KeyBindingEditor::setupKeyBindingTable(const KeyboardTranslator *translator
     }
     _ui->keyBindingTable->sortItems(0);
 
-    connect(_ui->keyBindingTable, &QTableWidget::itemChanged, this,
-            &Konsole::KeyBindingEditor::bindingTableItemChanged);
+    connect(_ui->keyBindingTable, &QTableWidget::itemChanged, this, &Konsole::KeyBindingEditor::bindingTableItemChanged);
 }
 
 void KeyBindingEditor::accept()
@@ -319,10 +296,10 @@ void KeyBindingEditor::accept()
 
     const QString &currentTranslatorName = newTranslator->name();
 
-    emit updateKeyBindingsListRequest(currentTranslatorName);
+    Q_EMIT updateKeyBindingsListRequest(currentTranslatorName);
 
     if (currentTranslatorName == _currentProfileTranslator) {
-        emit updateTempProfileKeyBindingsRequest(Profile::KeyBindings, currentTranslatorName);
+        Q_EMIT updateTempProfileKeyBindingsRequest(Profile::KeyBindings, currentTranslatorName);
     }
 
     QDialog::accept();
@@ -332,8 +309,7 @@ QSize KeyBindingEditor::sizeHint() const
 {
     const auto parent = parentWidget();
     if (parent != nullptr) {
-        return {static_cast<int>(parent->width() * 0.9),
-                static_cast<int>(parent->height() * 0.95)};
+        return {static_cast<int>(parent->width() * 0.9), static_cast<int>(parent->height() * 0.95)};
     }
 
     return {};

@@ -2,36 +2,21 @@
 #define ESCAPE_SEQUENCE_URL_EXTRACTOR_H
 
 /*
-    This file is part of Konsole, KDE's terminal.
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
+#include "Screen.h"
 #include <QObject>
 #include <QPointer>
-#include "Screen.h"
 
-
-namespace Konsole {
+namespace Konsole
+{
 /* Like QPoint, but with Row / Col
-* easier to read than x / y
-*/
+ * easier to read than x / y
+ */
 struct Coordinate {
     int row;
     int col;
@@ -50,7 +35,8 @@ struct ExtractedUrl {
 /* Stored in Screen, but used in V10Emulation to
  * store extracted URL's. Perhaps this should be a Model?
  */
-class EscapeSequenceUrlExtractor {
+class EscapeSequenceUrlExtractor
+{
 private:
     /* Tell us if we are currently reading or not a URL. */
     bool _reading = false;
@@ -67,7 +53,7 @@ private:
      * that will take over the history file.
      * TODO: make it configurable.
      */
-    //Not used ATM const int _maximumUrlHistory = 200;
+    // Not used ATM const int _maximumUrlHistory = 200;
 
     /* All of the extracted URL's. */
     QVector<ExtractedUrl> _history;
@@ -87,7 +73,7 @@ public:
     /* This is a list of URI schemas that are going to be supported, separated by semicolon.
      * like https://;file://
      */
-    void setAllowedLinkSchema(const QStringList& allowedSchemas);
+    void setAllowedLinkSchema(const QStringList &allowedSchemas);
 
     void setScreen(Screen *screen);
 
@@ -108,7 +94,7 @@ public:
     void appendUrlText(QChar c);
 
     /* The URL is parsed at once, store it at once. */
-    void setUrl(const QString& url);
+    void setUrl(const QString &url);
 
     /* All of the parsedURL's, used by TerminalDisplay to paint them
      * on screen. */

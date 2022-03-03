@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef COLORSCHEME_H
@@ -27,15 +14,15 @@
 #include <QSharedData>
 
 // Konsole
-#include "../characters/CharacterColor.h"
 #include "ColorSchemeWallpaper.h"
 
 class KConfig;
 class QPixmap;
 class QPainter;
 
-namespace Konsole {
-
+namespace Konsole
+{
+class RandomizationRange;
 /**
  * Represents a color scheme for a terminal display.
  *
@@ -51,7 +38,7 @@ public:
      */
     ColorScheme();
     ColorScheme(const ColorScheme &other);
-    ColorScheme& operator=(const ColorScheme &other) = delete;
+    ColorScheme &operator=(const ColorScheme &other) = delete;
     ~ColorScheme();
 
     /** Sets the descriptive name of the color scheme. */
@@ -70,7 +57,7 @@ public:
     void write(KConfig &config) const;
 
     /** Sets a single entry within the color palette. */
-    void setColorTableEntry(int index, const ColorEntry &entry);
+    void setColorTableEntry(int index, const QColor &entry);
 
     /**
      * Copies the color entries which form the palette for this color scheme
@@ -81,14 +68,14 @@ public:
      * @param randomSeed Color schemes may allow certain colors in their
      * palette to be randomized.  The seed is used to pick the random color.
      */
-    void getColorTable(ColorEntry *table, uint randomSeed = 0) const;
+    void getColorTable(QColor *table, uint randomSeed = 0) const;
 
     /**
      * Retrieves a single color entry from the table.
      *
      * See getColorTable()
      */
-    ColorEntry colorEntry(int index, uint randomSeed = 0) const;
+    QColor colorEntry(int index, uint randomSeed = 0) const;
 
     /**
      * Convenience method.  Returns the
@@ -153,35 +140,15 @@ public:
     /** Returns true if color randomization is enabled. */
     bool isColorRandomizationEnabled() const;
 
-    static const ColorEntry defaultTable[]; // table of default color entries
+    static const QColor defaultTable[]; // table of default color entries
 
     static QString colorNameForIndex(int index);
     static QString translatedColorNameForIndex(int index);
 
 private:
-    // specifies how much a particular color can be randomized by
-    class RandomizationRange
-    {
-    public:
-        RandomizationRange() : hue(0.0),
-            saturation(0.0),
-            lightness(0.0)
-        {
-        }
-
-        bool isNull() const
-        {
-            return qFuzzyIsNull(hue) && qFuzzyIsNull(saturation) && qFuzzyIsNull(lightness);
-        }
-
-        double hue;
-        double saturation;
-        double lightness;
-    };
-
     // returns the active color table.  if none has been set specifically,
     // this is the default color table.
-    const ColorEntry *colorTable() const;
+    const QColor *colorTable() const;
 
     // reads a single color entry from a KConfig source
     // and sets the palette entry at 'index' to the entry read.
@@ -199,7 +166,7 @@ private:
 
     // pointer to custom color table, or 0 if the default color table is
     // being used
-    ColorEntry *_table;
+    QColor *_table;
 
     // pointer to randomization table, or 0 if no colors in the color
     // scheme support randomization
@@ -214,11 +181,11 @@ private:
 
     ColorSchemeWallpaper::Ptr _wallpaper;
 
-    static const char * const colorNames[TABLE_COLORS];
-    static const char * const translatedColorNames[TABLE_COLORS];
+    static const char *const colorNames[TABLE_COLORS];
+    static const char *const translatedColorNames[TABLE_COLORS];
 };
 }
 
 Q_DECLARE_METATYPE(const Konsole::ColorScheme *)
 
-#endif //COLORSCHEME_H
+#endif // COLORSCHEME_H

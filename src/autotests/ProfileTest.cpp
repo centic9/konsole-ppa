@@ -1,37 +1,32 @@
 /*
-    Copyright 2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "ProfileTest.h"
 
 // KDE
-#include <qtest.h>
 #include <QFileInfo>
+#include <qtest.h>
 
 // Konsole
 #include "../profile/Profile.h"
 #include "../profile/ProfileGroup.h"
+#include "../profile/ProfileManager.cpp"
 #include "../profile/ProfileWriter.h"
+
+#include <QStandardPaths>
 
 #include <array>
 
 using namespace Konsole;
+
+void ProfileTest::initTestCase()
+{
+    QStandardPaths::setTestModeEnabled(true);
+}
 
 void ProfileTest::testProfile()
 {
@@ -112,24 +107,19 @@ void ProfileTest::testClone()
     target->clone(source, true);
 
     // check that properties from source have been cloned into target
-    QCOMPARE(source->property<bool>(Profile::AntiAliasFonts),
-             target->property<bool>(Profile::AntiAliasFonts));
-    QCOMPARE(source->property<int>(Profile::HistorySize),
-             target->property<int>(Profile::HistorySize));
+    QCOMPARE(source->property<bool>(Profile::AntiAliasFonts), target->property<bool>(Profile::AntiAliasFonts));
+    QCOMPARE(source->property<int>(Profile::HistorySize), target->property<int>(Profile::HistorySize));
 
     // check that Name and Path properties are handled specially and not cloned
-    QVERIFY(source->property<QString>(Profile::Name)
-            != target->property<QString>(Profile::Name));
-    QVERIFY(source->property<QString>(Profile::Path)
-            != target->property<QString>(Profile::Path));
+    QVERIFY(source->property<QString>(Profile::Name) != target->property<QString>(Profile::Name));
+    QVERIFY(source->property<QString>(Profile::Path) != target->property<QString>(Profile::Path));
 
     // check that Command property is not set in target because the values
     // are the same
     QVERIFY(!target->isPropertySet(Profile::Command));
     // check that ColorScheme property is cloned because the inherited values
     // from the source parent and target parent differ
-    QCOMPARE(source->property<QString>(Profile::ColorScheme),
-             target->property<QString>(Profile::ColorScheme));
+    QCOMPARE(source->property<QString>(Profile::ColorScheme), target->property<QString>(Profile::ColorScheme));
 }
 
 void ProfileTest::testProfileGroup()
@@ -231,6 +221,40 @@ void ProfileTest::testProfileFileNames()
     */
 
     delete writer;
+}
+
+void ProfileTest::testProfileNameSorting()
+{
+    auto *manager = ProfileManager::instance();
+
+    const int origCount = manager->allProfiles().size();
+
+    Profile::Ptr profile1 = Profile::Ptr(new Profile);
+    profile1->setProperty(Profile::UntranslatedName, QStringLiteral("Indiana"));
+    manager->addProfile(profile1);
+    auto list = manager->allProfiles();
+    int counter = 1;
+    QCOMPARE(list.size(), origCount + counter++);
+    // Built-in profile always at the top
+    QCOMPARE(list.at(0)->name(), QStringView(u"Default"));
+
+    QVERIFY(std::is_sorted(list.cbegin(), list.cend(), profileNameLessThan));
+
+    Profile::Ptr profile2 = Profile::Ptr(new Profile);
+    profile2->setProperty(Profile::UntranslatedName, QStringLiteral("Old Paris"));
+    manager->addProfile(profile2);
+    list = manager->allProfiles();
+    QCOMPARE(list.size(), origCount + counter++);
+    QVERIFY(std::is_sorted(list.cbegin(), list.cend(), profileNameLessThan));
+
+    Profile::Ptr profile3 = Profile::Ptr(new Profile);
+    profile3->setProperty(Profile::UntranslatedName, QStringLiteral("New Zealand"));
+    manager->addProfile(profile3);
+    list = manager->allProfiles();
+    QCOMPARE(list.size(), origCount + counter++);
+    QVERIFY(std::is_sorted(list.cbegin(), list.cend(), profileNameLessThan));
+
+    QCOMPARE(list.at(0)->name(), QLatin1String("Default"));
 }
 
 void ProfileTest::testFallbackProfile()

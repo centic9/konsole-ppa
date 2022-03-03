@@ -1,22 +1,9 @@
 /*
-    Copyright 2007-2008 Robert Knight <robertknight@gmail.com>
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-    Copyright 1996 by Matthias Ettrich <ettrich@kde.org>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 1996 Matthias Ettrich <ettrich@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -26,26 +13,25 @@
 #include <QKeyEvent>
 
 // Konsole
-#include "keyboardtranslator/KeyboardTranslator.h"
-#include "keyboardtranslator/KeyboardTranslatorManager.h"
 #include "Screen.h"
 #include "ScreenWindow.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
+#include "keyboardtranslator/KeyboardTranslatorManager.h"
 
 using namespace Konsole;
 
-Emulation::Emulation() :
-    _windows(QList<ScreenWindow *>()),
-    _currentScreen(nullptr),
-    _codec(nullptr),
-    _decoder(nullptr),
-    _keyTranslator(nullptr),
-    _usesMouseTracking(false),
-    _bracketedPasteMode(false),
-    _bulkTimer1(new QTimer(this)),
-    _bulkTimer2(new QTimer(this)),
-    _imageSizeInitialized(false),
-    _peekingPrimary(false),
-    _activeScreenIndex(0)
+Emulation::Emulation()
+    : _windows(QList<ScreenWindow *>())
+    , _currentScreen(nullptr)
+    , _codec(nullptr)
+    , _keyTranslator(nullptr)
+    , _usesMouseTracking(false)
+    , _bracketedPasteMode(false)
+    , _bulkTimer1(QTimer(this))
+    , _bulkTimer2(QTimer(this))
+    , _imageSizeInitialized(false)
+    , _peekingPrimary(false)
+    , _activeScreenIndex(0)
 {
     // create screens with a default size
     _screen[0] = new Screen(40, 80);
@@ -56,10 +42,8 @@ Emulation::Emulation() :
     QObject::connect(&_bulkTimer2, &QTimer::timeout, this, &Konsole::Emulation::showBulk);
 
     // listen for mouse status changes
-    connect(this, &Konsole::Emulation::programRequestsMouseTracking, this,
-            &Konsole::Emulation::setUsesMouseTracking);
-    connect(this, &Konsole::Emulation::programBracketedPasteModeChanged, this,
-            &Konsole::Emulation::bracketedPasteModeChanged);
+    connect(this, &Konsole::Emulation::programRequestsMouseTracking, this, &Konsole::Emulation::setUsesMouseTracking);
+    connect(this, &Konsole::Emulation::programBracketedPasteModeChanged, this, &Konsole::Emulation::bracketedPasteModeChanged);
 }
 
 bool Emulation::programUsesMouseTracking() const
@@ -87,26 +71,29 @@ ScreenWindow *Emulation::createWindow()
     auto window = new ScreenWindow(_currentScreen);
     _windows << window;
 
-    connect(window, &Konsole::ScreenWindow::selectionChanged, this,
-            &Konsole::Emulation::bufferedUpdate);
-    connect(window, &Konsole::ScreenWindow::selectionChanged, this,
-            &Konsole::Emulation::checkSelectedText);
+    connect(window, &Konsole::ScreenWindow::selectionChanged, this, &Konsole::Emulation::bufferedUpdate);
+    connect(window, &Konsole::ScreenWindow::selectionChanged, this, &Konsole::Emulation::checkSelectedText);
 
-    connect(this, &Konsole::Emulation::outputChanged, window,
-            &Konsole::ScreenWindow::notifyOutputChanged);
+    connect(this, &Konsole::Emulation::outputChanged, window, &Konsole::ScreenWindow::notifyOutputChanged);
 
     return window;
 }
 
+void Emulation::setCurrentTerminalDisplay(TerminalDisplay *display)
+{
+    _screen[0]->setCurrentTerminalDisplay(display);
+    _screen[1]->setCurrentTerminalDisplay(display);
+}
+
 void Emulation::checkScreenInUse()
 {
-    emit primaryScreenInUse(_currentScreen == _screen[0]);
+    Q_EMIT primaryScreenInUse(_currentScreen == _screen[0]);
 }
 
 void Emulation::checkSelectedText()
 {
     QString text = _currentScreen->selectedText(Screen::PreserveLineBreaks);
-    emit selectionChanged(text);
+    Q_EMIT selectionChanged(text);
 }
 
 Emulation::~Emulation()
@@ -117,7 +104,6 @@ Emulation::~Emulation()
 
     delete _screen[0];
     delete _screen[1];
-    delete _decoder;
 }
 
 void Emulation::setPeekPrimary(const bool doPeek)
@@ -127,7 +113,7 @@ void Emulation::setPeekPrimary(const bool doPeek)
     }
     _peekingPrimary = doPeek;
     setScreenInternal(doPeek ? 0 : _activeScreenIndex);
-    emit outputChanged();
+    Q_EMIT outputChanged();
 }
 
 void Emulation::setScreen(int index)
@@ -174,10 +160,9 @@ void Emulation::setCodec(const QTextCodec *codec)
     if (codec != nullptr) {
         _codec = codec;
 
-        delete _decoder;
-        _decoder = _codec->makeDecoder();
+        _decoder.reset(_codec->makeDecoder());
 
-        emit useUtf8Request(utf8());
+        Q_EMIT useUtf8Request(utf8());
     } else {
         setCodec(LocaleCodec);
     }
@@ -224,7 +209,7 @@ void Emulation::receiveChar(uint c)
         _currentScreen->toStartOfLine();
         break;
     case 0x07:
-        emit bell();
+        Q_EMIT bell();
         break;
     default:
         _currentScreen->displayCharacter(c);
@@ -238,28 +223,30 @@ void Emulation::sendKeyEvent(QKeyEvent *ev)
         // A block of text
         // Note that the text is proper unicode.
         // We should do a conversion here
-        emit sendData(ev->text().toLocal8Bit());
+        Q_EMIT sendData(ev->text().toLocal8Bit());
     }
 }
 
 void Emulation::receiveData(const char *text, int length)
 {
+    Q_ASSERT(_decoder);
+
     bufferedUpdate();
 
-    //send characters to terminal emulator
+    // send characters to terminal emulator
     for (const uint i : _decoder->toUnicode(text, length).toUcs4()) {
         receiveChar(i);
     }
 
-    //look for z-modem indicator
+    // look for z-modem indicator
     //-- someone who understands more about z-modems that I do may be able to move
-    //this check into the above for loop?
+    // this check into the above for loop?
     for (int i = 0; i < length - 4; i++) {
         if (text[i] == '\030') {
             if (qstrncmp(text + i + 1, "B00", 3) == 0) {
-                emit zmodemDownloadDetected();
+                Q_EMIT zmodemDownloadDetected();
             } else if (qstrncmp(text + i + 1, "B01", 3) == 0) {
-                emit zmodemUploadDetected();
+                Q_EMIT zmodemUploadDetected();
             }
         }
     }
@@ -281,7 +268,7 @@ void Emulation::showBulk()
     _bulkTimer1.stop();
     _bulkTimer2.stop();
 
-    emit outputChanged();
+    Q_EMIT outputChanged();
 
     _currentScreen->resetScrolledLines();
     _currentScreen->resetDroppedLines();
@@ -311,12 +298,8 @@ void Emulation::setImageSize(int lines, int columns)
         return;
     }
 
-    QSize screenSize[2] = {
-        QSize(_screen[0]->getColumns(),
-              _screen[0]->getLines()),
-        QSize(_screen[1]->getColumns(),
-              _screen[1]->getLines())
-    };
+    QSize screenSize[2] = {QSize(_screen[0]->getColumns(), _screen[0]->getLines()), //
+                           QSize(_screen[1]->getColumns(), _screen[1]->getLines())};
     QSize newSize(columns, lines);
 
     if (newSize == screenSize[0] && newSize == screenSize[1]) {
@@ -324,13 +307,13 @@ void Emulation::setImageSize(int lines, int columns)
         // SIGNAL(imageSizeChange()), even if the new size is the same as the
         // current size.  See #176902
         if (!_imageSizeInitialized) {
-            emit imageSizeChanged(lines, columns);
+            Q_EMIT imageSizeChanged(lines, columns);
         }
     } else {
         _screen[0]->resizeImage(lines, columns);
         _screen[1]->resizeImage(lines, columns);
 
-        emit imageSizeChanged(lines, columns);
+        Q_EMIT imageSizeChanged(lines, columns);
 
         bufferedUpdate();
     }
@@ -338,7 +321,7 @@ void Emulation::setImageSize(int lines, int columns)
     if (!_imageSizeInitialized) {
         _imageSizeInitialized = true;
 
-        emit imageSizeInitialized();
+        Q_EMIT imageSizeInitialized();
     }
 }
 

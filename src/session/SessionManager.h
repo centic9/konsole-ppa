@@ -1,31 +1,18 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SESSIONMANAGER_H
 #define SESSIONMANAGER_H
 
 // Qt
+#include <QExplicitlySharedDataPointer>
 #include <QHash>
 #include <QList>
-#include <QExplicitlySharedDataPointer>
 
 // TODO: Move the Property away from Profile.h
 #include "profile/Profile.h"
@@ -34,7 +21,8 @@
 
 class KConfig;
 
-namespace Konsole {
+namespace Konsole
+{
 class Session;
 class Profile;
 
@@ -80,7 +68,7 @@ public:
     Session *createSession(QExplicitlySharedDataPointer<Profile> profile = QExplicitlySharedDataPointer<Profile>());
 
     /** Sets the profile associated with a session. */
-    void setSessionProfile(Session *session,QExplicitlySharedDataPointer<Profile> profile);
+    void setSessionProfile(Session *session, QExplicitlySharedDataPointer<Profile> profile);
 
     /** Returns the profile associated with a session. */
     QExplicitlySharedDataPointer<Profile> sessionProfile(Session *session) const;
@@ -93,7 +81,7 @@ public:
     // System session management
     void saveSessions(KConfig *config);
     void restoreSessions(KConfig *config);
-    int  getRestoreId(Session *session);
+    int getRestoreId(Session *session);
     Session *idToSession(int id);
     bool isClosingAllSessions() const;
 
@@ -142,4 +130,4 @@ private:
 
 }
 
-#endif //SESSIONMANAGER_H
+#endif // SESSIONMANAGER_H

@@ -74,7 +74,9 @@
 ><year
 >2018</year
 ><year
->2020</year>
+>2020</year
+><year
+>2021</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -90,9 +92,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->16 de setembre de 2020</date>
+>2 d'octubre de 2021</date>
 <releaseinfo
->Aplicacions 20.12</releaseinfo>
+>Aplicacions 21.12</releaseinfo>
 
 <abstract
 ><para
@@ -139,7 +141,7 @@
 <para
 >El &konsole; utilitza la noció de desplaçar enrere per a permetre als usuaris veure la sortida mostrada anteriorment. De manera predeterminada, el desplaçament enrere està activat i establert a desar 1.000 línies de la sortida, a més del que es mostra actualment a la pantalla. </para>
 <para
->Segons les línies es van desplaçant fora de la part superior de la pantalla, es poden tornar a veure movent la barra de desplaçament cap a amunt, movent la roda del ratolí o usant les tecles <keycombo action="simul"
+>Segons les línies es van desplaçant fora de la part superior de la pantalla, es poden tornar a veure movent la barra de desplaçament cap amunt, movent la roda del ratolí o usant les tecles <keycombo action="simul"
 >&Maj;<keycap
 >Re Pàg</keycap
 ></keycombo
@@ -177,7 +179,7 @@
 <title
 >Perfils</title>
 <para
->Els perfils permeten a l'usuari ràpida i fàcilment automatitzar l'execució d'ordres comuns. Com a exemples es poden incloure: <itemizedlist>
+>Els perfils permeten a l'usuari ràpidament i fàcilment automatitzar l'execució d'ordres comunes. Com a exemples es poden incloure: <itemizedlist>
 <listitem
 ><para
 >ssh en una altra màquina.</para
@@ -264,17 +266,6 @@
 
 </orderedlist>
 </para>
-
-<para
->Tots els perfils que s'han marcat a <guilabel
->Mostra en el menú</guilabel
-> es mostraran pel seu nom en el menú <menuchoice
-><guimenu
->Fitxer</guimenu
-><guisubmenu
->Pestanya nova</guisubmenu
-></menuchoice
->. No hi haurà submenú si només es mostra el perfil predeterminat. </para>
 
 </sect1>
 
@@ -539,7 +530,7 @@
 </term
 > <listitem>
 <para
->Suspèn l'acció arrossega i deixa.</para
+>Suspèn l'acció d'arrossegar i deixar.</para
 ></listitem>
 </varlistentry>
 
@@ -626,7 +617,7 @@
 >Obre una pestanya nova amb el perfil predeterminat.</action>
 <note
 ><para
->El &konsole; ve amb un perfil predeterminat. Qualsevol perfil nou afegit per l'usuari serà llistat al submenú. No hi haurà submenú si només es mostra el perfil predeterminat. </para
+>El primer perfil en el submenú sempre serà «Predeterminat», el qual és el perfil incorporat. Tots els altres perfils es llisten a continuació en ordre alfabètic. El perfil predeterminat especificat per l'usuari estarà en negreta. </para
 ></note>
 </para
 ></listitem
@@ -728,13 +719,13 @@
 > <guimenu
 >Fitxer</guimenu
 ><guimenuitem
->Tanca la pestanya</guimenuitem
+>Tanca la sessió</guimenuitem
 ></menuchoice>
 </term>
 <listitem
 ><para
 ><action
->Tanca la pestanya actual.</action>
+>Tanca la sessió actual.</action>
 </para
 ></listitem>
 </varlistentry>
@@ -761,17 +752,8 @@
 ></para>
 <note
 ><para
->El &konsole; mostrarà un diàleg de confirmació si hi ha més d'una pestanya oberta. Aquest diàleg es pot desactivar fent clic a la casella de selecció <guibutton
+>El &konsole; mostrarà un diàleg de confirmació si hi ha més d'una sessió oberta o si hi ha determinats programes executant-se en qualsevol sessió. Aquest diàleg es pot desactivar fent clic a la casella de selecció <guibutton
 >No ho tornis a preguntar</guibutton
->. </para>
-<para
->Si voleu obtenir el diàleg de confirmació, suprimiu l'entrada <screen
->[Notification Messages]
-CloseAllTabs=true</screen
-> a <filename
->$<envar
->XDG_CONFIG_HOME</envar
->/konsolerc</filename
 >. </para>
 </note>
 </listitem>
@@ -984,7 +966,7 @@ CloseAllTabs=true</screen
 >KILL</errorcode
 ></entry>
 <entry
->senyal per a matar</entry>
+>senyal de matar</entry>
 </row>
 <row>
 <entry
@@ -1230,56 +1212,6 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Maj;<keycap
->X</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visualitza</guimenu
-><guisubmenu
->Divideix la vista</guisubmenu
-><guimenuitem
->Tanca l'activa</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Tanca la vista actual.</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Maj;<keycap
->O</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visualitza</guimenu
-><guisubmenu
->Divideix la vista</guisubmenu
-><guimenuitem
->Tanca les altres</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Tanca totes les vistes menys l'actual.</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Maj;<keycap
 >]</keycap
 ></keycombo
 ></shortcut
@@ -1320,6 +1252,31 @@ Various search improvements
 ><para
 ><action
 >Fa més petita la vista actual.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Maj;<keycap
+>E</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualitza</guimenu
+><guisubmenu
+>Divideix la vista</guisubmenu
+><guimenuitem
+>Commuta la maximització de la vista actual</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Alterna la vista actual entre la mida actual i la mida màxima</action>
 </para
 ></listitem>
 </varlistentry>
@@ -1370,6 +1327,46 @@ Various search improvements
 ><action
 >Obre la vista dividida actual en una finestra a part.</action>
 </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualitza</guimenu
+> <guimenuitem
+>Desa la disposició de les pestanyes a un fitxer</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Permet desar la disposició de les pestanyes de la vista actual en un fitxer de disposició especialitzat del &konsole; que després es podrà carregar per a restaurar una de les vostres disposicions preferides.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualitza</guimenu
+> <guimenuitem
+>Carrega la disposició de la pestanya des d'un fitxer</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Permet carregar una de les vostres disposicions preferides des del fitxer de disposició que s'ha desat utilitzant l'anterior element de menú <menuchoice
+><guimenu
+>Visualitza</guimenu
+><guimenuitem
+>Desa la disposició de la pestanya a un fitxer</guimenuitem
+></menuchoice
+>.</action
+> Les disposicions predeterminades (2x2, 2x1 i 1x2) es poden carregar a través de la barra d'eines. </para
 ></listitem>
 </varlistentry>
 
@@ -1608,6 +1605,27 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>F11</keycap
+></shortcut
+> <guimenu
+>Visualitza</guimenu
+><guimenuitem
+>Mode de pantalla completa</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Alterna el &konsole; per a ocupar tota la pantalla.</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1715,6 +1733,16 @@ Various search improvements
 </variablelist>
 </sect2>
 
+<sect2 id="plugins-menu">
+<title
+>El menú Connectors</title>
+
+<para
+>Llistarà qualsevol connector instal·lat o mostrarà «No hi ha cap connector disponible» </para>
+
+</sect2>
+
+
 <sect2 id="settings-menu">
 <title
 >El menú Arranjament</title>
@@ -1774,6 +1802,23 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guimenuitem
+>Esquema de color de les finestres</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Canvia la &IGU; del &konsole; a l'esquema especificat</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Maj;<keycap
@@ -1797,20 +1842,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycap
->F11</keycap
-></shortcut
-> <guimenu
+><guimenu
 >Arranjament</guimenu
-><guimenuitem
->Mode de pantalla completa</guimenuitem
+> <guimenuitem
+>Barres d'eines mostrades</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Alterna el &konsole; per a ocupar tota la pantalla.</action
+>Permet alternar la visibilitat de les barres d'eines del &konsole;.</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Arranjament</guimenu
+><guimenuitem
+>Mostra la barra d'estat</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Canvia la visibilitat de la barra d'estat.</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1820,8 +1878,25 @@ Various search improvements
 ><menuchoice
 ><guimenu
 >Arranjament</guimenu
-><guimenuitem
->Configura les dreceres...</guimenuitem
+> <guimenuitem
+>Configura l'idioma... </guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Obre una finestra per a triar una traducció per a la interfície del &konsole;.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Arranjament</guimenu
+> <guimenuitem
+>Configura les dreceres de teclat...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1869,9 +1944,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Maj;<keysym
->Fletxa esquerra</keysym
-></keycombo
+>&Ctrl;&Alt;&Left;</keycombo
 ></entry>
 <entry
 >Mou la pestanya a l'esquerra</entry>
@@ -1879,9 +1952,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Maj;<keysym
->Fletxa dreta</keysym
-></keycombo
+>&Ctrl;&Alt;&Right;</keycombo
 ></entry>
 <entry
 >Mou la pestanya a la dreta</entry>
@@ -1896,19 +1967,29 @@ Various search improvements
 <entry
 >Enganxa la selecció</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Maj;&Tab;</keycombo
-></entry>
-<entry
->Vista del següent contenidor</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Arranjament</guimenu
+><guimenuitem
+>Configura les barres d'eines...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Obre <ulink url="help:/fundamentals/config.html#toolbars-items"
+>la finestra de configuració de la barra d'eines</ulink
+>.</action
+></para>
 </listitem>
 </varlistentry>
 
@@ -2541,18 +2622,18 @@ Various search improvements
 </variablelist>
 
 <para
->El &konsole; també accepta opcions genèriques de les &Qt; i dels &kf5-full;, vegeu les pàgines man per a qt5options i kf5options.</para>
+>El &konsole; també accepta opcions genèriques de les &Qt; i dels &kf5-full;, vegeu les pàgines man de qt5options i kf5options.</para>
 
 </chapter>
 
 <chapter id="scripting">
 <title
->Crear scripts per al &konsole;</title>
+>Creació de scripts del &konsole;</title>
 
 <para
->El &konsole; té suport per a nombrosos mètodes que es poden utilitzar amb &DBus;. </para>
+>El &konsole; permet nombrosos mètodes que es poden utilitzar amb &DBus;. </para>
 <para
->Hi ha dues maneres d'utilitzar la interfície de &DBus;: L'&IGU; de les &Qt; és <application
+>Hi ha dues maneres d'utilitzar la interfície de &DBus;: La &IGU; de les &Qt; és <application
 >qdbusviewer</application
 > i la línia d'ordres <application
 >qdbus</application
@@ -2726,31 +2807,19 @@ Space+Ctrl
 </para>
 
 <para
->Els noms de les tecles es defineixen en el fitxer de capçalera qnamespace.h, amb el prefix <quote
->Qt::Key_</quote
-> suprimit, per a una llista dels noms de tecla, consulteu l'<ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
+>Els noms de les tecles es defineixen en el fitxer de capçalera qnamespace.h, amb el prefix «Qt::Key_» suprimit, per a una llista dels noms de tecla, consulteu l'<ulink url="https://doc.qt.io/qt-5/qt.html#Key-enum"
 >enumeració de Qt::Key a la documentació de les &Qt;</ulink
 >.</para>
 
 <para
->Un signe de <quote
->+</quote
-> precedint un nom de mode, voldrà dir que aquest mode està <emphasis
+>Un signe de «+» precedint un nom de mode, voldrà dir que aquest mode està <emphasis
 >establert</emphasis
->; per a una tecla modificadora, això vol dir que s'ha de prémer, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està en vigor (&ead;, actiu). Per exemple, <quote
->+Ctrl</quote
-> vol dir que la combinació de tecles només funcionarà si es prem la tecla &Ctrl;.</para>
+>; per a una tecla modificadora, això vol dir que s'ha de prémer, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està en vigor (&ead;, actiu). Per exemple, «+Ctrl» vol dir que la combinació de tecles només funcionarà si es prem la tecla &Ctrl;.</para>
 
 <para
->Un signe de <quote
->-</quote
-> precedint un nom de mode, voldrà dir que aquest mode es <emphasis
+>Un signe de «-» precedint un nom de mode, voldrà dir que aquest mode es <emphasis
 >reinicia</emphasis
->; bàsicament, això és tot el contrari de posar <quote
->+</quote
-> abans d'un nom de mode, de manera que per a una tecla modificadora això voldrà dir que no s'ha de prémer la tecla, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està inactiu. Per exemple, <quote
->-Ctrl</quote
-> voldrà dir que la combinació de tecles només funcionarà si <emphasis
+>; bàsicament, això és tot el contrari de posar «+» abans d'un nom de mode, de manera que per a una tecla modificadora això voldrà dir que no s'ha de prémer la tecla, mentre que per a tots els altres modes voldrà dir que aquest mode en particular està inactiu. Per exemple, «-Ctrl» voldrà dir que la combinació de tecles només funcionarà si <emphasis
 >no</emphasis
 > es prem la tecla &Ctrl;.</para>
 
@@ -2760,7 +2829,7 @@ Space+Ctrl
 </note>
 
 <para
->Els modes admesos per als lligams de tecla es llisten a continuació:</para>
+>Els modes admesos de lligams de tecla es llisten a continuació:</para>
 
 <variablelist>
 
@@ -2835,13 +2904,9 @@ Space+Ctrl
 <para
 >Si aquest mode és estableix, la combinació de tecles utilitzarà una tecla en el teclat numèric. Aquest mode és útil per a distingir entre les tecles del teclat i les tecles del teclat numèric. Per exemple, quan Bloq Núm està <emphasis
 >actiu</emphasis
->, podeu configurar dues combinacions de tecles separades, una amb la tecla <quote
->1</quote
-> del teclat (normalment sota la tecla <keycap
+>, podeu configurar dues combinacions de tecles separades, una amb la tecla «1» del teclat (normalment sota la tecla <keycap
 >F1</keycap
->) i l'altra amb la tecla <quote
->1</quote
-> del teclat numèric. El mateix concepte s'aplica quan Bloq Núm està <emphasis
+>) i l'altra amb la tecla «1» del teclat numèric. El mateix concepte s'aplica quan Bloq Núm està <emphasis
 >desactivat</emphasis
 > per a les tecles Fi, Inici, tecles del cursor, &etc; al teclat numèric</para>
 </listitem>
@@ -2854,7 +2919,7 @@ Space+Ctrl
 <para
 >Aquest mode implementa el <ulink url="https://www.vt100.net/docs/vt100-ug/chapter3.html#DECCKM"
 >Mode de tecles del cursor (DECCKM)</ulink
-> de VT100. Controla les seqüències d'escapament que s'envia per a cada tecla del cursor (<keycap
+> de VT100. Controla les seqüències d'escapament que envia cada tecla del cursor (<keycap
 >Fletxa amunt</keycap
 >, <keycap
 >Fletxa avall</keycap
@@ -2914,25 +2979,17 @@ Space+Ctrl
 <itemizedlist>
 <listitem
 ><para
->A+Shift : <quote
->A</quote
-></para
+>A+Shift : «A»</para
 ></listitem>
 <listitem
 ><para
->a : <quote
->a</quote
-></para
+>a : «a»</para
 ></listitem>
 </itemizedlist>
 <para
 >El &konsole; <emphasis
 >no</emphasis
-> acceptarà la regla amb la lletra petita <quote
->a</quote
->, haureu d'afegir un <quote
->-Shift</quote
-> a aquesta regla perquè funcioni.</para>
+> acceptarà la regla amb la lletra petita «a», haureu d'afegir un «-Shift» a aquesta regla perquè funcioni.</para>
 </sect2>
 
 <sect2 id="output-field">
@@ -3052,13 +3109,13 @@ Space+Ctrl
 <listitem>
 <para
 ><ulink url="https://www.vt100.net/docs/vt100-ug/"
->La guia d'usuari per a VT100</ulink
+>La guia d'usuari de VT100</ulink
 ></para>
 </listitem>
 <listitem>
 <para
 ><ulink url="https://vt100.net/docs/vt102-ug/"
->La guia d'usuari per a VT102</ulink
+>La guia d'usuari de VT102</ulink
 ></para>
 </listitem>
 <listitem>

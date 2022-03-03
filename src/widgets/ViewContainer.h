@@ -1,22 +1,7 @@
 /*
-    This file is part of the Konsole Terminal.
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    Copyright 2006-2008 Robert Knight <robertknight@gmail.com>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef VIEWCONTAINER_H
@@ -35,7 +20,8 @@ class QPoint;
 class QToolButton;
 class QMenu;
 
-namespace Konsole {
+namespace Konsole
+{
 class ViewProperties;
 class ViewManager;
 class TabbedViewContainer;
@@ -101,8 +87,7 @@ public:
     /** Changes the active view to the last view */
     void activateLastView();
 
-    void setCss(const QString& styleSheet = QString());
-    void setCssFromFile(const QUrl& url);
+    void setCssFromFile(const QUrl &url);
 
     ViewSplitter *activeViewSplitter();
     /**
@@ -114,7 +99,7 @@ public:
         /** Moves the view to the left. */
         MoveViewLeft,
         /** Moves the view to the right. */
-        MoveViewRight
+        MoveViewRight,
     };
 
     /**
@@ -150,6 +135,12 @@ public:
      */
     ViewSplitter *viewSplitterAt(int index);
 
+    /**
+     * Returns the number of split views (i.e. TerminalDisplay widgets)
+     * in this tab; if there are no split views, 1 is returned.
+     */
+    int currentTabViewCount();
+
     void connectTerminalDisplay(TerminalDisplay *display);
     void disconnectTerminalDisplay(TerminalDisplay *display);
     void moveTabLeft();
@@ -162,11 +153,13 @@ public:
         /** Put newly created tab at the end. */
         PutNewTabAtTheEnd = 0,
         /** Put newly created tab right after current tab. */
-        PutNewTabAfterCurrentTab = 1
+        PutNewTabAfterCurrentTab = 1,
     };
 
     void setNavigationBehavior(int behavior);
-    void terminalDisplayDropped(TerminalDisplay* terminalDisplay);
+    void terminalDisplayDropped(TerminalDisplay *terminalDisplay);
+
+    void moveToNewTab(TerminalDisplay *display);
 
     QSize sizeHint() const override;
 
@@ -200,8 +193,8 @@ Q_SIGNALS:
     /** Emitted when a view is added to the container. */
     void viewAdded(TerminalDisplay *view);
 
-    /** Emitted when a view is removed from the container. */
-    void viewRemoved(TerminalDisplay *view);
+    /** Emitted when a view is removed from container. */
+    void viewRemoved();
 
     /** detach the specific tab */
     void detachTab(int tabIdx);
@@ -225,16 +218,24 @@ private:
     void forgetView();
 
     struct TabIconState {
-        TabIconState(): readOnly(false), broadcast(false), notification(Session::NoNotification) {}
+        TabIconState()
+            : readOnly(false)
+            , broadcast(false)
+            , notification(Session::NoNotification)
+        {
+        }
 
         bool readOnly;
         bool broadcast;
         Session::Notification notification;
 
-        bool isAnyStateActive() const {
+        bool isAnyStateActive() const
+        {
             return readOnly || broadcast || (notification != Session::NoNotification);
         }
     };
+
+    bool _stylesheetSet = false;
 
     QHash<const QWidget *, TabIconState> _tabIconState;
     ViewManager *_connectedViewManager;
@@ -246,6 +247,5 @@ private:
     NewTabBehavior _newTabBehavior;
 };
 
-
 }
-#endif //VIEWCONTAINER_H
+#endif // VIEWCONTAINER_H

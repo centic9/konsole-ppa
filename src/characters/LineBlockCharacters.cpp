@@ -1,25 +1,10 @@
 /*
-    This file is part of Konsole, a terminal emulator for KDE.
+    SPDX-FileCopyrightText: 2018-2019 Mariusz Glebocki <mglb@arccos-1.net>
+    SPDX-FileCopyrightText: 2018 Martin T. H. Sandsmark <martin.sandsmark@kde.org>
+    SPDX-FileCopyrightText: 2015-2018 Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2005 Maksim Orlovich <maksim@kde.org>
 
-    Copyright 2018-2019 by Mariusz Glebocki <mglb@arccos-1.net>
-    Copyright 2018 by Martin T. H. Sandsmark <martin.sandsmark@kde.org>
-    Copyright 2015-2018 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
-    Copyright 2005 by Maksim Orlovich <maksim@kde.org>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -28,15 +13,11 @@
 // Qt
 #include <QPainterPath>
 
-namespace Konsole {
-namespace LineBlockCharacters {
-
-enum LineType {
-    LtNone   = 0,
-    LtDouble = 1,
-    LtLight  = 2,
-    LtHeavy  = 3
-};
+namespace Konsole
+{
+namespace LineBlockCharacters
+{
+enum LineType { LtNone = 0, LtDouble = 1, LtLight = 2, LtHeavy = 3 };
 
 // PackedLineTypes is an 8-bit number representing types of 4 line character's lines. Each line is
 // represented by 2 bits. Lines order, starting from MSB: top, right, bottom, left.
@@ -45,6 +26,7 @@ static inline constexpr quint8 makePackedLineTypes(LineType top, LineType right,
     return (int(top) & 3) << 6 | (int(right) & 3) << 4 | (int(bottom) & 3) << 2 | (int(left) & 3);
 }
 
+/* clang-format off */
 static constexpr const quint8 PackedLineTypesLut[] = {
     //                  top       right     bottom    left
     makePackedLineTypes(LtNone  , LtLight , LtNone  , LtLight ), /* U+2500 ─ */
@@ -160,14 +142,13 @@ static constexpr const quint8 PackedLineTypesLut[] = {
     makePackedLineTypes(LtNone  , LtLight , LtNone  , LtHeavy ), /* U+257E ╾ */
     makePackedLineTypes(LtHeavy , LtNone  , LtLight , LtNone  ), /* U+257F ╿ */
 };
-
-
+/* clang-format on */
 
 // Bitwise rotate left
-template <typename T>
+template<typename T>
 inline static T rotateBitsLeft(T value, quint8 amount)
 {
-    static_assert (std::is_unsigned<T>(), "T must be unsigned type");
+    static_assert(std::is_unsigned<T>(), "T must be unsigned type");
     Q_ASSERT(amount < sizeof(value) * 8);
     return value << amount | value >> (sizeof(value) * 8 - amount);
 }
@@ -177,40 +158,37 @@ inline static const QPen pen(const QPainter &paint, uint lineWidth)
     return QPen(paint.pen().brush(), lineWidth, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
 }
 
-
-
 static inline uint lineWidth(uint fontWidth, bool heavy, bool bold)
 {
     static const qreal LightWidthToFontWidthRatio = 1.0 / 6.5;
     static const qreal HeavyHalfExtraToLightRatio = 1.0 / 3.0;
-    static const qreal BoldCoefficient            = 1.5;
+    static const qreal BoldCoefficient = 1.5;
 
     //        ▄▄▄▄▄▄▄ } heavyHalfExtraWidth  ⎫
     // ██████████████ } lightWidth           ⎬ heavyWidth
     //        ▀▀▀▀▀▀▀                        ⎭
     //  light  heavy
 
-    const qreal baseWidth           = fontWidth * LightWidthToFontWidthRatio;
-    const qreal boldCoeff           = bold ? BoldCoefficient : 1.0;
+    const qreal baseWidth = fontWidth * LightWidthToFontWidthRatio;
+    const qreal boldCoeff = bold ? BoldCoefficient : 1.0;
     // Unless font size is too small, make bold lines at least 1px wider than regular lines
-    const qreal minWidth            = bold && fontWidth >= 7 ? baseWidth + 1.0 : 1.0;
-    const uint  lightWidth          = qRound(qMax(baseWidth * boldCoeff, minWidth));
-    const uint  heavyHalfExtraWidth = qRound(qMax(lightWidth * HeavyHalfExtraToLightRatio, 1.0));
+    const qreal minWidth = bold && fontWidth >= 7 ? baseWidth + 1.0 : 1.0;
+    const uint lightWidth = qRound(qMax(baseWidth * boldCoeff, minWidth));
+    const uint heavyHalfExtraWidth = qRound(qMax(lightWidth * HeavyHalfExtraToLightRatio, 1.0));
 
     return heavy ? lightWidth + 2 * heavyHalfExtraWidth : lightWidth;
 }
 
 // Draws characters composed of straight solid lines
-static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, uchar code,
-                                   bool bold)
+static bool drawBasicLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code, bool bold)
 {
     quint8 packedLineTypes = code >= sizeof(PackedLineTypesLut) ? 0 : PackedLineTypesLut[code];
     if (packedLineTypes == 0) {
         return false;
     }
 
-    const uint lightLineWidth      = lineWidth(w, false, bold);
-    const uint heavyLineWidth      = lineWidth(w, true, bold);
+    const uint lightLineWidth = lineWidth(w, false, bold);
+    const uint heavyLineWidth = lineWidth(w, true, bold);
     // Distance from double line's parallel axis to each line's parallel axis
     const uint doubleLinesDistance = lightLineWidth;
 
@@ -221,25 +199,25 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
 
     // Pixel aligned center point
     const QPointF center = {
-        x + int(w/2) + 0.5 * (lightLineWidth % 2),
-        y + int(h/2) + 0.5 * (lightLineWidth % 2),
+        x + int(w / 2) + 0.5 * (lightLineWidth % 2),
+        y + int(h / 2) + 0.5 * (lightLineWidth % 2),
     };
 
     // Lines starting points, on the cell edges
     const QPointF origin[] = {
-        QPointF(center.x(), y             ),
-        QPointF(x+w       , center.y()    ),
-        QPointF(center.x(), y+h           ),
-        QPointF(x         , center.y()    ),
+        QPointF(center.x(), y),
+        QPointF(x + w, center.y()),
+        QPointF(center.x(), y + h),
+        QPointF(x, center.y()),
     };
     // Unit vectors with directions from center to the line's origin point
     static const QPointF dir[] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
-    const auto removeLineType = [&packedLineTypes](quint8 lineId)->void {
+    const auto removeLineType = [&packedLineTypes](quint8 lineId) -> void {
         lineId = LinesNum - 1 - lineId % LinesNum;
         packedLineTypes &= ~(3 << (2 * lineId));
     };
-    const auto getLineType = [&packedLineTypes](quint8 lineId)->LineType {
+    const auto getLineType = [&packedLineTypes](quint8 lineId) -> LineType {
         lineId = LinesNum - 1 - lineId % LinesNum;
         return LineType(packedLineTypes >> 2 * lineId & 3);
     };
@@ -247,7 +225,7 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
     QPainterPath lightPath; // PainterPath for light lines (Painter Path Light)
     QPainterPath heavyPath; // PainterPath for heavy lines (Painter Path Heavy)
     // Returns ppl or pph depending on line type
-    const auto pathForLine = [&](quint8 lineId) -> QPainterPath& {
+    const auto pathForLine = [&](quint8 lineId) -> QPainterPath & {
         Q_ASSERT(getLineType(lineId) != LtNone);
         return getLineType(lineId) == LtHeavy ? heavyPath : lightPath;
     };
@@ -255,10 +233,9 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
     // Process all single up-down/left-right lines for every character that has them. Doing it here
     // reduces amount of combinations below.
     // Fully draws: ╋ ╂ ┃ ┿ ┼ │ ━ ─
-    for (unsigned int topIndex = 0; topIndex < LinesNum/2; topIndex++) {
+    for (unsigned int topIndex = 0; topIndex < LinesNum / 2; topIndex++) {
         unsigned iB = (topIndex + 2) % LinesNum;
-        const bool isSingleLine = (getLineType(topIndex) == LtLight
-                                || getLineType(topIndex) == LtHeavy);
+        const bool isSingleLine = (getLineType(topIndex) == LtLight || getLineType(topIndex) == LtHeavy);
         if (isSingleLine && getLineType(topIndex) == getLineType(iB)) {
             pathForLine(topIndex).moveTo(origin[topIndex]);
             pathForLine(topIndex).lineTo(origin[iB]);
@@ -280,9 +257,9 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
             basePackedLineTypes = rotatedPackedLineTypes;
         }
     }
-    uint rightIndex  = (topIndex + 1) % LinesNum;
+    uint rightIndex = (topIndex + 1) % LinesNum;
     uint bottomIndex = (topIndex + 2) % LinesNum;
-    uint leftIndex   = (topIndex + 3) % LinesNum;
+    uint leftIndex = (topIndex + 3) % LinesNum;
 
     // Common paths
     const auto drawDoubleUpRightShorterLine = [&](quint8 top, quint8 right) { // ╚
@@ -297,38 +274,38 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
     };
 
     switch (basePackedLineTypes) {
-    case makePackedLineTypes(LtHeavy , LtNone  , LtLight , LtNone  ): // ╿ ; ╼ ╽ ╾ ╊ ╇ ╉ ╈ ╀ ┾ ╁ ┽
+    case makePackedLineTypes(LtHeavy, LtNone, LtLight, LtNone): // ╿ ; ╼ ╽ ╾ ╊ ╇ ╉ ╈ ╀ ┾ ╁ ┽
         lightPath.moveTo(origin[bottomIndex]);
         lightPath.lineTo(center + dir[topIndex] * lightLineWidth / 2.0);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtHeavy , LtNone  , LtNone  , LtNone  ): // ╹ ; ╺ ╻ ╸ ┻ ┣ ┳ ┫ ┸ ┝ ┰ ┥
-    case makePackedLineTypes(LtLight , LtNone  , LtNone  , LtNone  ): // ╵ ; ╶ ╷ ╴ ┷ ┠ ┯ ┨ ┴ ├ ┬ ┤
+    case makePackedLineTypes(LtHeavy, LtNone, LtNone, LtNone): // ╹ ; ╺ ╻ ╸ ┻ ┣ ┳ ┫ ┸ ┝ ┰ ┥
+    case makePackedLineTypes(LtLight, LtNone, LtNone, LtNone): // ╵ ; ╶ ╷ ╴ ┷ ┠ ┯ ┨ ┴ ├ ┬ ┤
         pathForLine(topIndex).moveTo(origin[topIndex]);
         pathForLine(topIndex).lineTo(center);
         break;
 
-    case makePackedLineTypes(LtHeavy , LtHeavy , LtLight , LtLight ): // ╄ ; ╃ ╆ ╅
+    case makePackedLineTypes(LtHeavy, LtHeavy, LtLight, LtLight): // ╄ ; ╃ ╆ ╅
         drawUpRight(bottomIndex, leftIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtHeavy , LtHeavy , LtNone  , LtNone  ): // ┗ ; ┛ ┏ ┓
-    case makePackedLineTypes(LtLight , LtLight , LtNone  , LtNone  ): // └ ; ┘ ┌ ┐
+    case makePackedLineTypes(LtHeavy, LtHeavy, LtNone, LtNone): // ┗ ; ┛ ┏ ┓
+    case makePackedLineTypes(LtLight, LtLight, LtNone, LtNone): // └ ; ┘ ┌ ┐
         drawUpRight(topIndex, rightIndex);
         break;
 
-    case makePackedLineTypes(LtHeavy , LtLight , LtNone  , LtNone  ): // ┖ ; ┙ ┍ ┒
+    case makePackedLineTypes(LtHeavy, LtLight, LtNone, LtNone): // ┖ ; ┙ ┍ ┒
         qSwap(leftIndex, rightIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtHeavy , LtNone  , LtNone  , LtLight ): // ┚ ; ┕ ┎ ┑
+    case makePackedLineTypes(LtHeavy, LtNone, LtNone, LtLight): // ┚ ; ┕ ┎ ┑
         lightPath.moveTo(origin[leftIndex]);
         lightPath.lineTo(center);
         heavyPath.moveTo(origin[topIndex]);
         heavyPath.lineTo(center + dir[bottomIndex] * lightLineWidth / 2.0);
         break;
 
-    case makePackedLineTypes(LtLight , LtDouble, LtNone  , LtNone  ): // ╘ ; ╜ ╓ ╕
+    case makePackedLineTypes(LtLight, LtDouble, LtNone, LtNone): // ╘ ; ╜ ╓ ╕
         qSwap(leftIndex, rightIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtLight , LtNone  , LtNone  , LtDouble): // ╛ ; ╙ ╒ ╖
+    case makePackedLineTypes(LtLight, LtNone, LtNone, LtDouble): // ╛ ; ╙ ╒ ╖
         lightPath.moveTo(origin[topIndex]);
         lightPath.lineTo(center + dir[bottomIndex] * doubleLinesDistance);
         lightPath.lineTo(origin[leftIndex] + dir[bottomIndex] * doubleLinesDistance);
@@ -336,39 +313,39 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
         lightPath.lineTo(center - dir[bottomIndex] * doubleLinesDistance);
         break;
 
-    case makePackedLineTypes(LtHeavy , LtHeavy , LtLight , LtNone  ): // ┡ ; ┹ ┪ ┲
+    case makePackedLineTypes(LtHeavy, LtHeavy, LtLight, LtNone): // ┡ ; ┹ ┪ ┲
         qSwap(leftIndex, bottomIndex);
         qSwap(rightIndex, topIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtHeavy , LtHeavy , LtNone  , LtLight ): // ┺ ; ┩ ┢ ┱
+    case makePackedLineTypes(LtHeavy, LtHeavy, LtNone, LtLight): // ┺ ; ┩ ┢ ┱
         drawUpRight(topIndex, rightIndex);
         lightPath.moveTo(origin[leftIndex]);
         lightPath.lineTo(center);
         break;
 
-    case makePackedLineTypes(LtHeavy , LtLight , LtLight , LtNone  ): // ┞ ; ┵ ┧ ┮
+    case makePackedLineTypes(LtHeavy, LtLight, LtLight, LtNone): // ┞ ; ┵ ┧ ┮
         qSwap(leftIndex, rightIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtHeavy , LtNone  , LtLight , LtLight ): // ┦ ; ┶ ┟ ┭
+    case makePackedLineTypes(LtHeavy, LtNone, LtLight, LtLight): // ┦ ; ┶ ┟ ┭
         heavyPath.moveTo(origin[topIndex]);
         heavyPath.lineTo(center + dir[bottomIndex] * lightLineWidth / 2.0);
         drawUpRight(bottomIndex, leftIndex);
         break;
 
-    case makePackedLineTypes(LtLight , LtDouble, LtNone  , LtDouble): // ╧ ; ╟ ╢ ╤
+    case makePackedLineTypes(LtLight, LtDouble, LtNone, LtDouble): // ╧ ; ╟ ╢ ╤
         lightPath.moveTo(origin[topIndex]);
         lightPath.lineTo(center - dir[bottomIndex] * doubleLinesDistance);
         qSwap(leftIndex, bottomIndex);
         qSwap(rightIndex, topIndex);
         Q_FALLTHROUGH();
-    case makePackedLineTypes(LtDouble, LtNone  , LtDouble, LtNone  ): // ║ ; ╫ ═ ╪
+    case makePackedLineTypes(LtDouble, LtNone, LtDouble, LtNone): // ║ ; ╫ ═ ╪
         lightPath.moveTo(origin[topIndex] + dir[leftIndex] * doubleLinesDistance);
         lightPath.lineTo(origin[bottomIndex] + dir[leftIndex] * doubleLinesDistance);
         lightPath.moveTo(origin[topIndex] + dir[rightIndex] * doubleLinesDistance);
         lightPath.lineTo(origin[bottomIndex] + dir[rightIndex] * doubleLinesDistance);
         break;
 
-    case makePackedLineTypes(LtDouble, LtNone  , LtNone  , LtNone  ): // ╨ ; ╞ ╥ ╡
+    case makePackedLineTypes(LtDouble, LtNone, LtNone, LtNone): // ╨ ; ╞ ╥ ╡
         lightPath.moveTo(origin[topIndex] + dir[leftIndex] * doubleLinesDistance);
         lightPath.lineTo(center + dir[leftIndex] * doubleLinesDistance);
         lightPath.moveTo(origin[topIndex] + dir[rightIndex] * doubleLinesDistance);
@@ -382,14 +359,14 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
         drawDoubleUpRightShorterLine(bottomIndex, leftIndex);
         break;
 
-    case makePackedLineTypes(LtDouble, LtDouble, LtDouble, LtNone  ): // ╠ ; ╩ ╣ ╦
+    case makePackedLineTypes(LtDouble, LtDouble, LtDouble, LtNone): // ╠ ; ╩ ╣ ╦
         lightPath.moveTo(origin[topIndex] + dir[leftIndex] * doubleLinesDistance);
         lightPath.lineTo(origin[bottomIndex] + dir[leftIndex] * doubleLinesDistance);
         drawDoubleUpRightShorterLine(topIndex, rightIndex);
         drawDoubleUpRightShorterLine(bottomIndex, rightIndex);
         break;
 
-    case makePackedLineTypes(LtDouble, LtDouble, LtNone  , LtNone  ): // ╚ ; ╝ ╔ ╗
+    case makePackedLineTypes(LtDouble, LtDouble, LtNone, LtNone): // ╚ ; ╝ ╔ ╗
         lightPath.moveTo(origin[topIndex] + dir[leftIndex] * doubleLinesDistance);
         lightPath.lineTo(center + (dir[leftIndex] + dir[bottomIndex]) * doubleLinesDistance);
         lightPath.lineTo(origin[rightIndex] + dir[bottomIndex] * doubleLinesDistance);
@@ -408,8 +385,7 @@ static bool drawBasicLineCharacter(QPainter& paint, int x, int y, int w, int h, 
     return true;
 }
 
-static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
-                                           bool bold)
+static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code, bool bold)
 {
     if (!((0x04 <= code && code <= 0x0B) || (0x4C <= code && code <= 0x4F))) {
         return false;
@@ -423,25 +399,26 @@ static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w,
 
     // Pixel aligned center point
     const QPointF center = {
-        int(x + w/2.0) + 0.5 * (lightLineWidth%2),
-        int(y + h/2.0) + 0.5 * (lightLineWidth%2),
+        int(x + w / 2.0) + 0.5 * (lightLineWidth % 2),
+        int(y + h / 2.0) + 0.5 * (lightLineWidth % 2),
     };
 
-    const qreal halfGapH   = qMax(w / 20.0, 0.5);
-    const qreal halfGapV   = qMax(h / 26.0, 0.5);
+    const qreal halfGapH = qMax(w / 20.0, 0.5);
+    const qreal halfGapV = qMax(h / 26.0, 0.5);
     // For some reason vertical double dash has bigger gap
     const qreal halfGapDDV = qMax(h / 14.0, 0.5);
 
     static const int LinesNumMax = 4;
 
-    enum Orientation {Horizontal, Vertical};
+    enum Orientation { Horizontal, Vertical };
     struct {
-        int         linesNum;
+        int linesNum;
         Orientation orientation;
-        QPen        pen;
-        qreal       halfGap;
+        QPen pen;
+        qreal halfGap;
     } lineProps;
 
+    /* clang-format off */
     switch (code) {
     case 0x4C: lineProps = {2, Horizontal, lightPen, halfGapH  }; break; // ╌
     case 0x4D: lineProps = {2, Horizontal, heavyPen, halfGapH  }; break; // ╍
@@ -456,21 +433,20 @@ static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w,
     case 0x0A: lineProps = {4, Vertical  , lightPen, halfGapV  }; break; // ┊
     case 0x0B: lineProps = {4, Vertical  , heavyPen, halfGapV  }; break; // ┋
     }
+    /* clang-format on */
 
     Q_ASSERT(lineProps.linesNum <= LinesNumMax);
     const int size = (lineProps.orientation == Horizontal ? w : h);
-    const int pos  = (lineProps.orientation == Horizontal ? x : y);
+    const int pos = (lineProps.orientation == Horizontal ? x : y);
     QLineF lines[LinesNumMax];
 
     for (int i = 0; i < lineProps.linesNum; i++) {
-        const qreal start = pos + qreal(size * (i  )) / lineProps.linesNum;
-        const qreal end   = pos + qreal(size * (i+1)) / lineProps.linesNum;
+        const qreal start = pos + qreal(size * (i)) / lineProps.linesNum;
+        const qreal end = pos + qreal(size * (i + 1)) / lineProps.linesNum;
         if (lineProps.orientation == Horizontal) {
-            lines[i] = QLineF{start + lineProps.halfGap, center.y(),
-                              end   - lineProps.halfGap, center.y()};
+            lines[i] = QLineF{start + lineProps.halfGap, center.y(), end - lineProps.halfGap, center.y()};
         } else {
-            lines[i] = QLineF{center.x(), start + lineProps.halfGap,
-                              center.x(), end   - lineProps.halfGap};
+            lines[i] = QLineF{center.x(), start + lineProps.halfGap, center.x(), end - lineProps.halfGap};
         }
     }
 
@@ -483,8 +459,7 @@ static inline bool drawDashedLineCharacter(QPainter &paint, int x, int y, int w,
     return true;
 }
 
-static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y, int w, int h,
-                                                  uchar code, bool bold)
+static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code, bool bold)
 {
     if (!(0x6D <= code && code <= 0x70)) {
         return false;
@@ -495,8 +470,8 @@ static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y,
 
     // Pixel aligned center point
     const QPointF center = {
-        int(x + w/2.0) + 0.5 * (lightLineWidth%2),
-        int(y + h/2.0) + 0.5 * (lightLineWidth%2),
+        int(x + w / 2.0) + 0.5 * (lightLineWidth % 2),
+        int(y + h / 2.0) + 0.5 * (lightLineWidth % 2),
     };
 
     const int r = w * 3 / 8;
@@ -533,8 +508,7 @@ static inline bool drawRoundedCornerLineCharacter(QPainter &paint, int x, int y,
     return true;
 }
 
-static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int w, int h,
-                                             uchar code, bool bold)
+static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int w, int h, uchar code, bool bold)
 {
     if (!(0x71 <= code && code <= 0x73)) {
         return false;
@@ -544,8 +518,8 @@ static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int 
     const auto lightPen = pen(paint, lightLineWidth);
 
     const QLineF lines[] = {
-        QLineF(x+w, y, x  , y+h), // '/'
-        QLineF(x  , y, x+w, y+h), // '\'
+        QLineF(x + w, y, x, y + h), // '/'
+        QLineF(x, y, x + w, y + h), // '\'
     };
 
     const auto origPen = paint.pen();
@@ -567,8 +541,7 @@ static inline bool drawDiagonalLineCharacter(QPainter &paint, int x, int y, int 
     return true;
 }
 
-static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int h, uchar code,
-                                      bool bold)
+static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int h, uchar code, bool bold)
 {
     Q_UNUSED(bold)
 
@@ -576,8 +549,8 @@ static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int 
 
     // Center point
     const QPointF center = {
-        x + w/2.0,
-        y + h/2.0,
+        x + w / 2.0,
+        y + h / 2.0,
     };
 
     // Default rect fills entire cell
@@ -601,10 +574,10 @@ static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int 
     // Combinations of quarter squares
     // LEFT ONE EIGHTH BLOCK to QUADRANT UPPER RIGHT AND LOWER LEFT AND LOWER RIGHT
     if (code >= 0x96 && code <= 0x9F) {
-        const QRectF upperLeft (x         , y         , w/2.0, h/2.0);
-        const QRectF upperRight(center.x(), y         , w/2.0, h/2.0);
-        const QRectF lowerLeft (x         , center.y(), w/2.0, h/2.0);
-        const QRectF lowerRight(center.x(), center.y(), w/2.0, h/2.0);
+        const QRectF upperLeft(x, y, w / 2.0, h / 2.0);
+        const QRectF upperRight(center.x(), y, w / 2.0, h / 2.0);
+        const QRectF lowerLeft(x, center.y(), w / 2.0, h / 2.0);
+        const QRectF lowerRight(center.x(), center.y(), w / 2.0, h / 2.0);
 
         QPainterPath path;
 
@@ -659,18 +632,18 @@ static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int 
     QBrush mediumShade;
     QBrush darkShade;
     if (paint.testRenderHint(QPainter::Antialiasing)) {
-        lightShade  = QColor(color.red(), color.green(), color.blue(), 64);
+        lightShade = QColor(color.red(), color.green(), color.blue(), 64);
         mediumShade = QColor(color.red(), color.green(), color.blue(), 128);
-        darkShade   = QColor(color.red(), color.green(), color.blue(), 192);
+        darkShade = QColor(color.red(), color.green(), color.blue(), 192);
     } else {
-        lightShade  = QBrush(color, Qt::Dense6Pattern);
+        lightShade = QBrush(color, Qt::Dense6Pattern);
         mediumShade = QBrush(color, Qt::Dense4Pattern);
-        darkShade   = QBrush(color, Qt::Dense2Pattern);
+        darkShade = QBrush(color, Qt::Dense2Pattern);
     }
     // And the random stuff
     switch (code) {
     case 0x80: // Top half block
-        rect.setHeight(h/2.0);
+        rect.setHeight(h / 2.0);
         paint.fillRect(rect, color);
         return true;
     case 0x90: // Right half block
@@ -678,15 +651,15 @@ static inline bool drawBlockCharacter(QPainter &paint, int x, int y, int w, int 
         paint.fillRect(rect, color);
         return true;
     case 0x94: // Top one eighth block
-        rect.setHeight(h/8.0);
+        rect.setHeight(h / 8.0);
         paint.fillRect(rect, color);
         return true;
     case 0x95: { // Right one eighth block
-            const qreal width = 7 * w / 8.0;
-            rect.moveLeft(x + width);
-            paint.fillRect(rect, color);
-            return true;
-        }
+        const qreal width = 7 * w / 8.0;
+        rect.moveLeft(x + width);
+        paint.fillRect(rect, color);
+        return true;
+    }
     case 0x91: // Light shade
         paint.fillRect(rect, lightShade);
         return true;
@@ -713,11 +686,9 @@ void draw(QPainter &paint, const QRect &cellRect, const QChar &chr, bool bold)
     int h = cellRect.height();
 
     // Each function below returns true when it has drawn the character, false otherwise.
-    drawBasicLineCharacter(paint, x, y, w, h, code, bold)
-            || drawDashedLineCharacter(paint, x, y, w, h, code, bold)
-            || drawRoundedCornerLineCharacter(paint, x, y, w, h, code, bold)
-            || drawDiagonalLineCharacter(paint, x, y, w, h, code, bold)
-            || drawBlockCharacter(paint, x, y, w, h, code, bold);
+    drawBasicLineCharacter(paint, x, y, w, h, code, bold) || drawDashedLineCharacter(paint, x, y, w, h, code, bold)
+        || drawRoundedCornerLineCharacter(paint, x, y, w, h, code, bold) || drawDiagonalLineCharacter(paint, x, y, w, h, code, bold)
+        || drawBlockCharacter(paint, x, y, w, h, code, bold);
 }
 
 } // namespace LineBlockCharacters

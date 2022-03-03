@@ -1,20 +1,7 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SCREENWINDOW_H
@@ -29,8 +16,8 @@
 #include "../characters/Character.h"
 #include "Screen.h"
 
-namespace Konsole {
-
+namespace Konsole
+{
 /**
  * Provides a window onto a section of a terminal screen.  A terminal widget can then render
  * the contents of the window and use the window to change the terminal screen's selection
@@ -195,7 +182,7 @@ public:
          * Scroll the window down by a given number of pages, where
          * one page is windowLines() lines
          */
-        ScrollPages
+        ScrollPages,
     };
 
     /**
@@ -230,6 +217,8 @@ public:
      * @param options See Screen::DecodingOptions
      */
     QString selectedText(const Screen::DecodingOptions options) const;
+
+    void updateCurrentLine();
 
 public Q_SLOTS:
     /**
@@ -274,10 +263,10 @@ private:
     bool _bufferNeedsUpdate;
 
     int _windowLines;
-    int _currentLine;  // see scrollTo() , currentLine()
+    int _currentLine; // see scrollTo() , currentLine()
     int _currentResultLine;
     bool _trackOutput; // see setTrackOutput() , trackOutput()
-    int _scrollCount;  // count of lines which the window has been scrolled by since
+    int _scrollCount; // count of lines which the window has been scrolled by since
     // the last call to resetScrollCount()
 };
 }

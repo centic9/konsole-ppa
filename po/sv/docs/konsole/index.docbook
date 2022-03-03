@@ -88,7 +88,9 @@
 ><year
 >2018</year
 ><year
->2020</year>
+>2020</year
+><year
+>2021</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -104,9 +106,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2020-09-16</date>
+>2021-10-28</date>
 <releaseinfo
->Program 20.12</releaseinfo>
+>Program 21.12</releaseinfo>
 
 <abstract
 ><para
@@ -278,17 +280,6 @@
 
 </orderedlist>
 </para>
-
-<para
->Alla profiler markerade med <guilabel
->Visa i meny</guilabel
-> kommer att listas enligt namn i menyn <menuchoice
-><guimenu
->Arkiv</guimenu
-><guisubmenu
->Ny flik</guisubmenu
-></menuchoice
->. Ingen undermeny visas om bara förvald profil ska visas. </para>
 
 </sect1>
 
@@ -660,7 +651,7 @@
 >Öppnar en ny flik med förvald profil</action>
 <note
 ><para
->Terminal levereras med standardprofil. Alla nya profiler som användaren lägger till listas i undermenyn. Det finns ingen undermeny om bara standardprofilen ska visas. </para
+>Den första profilen i undermenyn är alltid "Förval", som är den inbyggda profilen. Alla andra profiler listas under den i alfabetisk ordning. Den användarspecificerade förvalda profilen visas med fetstil. </para
 ></note>
 </para
 ></listitem
@@ -762,13 +753,13 @@
 > <guimenu
 >Arkiv</guimenu
 ><guimenuitem
->Stäng flik</guimenuitem
+>Stäng session</guimenuitem
 ></menuchoice>
 </term>
 <listitem
 ><para
 ><action
->Stänger aktuell flik</action>
+>Stänger aktuell session</action>
 </para
 ></listitem>
 </varlistentry>
@@ -795,17 +786,8 @@
 ></para>
 <note
 ><para
->Terminal visar en bekräftelsedialogruta om det finns mer än en flik öppen. Dialogrutan kan inaktiveras genom att klicka i kryssrutan <guibutton
+>Terminal visar en bekräftelsedialogruta om det finns mer än en session öppen eller om det finns vissa program som kör i någon session. Dialogrutorna kan inaktiveras genom att klicka på kryssrutan <guibutton
 >Fråga inte igen</guibutton
->. </para>
-<para
->Om du vill få tillbaka bekräftelsedialogrutan, ta bort posten <screen
->[Notification Messages]
-CloseAllTabs=true</screen
-> i <filename
->$<envar
->XDG_CONFIG_HOME</envar
->/konsolerc</filename
 >. </para>
 </note>
 </listitem>
@@ -1266,56 +1248,6 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->X</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visa</guimenu
-><guisubmenu
->Dela vy</guisubmenu
-><guimenuitem
->Stäng aktiv</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Stänger aktiv vy</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
->O</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visa</guimenu
-><guisubmenu
->Dela vy</guisubmenu
-><guimenuitem
->Stäng övriga</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Stänger alla vyer som inte är aktiva</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
 >]</keycap
 ></keycombo
 ></shortcut
@@ -1356,6 +1288,31 @@ Various search improvements
 ><para
 ><action
 >Gör den aktuella vyn mindre</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>E</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visa</guimenu
+><guisubmenu
+>Dela vy</guisubmenu
+><guimenuitem
+>Maximera eller minimera aktuell vy</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Byter aktuell vy mellan nuvarande storlek och den maximerade storleken</action>
 </para
 ></listitem>
 </varlistentry>
@@ -1406,6 +1363,46 @@ Various search improvements
 ><action
 >Öppnar den aktuella delade vyn i ett separat fönster</action>
 </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visa</guimenu
+><guimenuitem
+>Spara fliklayout i fil</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Låter dig spara den aktuella vyns fliklayout i en särskild terminallayoutfil, som sedan kan läsas in för att återställa en av dina favoritlayouter.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visa</guimenu
+><guimenuitem
+>Läs in fliklayout från fil</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Låter dig läsa in en av dina favoritlayouter från layoutfilen som tidigare har sparats med menyalternativet <menuchoice
+><guimenu
+>Visa</guimenu
+><guimenuitem
+>Spara fliklayout i fil</guimenuitem
+></menuchoice
+>.</action
+> Standardlayouterna (2 x 2, 2 x 1 och 1 x 2) kan läsas in via verktygsraden. </para
 ></listitem>
 </varlistentry>
 
@@ -1644,6 +1641,27 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>F11</keycap
+></shortcut
+> <guimenu
+>Visa</guimenu
+><guimenuitem
+>Fullskärmsläge</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ändrar att terminalen fyller hela skärmen</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1751,6 +1769,16 @@ Various search improvements
 </variablelist>
 </sect2>
 
+<sect2 id="plugins-menu">
+<title
+>Menyn Insticksprogram</title>
+
+<para
+>Alla installerade insticksprogram listas eller "Inga insticksprogram tillgängliga" </para>
+
+</sect2>
+
+
 <sect2 id="settings-menu">
 <title
 >Menyn Inställningar</title>
@@ -1810,6 +1838,23 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Fönsterfärgschema</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ändra Terminals grafiska gränssnitt till angivet schema</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
@@ -1833,20 +1878,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycap
->F11</keycap
-></shortcut
-> <guimenu
+><guimenu
 >Inställningar</guimenu
-><guimenuitem
->Fullskärmsläge</guimenuitem
+> <guimenuitem
+>Visade verktygsrader</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Ändrar att terminalen fyller hela skärmen</action
+>Gör det möjligt att ändra synlighet för verktygsraderna i &konsole;</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Visa statusrad</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Ändrar statusradens synlighet</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1857,7 +1915,24 @@ Various search improvements
 ><guimenu
 >Inställningar</guimenu
 > <guimenuitem
->Anpassa genvägar...</guimenuitem
+>Anpassa språk...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Öppnar ett fönster för att välja översättning för gränssnittet i &konsole;.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Anpassa snabbtangenter...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1905,7 +1980,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Vänsterpil</keysym
 ></keycombo
 ></entry>
@@ -1915,7 +1990,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Högerpil</keysym
 ></keycombo
 ></entry>
@@ -1932,21 +2007,29 @@ Various search improvements
 <entry
 >Klistra in markering</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Shift;<keysym
->Tabulator</keysym
-></keycombo
-></entry>
-<entry
->Nästa vyomgivning</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Inställningar</guimenu
+> <guimenuitem
+>Anpassa verktygsrader...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Öppnar <ulink url="help:/fundamentals/config.html#toolbars-items"
+>inställningsfönstret för verktygsrader</ulink
+></action
+></para>
 </listitem>
 </varlistentry>
 

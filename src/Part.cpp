@@ -1,38 +1,25 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "Part.h"
 
 // Qt
-#include <QStringList>
 #include <QDir>
 #include <QKeyEvent>
 #include <QMetaEnum>
+#include <QStringList>
 #include <QUrl>
 
 // KDE
-#include <QAction>
 #include <KActionCollection>
-#include <KPluginFactory>
-#include <KLocalizedString>
 #include <KConfigDialog>
+#include <KLocalizedString>
+#include <KPluginFactory>
+#include <QAction>
 
 // Konsole
 #include "Emulation.h"
@@ -43,27 +30,24 @@
 #include "session/SessionManager.h"
 #include "settings/PartInfo.h"
 #include "settings/ProfileSettings.h"
-#include "widgets/EditProfileDialog.h"
 #include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/EditProfileDialog.h"
 #include "widgets/ViewContainer.h"
 
 using namespace Konsole;
 
-K_PLUGIN_FACTORY_WITH_JSON(KonsolePartFactory,
-                           "konsolepart.json",
-                           registerPlugin<Konsole::Part>();)
+K_PLUGIN_FACTORY_WITH_JSON(KonsolePartFactory, "konsolepart.json", registerPlugin<Konsole::Part>();)
 
-Part::Part(QWidget *parentWidget, QObject *parent, const QVariantList &) :
-    KParts::ReadOnlyPart(parent),
-    _viewManager(nullptr),
-    _pluggedController(nullptr)
+Part::Part(QWidget *parentWidget, QObject *parent, const QVariantList &)
+    : KParts::ReadOnlyPart(parent)
+    , _viewManager(nullptr)
+    , _pluggedController(nullptr)
 {
     // create view widget
     _viewManager = new ViewManager(this, actionCollection());
     _viewManager->setNavigationMethod(ViewManager::NoNavigation);
 
-    connect(_viewManager, &Konsole::ViewManager::activeViewChanged, this,
-            &Konsole::Part::activeViewChanged);
+    connect(_viewManager, &Konsole::ViewManager::activeViewChanged, this, &Konsole::Part::activeViewChanged);
     connect(_viewManager, &Konsole::ViewManager::empty, this, &Konsole::Part::terminalExited);
     connect(_viewManager, &Konsole::ViewManager::newViewRequest, this, &Konsole::Part::newTab);
 
@@ -83,11 +67,7 @@ Part::Part(QWidget *parentWidget, QObject *parent, const QVariantList &) :
     createSession();
 }
 
-Part::~Part()
-{
-    ProfileManager::instance()->saveSettings();
-    delete _viewManager;
-}
+Part::~Part() = default;
 
 bool Part::openFile()
 {
@@ -221,9 +201,8 @@ QString Part::currentProfileName() const
 
 bool Part::setCurrentProfile(const QString &profileName)
 {
-
     Profile::Ptr profile;
-    for(auto p : ProfileManager::instance()->allProfiles()) {
+    for (auto p : ProfileManager::instance()->allProfiles()) {
         if (p->name() == profileName) {
             profile = p;
             break;
@@ -267,20 +246,16 @@ void Part::activeViewChanged(SessionController *controller)
     // remove existing controller
     if (_pluggedController != nullptr) {
         removeChildClient(_pluggedController);
-        disconnect(_pluggedController, &Konsole::SessionController::titleChanged, this,
-                   &Konsole::Part::activeViewTitleChanged);
-        disconnect(_pluggedController, &Konsole::SessionController::currentDirectoryChanged, this,
-                   &Konsole::Part::currentDirectoryChanged);
+        disconnect(_pluggedController, &Konsole::SessionController::titleChanged, this, &Konsole::Part::activeViewTitleChanged);
+        disconnect(_pluggedController, &Konsole::SessionController::currentDirectoryChanged, this, &Konsole::Part::currentDirectoryChanged);
     }
 
     // insert new controller
     insertChildClient(controller);
 
-    connect(controller, &Konsole::SessionController::titleChanged, this,
-            &Konsole::Part::activeViewTitleChanged);
+    connect(controller, &Konsole::SessionController::titleChanged, this, &Konsole::Part::activeViewTitleChanged);
     activeViewTitleChanged(controller);
-    connect(controller, &Konsole::SessionController::currentDirectoryChanged, this,
-            &Konsole::Part::currentDirectoryChanged);
+    connect(controller, &Konsole::SessionController::currentDirectoryChanged, this, &Konsole::Part::currentDirectoryChanged);
 
     disconnect(controller->view(), &TerminalDisplay::overrideShortcutCheck, this, &Part::overrideTerminalShortcut);
     connect(controller->view(), &TerminalDisplay::overrideShortcutCheck, this, &Part::overrideTerminalShortcut);
@@ -293,20 +268,19 @@ void Part::overrideTerminalShortcut(QKeyEvent *event, bool &override)
     // Shift+Insert is commonly used as the alternate shortcut for
     // pasting in KDE apps(including konsole), so it deserves some
     // special treatment.
-    if (((event->modifiers() & Qt::ShiftModifier) != 0U)
-        && (event->key() == Qt::Key_Insert)) {
+    if (((event->modifiers() & Qt::ShiftModifier) != 0U) && (event->key() == Qt::Key_Insert)) {
         override = false;
         return;
     }
 
     // override all shortcuts in the embedded terminal by default
     override = true;
-    emit overrideShortcut(event, override);
+    Q_EMIT overrideShortcut(event, override);
 }
 
 void Part::activeViewTitleChanged(ViewProperties *properties)
 {
-    emit setWindowCaption(properties->title());
+    Q_EMIT setWindowCaption(properties->title());
 }
 
 void Part::showManageProfilesDialog(QWidget *parent)
@@ -316,21 +290,14 @@ void Part::showManageProfilesDialog(QWidget *parent)
         return;
     }
 
-    KConfigDialog *settingsDialog = new KConfigDialog(parent, QStringLiteral("konsolepartmanageprofiles"),
-                                                      KonsoleSettings::self());
+    KConfigDialog *settingsDialog = new KConfigDialog(parent, QStringLiteral("konsolepartmanageprofiles"), KonsoleSettings::self());
     settingsDialog->setFaceType(KPageDialog::Tabbed);
 
     auto profileSettings = new ProfileSettings(settingsDialog);
-    settingsDialog->addPage(profileSettings,
-                            i18nc("@title Preferences page name",
-                                  "Profiles"),
-                            QStringLiteral("configure"));
+    settingsDialog->addPage(profileSettings, i18nc("@title Preferences page name", "Profiles"), QStringLiteral("configure"));
 
     auto partInfoSettings = new PartInfoSettings(settingsDialog);
-    settingsDialog->addPage(partInfoSettings,
-                            i18nc("@title Preferences page name",
-                                  "Part Info"),
-                            QStringLiteral("dialog-information"));
+    settingsDialog->addPage(partInfoSettings, i18nc("@title Preferences page name", "Part Info"), QStringLiteral("dialog-information"));
 
     settingsDialog->show();
 }
@@ -361,14 +328,14 @@ void Part::changeSessionSettings(const QString &text)
 bool Part::openUrl(const QUrl &url)
 {
     if (KParts::ReadOnlyPart::url() == url) {
-        emit completed();
+        Q_EMIT completed();
         return true;
     }
 
     setUrl(url);
-    emit setWindowCaption(url.toDisplayString(QUrl::PreferLocalFile));
+    Q_EMIT setWindowCaption(url.toDisplayString(QUrl::PreferLocalFile));
     ////qDebug() << "Set Window Caption to " << url.pathOrUrl();
-    emit started(nullptr);
+    Q_EMIT started(nullptr);
 
     if (url.isLocalFile()) {
         showShellInDir(url.path());
@@ -376,7 +343,7 @@ bool Part::openUrl(const QUrl &url)
         showShellInDir(QDir::homePath());
     }
 
-    emit completed();
+    Q_EMIT completed();
     return true;
 }
 
@@ -386,14 +353,11 @@ void Part::setMonitorSilenceEnabled(bool enabled)
 
     if (enabled) {
         activeSession()->setMonitorSilence(true);
-        connect(activeSession(), &Konsole::Session::notificationsChanged,
-                this, &Konsole::Part::notificationChanged,
-                Qt::UniqueConnection);
+        connect(activeSession(), &Konsole::Session::notificationsChanged, this, &Konsole::Part::notificationChanged, Qt::UniqueConnection);
     } else {
         activeSession()->setMonitorSilence(false);
         if (!activeSession()->isMonitorActivity()) {
-            disconnect(activeSession(), &Konsole::Session::notificationsChanged,
-                       this, &Konsole::Part::notificationChanged);
+            disconnect(activeSession(), &Konsole::Session::notificationsChanged, this, &Konsole::Part::notificationChanged);
         }
     }
 }
@@ -404,15 +368,11 @@ void Part::setMonitorActivityEnabled(bool enabled)
 
     if (enabled) {
         activeSession()->setMonitorActivity(true);
-        connect(activeSession(), &Konsole::Session::notificationsChanged,
-                this, &Konsole::Part::notificationChanged,
-                Qt::UniqueConnection);
+        connect(activeSession(), &Konsole::Session::notificationsChanged, this, &Konsole::Part::notificationChanged, Qt::UniqueConnection);
     } else {
         activeSession()->setMonitorActivity(false);
         if (!activeSession()->isMonitorSilence()) {
-            disconnect(activeSession(), &Konsole::Session::notificationsChanged,
-                       this,
-                       &Konsole::Part::notificationChanged);
+            disconnect(activeSession(), &Konsole::Session::notificationsChanged, this, &Konsole::Part::notificationChanged);
         }
     }
 }
@@ -425,9 +385,9 @@ bool Part::isBlurEnabled()
 void Part::notificationChanged(Session::Notification notification, bool enabled)
 {
     if (notification == Session::Notification::Silence && enabled) {
-        emit silenceDetected();
+        Q_EMIT silenceDetected();
     } else if (notification == Session::Notification::Activity && enabled) {
-        emit activityDetected();
+        Q_EMIT activityDetected();
     }
 }
 

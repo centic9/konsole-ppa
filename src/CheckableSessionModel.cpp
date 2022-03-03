@@ -1,31 +1,18 @@
 /*
-    Copyright 2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "CheckableSessionModel.h"
 
 using namespace Konsole;
 
-CheckableSessionModel::CheckableSessionModel(QObject *parent) :
-    SessionListModel(parent),
-    _checkedSessions(QSet<Session *>()),
-    _fixedSessions(QSet<Session *>()),
-    _checkColumn(0)
+CheckableSessionModel::CheckableSessionModel(QObject *parent)
+    : SessionListModel(parent)
+    , _checkedSessions(QSet<Session *>())
+    , _fixedSessions(QSet<Session *>())
+    , _checkColumn(0)
 {
 }
 
@@ -43,16 +30,14 @@ Qt::ItemFlags CheckableSessionModel::flags(const QModelIndex &index) const
     if (_fixedSessions.contains(session)) {
         return SessionListModel::flags(index) & ~Qt::ItemIsEnabled;
     }
-   return SessionListModel::flags(index) | Qt::ItemIsUserCheckable;
+    return SessionListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 QVariant CheckableSessionModel::data(const QModelIndex &index, int role) const
 {
     if (role == Qt::CheckStateRole && index.column() == _checkColumn) {
         auto *session = static_cast<Session *>(index.internalPointer());
-        return QVariant::fromValue(static_cast<int>(
-            _checkedSessions.contains(session) ? Qt::Checked : Qt::Unchecked)
-        );
+        return QVariant::fromValue(static_cast<int>(_checkedSessions.contains(session) ? Qt::Checked : Qt::Unchecked));
     }
     return SessionListModel::data(index, role);
 }
@@ -72,7 +57,7 @@ bool CheckableSessionModel::setData(const QModelIndex &index, const QVariant &va
             _checkedSessions.remove(session);
         }
 
-        emit dataChanged(index, index);
+        Q_EMIT dataChanged(index, index);
         return true;
     }
     return SessionListModel::setData(index, value, role);

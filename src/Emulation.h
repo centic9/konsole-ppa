@@ -1,23 +1,8 @@
 /*
-    This file is part of Konsole, an X terminal.
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef EMULATION_H
@@ -31,10 +16,14 @@
 // Konsole
 #include "Enumeration.h"
 #include "konsoleprivate_export.h"
+#include "terminalDisplay/TerminalDisplay.h"
+
+#include <memory>
 
 class QKeyEvent;
 
-namespace Konsole {
+namespace Konsole
+{
 class KeyboardTranslator;
 class HistoryType;
 class Screen;
@@ -105,6 +94,11 @@ public:
      * TerminalDisplay::setScreenWindow() method.
      */
     ScreenWindow *createWindow();
+
+    /**
+     * Associates a TerminalDisplay with this emulation.
+     */
+    void setCurrentTerminalDisplay(TerminalDisplay *display);
 
     /** Returns the size of the screen image which the emulation produces */
     QSize imageSize() const;
@@ -279,16 +273,6 @@ Q_SIGNALS:
     void zmodemUploadDetected();
 
     /**
-     * Requests that the color of the text used
-     * to represent the tabs associated with this
-     * emulation be changed.  This is a Konsole-specific
-     * extension from pre-KDE 4 times.
-     *
-     * TODO: Document how the parameter works.
-     */
-    void changeTabTextColorRequest(int color);
-
-    /**
      * This is emitted when the program (typically editors and other full-screen
      * applications, ones that take up the whole terminal display), running in
      * the terminal indicates whether or not it is interested in Mouse Tracking
@@ -408,12 +392,12 @@ Q_SIGNALS:
      * to the terminal.
      * @p shape cursor shape
      * @p isBlinking if true, the cursor will be set to blink
-    */
+     */
     void setCursorStyleRequest(Enum::CursorShapeEnum shape = Enum::BlockCursor, bool isBlinking = false);
     /**
      * Emitted when reset() is called to reset the cursor style to the
      * current profile cursor shape and blinking settings.
-    */
+     */
     void resetCursorStyleRequest();
 
 protected:
@@ -437,25 +421,25 @@ protected:
 
     enum EmulationCodec {
         LocaleCodec = 0,
-        Utf8Codec = 1
+        Utf8Codec = 1,
     };
 
     void setCodec(EmulationCodec codec);
 
     QList<ScreenWindow *> _windows;
 
-    Screen *_currentScreen;  // pointer to the screen which is currently active,
+    Screen *_currentScreen; // pointer to the screen which is currently active,
     // this is one of the elements in the screen[] array
 
-    Screen *_screen[2];      // 0 = primary screen ( used by most programs, including the shell
+    Screen *_screen[2]; // 0 = primary screen ( used by most programs, including the shell
     //                      scrollbars are enabled in this mode )
     // 1 = alternate      ( used by vi , emacs etc.
     //                      scrollbars are not enabled in this mode )
 
-    //decodes an incoming C-style character stream into a unicode QString using
-    //the current text codec.  (this allows for rendering of non-ASCII characters in text files etc.)
+    // decodes an incoming C-style character stream into a unicode QString using
+    // the current text codec.  (this allows for rendering of non-ASCII characters in text files etc.)
     const QTextCodec *_codec;
-    QTextDecoder *_decoder;
+    std::unique_ptr<QTextDecoder> _decoder;
     const KeyboardTranslator *_keyTranslator; // the keyboard layout
 
 protected Q_SLOTS:

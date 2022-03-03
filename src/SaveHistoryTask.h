@@ -1,21 +1,8 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2009 by Thomas Dreibholz <dreibh@iem.uni-due.de>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2009 Thomas Dreibholz <dreibh@iem.uni-due.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SAVEHISTORYTASK_H
@@ -27,7 +14,6 @@
 
 namespace Konsole
 {
-
 class TerminalCharacterDecoder;
 
 /**
@@ -57,15 +43,15 @@ private Q_SLOTS:
 
 private:
     class SaveJob // structure to keep information needed to process
-        // incoming data requests from jobs
+                  // incoming data requests from jobs
     {
     public:
-	QPointer<Session> session; // the session associated with a history save job
-	int lastLineFetched; // the last line processed in the previous data request
-	// set this to -1 at the start of the save job
+        QPointer<Session> session; // the session associated with a history save job
+        int lastLineFetched; // the last line processed in the previous data request
+        // set this to -1 at the start of the save job
 
-	TerminalCharacterDecoder *decoder;  // decoder used to convert terminal characters
-	// into output
+        TerminalCharacterDecoder *decoder; // decoder used to convert terminal characters
+        // into output
     };
 
     QHash<KJob *, SaveJob> _jobSession;

@@ -1,20 +1,7 @@
 /*
-    Copyright 2015 by Lindsay Roberts <os@lindsayr.com>
+    SPDX-FileCopyrightText: 2015 Lindsay Roberts <os@lindsayr.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SCROLLSTATE_H
@@ -22,7 +9,8 @@
 
 class QWheelEvent;
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * Represents accumulation of wheel scroll from scroll events.
  *
@@ -35,13 +23,12 @@ namespace Konsole {
  * been reached (ideally 1 for pixel scroll values towards any action
  * that can be mapped to a pixel movement).
  */
-struct ScrollState
-{
+struct ScrollState {
     enum {
-        DEFAULT_ANGLE_SCROLL_LINE = 120
+        DEFAULT_ANGLE_SCROLL_LINE = 120,
     };
     enum {
-        DEGREES_PER_ANGLE_UNIT = 8
+        DEGREES_PER_ANGLE_UNIT = 8,
     };
     static inline int degreesToAngle(const int angle)
     {
@@ -72,8 +59,9 @@ struct ScrollState
      * the accumulated total. The other scroll style value is cleared. */
     int consumeSteps(int pixelStepSize, int angleStepSize);
 
-    ScrollState() : _remainingScrollAngle(0),
-        _remainingScrollPixel(0)
+    ScrollState()
+        : _remainingScrollAngle(0)
+        , _remainingScrollPixel(0)
     {
     }
 

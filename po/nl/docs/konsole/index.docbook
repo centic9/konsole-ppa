@@ -74,7 +74,9 @@
 ><year
 >2018</year
 ><year
->2020</year>
+>2020</year
+><year
+>2021</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -90,9 +92,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2020-09-16</date>
+>2021-10-28</date>
 <releaseinfo
->Applications 20.12</releaseinfo>
+>Applications 21.12</releaseinfo>
 
 <abstract
 ><para
@@ -265,17 +267,6 @@
 </orderedlist>
 </para>
 
-<para
->Elk profiel die een vinkje <guilabel
->In menu tonen</guilabel
-> heeft zal bij naam in de lijst in het menu <menuchoice
-><guimenu
->Bestand</guimenu
-><guisubmenu
->Nieuw tabblad</guisubmenu
-></menuchoice
->. Er zal geen submenu zijn als alleen het standaard profiel aanwezig is. </para>
-
 </sect1>
 
 <sect1 id="mousebuttons">
@@ -437,7 +428,7 @@
 
 <sect1 id="drag-and-drop">
 <title
->Slepen en neerzetten</title>
+>Slepen en loslaten</title>
 <para
 >Als u een bestand, map of &URL; op een venster van &konsole;, laat vallen verschijnt er een contextmenu met deze acties: </para>
 <screenshot>
@@ -626,7 +617,7 @@
 >Opent een nieuw tabblad met het standaard profiel</action>
 <note
 ><para
->&konsole; wordt geleverd met een standaard profiel. Elk door de gebruiker toegevoegd profiel zal worden getoond in het submenu. Er zal geen submenu zijn als alleen het standaard profiel getoond wordt. </para
+>Het eerste profiel in het submenu zal altijd "Standaard" zijn, wat het ingebouwde profiel is. Alle andere profielen zullen er onder staan in alfabetisch volgorde. Het door de gebruiker gespecificeerde standaard profiel zal in een vet lettertype staan. </para
 ></note>
 </para
 ></listitem
@@ -728,13 +719,13 @@
 > <guimenu
 >Bestand</guimenu
 > <guimenuitem
->Tabblad sluiten</guimenuitem
+>Sessie sluiten</guimenuitem
 ></menuchoice>
 </term>
 <listitem
 ><para
 ><action
->Sluit het huidige tabblad</action>
+>De huidige sessie wordt gesloten</action>
 </para
 ></listitem>
 </varlistentry>
@@ -761,18 +752,9 @@
 ></para>
 <note
 ><para
->&konsole; zal een bevestigingsdialoog tonen indien er meer dan een tabblad open is. Deze dialoog kan getoond worden door op het <guibutton
+>&konsole; zal een bevestigingsdialoog tonen indien er meer dan een sessie open is of als er bepaalde programma's in een sessie actief zijn. Deze dialogen kunnen uitgeschakeld worden door op het keuzevakje <guibutton
 >Niet opnieuw vragen</guibutton
-> keuzevakje te klikken. </para>
-<para
->Als u de bevestigingsdialoog terug wilt hebben, verwijder dan het item <screen
->[Notification Messages]
-CloseAllTabs=true</screen
-> in <filename
->$<envar
->XDG_CONFIG_HOME</envar
->/konsolerc</filename
->. </para>
+> te klikken. </para>
 </note>
 </listitem>
 </varlistentry>
@@ -1230,56 +1212,6 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->X</keycap
-></keycombo
-></shortcut
-> <guimenu
->Beeld</guimenu
-><guisubmenu
->Beeld splitsen</guisubmenu
-><guimenuitem
->Actief deelvenster sluiten</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Het actieve deelvenster wordt gesloten</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
->O</keycap
-></keycombo
-></shortcut
-> <guimenu
->Beeld</guimenu
-><guisubmenu
->Beeld splitsen</guisubmenu
-><guimenuitem
->Overigen sluiten</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Sluit alle niet-huidige weergaven.</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
 >]</keycap
 ></keycombo
 ></shortcut
@@ -1320,6 +1252,31 @@ Various search improvements
 ><para
 ><action
 >Maakt het actieve deelvenster kleiner</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>E</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Beeld</guimenu
+><guisubmenu
+>Beeld splitsen</guisubmenu
+><guimenuitem
+>Maximale huidige weergave omschakelen</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Schakelt de huidige weergave tussen de huidige grootte en de gemaximaliseerde grootte</action>
 </para
 ></listitem>
 </varlistentry>
@@ -1370,6 +1327,46 @@ Various search improvements
 ><action
 >Het huidige gesplitste beeld wordt in een apart venster geopend</action>
 </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Beeld</guimenu
+><guimenuitem
+>Tabbladindeling naar bestand opslaan</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Biedt u het opslaan van de tabbladindeling van het huidige beeld in een gespecialiseerd indelingsbestand van &konsole; die geladen kan worden om een van uw favoriete indelingen te herstellen.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Beeld</guimenu
+><guimenuitem
+>Tabbladindeling uit bestand laden</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Biedt u het laden van een van uw favoriete tabbladindelingen uit het indelingsbestand dat u eerder hebt opgeslagen met menu-item <menuchoice
+><guimenu
+>Beeld</guimenu
+><guimenuitem
+>Tabbladindeling naar bestand opslaan</guimenuitem
+></menuchoice
+>.</action
+> De standaard indelingen (2x2, 2x1 en 1x2) kunnen geladen worden via de werkbalk. </para
 ></listitem>
 </varlistentry>
 
@@ -1608,6 +1605,27 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>F11</keycap
+></shortcut
+> <guimenu
+>Beeld</guimenu
+><guimenuitem
+>Modus volledig scherm</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Schakelt &konsole; naar volledige scherm-modus</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1715,6 +1733,16 @@ Various search improvements
 </variablelist>
 </sect2>
 
+<sect2 id="plugins-menu">
+<title
+>Menu Plug-ins</title>
+
+<para
+>Elke geïnstalleerde plug-in zal in een lijst komen of "Geen plug-ins beschikbaar" </para>
+
+</sect2>
+
+
 <sect2 id="settings-menu">
 <title
 >Menu Instellingen</title>
@@ -1774,6 +1802,23 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Instellingen</guimenu
+><guimenuitem
+>Kleurschema van venster</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>De &GUI; van &konsole; wijzigen naar het gespecificeerde schema</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
@@ -1797,20 +1842,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycap
->F11</keycap
-></shortcut
-> <guimenu
+><guimenu
 >Instellingen</guimenu
 ><guimenuitem
->Modus volledig scherm</guimenuitem
+>Getoonde werkbalken</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Schakelt &konsole; naar volledige scherm-modus</action
+>Biedt zichtbaarheid omschakelen van de werkbalken van &konsole;</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Instellingen</guimenu
+> <guimenuitem
+>Statusbalk tonen</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Maakt de statusbalk zichtbaar</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1821,7 +1879,24 @@ Various search improvements
 ><guimenu
 >Instellingen</guimenu
 ><guimenuitem
->Sneltoetsen instellen...</guimenuitem
+>Taal configureren...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Opent venster om een taal voor het interface van &konsole; te kiezen.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Instellingen</guimenu
+><guimenuitem
+>Sneltoetsen configureren...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1869,8 +1944,8 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
->Links</keysym
+>&Ctrl;&Alt;<keysym
+>Left</keysym
 ></keycombo
 ></entry>
 <entry
@@ -1879,8 +1954,8 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
->Rechts</keysym
+>&Ctrl;&Alt;<keysym
+>Right</keysym
 ></keycombo
 ></entry>
 <entry
@@ -1896,19 +1971,29 @@ Various search improvements
 <entry
 >Selectie plakken</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Shift;&Tab;</keycombo
-></entry>
-<entry
->Volgende beeldcontainer</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Instellingen</guimenu
+><guimenuitem
+>Werkbalken instellen...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Opent <ulink url="help:/fundamentals/config.html#toolbars-items"
+>het configuratievenster voor de werkbalk</ulink
+></action
+></para>
 </listitem>
 </varlistentry>
 

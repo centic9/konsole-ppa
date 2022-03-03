@@ -81,6 +81,8 @@ ecm_qt_declare_logging_category(
     HEADER konsoledebug.h
     IDENTIFIER KonsoleDebug
     CATEGORY_NAME org.kde.konsole
+    DESCRIPTION "Konsole"
+    EXPORT KONSOLE
 )
 
 add_library(konsoleprivate_core STATIC ${konsoleprivate_core_SRCS})
@@ -103,23 +105,23 @@ add_subdirectory(keyboardtranslator)
 add_subdirectory(profile)
 add_subdirectory(session)
 add_subdirectory(characters)
+add_subdirectory(decoders)
+add_subdirectory(plugins)
 
 set(konsoleprivate_SRCS ${windowadaptors_SRCS}
+                        AppColorSchemeChooser.cpp
                         BookmarkHandler.cpp
                         BookmarkMenu.cpp
                         CheckableSessionModel.cpp
                         CopyInputDialog.cpp
                         Emulation.cpp
                         EscapeSequenceUrlExtractor.cpp
-                        ExtendedCharTable.cpp
                         FontDialog.cpp
-                        HTMLDecoder.cpp
                         HistorySizeDialog.cpp
                         KeyBindingEditor.cpp
                         LabelsAligner.cpp
                         NullProcessInfo.cpp
                         NullProcessInfo.cpp
-                        PlainTextDecoder.cpp
                         PrintOptions.cpp
                         PrintOptions.cpp
                         ProcessInfo.cpp
@@ -152,6 +154,8 @@ set(konsoleprivate_SRCS ${windowadaptors_SRCS}
                         filterHotSpots/TerminalImageFilterChain.cpp
                         filterHotSpots/UrlFilter.cpp
                         filterHotSpots/UrlFilterHotspot.cpp
+                        filterHotSpots/ColorFilter.cpp
+                        filterHotSpots/ColorFilterHotSpot.cpp
                         history/HistoryFile.cpp
                         history/HistoryScroll.cpp
                         history/HistoryScrollFile.cpp
@@ -159,9 +163,6 @@ set(konsoleprivate_SRCS ${windowadaptors_SRCS}
                         history/HistoryType.cpp
                         history/HistoryTypeFile.cpp
                         history/HistoryTypeNone.cpp
-                        history/compact/CompactHistoryBlock.cpp
-                        history/compact/CompactHistoryBlockList.cpp
-                        history/compact/CompactHistoryLine.cpp
                         history/compact/CompactHistoryScroll.cpp
                         history/compact/CompactHistoryType.cpp
                         widgets/DetachableTabBar.cpp
@@ -177,10 +178,14 @@ set(konsoleprivate_SRCS ${windowadaptors_SRCS}
 
                         terminalDisplay/extras/CompositeWidgetFocusWatcher.cpp
                         terminalDisplay/extras/AutoScrollHandler.cpp
+                        terminalDisplay/extras/HighlightScrolledLines.cpp
 
                         terminalDisplay/TerminalDisplay.cpp
                         terminalDisplay/TerminalPainter.cpp
                         terminalDisplay/TerminalScrollBar.cpp
+                        terminalDisplay/TerminalColor.cpp
+                        terminalDisplay/TerminalFonts.cpp
+                        terminalDisplay/TerminalBell.cpp
 
                         widgets/TerminalDisplayAccessible.cpp
                         widgets/TerminalHeaderBar.cpp
@@ -231,20 +236,19 @@ target_link_libraries(konsoleprivate
     konsolesession
     konsoleprofile
     konsolecharacters
+    konsoledecoders
     ${konsole_LIBS}
 )
 
 set_target_properties(konsoleprivate PROPERTIES
-    VERSION ${KONSOLEPRIVATE_VERSION_STRING}
+    VERSION ${KONSOLEPRIVATE_VERSION}
     SOVERSION ${KONSOLEPRIVATE_SOVERSION}
 )
 
 install(TARGETS konsoleprivate ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
-set(konsole_KDEINIT_SRCS
-   Application.cpp
+add_library(konsoleapp SHARED Application.cpp
    MainWindow.cpp
-   main.cpp
    settings/ConfigurationDialog.cpp
    settings/ConfigDialogButtonGroupManager.cpp
    settings/TemporaryFilesSettings.cpp
@@ -252,16 +256,40 @@ set(konsole_KDEINIT_SRCS
    settings/ProfileSettings.cpp
    settings/TabBarSettings.cpp
    settings/ThumbnailsSettings.cpp
+   pluginsystem/IKonsolePlugin.cpp
+   pluginsystem/PluginManager.cpp
    delegates/ProfileShortcutDelegate.cpp
 )
 
+target_link_libraries(konsoleapp
+  konsoleprivate
+  KF5::XmlGui
+  KF5::WindowSystem
+  KF5::Bookmarks
+  KF5::I18n
+  KF5::KIOWidgets
+  KF5::NotifyConfig
+  KF5::Crash
+)
+
+set_target_properties(konsoleapp PROPERTIES
+    VERSION ${KONSOLEPRIVATE_VERSION_STRING}
+    SOVERSION ${KONSOLEPRIVATE_SOVERSION}
+)
+
+install(TARGETS konsoleapp ${KDE_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
+
+set(konsole_SRCS
+   main.cpp
+)
 
 # Sets the icon on Windows and OSX
-ecm_add_app_icon(kdeinit_konsole ICONS ${ICONS_SRCS})
+ecm_add_app_icon(ICONS_SOURCES ICONS ${ICONS_SRCS})
 
-kf5_add_kdeinit_executable(konsole ${konsole_KDEINIT_SRCS})
-target_link_libraries(kdeinit_konsole
+add_executable(konsole ${konsole_SRCS} ${ICONS_SOURCES})
+target_link_libraries(konsole
   konsoleprivate
+  konsoleapp
   KF5::XmlGui
   KF5::WindowSystem
   KF5::Bookmarks
@@ -280,11 +308,10 @@ if(APPLE)
         MACOSX_BUNDLE_LONG_VERSION_STRING "Konsole ${RELEASE_SERVICE_VERSION}"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}"
         MACOSX_BUNDLE_BUNDLE_VERSION "${RELEASE_SERVICE_VERSION}"
-        MACOSX_BUNDLE_COPYRIGHT "1997-2020 The Konsole Developers")
+        MACOSX_BUNDLE_COPYRIGHT "1997-2022 The Konsole Developers")
 endif()
 
-install(TARGETS kdeinit_konsole konsole
-       ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS konsole ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ### Embedded Konsole KPart
 

@@ -1,60 +1,50 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "AutoScrollHandler.h"
-#include <QApplication>
+#include "../TerminalDisplay.h"
 #include <QAccessible>
+#include <QApplication>
 
 using namespace Konsole;
 
-AutoScrollHandler::AutoScrollHandler(QWidget* parent)
+AutoScrollHandler::AutoScrollHandler(QWidget *parent)
     : QObject(parent)
     , _timerId(0)
 {
     parent->installEventFilter(this);
 }
 
-void AutoScrollHandler::timerEvent(QTimerEvent* event)
+void AutoScrollHandler::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() != _timerId) {
         return;
     }
 
+    auto *terminalDisplay = static_cast<TerminalDisplay *>(parent());
     QMouseEvent mouseEvent(QEvent::MouseMove,
                            widget()->mapFromGlobal(QCursor::pos()),
                            Qt::NoButton,
                            Qt::LeftButton,
-                           Qt::NoModifier);
+                           terminalDisplay->usesMouseTracking() ? Qt::ShiftModifier : Qt::NoModifier);
 
     QApplication::sendEvent(widget(), &mouseEvent);
 }
 
-bool AutoScrollHandler::eventFilter(QObject* watched, QEvent* event)
+bool AutoScrollHandler::eventFilter(QObject *watched, QEvent *event)
 {
     Q_ASSERT(watched == parent());
     Q_UNUSED(watched)
 
     switch (event->type()) {
     case QEvent::MouseMove: {
-        auto* mouseEvent = static_cast<QMouseEvent*>(event);
+        auto *mouseEvent = static_cast<QMouseEvent *>(event);
         bool mouseInWidget = widget()->rect().contains(mouseEvent->pos());
+        auto *terminalDisplay = static_cast<TerminalDisplay *>(parent());
         if (mouseInWidget) {
             if (_timerId != 0) {
                 killTimer(_timerId);
@@ -62,7 +52,7 @@ bool AutoScrollHandler::eventFilter(QObject* watched, QEvent* event)
 
             _timerId = 0;
         } else {
-            if ((_timerId == 0) && ((mouseEvent->buttons() & Qt::LeftButton) != 0U)) {
+            if ((_timerId == 0) && terminalDisplay->selectionState() != 0 && ((mouseEvent->buttons() & Qt::LeftButton) != 0U)) {
                 _timerId = startTimer(100);
             }
         }
@@ -70,7 +60,7 @@ bool AutoScrollHandler::eventFilter(QObject* watched, QEvent* event)
         break;
     }
     case QEvent::MouseButtonRelease: {
-        auto* mouseEvent = static_cast<QMouseEvent*>(event);
+        auto *mouseEvent = static_cast<QMouseEvent *>(event);
         if ((_timerId != 0) && ((mouseEvent->buttons() & ~Qt::LeftButton) != 0U)) {
             killTimer(_timerId);
             _timerId = 0;

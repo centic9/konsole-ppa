@@ -1,41 +1,28 @@
 /*
- *  This file is part of Konsole, a terminal emulator for KDE.
+ *  SPDX-FileCopyrightText: 2019 Tomaz Canabrava <tcanabrava@kde.org>
  *
- *  Copyright 2019  Tomaz Canabrava <tcanabrava@kde.org>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- *  02110-1301  USA.
+ *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #ifndef TERMINAL_HEADER_BAR_H
 #define TERMINAL_HEADER_BAR_H
 
-#include <QWidget>
-#include <QPoint>
 #include "session/Session.h"
+#include <QPoint>
+#include <QWidget>
 
 class QLabel;
 class QToolButton;
 class QBoxLayout;
 class QSplitter;
 
-namespace Konsole {
-    class TerminalDisplay;
-    class ViewProperties;
+namespace Konsole
+{
+class TerminalDisplay;
+class ViewProperties;
 
-class TerminalHeaderBar : public QWidget {
+class TerminalHeaderBar : public QWidget
+{
     Q_OBJECT
 public:
     // TODO: Verify if the terminalDisplay is needed, or some other thing like SessionController.
@@ -54,7 +41,7 @@ public Q_SLOTS:
     void updateSpecialState(ViewProperties *item);
 
 protected:
-    void paintEvent(QPaintEvent* paintEvent) override;
+    void paintEvent(QPaintEvent *paintEvent) override;
     void mousePressEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
     void mouseMoveEvent(QMouseEvent *ev) override;
@@ -62,6 +49,7 @@ protected:
 
 Q_SIGNALS:
     void requestToggleExpansion();
+    void requestMoveToNewTab();
 
 private:
     QBoxLayout *m_boxLayout;
@@ -73,6 +61,7 @@ private:
     QLabel *m_statusIconActivity;
     QLabel *m_statusIconBell;
     QToolButton *m_closeBtn;
+    QToolButton *m_moveToNewTab;
     QToolButton *m_toggleExpandedMode;
     bool m_terminalIsFocused;
     QPoint m_startDrag;

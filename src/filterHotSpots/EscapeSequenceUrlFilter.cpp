@@ -1,33 +1,20 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2020 by Tomaz Canabrava <tcanabrava@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2020 Tomaz Canabrava <tcanabrava@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "EscapeSequenceUrlFilter.h"
 
-#include "session/Session.h"
-#include "terminalDisplay/TerminalDisplay.h"
 #include "EscapeSequenceUrlExtractor.h"
 #include "EscapeSequenceUrlFilterHotSpot.h"
+#include "session/Session.h"
+#include "terminalDisplay/TerminalDisplay.h"
 
 using namespace Konsole;
 
-EscapeSequenceUrlFilter::EscapeSequenceUrlFilter(Session* session, TerminalDisplay *window)
+EscapeSequenceUrlFilter::EscapeSequenceUrlFilter(Session *session, TerminalDisplay *window)
 {
     _session = session;
     _window = window;
@@ -35,7 +22,7 @@ EscapeSequenceUrlFilter::EscapeSequenceUrlFilter(Session* session, TerminalDispl
 
 void EscapeSequenceUrlFilter::process()
 {
-    if (!_window->screenWindow() && _window->screenWindow()->screen()) {
+    if ((_window->screenWindow() == nullptr) && (_window->screenWindow()->screen() != nullptr)) {
         return;
     }
     auto sWindow = _window->screenWindow();
@@ -52,12 +39,7 @@ void EscapeSequenceUrlFilter::process()
             // TODO:
             // This uses Column / Row while everything else uses Row/Column.
             // Move everything else to QPoint begin / QPoint End.
-            new EscapeSequenceUrlHotSpot(beginRow, escapedUrl.begin.col,
-                    endRow, escapedUrl.end.col,
-                    escapedUrl.text,
-                    escapedUrl.url
-            )
-        );
+            new EscapeSequenceUrlHotSpot(beginRow, escapedUrl.begin.col, endRow, escapedUrl.end.col, escapedUrl.text, escapedUrl.url));
 
         addHotSpot(spot);
     }

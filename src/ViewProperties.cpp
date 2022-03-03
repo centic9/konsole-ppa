@@ -1,20 +1,7 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -24,11 +11,11 @@ using Konsole::ViewProperties;
 
 QHash<int, ViewProperties *> ViewProperties::_viewProperties;
 
-ViewProperties::ViewProperties(QObject *parent) :
-    QObject(parent),
-    _icon(QIcon()),
-    _title(QString()),
-    _identifier(0)
+ViewProperties::ViewProperties(QObject *parent)
+    : QObject(parent)
+    , _icon(QIcon())
+    , _title(QString())
+    , _identifier(0)
 {
 }
 
@@ -54,7 +41,7 @@ QString ViewProperties::currentDir() const
 
 void ViewProperties::fireActivity()
 {
-    emit activity(this);
+    Q_EMIT activity(this);
 }
 
 void ViewProperties::rename()
@@ -65,7 +52,7 @@ void ViewProperties::setTitle(const QString &title)
 {
     if (title != _title) {
         _title = title;
-        emit titleChanged(this);
+        Q_EMIT titleChanged(this);
     }
 }
 
@@ -76,7 +63,7 @@ void ViewProperties::setIcon(const QIcon &icon)
 
     if (icon.cacheKey() != _icon.cacheKey()) {
         _icon = icon;
-        emit iconChanged(this);
+        Q_EMIT iconChanged(this);
     }
 }
 
@@ -84,7 +71,7 @@ void ViewProperties::setColor(const QColor &color)
 {
     if (color != _color) {
         _color = color;
-        emit colorChanged(this);
+        Q_EMIT colorChanged(this);
     }
 }
 

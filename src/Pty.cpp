@@ -1,21 +1,7 @@
 /*
-    This file is part of Konsole, an X terminal.
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -24,8 +10,8 @@
 #include "konsoledebug.h"
 
 // System
-#include <termios.h>
 #include <csignal>
+#include <termios.h>
 
 // Qt
 #include <QStringList>
@@ -36,14 +22,14 @@
 
 using Konsole::Pty;
 
-Pty::Pty(int masterFd, QObject *aParent) :
-    KPtyProcess(masterFd, aParent)
+Pty::Pty(int masterFd, QObject *aParent)
+    : KPtyProcess(masterFd, aParent)
 {
     init();
 }
 
-Pty::Pty(QObject *aParent) :
-    KPtyProcess(aParent)
+Pty::Pty(QObject *aParent)
+    : KPtyProcess(aParent)
 {
     init();
 }
@@ -89,7 +75,7 @@ void Pty::dataReceived()
         return;
     }
 
-    emit receivedData(data.constData(), data.count());
+    Q_EMIT receivedData(data.constData(), data.count());
 }
 
 void Pty::setWindowSize(int columns, int lines)
@@ -131,8 +117,7 @@ bool Pty::flowControlEnabled() const
     if (pty()->masterFd() >= 0) {
         struct ::termios ttmode;
         pty()->tcGetAttr(&ttmode);
-        return ((ttmode.c_iflag & IXOFF) != 0U)
-               && ((ttmode.c_iflag & IXON) != 0U);
+        return ((ttmode.c_iflag & IXOFF) != 0U) && ((ttmode.c_iflag & IXON) != 0U);
     } else {
         qCDebug(KonsoleDebug) << "Unable to get flow control status, terminal not connected.";
         return _xonXoff;
@@ -233,8 +218,7 @@ void Pty::addEnvironmentVariables(const QStringList &environmentVariables)
     }
 }
 
-int Pty::start(const QString &programName, const QStringList &programArguments,
-               const QStringList &environmentList)
+int Pty::start(const QString &programName, const QStringList &programArguments, const QStringList &environmentList)
 {
     clearProgram();
 
@@ -257,8 +241,7 @@ int Pty::start(const QString &programName, const QStringList &programArguments,
     // does not have a translation for
     //
     // BR:149300
-    setEnv(QStringLiteral("LANGUAGE"), QString(),
-           false /* do not overwrite existing value if any */);
+    setEnv(QStringLiteral("LANGUAGE"), QString(), false /* do not overwrite existing value if any */);
 
     KProcess::start();
 
@@ -275,37 +258,21 @@ void Pty::setWriteable(bool writeable)
     if (QT_STAT(pty()->ttyName(), &sbuf) == 0) {
         if (writeable) {
             if (::chmod(pty()->ttyName(), sbuf.st_mode | S_IWGRP) < 0) {
-                qCDebug(KonsoleDebug) << "Could not set writeable on "<<pty()->ttyName();
+                qCDebug(KonsoleDebug) << "Could not set writeable on " << pty()->ttyName();
             }
         } else {
             if (::chmod(pty()->ttyName(), sbuf.st_mode & ~(S_IWGRP | S_IWOTH)) < 0) {
-                qCDebug(KonsoleDebug) << "Could not unset writeable on "<<pty()->ttyName();
+                qCDebug(KonsoleDebug) << "Could not unset writeable on " << pty()->ttyName();
             }
         }
     } else {
-        qCDebug(KonsoleDebug) << "Could not stat "<<pty()->ttyName();
+        qCDebug(KonsoleDebug) << "Could not stat " << pty()->ttyName();
     }
 }
 
 void Pty::closePty()
 {
     pty()->close();
-}
-
-void Pty::sendEof()
-{
-    if (pty()->masterFd() < 0) {
-        qCDebug(KonsoleDebug) << "Unable to get eof char attribute, terminal not connected.";
-        return;
-    }
-    struct ::termios ttyAttributes;
-    pty()->tcGetAttr(&ttyAttributes);
-    char eofChar = ttyAttributes.c_cc[VEOF];
-    if (pty()->write(QByteArray(1, eofChar)) == -1) {
-        qCDebug(KonsoleDebug) << "Unable to send EOF";
-    }
-
-    pty()->waitForBytesWritten();
 }
 
 int Pty::foregroundProcessGroup() const

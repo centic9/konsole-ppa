@@ -1,25 +1,14 @@
 /*
-    This file is part of Konsole, an X terminal.
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef HISTORYSCROLL_H
 #define HISTORYSCROLL_H
+
+// STD
+#include <memory>
 
 #include "konsoleprivate_export.h"
 
@@ -42,16 +31,18 @@ public:
     explicit HistoryScroll(HistoryType *);
     virtual ~HistoryScroll();
 
-    virtual bool hasScroll();
+    virtual bool hasScroll() const;
 
     // access to history
-    virtual int  getLines() = 0;
-    virtual int  getLineLen(int lineno) = 0;
-    virtual void getCells(int lineno, int colno, int count, Character res[]) = 0;
-    virtual bool isWrappedLine(int lineNumber) = 0;
+    virtual int getLines() const = 0;
+    virtual int getMaxLines() const = 0;
+    virtual int getLineLen(const int lineno) const = 0;
+    virtual void getCells(const int lineno, const int colno, const int count, Character res[]) const = 0;
+    virtual bool isWrappedLine(const int lineNumber) const = 0;
+    virtual LineProperty getLineProperty(const int lineno) const = 0;
 
     // adding lines.
-    virtual void addCells(const Character a[], int count) = 0;
+    virtual void addCells(const Character a[], const int count) = 0;
     // convenience method - this is virtual so that subclasses can take advantage
     // of QVector's implicit copying
     virtual void addCellsVector(const QVector<Character> &cells)
@@ -59,7 +50,11 @@ public:
         addCells(cells.data(), cells.size());
     }
 
-    virtual void addLine(bool previousWrapped = false) = 0;
+    virtual void addLine(const LineProperty lineProperty = 0) = 0;
+
+    // modify history
+    virtual void removeCells() = 0;
+    virtual int reflowLines(const int columns) = 0;
 
     //
     // FIXME:  Passing around constant references to HistoryType instances
@@ -72,7 +67,8 @@ public:
     }
 
 protected:
-    HistoryType *_historyType;
+    std::unique_ptr<HistoryType> _historyType;
+    const int MAX_REFLOW_LINES = 20000;
 };
 
 }

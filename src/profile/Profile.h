@@ -1,39 +1,27 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef PROFILE_H
 #define PROFILE_H
 
 // Qt
+#include <QColor>
+#include <QFont>
 #include <QHash>
+#include <QKeySequence>
 #include <QStringList>
 #include <QVariant>
-#include <QFont>
-#include <QColor>
-#include <QKeySequence>
 
 // Konsole
 #include "konsoleprofile_export.h"
 
-namespace Konsole {
+namespace Konsole
+{
 class ProfileGroup;
 
 /**
@@ -106,8 +94,8 @@ public:
          */
         Directory,
         /** (QString) The format used for tab titles when running normal
-          * commands.
-          */
+         * commands.
+         */
         LocalTabTitleFormat,
         /** (QString) The format used for tab titles when the session is
          * running a remote command (eg. SSH)
@@ -120,6 +108,10 @@ public:
         /** (bool) If the background color should change to indicate if the window is active
          */
         DimWhenInactive,
+        /**
+         * (bool) Whether to always invert the colors for text selection.
+         */
+        InvertSelectionColors,
         /** (QFont) The font to use in terminal displays using this profile. */
         Font,
         /** (QString) The name of the color scheme to use in terminal
@@ -151,14 +143,18 @@ public:
         ScrollBarPosition,
         /** (bool) Specifies whether the PageUp/Down will scroll the full
          * height or half height.
-             */
+         */
         ScrollFullPage,
         /** (bool) Specifies whether the lines that are scrolled into view
          * should be highlighted.
-             */
+         */
         HighlightScrolledLines,
         /** (bool) Specifies whether the terminal will enable Bidirectional
          * text display
+         */
+        ReflowLines,
+        /** (bool) Specifies whether the terminal will enable Reflow of
+         * lines when terminal resizes.
          */
         BidiRenderingEnabled,
         /** (bool) Specifies whether text in terminal displays is allowed
@@ -214,6 +210,23 @@ public:
          * underlined when hovered by the mouse pointer.
          */
         UnderlineFilesEnabled,
+
+        /**
+         * (Enum::TextEditorCmd) Text editor command used to open local
+         * text file URLs at a given line/column. There is a default list
+         * of editors that the user can select from, and a CustomTextEditor
+         * option if the user wants to use a different editor.
+         *
+         * See Enum::TextEditorCmd
+         */
+        TextEditorCmd,
+        /**
+         * (QString) This is the command string corresponding to Enum::CustomTextEditor.
+         *
+         * See TextEditorCmd and Enum::TextEditorCmd
+         */
+        TextEditorCmdCustom,
+
         /** (bool) If true, links can be opened by direct mouse click.*/
         OpenLinksByDirectClickEnabled,
         /** (bool) If true, control key must be pressed to click and drag selected text. */
@@ -300,7 +313,7 @@ public:
          * Default value is true.
          * See also, MODE_Mouse1007 in the Emulation header, which toggles
          * Alternate Scrolling with escape sequences.
-        */
+         */
         AlternateScrolling,
         /** (int) Keyboard modifiers to show URL hints */
         UrlHintsModifiers,
@@ -312,7 +325,7 @@ public:
         DimValue,
         /** (bool) Allow Escape sequence for Links.
          * this allows applications to use links in the form of
-         * printf '\e]8;;http://www.example.org\e\\example text\e]8;;\e\\\n'
+         * printf '\e]8;;https://www.example.org\e\\example text\e]8;;\e\\\n'
          */
         AllowEscapedLinks,
         /** (String) Escape Sequence for Links schema,
@@ -326,7 +339,12 @@ public:
         VerticalLineAtChar,
 
         /** Shortcut for peeking primary screen */
-        PeekPrimaryKeySequence
+        PeekPrimaryKeySequence,
+
+        /** (bool) If true, text that matches a color in hex format
+         *  when hovered by the mouse pointer.
+         */
+        ColorFilterEnabled,
     };
 
     Q_ENUM(Property)
@@ -399,6 +417,12 @@ public:
 
     /** Returns true if no properties have been set in this Profile instance. */
     bool isEmpty() const;
+
+    /**
+     * Returns true if this profile is the fallback profile, i.e. the
+     * profile path is "FALLBACK/".
+     */
+    bool isFallback() const;
 
     /**
      * Returns true if this is a 'hidden' profile which should not be
@@ -606,6 +630,20 @@ public:
         return property<bool>(Profile::UnderlineFilesEnabled);
     }
 
+    /**
+     * Returns the command line that will be used with the current text
+     * editor setting.
+     */
+    QString textEditorCmd() const;
+    /**
+     * Convenience method to get the text editor command corresponding to
+     * Enum::TextEditorCmdCustom.
+     */
+    QString customTextEditorCmd() const
+    {
+        return property<QString>(Profile::TextEditorCmdCustom);
+    }
+
     bool autoCopySelectedText() const
     {
         return property<bool>(Profile::AutoCopySelectedText);
@@ -687,12 +725,16 @@ public:
         return property<int>(Profile::VerticalLineAtChar);
     }
 
+    /** Convenience method for property<bool>(Profile::colorFilterEnabled) */
+    bool colorFilterEnabled() const
+    {
+        return property<bool>(Profile::ColorFilterEnabled);
+    }
+
     QKeySequence peekPrimaryKeySequence() const
     {
         return QKeySequence::fromString(property<QString>(Profile::PeekPrimaryKeySequence));
     }
-
-    int menuIndexAsInt() const;
 
     /** Return a list of all properties names and their type
      *  (for use with -p option).

@@ -1,32 +1,19 @@
 /*
- *  This file is part of Konsole, a terminal emulator for KDE.
+ *  SPDX-FileCopyrightText: 2012 Frederik Gladhorn <gladhorn@kde.org>
  *
- *  Copyright 2012  Frederik Gladhorn <gladhorn@kde.org>
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- *  02110-1301  USA.
+ *  SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include "TerminalDisplayAccessible.h"
 #include "session/SessionController.h"
 #include <klocalizedstring.h>
 
+#include "terminalDisplay/TerminalFonts.h"
+
 using namespace Konsole;
 
-TerminalDisplayAccessible::TerminalDisplayAccessible(TerminalDisplay *display) :
-    QAccessibleWidget(display, QAccessible::Terminal, display->sessionController()->userTitle())
+TerminalDisplayAccessible::TerminalDisplayAccessible(TerminalDisplay *display)
+    : QAccessibleWidget(display, QAccessible::Terminal, display->sessionController()->userTitle())
 {
 }
 
@@ -53,8 +40,7 @@ int TerminalDisplayAccessible::cursorPosition() const
     return offset + display()->screenWindow()->screen()->getCursorX();
 }
 
-void TerminalDisplayAccessible::selection(int selectionIndex, int *startOffset,
-                                          int *endOffset) const
+void TerminalDisplayAccessible::selection(int selectionIndex, int *startOffset, int *endOffset) const
 {
     *startOffset = 0;
     *endOffset = 0;
@@ -106,10 +92,8 @@ void TerminalDisplayAccessible::addSelection(int startOffset, int endOffset)
     if (display()->screenWindow() == nullptr) {
         return;
     }
-    display()->screenWindow()->setSelectionStart(columnForOffset(startOffset),
-                                                 lineForOffset(startOffset), false);
-    display()->screenWindow()->setSelectionEnd(columnForOffset(endOffset),
-                                               lineForOffset(endOffset));
+    display()->screenWindow()->setSelectionStart(columnForOffset(startOffset), lineForOffset(startOffset), false);
+    display()->screenWindow()->setSelectionEnd(columnForOffset(endOffset), lineForOffset(endOffset));
 }
 
 QString TerminalDisplayAccessible::attributes(int offset, int *startOffset, int *endOffset) const
@@ -126,8 +110,8 @@ QRect TerminalDisplayAccessible::characterRect(int offset) const
 {
     int row = offset / display()->_usedColumns;
     int col = offset - row * display()->_usedColumns;
-    QPoint position = QPoint(col * display()->fontWidth(), row * display()->fontHeight());
-    return QRect(position, QSize(display()->fontWidth(), display()->fontHeight()));
+    QPoint position = QPoint(col * display()->terminalFont()->fontWidth(), row * display()->terminalFont()->fontHeight());
+    return QRect(position, QSize(display()->terminalFont()->fontWidth(), display()->terminalFont()->fontHeight()));
 }
 
 int TerminalDisplayAccessible::offsetAtPoint(const QPoint &point) const
@@ -158,8 +142,7 @@ void TerminalDisplayAccessible::setCursorPosition(int position)
         return;
     }
 
-    display()->screenWindow()->screen()->setCursorYX(lineForOffset(position),
-                                                     columnForOffset(position));
+    display()->screenWindow()->screen()->setCursorYX(lineForOffset(position), columnForOffset(position));
 }
 
 void *TerminalDisplayAccessible::interface_cast(QAccessible::InterfaceType type)

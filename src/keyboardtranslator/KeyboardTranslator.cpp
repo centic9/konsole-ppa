@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -30,40 +17,40 @@
 
 // Qt
 #include <QBuffer>
-#include <QTextStream>
-#include <QRegularExpression>
 #include <QKeySequence>
+#include <QRegularExpression>
+#include <QTextStream>
 
 // KDE
 #include <KLocalizedString>
 
 using namespace Konsole;
 
-KeyboardTranslator::Entry::Entry() :
-    _keyCode(0),
-    _modifiers(Qt::NoModifier),
-    _modifierMask(Qt::NoModifier),
-    _state(NoState),
-    _stateMask(NoState),
-    _command(NoCommand),
-    _text(QByteArray())
+KeyboardTranslator::Entry::Entry()
+    : _keyCode(0)
+    , _modifiers(Qt::NoModifier)
+    , _modifierMask(Qt::NoModifier)
+    , _state(NoState)
+    , _stateMask(NoState)
+    , _command(NoCommand)
+    , _text(QByteArray())
 {
 }
 
 bool KeyboardTranslator::Entry::operator==(const Entry &rhs) const
 {
+    /* clang-format off */
     return _keyCode == rhs._keyCode
-           && _modifiers == rhs._modifiers
-           && _modifierMask == rhs._modifierMask
-           && _state == rhs._state
-           && _stateMask == rhs._stateMask
-           && _command == rhs._command
-           && _text == rhs._text;
+        && _modifiers == rhs._modifiers
+        && _modifierMask == rhs._modifierMask
+        && _state == rhs._state
+        && _stateMask == rhs._stateMask
+        && _command == rhs._command
+        && _text == rhs._text;
+    /* clang-format on */
 }
 
-bool KeyboardTranslator::Entry::matches(int testKeyCode,
-                                        Qt::KeyboardModifiers testKeyboardModifiers,
-                                        States testState) const
+bool KeyboardTranslator::Entry::matches(int testKeyCode, Qt::KeyboardModifiers testKeyboardModifiers, States testState) const
 {
     if (_keyCode != testKeyCode) {
         return false;
@@ -84,10 +71,9 @@ bool KeyboardTranslator::Entry::matches(int testKeyCode,
 
     // special handling for the 'Any Modifier' state, which checks for the presence of
     // any or no modifiers.  In this context, the 'keypad' modifier does not count.
-    bool anyModifiersSet = (testKeyboardModifiers != 0)
-                           && (testKeyboardModifiers != Qt::KeypadModifier);
-    bool wantAnyModifier = (_state &KeyboardTranslator::AnyModifierState) != 0;
-    if ((_stateMask &KeyboardTranslator::AnyModifierState) != 0) {
+    bool anyModifiersSet = (testKeyboardModifiers != 0) && (testKeyboardModifiers != Qt::KeypadModifier);
+    bool wantAnyModifier = (_state & KeyboardTranslator::AnyModifierState) != 0;
+    if ((_stateMask & KeyboardTranslator::AnyModifierState) != 0) {
         if (wantAnyModifier != anyModifiersSet) {
             return false;
         }
@@ -96,8 +82,7 @@ bool KeyboardTranslator::Entry::matches(int testKeyCode,
     return true;
 }
 
-QByteArray KeyboardTranslator::Entry::escapedText(bool expandWildCards,
-                                                  Qt::KeyboardModifiers keyboardModifiers) const
+QByteArray KeyboardTranslator::Entry::escapedText(bool expandWildCards, Qt::KeyboardModifiers keyboardModifiers) const
 {
     QByteArray result(text(expandWildCards, keyboardModifiers));
 
@@ -174,8 +159,7 @@ QByteArray KeyboardTranslator::Entry::unescape(const QByteArray &text) const
             case 'n':
                 replacement[0] = 10;
                 break;
-            case 'x':
-            {
+            case 'x': {
                 // format is \xh or \xhh where 'h' is a hexadecimal
                 // digit from 0-9 or A-F which should be replaced
                 // with the corresponding character value
@@ -260,8 +244,7 @@ void KeyboardTranslator::Entry::insertState(QString &item, int state) const
     }
 }
 
-QString KeyboardTranslator::Entry::resultToString(bool expandWildCards,
-                                                  Qt::KeyboardModifiers keyboardModifiers) const
+QString KeyboardTranslator::Entry::resultToString(bool expandWildCards, Qt::KeyboardModifiers keyboardModifiers) const
 {
     if (!_text.isEmpty()) {
         return QString::fromLatin1(escapedText(expandWildCards, keyboardModifiers));
@@ -304,10 +287,10 @@ QString KeyboardTranslator::Entry::conditionToString() const
     return result;
 }
 
-KeyboardTranslator::KeyboardTranslator(const QString &name) :
-    _entries(QMultiHash<int, Entry>()),
-    _name(name),
-    _description(QString())
+KeyboardTranslator::KeyboardTranslator(const QString &name)
+    : _entries(QMultiHash<int, Entry>())
+    , _name(name)
+    , _description(QString())
 {
 }
 
@@ -356,9 +339,7 @@ void KeyboardTranslator::removeEntry(const Entry &entry)
     _entries.remove(entry.keyCode(), entry);
 }
 
-KeyboardTranslator::Entry KeyboardTranslator::findEntry(int keyCode,
-                                                        Qt::KeyboardModifiers modifiers,
-                                                        States state) const
+KeyboardTranslator::Entry KeyboardTranslator::findEntry(int keyCode, Qt::KeyboardModifiers modifiers, States state) const
 {
     QHash<int, KeyboardTranslator::Entry>::const_iterator i = _entries.find(keyCode);
     while (i != _entries.constEnd() && i.key() == keyCode) {

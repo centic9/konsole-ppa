@@ -1,29 +1,16 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2018 by Harald Sitter <sitter@kde.org>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2018 Harald Sitter <sitter@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef EDITPROFILEDIALOG_H
 #define EDITPROFILEDIALOG_H
 
 // KDE
-#include <KPageDialog>
 #include <KNS3/Entry>
+#include <KPageDialog>
 
 // Konsole
 #include "colorscheme/ColorScheme.h"
@@ -34,24 +21,26 @@
 #include "profile/ProfileGroup.h"
 
 #include "Enumeration.h"
-#include "keyboardtranslator/KeyboardTranslatorManager.h"
 #include "FontDialog.h"
 #include "LabelsAligner.h"
+#include "keyboardtranslator/KeyboardTranslatorManager.h"
 
 class KPluralHandlingSpinBox;
 class KLocalizedString;
 class QItemSelectionModel;
-namespace Ui {
-    class EditProfileGeneralPage;
-    class EditProfileTabsPage;
-    class EditProfileAppearancePage;
-    class EditProfileScrollingPage;
-    class EditProfileKeyboardPage;
-    class EditProfileMousePage;
-    class EditProfileAdvancedPage;
+namespace Ui
+{
+class EditProfileGeneralPage;
+class EditProfileTabsPage;
+class EditProfileAppearancePage;
+class EditProfileScrollingPage;
+class EditProfileKeyboardPage;
+class EditProfileMousePage;
+class EditProfileAdvancedPage;
 }
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * A dialog which allows the user to edit a profile.
  * After the dialog is created, it can be initialized with the settings
@@ -65,7 +54,7 @@ namespace Konsole {
  * the persistent argument set to false.  These changes are then
  * un-done when the dialog is closed.
  */
-class KONSOLEPRIVATE_EXPORT EditProfileDialog: public KPageDialog
+class KONSOLEPRIVATE_EXPORT EditProfileDialog : public KPageDialog
 {
     Q_OBJECT
 
@@ -73,6 +62,11 @@ public:
     /** Constructs a new dialog with the specified parent. */
     explicit EditProfileDialog(QWidget *parent = nullptr);
     ~EditProfileDialog() override;
+
+    enum InitialProfileState {
+        ExistingProfile,
+        NewProfile,
+    };
 
     /**
      * Initializes the dialog with the settings for the specified session
@@ -82,8 +76,10 @@ public:
      * with the altered settings.
      *
      * @param profile The profile to be edited
+     * @param state Indicates whether @p profile is an already existing profile
+     * or a new one being created
      */
-    void setProfile(const Profile::Ptr &profile);
+    void setProfile(const Profile::Ptr &profile, InitialProfileState state = EditProfileDialog::ExistingProfile);
 
     /**
      * Selects the text in the profile name edit area.
@@ -99,8 +95,6 @@ public Q_SLOTS:
     void accept() override;
     // reimplemented
     void reject() override;
-
-    void apply();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
@@ -177,6 +171,7 @@ private Q_SLOTS:
     void scrollFullPage();
     void scrollHalfPage();
     void toggleHighlightScrolledLines(bool enable);
+    void toggleReflowLines(bool enable);
 
     // keyboard page
     void editKeyBinding();
@@ -189,6 +184,7 @@ private Q_SLOTS:
     void toggleUnderlineFiles(bool enable);
     void toggleUnderlineLinks(bool);
     void toggleOpenLinksByDirectClick(bool);
+    void textEditorCmdEditLineChanged(const QString &text);
     void toggleCtrlRequiredForDrag(bool);
     void toggleDropUrlsAsText(bool);
     void toggleCopyTextToClipboard(bool);
@@ -198,6 +194,7 @@ private Q_SLOTS:
     void pasteFromX11Selection();
     void pasteFromClipboard();
     void toggleAlternateScrolling(bool enable);
+    void toggleAllowColorFilter(bool enable);
 
     void TripleClickModeChanged(int);
     void wordCharactersChanged(const QString &);
@@ -213,6 +210,8 @@ private Q_SLOTS:
 
     // apply the first previewed changes stored up by delayedPreview()
     void delayedPreviewActivate();
+
+    void setTextEditorCombo(const Profile::Ptr &profile);
 
     void toggleAllowLinkEscapeSequence(bool);
     void linkEscapeSequenceTextsChanged();
@@ -230,7 +229,7 @@ private:
         KeyboardPage,
         MousePage,
         AdvancedPage,
-        PagesCount
+        PagesCount,
     };
 
     // initialize various pages of the dialog
@@ -241,6 +240,8 @@ private:
     void setupScrollingPage(const Profile::Ptr &profile);
     void setupAdvancedPage(const Profile::Ptr &profile);
     void setupMousePage(const Profile::Ptr &profile);
+
+    void setMessageGeneralPage(const QString &msg);
 
     int maxSpinBoxWidth(const KPluralHandlingSpinBox *spinBox, const KLocalizedString &suffix);
 
@@ -286,7 +287,7 @@ private:
     void createTempProfile();
 
     // Enable or disable apply button, used only within
-    // updateTempProfileProperty().
+    // updateTempProfileProperty() or when toggling the default profile.
     void updateButtonApply();
 
     static QString groupProfileNames(const ProfileGroup::Ptr &group, int maxLength = -1);
@@ -308,31 +309,35 @@ private:
     // - the name matches the name of an already existing profile
     // - the existing profile config file is read-only
     // otherwise returns true.
-    bool isValidProfileName();
+    bool isProfileNameValid();
 
-    Ui::EditProfileGeneralPage      *_generalUi;
-    Ui::EditProfileTabsPage         *_tabsUi;
-    Ui::EditProfileAppearancePage   *_appearanceUi;
-    Ui::EditProfileScrollingPage    *_scrollingUi;
-    Ui::EditProfileKeyboardPage     *_keyboardUi;
-    Ui::EditProfileMousePage        *_mouseUi;
-    Ui::EditProfileAdvancedPage     *_advancedUi;
+    Ui::EditProfileGeneralPage *_generalUi;
+    Ui::EditProfileTabsPage *_tabsUi;
+    Ui::EditProfileAppearancePage *_appearanceUi;
+    Ui::EditProfileScrollingPage *_scrollingUi;
+    Ui::EditProfileKeyboardPage *_keyboardUi;
+    Ui::EditProfileMousePage *_mouseUi;
+    Ui::EditProfileAdvancedPage *_advancedUi;
 
     using PageSetupMethod = void (EditProfileDialog::*)(const Profile::Ptr &);
     struct Page {
         Page(PageSetupMethod page = nullptr, bool update = false)
             : setupPage(page)
             , needsUpdate(update)
-        {}
+        {
+        }
 
         PageSetupMethod setupPage;
         bool needsUpdate;
     };
 
     QMap<KPageWidgetItem *, Page> _pages;
+    KPageWidgetItem *_generalPageItem = nullptr;
 
     Profile::Ptr _tempProfile;
     Profile::Ptr _profile;
+
+    bool _isDefault;
 
     QHash<int, QVariant> _previewedProperties;
 
@@ -342,6 +347,8 @@ private:
     ColorSchemeEditor *_colorDialog;
     QDialogButtonBox *_buttonBox;
     FontDialog *_fontDialog;
+
+    InitialProfileState _profileState = ExistingProfile;
 };
 
 }

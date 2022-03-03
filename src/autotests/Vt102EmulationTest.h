@@ -1,20 +1,7 @@
 /*
-    Copyright 2018 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2018 Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef VT102EMULATIONTEST_H
@@ -22,8 +9,11 @@
 
 #include <QObject>
 
+#include "Vt102Emulation.h"
+
 namespace Konsole
 {
+class TestEmulation;
 
 class Vt102EmulationTest : public QObject
 {
@@ -32,10 +22,27 @@ class Vt102EmulationTest : public QObject
 private Q_SLOTS:
     void testTokenFunctions();
 
+    void testParse();
+
 private:
+    static void sendAndCompare(TestEmulation *em, const char *input, size_t inputLen, const QString &expectedPrint, const QByteArray &expectedSent);
+};
+
+struct TestEmulation : public Vt102Emulation {
+    Q_OBJECT
+    // Give us access to protected functions
+    friend class Vt102EmulationTest;
+
+    QByteArray lastSent;
+
+public:
+    void sendString(const QByteArray &string) override
+    {
+        lastSent = string;
+        Vt102Emulation::sendString(string);
+    }
 };
 
 }
 
 #endif // VT102EMULATIONTEST_H
-

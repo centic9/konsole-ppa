@@ -1,36 +1,23 @@
 /*
-    Copyright 2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "PartTest.h"
 
 // Qt
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QFileInfo>
-#include <QTimer>
 #include <QDialog>
+#include <QFileInfo>
+#include <QLabel>
+#include <QTimer>
+#include <QVBoxLayout>
 // KDE
-#include <KPluginLoader>
 #include <KPluginFactory>
-#include <KPtyProcess>
+#include <KPluginLoader>
 #include <KPtyDevice>
+#include <KPtyProcess>
 #include <qtest.h>
 
 // Konsole
@@ -105,13 +92,11 @@ void PartTest::testFd(bool runShell)
     // to run without shell
     if (runShell) {
         // connect to an existing pty
-        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype",
-                                                Qt::DirectConnection, Q_ARG(int, fd));
+        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype", Qt::DirectConnection, Q_ARG(int, fd));
         QVERIFY(result);
     } else {
         // test the optional 2nd argument of openTeletype, to run without shell
-        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype",
-                                                Qt::DirectConnection, Q_ARG(int, fd), Q_ARG(bool, false));
+        bool result = QMetaObject::invokeMethod(terminalPart, "openTeletype", Qt::DirectConnection, Q_ARG(int, fd), Q_ARG(bool, false));
         QVERIFY(result);
     }
 
@@ -122,9 +107,8 @@ void PartTest::testFd(bool runShell)
 
     QPointer<QDialog> dialog = new QDialog();
     auto layout = new QVBoxLayout(dialog.data());
-    auto explanation = runShell
-        ? QStringLiteral("Output of 'ping localhost' should appear in a terminal below for 5 seconds")
-        : QStringLiteral("Output of 'ping localhost' should appear standalone below for 5 seconds");
+    auto explanation = runShell ? QStringLiteral("Output of 'ping localhost' should appear in a terminal below for 5 seconds")
+                                : QStringLiteral("Output of 'ping localhost' should appear standalone below for 5 seconds");
     layout->addWidget(new QLabel(explanation));
     layout->addWidget(terminalPart->widget());
     QTimer::singleShot(5000, dialog.data(), &QDialog::close);
@@ -136,7 +120,6 @@ void PartTest::testFd(bool runShell)
     ptyProcess.waitForFinished(1000);
 }
 
-
 KParts::Part *PartTest::createPart()
 {
     auto konsolePartPlugin = KPluginLoader::findPlugin(QStringLiteral("konsolepart"));
@@ -145,7 +128,7 @@ KParts::Part *PartTest::createPart()
     }
 
     KPluginFactory *factory = KPluginLoader(konsolePartPlugin).factory();
-    if (factory == nullptr) {       // not found
+    if (factory == nullptr) { // not found
         return nullptr;
     }
 

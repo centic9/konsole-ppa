@@ -1,23 +1,10 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2018 by Harald Sitter <sitter@kde.org>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2018 Harald Sitter <sitter@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -26,18 +13,18 @@
 #include "colorschemedebug.h"
 
 // Qt
-#include <QFileInfo>
-#include <QFile>
 #include <QDir>
+#include <QFile>
+#include <QFileInfo>
 
 // KDE
 #include <KConfig>
 
 using namespace Konsole;
 
-ColorSchemeManager::ColorSchemeManager() :
-    _colorSchemes(QHash<QString, const ColorScheme *>()),
-    _haveLoadedAll(false)
+ColorSchemeManager::ColorSchemeManager()
+    : _colorSchemes(QHash<QString, const ColorScheme *>())
+    , _haveLoadedAll(false)
 {
 }
 
@@ -48,7 +35,7 @@ ColorSchemeManager::~ColorSchemeManager()
 
 Q_GLOBAL_STATIC(ColorSchemeManager, theColorSchemeManager)
 
-ColorSchemeManager* ColorSchemeManager::instance()
+ColorSchemeManager *ColorSchemeManager::instance()
 {
     return theColorSchemeManager;
 }
@@ -94,8 +81,7 @@ bool ColorSchemeManager::loadColorScheme(const QString &filePath)
     scheme->read(config);
 
     if (scheme->name().isEmpty()) {
-        qCDebug(ColorSchemeDebug) << "Color scheme in" << filePath
-                              << "does not have a valid name and was not loaded.";
+        qCDebug(ColorSchemeDebug) << "Color scheme in" << filePath << "does not have a valid name and was not loaded.";
         delete scheme;
         return false;
     }
@@ -103,7 +89,7 @@ bool ColorSchemeManager::loadColorScheme(const QString &filePath)
     if (!_colorSchemes.contains(name)) {
         _colorSchemes.insert(scheme->name(), scheme);
     } else {
-        //qDebug() << "color scheme with name" << scheme->name() << "has already been" <<
+        // qDebug() << "color scheme with name" << scheme->name() << "has already been" <<
         //         "found, ignoring.";
 
         delete scheme;
@@ -133,8 +119,7 @@ QString ColorSchemeManager::colorSchemeNameFromPath(const QString &path)
 QStringList ColorSchemeManager::listColorSchemes()
 {
     QStringList colorschemes;
-    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("konsole"),
-                                                       QStandardPaths::LocateDirectory);
+    const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("konsole"), QStandardPaths::LocateDirectory);
     colorschemes.reserve(dirs.size());
 
     for (const QString &dir : dirs) {
@@ -163,8 +148,7 @@ void ColorSchemeManager::addColorScheme(ColorScheme *scheme)
 
     // save changes to disk
 
-    const QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
-                        + QStringLiteral("/konsole/");
+    const QString dir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/konsole/");
     QDir().mkpath(dir);
     const QString path = dir + scheme->name() + QStringLiteral(".colorscheme");
     KConfig config(path, KConfig::NoGlobals);
@@ -181,8 +165,8 @@ bool ColorSchemeManager::deleteColorScheme(const QString &name)
     if (QFile::remove(path)) {
         delete _colorSchemes.take(name);
         return true;
-    } 
-    qCDebug(ColorSchemeDebug)<<"Failed to remove color scheme -"<<path;
+    }
+    qCDebug(ColorSchemeDebug) << "Failed to remove color scheme -" << path;
     return false;
 }
 
@@ -196,13 +180,13 @@ const ColorScheme *ColorSchemeManager::findColorScheme(const QString &name)
     // Konsole will create a sub-folder in that case (bko 315086)
     // More code will have to go in to prevent the users from doing that.
     if (name.contains(QLatin1String("/"))) {
-        qCDebug(ColorSchemeDebug)<<name<<" has an invalid character / in the name ... skipping";
+        qCDebug(ColorSchemeDebug) << name << " has an invalid character / in the name ... skipping";
         return defaultColorScheme();
     }
 
     if (_colorSchemes.contains(name)) {
         return _colorSchemes[name];
-    } 
+    }
     // look for this color scheme
     QString path = findColorSchemePath(name);
     if (!path.isEmpty() && loadColorScheme(path)) {
@@ -242,7 +226,8 @@ bool ColorSchemeManager::isColorSchemeDeletable(const QString &name)
 
 bool ColorSchemeManager::canResetColorScheme(const QString &name)
 {
-    const QStringList paths = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + name + QStringLiteral(".colorscheme"));
+    const QStringList paths =
+        QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/") + name + QStringLiteral(".colorscheme"));
 
     // if the colorscheme exists in both a writable location under the
     // user's home dir and a system-wide location, then it's possible

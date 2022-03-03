@@ -1,22 +1,7 @@
 /*
-    This file is part of the Konsole Terminal.
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    Copyright 2006-2008 Robert Knight <robertknight@gmail.com>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef VIEWSPLITTER_H
@@ -24,6 +9,7 @@
 
 // Qt
 #include <QSplitter>
+#include <QSplitterHandle>
 
 // Konsole
 #include "konsoleprivate_export.h"
@@ -33,8 +19,27 @@ class QDragEnterEvent;
 class QDropEvent;
 class QDragLeaveEvent;
 
-namespace Konsole {
+namespace Konsole
+{
 class TerminalDisplay;
+
+class ViewSplitterHandle : public QSplitterHandle
+{
+    Q_OBJECT
+public:
+    ViewSplitterHandle(Qt::Orientation orientation, QSplitter *parent);
+
+protected:
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void mouseMoveEvent(QMouseEvent *ev) override;
+    void mouseDoubleClickEvent(QMouseEvent *ev) override;
+private:
+    /* For some reason, the first time we double-click on the splitter handle
+     * the second mouse press event is not fired, nor is the double click event.
+     * We use this counter to detect a double click. */
+    int mouseReleaseEventCounter;
+};
 
 /**
  * A splitter which holds a number of ViewContainer objects and allows
@@ -54,7 +59,11 @@ class KONSOLEPRIVATE_EXPORT ViewSplitter : public QSplitter
 
 public:
     explicit ViewSplitter(QWidget *parent = nullptr);
-    enum class AddBehavior {AddBefore, AddAfter};
+
+    enum class AddBehavior {
+        AddBefore,
+        AddAfter,
+    };
     /**
      * Locates the child ViewSplitter widget which currently has the focus
      * and inserts the container into it.
@@ -72,7 +81,7 @@ public:
      * @param behavior Specifies whether to add new terminal after current
      *                 tab or at end.
      */
-    void addTerminalDisplay(TerminalDisplay* terminalDisplay, Qt::Orientation containerOrientation, AddBehavior behavior = AddBehavior::AddAfter);
+    void addTerminalDisplay(TerminalDisplay *terminalDisplay, Qt::Orientation containerOrientation, AddBehavior behavior = AddBehavior::AddAfter);
 
     /** Returns the child ViewSplitter widget which currently has the focus */
     ViewSplitter *activeSplitter();
@@ -117,13 +126,21 @@ public:
 
     void handleFocusDirection(Qt::Orientation orientation, int direction);
 
-    void childEvent(QChildEvent* event) override;
-    bool terminalMaximized() const { return m_terminalMaximized; }
+    void childEvent(QChildEvent *event) override;
+    bool terminalMaximized() const
+    {
+        return m_terminalMaximized;
+    }
+
+    QSplitterHandle *createHandle() override;
+
+    QPoint mapToTopLevel(const QPoint &p);
+    QPoint mapFromTopLevel(const QPoint &p);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *ev) override;
     void dragMoveEvent(QDragMoveEvent *ev) override;
-    void dragLeaveEvent(QDragLeaveEvent * event) override;
+    void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *ev) override;
     void showEvent(QShowEvent *) override;
 
@@ -142,6 +159,10 @@ private:
 
     void updateSizes();
     bool m_terminalMaximized = false;
+    bool m_blockPropagatedDeletion = false;
+
+    static bool m_drawTopLevelHandler;
+    static Qt::Orientation m_topLevelHandlerDrawnOrientation;
 };
 }
-#endif //VIEWSPLITTER_H
+#endif // VIEWSPLITTER_H

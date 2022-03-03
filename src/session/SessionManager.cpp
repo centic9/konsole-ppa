@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -33,43 +20,41 @@
 #include <KConfigGroup>
 
 // Konsole
-#include "ShouldApplyProperty.h"
 #include "Enumeration.h"
-#include "Screen.h"
 #include "EscapeSequenceUrlExtractor.h"
+#include "Screen.h"
+#include "ShouldApplyProperty.h"
 
-#include "history/compact/CompactHistoryType.h"
 #include "history/HistoryTypeFile.h"
 #include "history/HistoryTypeNone.h"
+#include "history/compact/CompactHistoryType.h"
 
-#include "profile/ProfileManager.h"
 #include "profile/ProfileCommandParser.h"
+#include "profile/ProfileManager.h"
 
 #include "Session.h"
 #include "SessionController.h"
 
 #include "terminalDisplay/TerminalDisplay.h"
+#include "terminalDisplay/TerminalFonts.h"
 
 using namespace Konsole;
 
-SessionManager::SessionManager() :
-    _sessions(QList<Session *>()),
-    _sessionProfiles(QHash<Session *, Profile::Ptr>()),
-    _sessionRuntimeProfiles(QHash<Session *, Profile::Ptr>()),
-    _restoreMapping(QHash<Session *, int>()),
-    _isClosingAllSessions(false)
+SessionManager::SessionManager()
+    : _sessions(QList<Session *>())
+    , _sessionProfiles(QHash<Session *, Profile::Ptr>())
+    , _sessionRuntimeProfiles(QHash<Session *, Profile::Ptr>())
+    , _restoreMapping(QHash<Session *, int>())
+    , _isClosingAllSessions(false)
 {
     ProfileManager *profileMananger = ProfileManager::instance();
-    connect(profileMananger, &Konsole::ProfileManager::profileChanged, this,
-            &Konsole::SessionManager::profileChanged);
+    connect(profileMananger, &Konsole::ProfileManager::profileChanged, this, &Konsole::SessionManager::profileChanged);
 }
 
 SessionManager::~SessionManager()
 {
     if (!_sessions.isEmpty()) {
-        qCDebug(KonsoleDebug) << "Konsole SessionManager destroyed with"
-                              << _sessions.count()
-                              <<"session(s) still alive";
+        qCDebug(KonsoleDebug) << "Konsole SessionManager destroyed with" << _sessions.count() << "session(s) still alive";
         // ensure that the Session doesn't later try to call back and do things to the
         // SessionManager
         for (Session *session : qAsConst(_sessions)) {
@@ -79,7 +64,7 @@ SessionManager::~SessionManager()
 }
 
 Q_GLOBAL_STATIC(SessionManager, theSessionManager)
-SessionManager* SessionManager::instance()
+SessionManager *SessionManager::instance()
 {
     return theSessionManager;
 }
@@ -114,21 +99,19 @@ Session *SessionManager::createSession(Profile::Ptr profile)
         ProfileManager::instance()->addProfile(profile);
     }
 
-    //configuration information found, create a new session based on this
+    // configuration information found, create a new session based on this
     auto session = new Session();
     Q_ASSERT(session);
     applyProfile(session, profile, false);
 
-    connect(session, &Konsole::Session::profileChangeCommandReceived, this,
-            &Konsole::SessionManager::sessionProfileCommandReceived);
+    connect(session, &Konsole::Session::profileChangeCommandReceived, this, &Konsole::SessionManager::sessionProfileCommandReceived);
 
-    //ask for notification when session dies
-    connect(session, &Konsole::Session::finished, this,
-            [this, session]() {
-                sessionTerminated(session);
-            });
+    // ask for notification when session dies
+    connect(session, &Konsole::Session::finished, this, [this, session]() {
+        sessionTerminated(session);
+    });
 
-    //add session to active list
+    // add session to active list
     _sessions << session;
     _sessionProfiles.insert(session, profile);
 
@@ -177,11 +160,10 @@ void SessionManager::setSessionProfile(Session *session, Profile::Ptr profile)
 
     applyProfile(session, profile, false);
 
-    emit sessionUpdated(session);
+    Q_EMIT sessionUpdated(session);
 }
 
-void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
-                                  bool modifiedPropertiesOnly)
+void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile, bool modifiedPropertiesOnly)
 {
     Q_ASSERT(profile);
     _sessionProfiles[session] = profile;
@@ -217,7 +199,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
         // 18.08.0  -> 180800
         QStringList list = QStringLiteral(KONSOLE_VERSION).split(QLatin1Char('.'));
         if (list[2].length() < 2) {
-                list[2].prepend(QLatin1String("0"));
+            list[2].prepend(QLatin1String("0"));
         }
         const QString &numericVersion = list.join(QString());
 
@@ -228,8 +210,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
         session->setEnvironment(environment);
     }
 
-    if (apply.shouldApply(Profile::TerminalColumns)
-        || apply.shouldApply(Profile::TerminalRows)) {
+    if (apply.shouldApply(Profile::TerminalColumns) || apply.shouldApply(Profile::TerminalRows)) {
         const auto highlightScrolledLines = profile->property<bool>(Profile::HighlightScrolledLines);
         const auto rows = profile->property<int>(Profile::TerminalRows);
         auto columns = profile->property<int>(Profile::TerminalColumns);
@@ -252,12 +233,10 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
     // Preserve tab title changes, made by the user, when applying profile
     // changes or previewing color schemes
     if (apply.shouldApply(Profile::LocalTabTitleFormat) && !session->isTabTitleSetByUser()) {
-        session->setTabTitleFormat(Session::LocalTabTitle,
-                                   profile->localTabTitleFormat());
+        session->setTabTitleFormat(Session::LocalTabTitle, profile->localTabTitleFormat());
     }
     if (apply.shouldApply(Profile::RemoteTabTitleFormat) && !session->isTabTitleSetByUser()) {
-        session->setTabTitleFormat(Session::RemoteTabTitle,
-                                   profile->remoteTabTitleFormat());
+        session->setTabTitleFormat(Session::RemoteTabTitle, profile->remoteTabTitleFormat());
     }
     if (apply.shouldApply(Profile::TabColor) && !session->isTabColorSetByUser()) {
         session->setColor(profile->tabColor());
@@ -271,8 +250,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
             session->setHistoryType(HistoryTypeNone());
             break;
 
-        case Enum::FixedSizeHistory:
-        {
+        case Enum::FixedSizeHistory: {
             int lines = profile->historySize();
             session->setHistoryType(CompactHistoryType(lines));
             break;
@@ -302,6 +280,7 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
 
     for (TerminalDisplay *view : session->views()) {
         view->screenWindow()->screen()->urlExtractor()->setAllowedLinkSchema(profile->escapedLinksSchema());
+        view->screenWindow()->screen()->setReflowLines(profile->property<bool>(Profile::ReflowLines));
     }
 }
 
@@ -312,12 +291,18 @@ void SessionManager::sessionProfileCommandReceived(const QString &text)
 
     // store the font for each view if zoom was applied so that they can
     // be restored after applying the new profile
-    QHash<TerminalDisplay *, QFont> zoomFontSizes;
+    struct ZoomFontInfo {
+        TerminalDisplay *display = nullptr;
+        QFont font;
+    };
+    std::vector<ZoomFontInfo> zoomFontSizes;
+
     const QList<TerminalDisplay *> viewsList = session->views();
+
     for (TerminalDisplay *view : viewsList) {
-        const QFont &viewCurFont = view->getVTFont();
+        const QFont viewCurFont = view->terminalFont()->getVTFont();
         if (viewCurFont != _sessionProfiles[session]->font()) {
-            zoomFontSizes.insert(view, viewCurFont);
+            zoomFontSizes.push_back({view, viewCurFont});
         }
     }
 
@@ -340,14 +325,10 @@ void SessionManager::sessionProfileCommandReceived(const QString &text)
 
     _sessionProfiles[session] = newProfile;
     applyProfile(newProfile, true);
-    emit sessionUpdated(session);
+    Q_EMIT sessionUpdated(session);
 
-    if (!zoomFontSizes.isEmpty()) {
-        QHashIterator<TerminalDisplay *, QFont> it(zoomFontSizes);
-        while (it.hasNext()) {
-            it.next();
-            it.key()->setVTFont(it.value());
-        }
+    for (auto &[view, font] : zoomFontSizes) {
+        view->terminalFont()->setVTFont(font);
     }
 }
 
@@ -362,8 +343,7 @@ void SessionManager::saveSessions(KConfig *config)
         QString name = QLatin1String("Session") + QString::number(n);
         KConfigGroup group(config, name);
 
-        group.writePathEntry("Profile",
-                             _sessionProfiles.value(session)->path());
+        group.writePathEntry("Profile", _sessionProfiles.value(session)->path());
         session->saveSession(group);
         _restoreMapping.insert(session, n);
         n++;
