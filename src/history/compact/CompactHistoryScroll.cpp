@@ -11,61 +11,49 @@
 
 using namespace Konsole;
 
-struct reflowData { // data to reflow lines
-    QList<int> index;
-    QList<LineProperty> flags;
-};
-
 CompactHistoryScroll::CompactHistoryScroll(const unsigned int maxLineCount)
     : HistoryScroll(new CompactHistoryType(maxLineCount))
-    , _cells()
-    , _index()
-    , _flags()
     , _maxLineCount(0)
 {
     setMaxNbLines(maxLineCount);
 }
 
-void CompactHistoryScroll::removeFirstLine()
+void CompactHistoryScroll::removeLinesFromTop(size_t lines)
 {
-    if (_index.size() > 1) {
-        _flags.removeFirst();
+    if (_lineDatas.size() > 1) {
+        const unsigned int removing = _lineDatas.at(lines - 1).index;
+        _lineDatas.erase(_lineDatas.begin(), _lineDatas.begin() + lines);
 
-        const int removing = _index.first();
-        _index.removeFirst();
-        std::transform(_index.begin(), _index.end(), _index.begin(), [removing](int i) {
-            return i - removing;
-        });
-
-        _cells.erase(_cells.begin(), _cells.begin() + removing);
+        _cells.erase(_cells.begin(), _cells.begin() + (removing - _indexBias));
+        _indexBias = removing;
     } else {
-        _flags.clear();
-        _index.clear();
+        _lineDatas.clear();
         _cells.clear();
     }
 }
 
 void CompactHistoryScroll::addCells(const Character a[], const int count)
 {
-    std::copy(a, a + count, std::back_inserter(_cells));
+    _cells.insert(_cells.end(), a, a + count);
 
-    _index.append(_cells.size());
-    _flags.append(LINE_DEFAULT);
+    // store the (biased) start of next line + default flag
+    // the flag is later updated when addLine is called
+    _lineDatas.push_back({static_cast<unsigned int>(_cells.size() + _indexBias), LINE_DEFAULT});
 
-    if (_index.size() > _maxLineCount) {
-        removeFirstLine();
+    if (_lineDatas.size() > _maxLineCount + 5) {
+        removeLinesFromTop(5);
     }
 }
 
 void CompactHistoryScroll::addLine(const LineProperty lineProperty)
 {
-    auto &flag = _flags.last();
+    auto &flag = _lineDatas.back().flag;
     flag = lineProperty;
 }
 
 int CompactHistoryScroll::getLines() const
 {
-    return _index.size();
+    return _lineDatas.size();
 }
 
 int CompactHistoryScroll::getMaxLines() const
@@ -75,7 +63,7 @@ int CompactHistoryScroll::getMaxLines() const
 
 int CompactHistoryScroll::getLineLen(int lineNumber) const
 {
-    if (lineNumber < 0 || lineNumber >= _index.size()) {
+    if (size_t(lineNumber) >= _lineDatas.size()) {
         return 0;
     }
 
@@ -87,7 +75,7 @@ void CompactHistoryScroll::getCells(const int lineNumber, const int startColumn,
     if (count == 0) {
         return;
     }
-    Q_ASSERT(lineNumber < _index.size());
+    Q_ASSERT((size_t)lineNumber < _lineDatas.size());
 
     Q_ASSERT(startColumn >= 0);
     Q_ASSERT(startColumn <= lineLen(lineNumber) - count);
@@ -102,47 +90,52 @@ void CompactHistoryScroll::setMaxNbLines(const int lineCount)
     Q_ASSERT(lineCount >= 0);
     _maxLineCount = lineCount;
 
-    while (_index.size() > lineCount) {
-        removeFirstLine();
+    if (_lineDatas.size() > _maxLineCount) {
+        int linesToRemove = _lineDatas.size() - _maxLineCount;
+        removeLinesFromTop(linesToRemove);
     }
 }
 
 void CompactHistoryScroll::removeCells()
 {
-    if (_index.size() > 1) {
-        _index.removeLast();
-        _flags.removeLast();
+    if (_lineDatas.size() > 1) {
+        /** Here we remove a line from the "end" of the buffers **/
 
-        _cells.erase(_cells.begin() + _index.last(), _cells.end());
+        // Get last line start
+        int lastLineStart = startOfLine(_lineDatas.size() - 1);
+
+        // remove info about this line
+        _lineDatas.pop_back();
+
+        // remove the actual line content
+        _cells.erase(_cells.begin() + lastLineStart, _cells.end());
     } else {
         _cells.clear();
-        _index.clear();
-        _flags.clear();
+        _lineDatas.clear();
     }
 }
 
 bool CompactHistoryScroll::isWrappedLine(const int lineNumber) const
 {
-    Q_ASSERT(lineNumber < _index.size());
-    return (_flags.at(lineNumber) & LINE_WRAPPED) > 0;
+    Q_ASSERT((size_t)lineNumber < _lineDatas.size());
+    return (_lineDatas.at(lineNumber).flag & LINE_WRAPPED) > 0;
 }
 
 LineProperty CompactHistoryScroll::getLineProperty(const int lineNumber) const
 {
-    Q_ASSERT(lineNumber < _index.size());
-    return _flags.at(lineNumber);
+    Q_ASSERT((size_t)lineNumber < _lineDatas.size());
+    return _lineDatas.at(lineNumber).flag;
 }
 
 int CompactHistoryScroll::reflowLines(const int columns)
 {
-    reflowData newLine;
+    std::vector<LineData> newLineData;
 
     auto reflowLineLen = [](int start, int end) {
         return end - start;
     };
-    auto setNewLine = [](reflowData &change, int index, LineProperty flag) {
-        change.index.append(index);
-        change.flags.append(flag);
+    auto setNewLine = [](std::vector<LineData> &change, unsigned int index, LineProperty flag) {
+        change.push_back({index, flag});
     };
 
     int currentPos = 0;
@@ -160,18 +153,18 @@ int CompactHistoryScroll::reflowLines(const int columns)
         // Now reflow the lines
         while (reflowLineLen(startLine, endLine) > columns && !(lineProperty & (LINE_DOUBLEHEIGHT_BOTTOM | LINE_DOUBLEHEIGHT_TOP))) {
             startLine += columns;
-            setNewLine(newLine, startLine, lineProperty | LINE_WRAPPED);
+            setNewLine(newLineData, startLine + _indexBias, lineProperty | LINE_WRAPPED);
         }
-        setNewLine(newLine, endLine, lineProperty & ~LINE_WRAPPED);
+        setNewLine(newLineData, endLine + _indexBias, lineProperty & ~LINE_WRAPPED);
         currentPos++;
     }
-    _index = std::move(newLine.index);
-    _flags = std::move(newLine.flags);
+    _lineDatas = std::move(newLineData);
 
     int deletedLines = 0;
-    while (getLines() > _maxLineCount) {
-        removeFirstLine();
-        ++deletedLines;
+    size_t totalLines = getLines();
+    if (totalLines > _maxLineCount) {
+        deletedLines = totalLines - _maxLineCount;
+        removeLinesFromTop(deletedLines);
     }
 
     return deletedLines;

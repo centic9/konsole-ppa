@@ -44,7 +44,6 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *parent)
     : QDialog(parent)
     , _isNewScheme(false)
     , _ui(nullptr)
-    , _colors(nullptr)
 {
     auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Apply);
     auto mainWidget = new QWidget(this);
@@ -90,8 +89,14 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *parent)
     _ui->wallpaperPath->setClearButtonEnabled(true);
     _ui->wallpaperSelectButton->setIcon(QIcon::fromTheme(QStringLiteral("image-x-generic")));
 
+    connect(_ui->wallpaperTransparencySlider, &QSlider::valueChanged, this, &Konsole::ColorSchemeEditor::setWallpaperOpacity);
+
     connect(_ui->wallpaperSelectButton, &QToolButton::clicked, this, &Konsole::ColorSchemeEditor::selectWallpaper);
     connect(_ui->wallpaperPath, &QLineEdit::textChanged, this, &Konsole::ColorSchemeEditor::wallpaperPathChanged);
+
+    connect(_ui->wallpaperScalingType, &QComboBox::currentTextChanged, this, &Konsole::ColorSchemeEditor::scalingTypeChanged);
+    connect(_ui->wallpaperHorizontalAnchorSlider, &QSlider::valueChanged, this, &Konsole::ColorSchemeEditor::horizontalAnchorChanged);
+    connect(_ui->wallpaperVerticalAnchorSlider, &QSlider::valueChanged, this, &Konsole::ColorSchemeEditor::verticalAnchorChanged);
 
     // color table
     _ui->colorTable->setColumnCount(4);
@@ -133,7 +138,6 @@ ColorSchemeEditor::ColorSchemeEditor(QWidget *parent)
 
 ColorSchemeEditor::~ColorSchemeEditor()
 {
-    delete _colors;
     delete _ui;
 }
 
@@ -186,16 +190,67 @@ void ColorSchemeEditor::selectWallpaper()
     }
 }
 
+void ColorSchemeEditor::setWallpaperOpacity(int percent)
+{
+    _ui->wallpaperTransparencyPercentLabel->setText(QStringLiteral("%1%").arg(percent));
+
+    const qreal opacity = (100.0 - percent) / 100.0;
+    _colors->setWallpaper(_colors->wallpaper()->path(), _colors->wallpaper()->style(), _colors->wallpaper()->anchor(), opacity);
+}
+
 void ColorSchemeEditor::wallpaperPathChanged(const QString &path)
 {
     if (path.isEmpty()) {
-        _colors->setWallpaper(path);
+        _colors->setWallpaper(path, _colors->wallpaper()->style(), _colors->wallpaper()->anchor(), _colors->wallpaper()->opacity());
+        enableWallpaperSettings(false);
     } else {
         QFileInfo i(path);
 
         if (i.exists() && i.isFile() && i.isReadable()) {
-            _colors->setWallpaper(path);
+            _colors->setWallpaper(path, _colors->wallpaper()->style(), _colors->wallpaper()->anchor(), _colors->wallpaper()->opacity());
+            enableWallpaperSettings(true);
         }
+    }
+}
+
+void ColorSchemeEditor::scalingTypeChanged(QString style)
+{
+    _colors->setWallpaper(_colors->wallpaper()->path(), style, _colors->wallpaper()->anchor(), _colors->wallpaper()->opacity());
+}
+
+void ColorSchemeEditor::horizontalAnchorChanged(int pos)
+{
+    QPointF anch = _colors->wallpaper()->anchor();
+    _colors->setWallpaper(_colors->wallpaper()->path(), _colors->wallpaper()->style(), QPointF(pos / 2.0, anch.y()), _colors->wallpaper()->opacity());
+    switch (pos) {
+    case 2:
+        _ui->wallpaperHorizontalAnchorPosition->setText(QString::fromLatin1("Right"));
+        break;
+    case 1:
+        _ui->wallpaperHorizontalAnchorPosition->setText(QString::fromLatin1("Center"));
+        break;
+    case 0:
+    default:
+        _ui->wallpaperHorizontalAnchorPosition->setText(QString::fromLatin1("Left"));
+        break;
+    }
+}
+
+void ColorSchemeEditor::verticalAnchorChanged(int pos)
+{
+    QPointF anch = _colors->wallpaper()->anchor();
+    _colors->setWallpaper(_colors->wallpaper()->path(), _colors->wallpaper()->style(), QPointF(anch.x(), pos / 2.0), _colors->wallpaper()->opacity());
+    switch (pos) {
+    case 2:
+        _ui->wallpaperVerticalAnchorPosition->setText(QString::fromLatin1("Bottom"));
+        break;
+    case 1:
+        _ui->wallpaperVerticalAnchorPosition->setText(QString::fromLatin1("Middle"));
+        break;
+    case 0:
+    default:
+        _ui->wallpaperVerticalAnchorPosition->setText(QString::fromLatin1("Top"));
+        break;
     }
 }
 
@@ -228,13 +283,11 @@ void ColorSchemeEditor::setRandomizedBackgroundColor(bool randomized)
     _colors->setColorRandomization(randomized);
 }
 
-void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
+void ColorSchemeEditor::setup(const std::shared_ptr<const ColorScheme> &scheme, bool isNewScheme)
 {
     _isNewScheme = isNewScheme;
 
-    delete _colors;
-
-    _colors = new ColorScheme(*scheme);
+    _colors = std::make_shared<ColorScheme>(*scheme);
 
     if (_isNewScheme) {
         setWindowTitle(i18nc("@title:window", "New Color Scheme"));
@@ -250,9 +303,12 @@ void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
     setupColorTable(_colors);
 
     // setup transparency slider
-    const int transparencyPercent = qRound((1 - _colors->opacity()) * 100);
-    _ui->transparencySlider->setValue(transparencyPercent);
-    setTransparencyPercentLabel(transparencyPercent);
+    const int colorTransparencyPercent = qRound((1 - _colors->opacity()) * 100);
+    const int wallpaperTransparencyPercent = qRound((1 - _colors->wallpaper()->opacity()) * 100);
+    _ui->transparencySlider->setValue(colorTransparencyPercent);
+    _ui->wallpaperTransparencySlider->setValue(wallpaperTransparencyPercent);
+    setTransparencyPercentLabel(colorTransparencyPercent);
+    setWallpaperOpacity(wallpaperTransparencyPercent);
 
     // blur behind window checkbox
     _ui->blurCheckBox->setChecked(scheme->blur());
@@ -261,10 +317,16 @@ void ColorSchemeEditor::setup(const ColorScheme *scheme, bool isNewScheme)
     _ui->randomizedBackgroundCheck->setChecked(scheme->isColorRandomizationEnabled());
 
     // wallpaper stuff
+    int ax = qRound(scheme->wallpaper()->anchor().x() * 2.0);
+    int ay = qRound(scheme->wallpaper()->anchor().y() * 2.0);
     _ui->wallpaperPath->setText(scheme->wallpaper()->path());
+    _ui->wallpaperScalingType->setCurrentIndex(scheme->wallpaper()->style());
+    _ui->wallpaperHorizontalAnchorSlider->setValue(ax);
+    _ui->wallpaperVerticalAnchorSlider->setValue(ay);
+    enableWallpaperSettings(!scheme->wallpaper()->isNull());
 }
 
-void ColorSchemeEditor::setupColorTable(const ColorScheme *colors)
+void ColorSchemeEditor::setupColorTable(const std::shared_ptr<ColorScheme> &colors)
 {
     QColor table[TABLE_COLORS];
     colors->getColorTable(table);
@@ -310,4 +372,12 @@ bool ColorSchemeEditor::isNewScheme() const
 void ColorSchemeEditor::saveColorScheme()
 {
     Q_EMIT colorSchemeSaveRequested(colorScheme(), _isNewScheme);
+}
+
+void ColorSchemeEditor::enableWallpaperSettings(bool enable)
+{
+    _ui->wallpaperHorizontalAnchorSlider->setEnabled(enable);
+    _ui->wallpaperVerticalAnchorSlider->setEnabled(enable);
+    _ui->wallpaperTransparencySlider->setEnabled(enable);
+    _ui->wallpaperScalingType->setEnabled(enable);
 }

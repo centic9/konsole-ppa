@@ -31,6 +31,15 @@
 #define MODE_AppScreen 6
 #define MODES_SCREEN 7
 
+struct TerminalGraphicsPlacement_t {
+    QPixmap pixmap;
+    qint64 id;
+    qint64 pid;
+    int z, X, Y, col, row, cols, rows;
+    qreal opacity;
+    bool scrolling;
+};
+
 namespace Konsole
 {
 class TerminalCharacterDecoder;
@@ -351,7 +360,7 @@ public:
      * If @p clearScreen is true then the screen contents are erased entirely,
      * otherwise they are unaltered.
      */
-    void reset();
+    void reset(bool softReset = false);
 
     /**
      * Displays a new character at the current cursor position.
@@ -602,6 +611,30 @@ public:
     // Set reflow condition
     void setReflowLines(bool enable);
 
+    /* Graphics display functions */
+    void addPlacement(QPixmap pixmap,
+                      int &rows,
+                      int &cols,
+                      int row = -1,
+                      int col = -1,
+                      bool scrolling = true,
+                      int moveCursor = 1,
+                      bool leaveText = false,
+                      int z = -1000,
+                      int id = -1,
+                      int pid = -1,
+                      qreal opacity = 1.0,
+                      int X = 0,
+                      int Y = 0);
+    TerminalGraphicsPlacement_t *getGraphicsPlacement(unsigned int i);
+    void scrollUpVisiblePlacements(int n);
+    void delPlacements(int = 'a', qint64 = 0, qint64 = -1, int = 0, int = 0, int = 0);
+
+    bool hasGraphics() const
+    {
+        return _hasGraphics;
+    }
+
 private:
     // copies a line of text from the screen or history into a stream using a
     // specified character decoder.  Returns the number of lines actually copied,
@@ -628,6 +661,9 @@ private:
     // the loc(x,y) macro can be used to generate these values from a column,line pair.
     // if resetLineRendition is true, all completely cleared lines will be set to single-width.
     void clearImage(int loca, int loce, char c, bool resetLineRendition = true);
+
+    // erases a rectangular section of the screen.
+    void eraseBlock(int y, int x, int height, int width);
 
     // move screen image between 'sourceBegin' and 'sourceEnd' to 'dest'.
     // the parameters are specified as offsets from the start of the screen image.
@@ -663,13 +699,6 @@ private:
     // starting from 'startLine', where 0 is the first line in the history
     void copyFromHistory(Character *dest, int startLine, int count) const;
 
-    // Sets the text selection colors, either:
-    // - using reverseRendition(), which inverts the foreground/background
-    //   colors OR
-    // - setting the RE_BLEND_SELECTION_COLORS RenditionFlag, which will
-    //   blend the foreground/background colors
-    void setTextSelectionRendition(Character &ch) const;
-
     // returns a buffer that can hold at most 'count' characters,
     // where the number of reallocations and object reinitializations
     // should be as minimal as possible
@@ -696,7 +725,7 @@ private:
     int _columns;
 
     typedef QVector<Character> ImageLine; // [0..columns]
-    QVector<ImageLine> _screenLines; // [lines]
+    std::vector<ImageLine> _screenLines; // [lines]
     int _screenLinesSize; // _screenLines.size()
 
     int _scrolledLines;
@@ -708,7 +737,7 @@ private:
     bool _isResize;
     bool _enableReflowLines;
 
-    QVector<LineProperty> _lineProperties;
+    std::vector<LineProperty> _lineProperties;
 
     // history buffer ---------------
     std::unique_ptr<HistoryScroll> _history;
@@ -751,6 +780,7 @@ private:
         SavedState()
             : cursorColumn(0)
             , cursorLine(0)
+            , originMode(0)
             , rendition(0)
             , foreground(CharacterColor())
             , background(CharacterColor())
@@ -759,6 +789,7 @@ private:
 
         int cursorColumn;
         int cursorLine;
+        int originMode;
         RenditionFlags rendition;
         CharacterColor foreground;
         CharacterColor background;
@@ -775,6 +806,11 @@ private:
 
     // Vt102Emulation defined max argument value that can be passed to a Screen function
     const int MAX_SCREEN_ARGUMENT = 40960;
+
+    /* Graphics */
+    void addPlacement(std::unique_ptr<TerminalGraphicsPlacement_t> &u);
+    std::vector<std::unique_ptr<TerminalGraphicsPlacement_t>> _graphicsPlacements;
+    bool _hasGraphics;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Screen::DecodingOptions)

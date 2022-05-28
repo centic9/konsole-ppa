@@ -295,6 +295,8 @@ void ViewManager::setupActions()
 
     connect(_viewContainer, &TabbedViewContainer::viewAdded, this, &ViewManager::toggleActionsBasedOnState);
     connect(_viewContainer, &QTabWidget::currentChanged, this, &ViewManager::toggleActionsBasedOnState);
+    // Let the view container remove the view before counting tabs
+    connect(_viewContainer, &TabbedViewContainer::viewRemoved, this, &ViewManager::toggleActionsBasedOnState);
 
     toggleActionsBasedOnState();
 }
@@ -433,6 +435,7 @@ void ViewManager::detachActiveView()
     // find the currently active view and remove it from its container
     if ((_viewContainer->findChildren<TerminalDisplay *>()).count() > 1) {
         auto activeSplitter = _viewContainer->activeViewSplitter();
+        activeSplitter->clearMaximized();
         auto terminal = activeSplitter->activeTerminalDisplay();
         auto newSplitter = new ViewSplitter();
         newSplitter->addTerminalDisplay(terminal, Qt::Horizontal);
@@ -445,6 +448,9 @@ void ViewManager::detachActiveView()
 
 void ViewManager::detachActiveTab()
 {
+    if (_viewContainer->count() < 2) {
+        return;
+    }
     const int currentIdx = _viewContainer->currentIndex();
     detachTab(currentIdx);
 }
@@ -525,10 +531,8 @@ void ViewManager::sessionFinished()
     if (splitter == nullptr) {
         return;
     }
+    splitter->clearMaximized();
 
-    auto *toplevelSplitter = splitter->getToplevelSplitter();
-
-    toplevelSplitter->handleMinimizeMaximize(false);
     view->deleteLater();
     connect(view, &QObject::destroyed, this, [this]() {
         toggleActionsBasedOnState();
@@ -545,7 +549,7 @@ void ViewManager::sessionFinished()
 
     if (!_sessionMap.empty()) {
         updateTerminalDisplayHistory(view, true);
-        focusAnotherTerminal(toplevelSplitter);
+        focusAnotherTerminal(splitter->getToplevelSplitter());
     }
 }
 
@@ -566,7 +570,9 @@ void ViewManager::focusAnotherTerminal(ViewSplitter *toplevelSplitter)
                 }
             }
         }
-    } else if (_terminalDisplayHistory.count() >= 1) {
+    }
+
+    if (_terminalDisplayHistory.count() >= 1) {
         // Give focus to the last used terminal tab
         switchToTerminalDisplay(_terminalDisplayHistory[0]);
     }
@@ -636,6 +642,7 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
     connect(session, &Konsole::Session::primaryScreenInUse, controller, &Konsole::SessionController::setupPrimaryScreenSpecificActions);
     connect(session, &Konsole::Session::selectionChanged, controller, &Konsole::SessionController::selectionChanged);
     connect(view, &Konsole::TerminalDisplay::destroyed, controller, &Konsole::SessionController::deleteLater);
+    connect(controller, &Konsole::SessionController::viewDragAndDropped, this, &Konsole::ViewManager::forgetController);
 
     // if this is the first controller created then set it as the active controller
     if (_pluggedController.isNull()) {
@@ -645,9 +652,20 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
     return controller;
 }
 
+void ViewManager::forgetController()
+{
+    auto controller = static_cast<SessionController *>(sender());
+    Q_ASSERT(controller->session() != nullptr && controller->view() != nullptr);
+
+    forgetTerminal(controller->view());
+    toggleActionsBasedOnState();
+}
+
 // should this be handed by ViewManager::unplugController signal
 void ViewManager::removeController(SessionController *controller)
 {
+    Q_EMIT unplugController(controller);
+
     if (_pluggedController == controller) {
         _pluggedController.clear();
     }
@@ -826,9 +844,9 @@ TerminalDisplay *ViewManager::createTerminalDisplay(Session *session)
     return display;
 }
 
-const ColorScheme *ViewManager::colorSchemeForProfile(const Profile::Ptr &profile)
+std::shared_ptr<const ColorScheme> ViewManager::colorSchemeForProfile(const Profile::Ptr &profile)
 {
-    const ColorScheme *colorScheme = ColorSchemeManager::instance()->findColorScheme(profile->colorScheme());
+    std::shared_ptr<const ColorScheme> colorScheme = ColorSchemeManager::instance()->findColorScheme(profile->colorScheme());
     if (colorScheme == nullptr) {
         colorScheme = ColorSchemeManager::instance()->defaultColorScheme();
     }

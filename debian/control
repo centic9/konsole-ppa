@@ -1,12 +1,11 @@
 Source: konsole
 Section: kde
 Priority: optional
-Maintainer: Kubuntu Developers <kubuntu-devel@lists.ubuntu.com>
-XSBC-Original-Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Maintainer: Debian Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
 Uploaders: Aurélien COUDERC <coucouf@debian.org>,
            Sune Vuorela <sune@debian.org>,
            Norbert Preining <norbert@preining.info>,
-Build-Depends: cmake (>= 3.13~),
+Build-Depends: cmake (>= 3.16~),
                debhelper-compat (= 13),
                extra-cmake-modules (>= 5.71.0~),
                gettext,
@@ -37,11 +36,12 @@ Build-Depends: cmake (>= 3.13~),
                libx11-dev,
                pkg-kde-tools (>= 0.15.16~),
                qtbase5-dev (>= 5.15.0~),
+               zlib1g-dev,
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 Homepage: https://apps.kde.org/en/konsole
-Vcs-Browser: https://code.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/konsole
-Vcs-Git: https://git.launchpad.net/~kubuntu-packagers/kubuntu-packaging/+git/konsole
+Vcs-Browser: https://salsa.debian.org/qt-kde-team/kde/konsole
+Vcs-Git: https://salsa.debian.org/qt-kde-team/kde/konsole.git
 
 Package: konsole
 Architecture: any

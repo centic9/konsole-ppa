@@ -34,9 +34,12 @@ class QTimer;
 class QEvent;
 class QVBoxLayout;
 class QKeyEvent;
+class QScroller;
 class QShowEvent;
 class QHideEvent;
 class QTimerEvent;
+class QScrollEvent;
+class QScrollPrepareEvent;
 class KMessageWidget;
 
 namespace Konsole
@@ -264,6 +267,14 @@ public:
     /** See setUsesMouseTracking() */
     bool usesMouseTracking() const;
 
+    /**
+     * Set whether mouse tracking should be allowed, even if requested.
+     * This is stored separately from if mouse tracking is enabled, in case the
+     * user turns it on/off while mouse tracking is requested.
+     */
+    void setAllowMouseTracking(const bool allow);
+    bool allowsMouseTracking() const;
+
     bool hasCompositeFocus() const
     {
         return _hasCompositeFocus;
@@ -294,6 +305,14 @@ public:
     TerminalFont *terminalFont() const
     {
         return _terminalFont.get();
+    }
+
+    /**
+     * Return the current color scheme
+     */
+    const std::shared_ptr<const ColorScheme> &colorScheme() const
+    {
+        return _colorScheme;
     }
 
     bool cursorBlinking() const
@@ -335,7 +354,15 @@ public:
     // returns 0 - not selecting, 1 - pending selection (button pressed but no movement yet), 2 - selecting
     int selectionState() const;
 
-public Q_SLOTS:
+    Qt::Edge droppedEdge() const
+    {
+        return _overlayEdge;
+    }
+    IncrementalSearchBar *searchBar() const;
+    Character getCursorCharacter(int column, int line);
+
+    int loc(int x, int y) const;
+
     /**
      * Scrolls current ScreenWindow
      *
@@ -344,16 +371,24 @@ public Q_SLOTS:
     void scrollScreenWindow(enum ScreenWindow::RelativeScrollMode mode, int amount);
 
     /**
+     * Causes the widget to display or hide a message informing the user that terminal
+     * output has been suspended (by using the flow control key combination Ctrl+S)
+     *
+     * @param suspended True if terminal output has been suspended and the warning message should
+     *                     be shown or false to indicate that terminal output has been resumed and that
+     *                     the warning message should disappear.
+     */
+    void outputSuspended(bool suspended);
+
+    // Used to show/hide the message widget
+    void updateReadOnlyState(bool readonly);
+
+public Q_SLOTS:
+    /**
      * Causes the terminal display to fetch the latest character image from the associated
      * terminal screen ( see setScreenWindow() ) and redraw the display.
      */
     void updateImage();
-
-    void setAutoCopySelectedText(bool enabled);
-
-    void setCopyTextAsHTML(bool enabled);
-
-    void setMiddleClickPasteMode(Enum::MiddleClickPasteModeEnum mode);
 
     /** Copies the selected text to the X11 Selection. */
     void copyToX11Selection();
@@ -380,15 +415,6 @@ public Q_SLOTS:
      * stop key (Ctrl+S) are pressed.
      */
     void setFlowControlWarningEnabled(bool enable);
-    /**
-     * Causes the widget to display or hide a message informing the user that terminal
-     * output has been suspended (by using the flow control key combination Ctrl+S)
-     *
-     * @param suspended True if terminal output has been suspended and the warning message should
-     *                     be shown or false to indicate that terminal output has been resumed and that
-     *                     the warning message should disappear.
-     */
-    void outputSuspended(bool suspended);
 
     /**
      * Sets whether the program currently running in the terminal is interested
@@ -415,38 +441,8 @@ public Q_SLOTS:
      */
     void bell(const QString &message);
 
-    /**
-     * Sets the display's contents margins.
-     */
-    void setMargin(int margin);
-
-    /**
-     * Sets whether the contents are centered between the margins.
-     */
-    void setCenterContents(bool enable);
-
-    /**
-     * Return the current color scheme
-     */
-    ColorScheme const *colorScheme() const
-    {
-        return _colorScheme;
-    }
-
-    Qt::Edge droppedEdge() const
-    {
-        return _overlayEdge;
-    }
-
-    // Used to show/hide the message widget
-    void updateReadOnlyState(bool readonly);
-    IncrementalSearchBar *searchBar() const;
-
     // Used for requestPrint
     void printScreen();
-    Character getCursorCharacter(int column, int line);
-
-    int loc(int x, int y) const;
 
 Q_SIGNALS:
     void requestToggleExpansion();
@@ -499,18 +495,14 @@ Q_SIGNALS:
                       int imageSize,
                       bool bidiEnabled,
                       QVector<LineProperty> lineProperties);
-    void drawCurrentResultRect(QPainter &painter, QRect searchResultRect);
+    void drawCurrentResultRect(QPainter &painter, const QRect &searchResultRect);
 
     void highlightScrolledLines(QPainter &painter, bool isTimerActive, QRect rect);
-    QRegion highlightScrolledLinesRegion(bool nothingChanged, TerminalScrollBar *scrollBar);
+    QRegion highlightScrolledLinesRegion(TerminalScrollBar *scrollBar);
 
     void drawBackground(QPainter &painter, const QRect &rect, const QColor &backgroundColor, bool useOpacitySetting);
-    void drawCharacters(QPainter &painter,
-                        const QRect &rect,
-                        const QString &text,
-                        const Character *style,
-                        const QColor &characterColor,
-                        const LineProperty lineProperty);
+    void
+    drawCharacters(QPainter &painter, const QRect &rect, const QString &text, Character style, const QColor &characterColor, const LineProperty lineProperty);
     void drawInputMethodPreeditString(QPainter &painter, const QRect &rect, TerminalDisplay::InputMethodData &inputMethodData, Character *image);
 
 protected:
@@ -532,6 +524,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *ev) override;
     void wheelEvent(QWheelEvent *ev) override;
     bool focusNextPrevChild(bool next) override;
+    void scrollPrepareEvent(QScrollPrepareEvent *);
+    void scrollEvent(QScrollEvent *);
 
     void extendSelection(const QPoint &position);
 
@@ -577,8 +571,6 @@ private Q_SLOTS:
 
     void viewScrolledByUser();
 
-    void dismissOutputSuspendedMessage();
-
 private:
     Q_DISABLE_COPY(TerminalDisplay)
 
@@ -611,11 +603,32 @@ private:
     QPoint findWordStart(const QPoint &pnt);
     QPoint findWordEnd(const QPoint &pnt);
 
+    /**
+     * @param pnt A point, relative to this.
+     * @return true if the given point is in the area with the main terminal content and not in some other widget.
+     */
+    bool isInTerminalRegion(const QPoint &pnt) const;
+
     // Uses the current settings for trimming whitespace and preserving linebreaks to create a proper flag value for Screen
     Screen::DecodingOptions currentDecodingOptions();
 
     // Boilerplate setup for MessageWidget
     KMessageWidget *createMessageWidget(const QString &text);
+
+    // Some setters used by applyProfile
+    void setAutoCopySelectedText(bool enabled);
+    void setCopyTextAsHTML(bool enabled);
+    void setMiddleClickPasteMode(Enum::MiddleClickPasteModeEnum mode);
+
+    /**
+     * Sets the display's contents margins.
+     */
+    void setMargin(int margin);
+
+    /**
+     * Sets whether the contents are centered between the margins.
+     */
+    void setCenterContents(bool enable);
 
     // the window onto the terminal screen which this display
     // is currently showing.
@@ -656,6 +669,7 @@ private:
     bool _showTerminalSizeHint;
     bool _bidiEnabled;
     bool _usesMouseTracking;
+    bool _allowMouseTracking;
     bool _bracketedPasteMode;
 
     QPoint _iPntSel; // initial selection point
@@ -702,7 +716,7 @@ private:
 
     QSize _size;
 
-    ColorScheme const *_colorScheme;
+    std::shared_ptr<const ColorScheme> _colorScheme;
     ColorSchemeWallpaper::Ptr _wallpaper;
 
     // list of filters currently applied to the display.  used for links and

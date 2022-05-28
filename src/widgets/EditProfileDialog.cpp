@@ -118,7 +118,7 @@ EditProfileDialog::EditProfileDialog(QWidget *parent)
     _tabsUi->setupUi(tabsPageWidget);
     auto *tabsPageItem = addPage(tabsPageWidget, tabsPageName);
     tabsPageItem->setHeader(tabsPageName);
-    tabsPageItem->setIcon(QIcon::fromTheme(QStringLiteral("tab-duplicate"), defaultIcon));
+    tabsPageItem->setIcon(QIcon::fromTheme(QStringLiteral("preferences-tabs"), defaultIcon));
     _pages[tabsPageItem] = Page(&EditProfileDialog::setupTabsPage);
 
     LabelsAligner tabsAligner(tabsPageWidget);
@@ -151,7 +151,7 @@ EditProfileDialog::EditProfileDialog(QWidget *parent)
     _scrollingUi->setupUi(scrollingPageWidget);
     auto *scrollingPageItem = addPage(scrollingPageWidget, scrollingPageName);
     scrollingPageItem->setHeader(scrollingPageName);
-    scrollingPageItem->setIcon(QIcon::fromTheme(QStringLiteral("transform-move-vertical"), defaultIcon));
+    scrollingPageItem->setIcon(QIcon::fromTheme(QStringLiteral("preferences-scroll"), defaultIcon));
     _pages[scrollingPageItem] = Page(&EditProfileDialog::setupScrollingPage);
 
     // adjust "history size" label height to match history size widget's first radio button
@@ -193,7 +193,7 @@ EditProfileDialog::EditProfileDialog(QWidget *parent)
     _advancedUi->setupUi(advancedPageWidget);
     auto *advancedPageItem = addPage(advancedPageWidget, advancedPageName);
     advancedPageItem->setHeader(advancedPageName);
-    advancedPageItem->setIcon(QIcon::fromTheme(QStringLiteral("configure"), defaultIcon));
+    advancedPageItem->setIcon(QIcon::fromTheme(QStringLiteral("preferences-other"), defaultIcon));
     _pages[advancedPageItem] = Page(&EditProfileDialog::setupAdvancedPage);
 
     // there are various setupXYZPage() methods to load the items
@@ -720,7 +720,9 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
     connect(_appearanceUi->useFontLineCharactersButton, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::useFontLineCharacters);
 
     _mouseUi->enableMouseWheelZoomButton->setChecked(profile->mouseWheelZoomEnabled());
-    connect(_mouseUi->enableMouseWheelZoomButton, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::toggleMouseWheelZoom);
+    connect(_mouseUi->enableMouseWheelZoomButton, &QCheckBox::toggled, this,
+            &Konsole::EditProfileDialog::toggleMouseWheelZoom);
+
 
     // cursor options
     _appearanceUi->enableBlinkingCursorButton->setChecked(profile->property<bool>(Profile::BlinkingCursorEnabled));
@@ -900,13 +902,18 @@ void EditProfileDialog::toggleAllowColorFilter(bool enable)
     updateTempProfileProperty(Profile::ColorFilterEnabled, enable);
 }
 
+void EditProfileDialog::toggleAllowMouseTracking(bool allow)
+{
+    updateTempProfileProperty(Profile::AllowMouseTracking, allow);
+}
+
 void EditProfileDialog::updateColorSchemeList(const QString &selectedColorSchemeName)
 {
     if (_appearanceUi->colorSchemeList->model() == nullptr) {
         _appearanceUi->colorSchemeList->setModel(new QStandardItemModel(this));
     }
 
-    const ColorScheme *selectedColorScheme = ColorSchemeManager::instance()->findColorScheme(selectedColorSchemeName);
+    std::shared_ptr<const ColorScheme> selectedColorScheme = ColorSchemeManager::instance()->findColorScheme(selectedColorSchemeName);
 
     auto *model = qobject_cast<QStandardItemModel *>(_appearanceUi->colorSchemeList->model());
 
@@ -916,9 +923,9 @@ void EditProfileDialog::updateColorSchemeList(const QString &selectedColorScheme
 
     QStandardItem *selectedItem = nullptr;
 
-    const QList<const ColorScheme *> schemeList = ColorSchemeManager::instance()->allColorSchemes();
+    const QList<std::shared_ptr<const ColorScheme>> schemeList = ColorSchemeManager::instance()->allColorSchemes();
 
-    for (const ColorScheme *scheme : schemeList) {
+    for (const std::shared_ptr<const ColorScheme> &scheme : schemeList) {
         QStandardItem *item = new QStandardItem(scheme->description());
         item->setData(QVariant::fromValue(scheme), Qt::UserRole + 1);
         item->setData(QVariant::fromValue(_profile->font()), Qt::UserRole + 2);
@@ -1091,7 +1098,7 @@ void EditProfileDialog::preview(int property, const QVariant &value)
 
 void EditProfileDialog::previewColorScheme(const QModelIndex &index)
 {
-    const QString &name = index.data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+    const QString &name = index.data(Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>()->name();
     delayedPreview(Profile::ColorScheme, name);
 }
 
@@ -1135,7 +1142,7 @@ void EditProfileDialog::removeColorScheme()
     if (selected.isEmpty()) {
         return;
     }
-    const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+    const QString &name = selected.first().data(Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>()->name();
     Q_ASSERT(!name.isEmpty());
     if (ColorSchemeManager::instance()->deleteColorScheme(name)) {
         _appearanceUi->colorSchemeList->model()->removeRow(selected.first().row());
@@ -1148,7 +1155,7 @@ void EditProfileDialog::gotNewColorSchemes(const KNS3::Entry::List &changedEntri
     for (auto &entry : qAsConst(changedEntries)) {
         switch (entry.status()) {
         case KNS3::Entry::Installed:
-            for (const auto &file : entry.installedFiles()) {
+            for (const QString &file : entry.installedFiles()) {
                 if (ColorSchemeManager::instance()->loadColorScheme(file)) {
                     continue;
                 }
@@ -1188,7 +1195,7 @@ void EditProfileDialog::resetColorScheme()
     QModelIndexList selected = _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes();
 
     if (!selected.isEmpty()) {
-        const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+        const QString &name = selected.first().data(Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>()->name();
 
         ColorSchemeManager::instance()->deleteColorScheme(name);
 
@@ -1202,9 +1209,9 @@ void EditProfileDialog::showColorSchemeEditor(bool isNewScheme)
     // Finding selected ColorScheme
     QModelIndexList selected = _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes();
     QAbstractItemModel *model = _appearanceUi->colorSchemeList->model();
-    const ColorScheme *colors = nullptr;
+    std::shared_ptr<const ColorScheme> colors;
     if (!selected.isEmpty()) {
-        colors = model->data(selected.first(), Qt::UserRole + 1).value<const ColorScheme *>();
+        colors = model->data(selected.first(), Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>();
     } else {
         colors = ColorSchemeManager::instance()->defaultColorScheme();
     }
@@ -1244,7 +1251,7 @@ void EditProfileDialog::editColorScheme()
 
 void EditProfileDialog::saveColorScheme(const ColorScheme &scheme, bool isNewScheme)
 {
-    auto newScheme = new ColorScheme(scheme);
+    std::shared_ptr<ColorScheme> newScheme = std::make_shared<ColorScheme>(scheme);
 
     // if this is a new color scheme, pick a name based on the description
     if (isNewScheme) {
@@ -1267,7 +1274,7 @@ void EditProfileDialog::colorSchemeSelected()
 
     if (!selected.isEmpty()) {
         QAbstractItemModel *model = _appearanceUi->colorSchemeList->model();
-        const auto *colors = model->data(selected.first(), Qt::UserRole + 1).value<const ColorScheme *>();
+        std::shared_ptr<const ColorScheme> colors = model->data(selected.first(), Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>();
         if (colors != nullptr) {
             updateTempProfileProperty(Profile::ColorScheme, colors->name());
             previewColorScheme(selected.first());
@@ -1286,7 +1293,7 @@ void EditProfileDialog::updateColorSchemeButtons()
     QModelIndexList selected = _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes();
 
     if (!selected.isEmpty()) {
-        const QString &name = selected.first().data(Qt::UserRole + 1).value<const ColorScheme *>()->name();
+        const QString &name = selected.first().data(Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>()->name();
 
         bool isResettable = ColorSchemeManager::instance()->canResetColorScheme(name);
         _appearanceUi->resetColorSchemeButton->setEnabled(isResettable);
@@ -1329,7 +1336,7 @@ void EditProfileDialog::updateTransparencyWarning()
     // zero or one indexes can be selected
     const QModelIndexList selected = _appearanceUi->colorSchemeList->selectionModel()->selectedIndexes();
     for (const QModelIndex &index : selected) {
-        bool needTransparency = index.data(Qt::UserRole + 1).value<const ColorScheme *>()->opacity() < 1.0;
+        bool needTransparency = index.data(Qt::UserRole + 1).value<std::shared_ptr<const ColorScheme>>()->opacity() < 1.0;
 
         if (!needTransparency) {
             _appearanceUi->transparencyWarningWidget->setHidden(true);
@@ -1617,6 +1624,8 @@ void EditProfileDialog::setupMousePage(const Profile::Ptr &profile)
     connect(_mouseUi->enableAlternateScrollingButton, &QPushButton::toggled, this, &EditProfileDialog::toggleAlternateScrolling);
     _mouseUi->allowColorFilters->setChecked(profile->property<bool>(Profile::ColorFilterEnabled));
     connect(_mouseUi->allowColorFilters, &QPushButton::toggled, this, &EditProfileDialog::toggleAllowColorFilter);
+    _mouseUi->allowMouseTrackingButton->setChecked(profile->property<bool>(Profile::AllowMouseTracking));
+    connect(_mouseUi->allowMouseTrackingButton, &QPushButton::toggled, this, &EditProfileDialog::toggleAllowMouseTracking);
 
     // setup middle click paste mode
     const auto middleClickPasteMode = profile->property<int>(Profile::MiddleClickPasteMode);

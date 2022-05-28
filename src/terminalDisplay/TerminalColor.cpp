@@ -29,7 +29,7 @@ TerminalColor::TerminalColor(QObject *parent)
     setColorTable(ColorScheme::defaultTable);
 }
 
-void TerminalColor::applyProfile(const Profile::Ptr &profile, ColorScheme const *colorScheme, uint randomSeed)
+void TerminalColor::applyProfile(const Profile::Ptr &profile, const std::shared_ptr<const ColorScheme> &colorScheme, uint randomSeed)
 {
     QColor table[TABLE_COLORS];
     colorScheme->getColorTable(table, randomSeed);
@@ -120,7 +120,13 @@ void TerminalColor::onColorsChanged()
     palette.setColor(QPalette::WindowText, buttonTextColor);
     palette.setColor(QPalette::ButtonText, buttonTextColor);
 
+    QWidget *widget = qobject_cast<QWidget *>(parent());
+
+    widget->setPalette(palette);
+
     Q_EMIT onPalette(palette);
+
+    widget->update();
 }
 
 void TerminalColor::swapFGBGColors()

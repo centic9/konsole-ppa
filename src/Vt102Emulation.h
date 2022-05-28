@@ -10,6 +10,7 @@
 
 // Qt
 #include <QHash>
+#include <QMap>
 #include <QPair>
 #include <QVector>
 
@@ -23,7 +24,7 @@ class QKeyEvent;
 #define MODE_AppCuKeys (MODES_SCREEN + 0) // Application cursor keys (DECCKM)
 #define MODE_AppKeyPad (MODES_SCREEN + 1) //
 #define MODE_Mouse1000 (MODES_SCREEN + 2) // Send mouse X,Y position on press and release
-#define MODE_Mouse1001 (MODES_SCREEN + 3) // Use Hilight mouse tracking
+#define MODE_Mouse1001 (MODES_SCREEN + 3) // Use Highlight mouse tracking
 #define MODE_Mouse1002 (MODES_SCREEN + 4) // Use cell motion mouse tracking
 #define MODE_Mouse1003 (MODES_SCREEN + 5) // Use all motion mouse tracking
 #define MODE_Mouse1005 (MODES_SCREEN + 6) // Xterm-style extended coordinates
@@ -34,7 +35,8 @@ class QKeyEvent;
 #define MODE_132Columns (MODES_SCREEN + 11) // 80 <-> 132 column mode switch (DECCOLM)
 #define MODE_Allow132Columns (MODES_SCREEN + 12) // Allow DECCOLM mode
 #define MODE_BracketedPaste (MODES_SCREEN + 13) // Xterm-style bracketed paste mode
-#define MODE_total (MODES_SCREEN + 14)
+#define MODE_Sixel (MODES_SCREEN + 14) // Xterm-style bracketed paste mode
+#define MODE_total (MODES_SCREEN + 15)
 
 namespace Konsole
 {
@@ -71,7 +73,7 @@ public:
 
     // reimplemented from Emulation
     void clearEntireScreen() override;
-    void reset() override;
+    void reset(bool softReset = false) override;
     char eraseChar() const override;
 
 public Q_SLOTS:
@@ -86,7 +88,7 @@ protected:
     // reimplemented from Emulation
     void setMode(int mode) override;
     void resetMode(int mode) override;
-    void receiveChar(uint cc) override;
+    void receiveChars(const QVector<uint> &chars) override;
 
 private Q_SLOTS:
     // Causes sessionAttributeChanged() to be emitted for each (int,QString)
@@ -120,30 +122,48 @@ private:
     void resetTokenizer();
 #define MAX_TOKEN_LENGTH 256 // Max length of tokens (e.g. window title)
     void addToCurrentToken(uint cc);
-    uint tokenBuffer[MAX_TOKEN_LENGTH]; // FIXME: overflow?
     int tokenBufferPos;
+    uint tokenBuffer[MAX_TOKEN_LENGTH]; // FIXME: overflow?
 #define MAXARGS 15
     void addDigit(int dig);
     void addArgument();
     int argv[MAXARGS];
     int argc;
     void initTokenizer();
+    // State machine for escape sequences containing large amount of data
+    int tokenState;
+    const char *tokenStateChange;
+    int tokenPos;
+    QByteArray tokenData;
 
     // Set of flags for each of the ASCII characters which indicates
     // what category they fall into (printable character, control, digit etc.)
     // for the purposes of decoding terminal output
     int charClass[256];
 
+    QByteArray imageData;
+    quint32 imageId;
+    QMap<char, qint64> savedKeys;
+
     void reportDecodingError();
 
     void processToken(int code, int p, int q);
     void processSessionAttributeRequest(int tokenSize);
+    void processChecksumRequest(int argc, int argv[]);
+    void processGraphicsToken(int tokenSize);
 
+    void sendGraphicsReply(const QString &params, const QString &error);
     void reportTerminalType();
+    void reportTertiaryAttributes();
     void reportSecondaryAttributes();
+    void reportVersion();
     void reportStatus();
     void reportAnswerBack();
     void reportCursorPosition();
+    void reportPixelSize();
+    void reportCellSize();
+    void reportSize();
+    void reportColor(int c, QColor color);
     void reportTerminalParms(int p);
 
     // clears the screen and resizes it to the specified
@@ -175,6 +195,36 @@ private:
     QTimer *_sessionAttributesUpdateTimer;
 
     bool _reportFocusEvents;
+
+    QColor colorTable[256];
+
+    // Sixel:
+#define MAX_SIXEL_COLORS 256
+#define MAX_IMAGE_DIM 16384
+    void sixelQuery(int query);
+    bool processSixel(uint cc);
+    void SixelModeEnable(int width, int height /*, bool preserveBackground*/);
+    void SixelModeAbort();
+    void SixelModeDisable();
+    void SixelColorChangeRGB(const int index, int red, int green, int blue);
+    void SixelColorChangeHSL(const int index, int hue, int saturation, int value);
+    void SixelCharacterAdd(uint8_t character, int repeat = 1);
+    bool m_SixelStarted = false;
+    QImage m_currentImage;
+    int m_currentX = 0;
+    int m_verticalPosition = 0;
+    uint8_t m_currentColor = 0;
+    bool m_preserveBackground = true;
+    int m_previousWidth = 128;
+    int m_previousHeight = 32;
+    QPair<int, int> m_aspect = qMakePair(1, 1);
+    bool m_SixelScrolling = true;
+    QSize m_actualSize; // For efficiency reasons, we keep the image in memory larger than what the end result is
+
+    // Kitty
+    std::map<int, QImage *> _graphicsImages;
+    // For kitty graphics protocol - image cache
+    int getFreeGraphicsImageId();
 };
 
 }

@@ -175,8 +175,10 @@ public:
      */
     virtual void clearEntireScreen() = 0;
 
-    /** Resets the state of the terminal. */
-    virtual void reset() = 0;
+    /** Resets the state of the terminal.
+     *
+     * @param softReset The reset was initiated by DECSTR */
+    virtual void reset(bool softReset = false) = 0;
 
     /**
      * Returns true if the active terminal program is interested in Mouse
@@ -380,7 +382,7 @@ Q_SIGNALS:
     /**
      * Emitted when the text selection is changed
      */
-    void selectionChanged(const QString &text);
+    void selectionChanged(const bool selectionEmpty);
 
     /**
      * Emitted when terminal code requiring terminal's response received.
@@ -408,7 +410,7 @@ protected:
      * Processes an incoming character.  See receiveData()
      * @p c A unicode character code.
      */
-    virtual void receiveChar(uint c);
+    virtual void receiveChars(const QVector<uint> &c);
 
     /**
      * Sets the active screen.  The terminal has two screens, primary and alternate.

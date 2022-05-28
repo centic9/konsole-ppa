@@ -13,6 +13,7 @@
 
 // Qt
 #include <QPainter>
+#include <QMetaEnum>
 
 // KDE
 #include <KConfig>
@@ -25,6 +26,15 @@
 // Konsole
 #include "colorschemedebug.h"
 
+//define DEBUG_LOADING_TIME
+#ifdef DEBUG_LOADING_TIME
+#include <QElapsedTimer>
+#endif
+
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+#undef I18N_NOOP2
+#define I18N_NOOP2 kli18nc
+#endif
 namespace
 {
 const int FGCOLOR_INDEX = 0;
@@ -113,7 +123,12 @@ const char *const ColorScheme::colorNames[TABLE_COLORS] = {
     "Color6Faint",
     "Color7Faint",
 };
+
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+const KLazyLocalizedString ColorScheme::translatedColorNames[TABLE_COLORS] = {
+#else
 const char *const ColorScheme::translatedColorNames[TABLE_COLORS] = {
+#endif
     I18N_NOOP2("@item:intable palette", "Foreground"),
     I18N_NOOP2("@item:intable palette", "Background"),
     I18N_NOOP2("@item:intable palette", "Color 1"),
@@ -156,8 +171,11 @@ QString ColorScheme::colorNameForIndex(int index)
 QString ColorScheme::translatedColorNameForIndex(int index)
 {
     Q_ASSERT(index >= 0 && index < TABLE_COLORS);
-
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+    return translatedColorNames[index].toString();
+#else
     return i18nc("@item:intable palette", translatedColorNames[index]);
+#endif
 }
 
 ColorScheme::ColorScheme()
@@ -170,7 +188,7 @@ ColorScheme::ColorScheme()
     , _colorRandomization(false)
     , _wallpaper(nullptr)
 {
-    setWallpaper(QString());
+    setWallpaper(QString(), ColorSchemeWallpaper::Tile, QPointF(0.5, 0.5), 1.0);
 }
 
 ColorScheme::ColorScheme(const ColorScheme &other)
@@ -436,6 +454,10 @@ bool ColorScheme::blur() const
 
 void ColorScheme::read(const KConfig &config)
 {
+#ifdef DEBUG_LOADING_TIME
+    QElapsedTimer t; t.start();
+#endif
+
     KConfigGroup configGroup = config.group("General");
 
     const QString schemeDescription = configGroup.readEntry("Description", i18nc("@item", "Un-named Color Scheme"));
@@ -443,12 +465,19 @@ void ColorScheme::read(const KConfig &config)
     _description = i18n(schemeDescription.toUtf8().constData());
     setOpacity(configGroup.readEntry("Opacity", 1.0));
     _blur = configGroup.readEntry("Blur", false);
-    setWallpaper(configGroup.readEntry("Wallpaper", QString()));
+    setWallpaper(configGroup.readEntry("Wallpaper", QString()),
+                 configGroup.readEntry("FillStyle", QString::fromLatin1("Tile")),
+                 configGroup.readEntry("Anchor", QPointF(0.5, 0.5)),
+                 configGroup.readEntry("WallpaperOpacity", 1.0));
     _colorRandomization = configGroup.readEntry(EnableColorRandomizationKey, false);
 
     for (int i = 0; i < TABLE_COLORS; i++) {
         readColorEntry(config, i);
     }
+
+#ifdef DEBUG_LOADING_TIME
+    qDebug() << name() << "loaded in" << t.elapsed() << "ms";
+#endif
 }
 
 void ColorScheme::readColorEntry(const KConfig &config, int index)
@@ -500,6 +529,11 @@ void ColorScheme::write(KConfig &config) const
     configGroup.writeEntry("Opacity", _opacity);
     configGroup.writeEntry("Blur", _blur);
     configGroup.writeEntry("Wallpaper", _wallpaper->path());
+    configGroup.writeEntry("FillStyle", 
+                            QMetaEnum::fromType<ColorSchemeWallpaper::FillStyle>()
+                            .valueToKey(_wallpaper->style()));
+    configGroup.writeEntry("Anchor", _wallpaper->anchor());
+    configGroup.writeEntry("WallpaperOpacity", _wallpaper->opacity());
     configGroup.writeEntry(EnableColorRandomizationKey, _colorRandomization);
 
     for (int i = 0; i < TABLE_COLORS; i++) {
@@ -547,9 +581,21 @@ void ColorScheme::writeColorEntry(KConfig &config, int index) const
     checkAndMaybeSaveValue(RandomLightnessRangeKey, random.lightness);
 }
 
-void ColorScheme::setWallpaper(const QString &path)
+void ColorScheme::setWallpaper(const QString &path, const ColorSchemeWallpaper::FillStyle style, const QPointF &anchor, const qreal &opacity)
 {
-    _wallpaper = new ColorSchemeWallpaper(path);
+    _wallpaper = new ColorSchemeWallpaper(path, style, anchor, opacity);
+}
+
+void ColorScheme::setWallpaper(const QString &path, const QString &style, const QPointF &anchor, const qreal &opacity)
+{
+    ColorSchemeWallpaper::FillStyle fstyle;
+    fstyle = static_cast<ColorSchemeWallpaper::FillStyle>
+                (std::max(      //keyToValue returns -1 if key was not found, but we should default to 0
+                    QMetaEnum::fromType<ColorSchemeWallpaper::FillStyle>()
+                    .keyToValue(style.toStdString().c_str())
+                    , 0));
+
+    setWallpaper(path, fstyle, anchor, opacity);
 }
 
 ColorSchemeWallpaper::Ptr ColorScheme::wallpaper() const

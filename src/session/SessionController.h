@@ -50,6 +50,7 @@ class SessionGroup;
 class TerminalDisplay;
 class UrlFilter;
 class ColorFilter;
+class HotSpot;
 
 /**
  * Provides the menu actions to manipulate a single terminal session and view pair.
@@ -173,6 +174,11 @@ Q_SIGNALS:
      */
     void requestPrint();
 
+    /**
+     * Emitted when the TerminalDisplay is drag-and-dropped to a new window.
+     */
+    void viewDragAndDropped();
+
 public Q_SLOTS:
     /**
      * Issues a command to the session to navigate to the specified URL.
@@ -193,7 +199,7 @@ public Q_SLOTS:
     /**
      * update actions which are closely related with the selected text.
      */
-    void selectionChanged(const QString &selectedText);
+    void selectionChanged(const bool selectionEmpty);
 
     /**
      * close the associated session. This might involve user interaction for
@@ -252,6 +258,7 @@ private Q_SLOTS:
     void sendForegroundColor(uint terminator);
     void sendBackgroundColor(uint terminator);
     void toggleReadOnly();
+    void toggleAllowMouseTracking();
 
     // other
     void setupSearchBar();
@@ -287,7 +294,7 @@ private Q_SLOTS:
     void zmodemUpload();
 
     // update actions related with selected text
-    void updateCopyAction(const QString &selectedText);
+    void updateCopyAction(const bool selectionEmpty);
     void updateWebSearchMenu();
 
 private:
@@ -343,6 +350,8 @@ private:
     bool _listenForScreenWindowUpdates;
     bool _preventClose;
 
+    bool _selectionEmpty;
+    bool _selectionChanged;
     QString _selectedText;
 
     QAction *_showMenuAction;
@@ -362,6 +371,8 @@ private:
     EscapeSequenceUrlFilter *_escapedUrlFilter;
 
     std::unique_ptr<KXMLGUIBuilder> _clientBuilder;
+
+    QSharedPointer<HotSpot> _currentHotSpot;
 };
 
 }
