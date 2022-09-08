@@ -8,6 +8,7 @@
 #define MAINWINDOW_H
 
 // Qt
+#include <QAction>
 #include <QExplicitlySharedDataPointer>
 #include <QPointer>
 #include <QUrl>
@@ -167,6 +168,9 @@ private Q_SLOTS:
     void setProfileList(ProfileList *list);
 
     void applyKonsoleSettings();
+
+    // Ask the window manager to show this application window
+    void activationRequest(const QString &xdgActivationToken);
 
     void updateUseTransparency();
 

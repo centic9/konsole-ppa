@@ -14,6 +14,7 @@
 #include <QFileDialog>
 #include <QIcon>
 #include <QInputDialog>
+#include <QMenu>
 #include <QPainter>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
@@ -32,6 +33,8 @@
 #include <KNSCore/Engine>
 #include <KWindowSystem>
 #include <kconfigwidgets_version.h>
+
+#include <KNSWidgets/Button>
 
 // Konsole
 #include "ui_EditProfileAdvancedPage.h"
@@ -55,22 +58,7 @@ using namespace Konsole;
 
 EditProfileDialog::EditProfileDialog(QWidget *parent)
     : KPageDialog(parent)
-    , _generalUi(nullptr)
-    , _tabsUi(nullptr)
-    , _appearanceUi(nullptr)
-    , _scrollingUi(nullptr)
-    , _keyboardUi(nullptr)
-    , _mouseUi(nullptr)
-    , _advancedUi(nullptr)
-    , _tempProfile(nullptr)
-    , _profile(nullptr)
-    , _isDefault(false)
-    , _previewedProperties(QHash<int, QVariant>())
-    , _delayedPreviewProperties(QHash<int, QVariant>())
     , _delayedPreviewTimer(new QTimer(this))
-    , _colorDialog(nullptr)
-    , _buttonBox(nullptr)
-    , _fontDialog(nullptr)
 {
     setWindowTitle(i18n("Edit Profile"));
     setFaceType(KPageDialog::List);
@@ -254,10 +242,10 @@ void EditProfileDialog::save()
 
     // Update the default profile if needed
     if (defaultChanged) {
-        Q_ASSERT(_profile != ProfileManager::instance()->fallbackProfile());
+        Q_ASSERT(_profile != ProfileManager::instance()->builtinProfile());
 
         bool defaultChecked = _generalUi->setAsDefaultButton->isChecked();
-        Profile::Ptr newDefault = defaultChecked ? _profile : ProfileManager::instance()->fallbackProfile();
+        Profile::Ptr newDefault = defaultChecked ? _profile : ProfileManager::instance()->builtinProfile();
         ProfileManager::instance()->setDefaultProfile(newDefault);
         _isDefault = defaultChecked;
     }
@@ -486,6 +474,8 @@ void EditProfileDialog::setupGeneralPage(const Profile::Ptr &profile)
     } else {
         _generalUi->setAsDefaultButton->setText(i18n("Default profile"));
     }
+    _generalUi->semanticUpDown->setChecked(profile->semanticUpDown());
+    _generalUi->semanticInputClick->setChecked(profile->semanticInputClick());
 
     // signals and slots
     connect(_generalUi->dirSelectButton, &QToolButton::clicked, this, &Konsole::EditProfileDialog::selectInitialDir);
@@ -495,6 +485,8 @@ void EditProfileDialog::setupGeneralPage(const Profile::Ptr &profile)
     connect(_generalUi->initialDirEdit, &QLineEdit::textChanged, this, &Konsole::EditProfileDialog::initialDirChanged);
     connect(_generalUi->commandEdit, &QLineEdit::textChanged, this, &Konsole::EditProfileDialog::commandChanged);
     connect(_generalUi->environmentEditButton, &QPushButton::clicked, this, &Konsole::EditProfileDialog::showEnvironmentEditor);
+    connect(_generalUi->semanticUpDown, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::semanticUpDown);
+    connect(_generalUi->semanticInputClick, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::semanticInputClick);
 
     connect(_generalUi->terminalColumnsEntry, QOverload<int>::of(&QSpinBox::valueChanged), this, &Konsole::EditProfileDialog::terminalColumnsEntryChanged);
     connect(_generalUi->terminalRowsEntry, QOverload<int>::of(&QSpinBox::valueChanged), this, &Konsole::EditProfileDialog::terminalRowsEntryChanged);
@@ -504,6 +496,18 @@ void EditProfileDialog::setupGeneralPage(const Profile::Ptr &profile)
     });
 
     connect(_generalUi->setAsDefaultButton, &QAbstractButton::toggled, this, &Konsole::EditProfileDialog::updateButtonApply);
+    const ButtonGroupOptions semanticHints = {
+        _generalUi->semanticHints, // group
+        Profile::SemanticHints, // profileProperty
+        false, // preview
+        {
+            // buttons
+            {_generalUi->semanticHintsNever, Enum::SemanticHintsNever},
+            {_generalUi->semanticHintsURL, Enum::SemanticHintsURL},
+            {_generalUi->semanticHintsAlways, Enum::SemanticHintsAlways},
+        },
+    };
+    setupButtonGroup(semanticHints, profile);
 }
 
 void EditProfileDialog::showEnvironmentEditor()
@@ -629,6 +633,16 @@ void EditProfileDialog::startInSameDir(bool sameDir)
     updateTempProfileProperty(Profile::StartInCurrentSessionDir, sameDir);
 }
 
+void EditProfileDialog::semanticUpDown(bool enable)
+{
+    updateTempProfileProperty(Profile::SemanticUpDown, enable);
+}
+
+void EditProfileDialog::semanticInputClick(bool enable)
+{
+    updateTempProfileProperty(Profile::SemanticInputClick, enable);
+}
+
 void EditProfileDialog::initialDirChanged(const QString &dir)
 {
     updateTempProfileProperty(Profile::Directory, dir);
@@ -676,8 +690,6 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
     _appearanceUi->removeColorSchemeButton->setEnabled(false);
     _appearanceUi->resetColorSchemeButton->setEnabled(false);
 
-    _appearanceUi->downloadColorSchemeButton->setConfigFile(QStringLiteral("konsole.knsrc"));
-
     // setup color list
     // select the colorScheme used in the current profile
     updateColorSchemeList(currentColorSchemeName());
@@ -694,7 +706,6 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
     connect(_appearanceUi->editColorSchemeButton, &QPushButton::clicked, this, &Konsole::EditProfileDialog::editColorScheme);
     connect(_appearanceUi->removeColorSchemeButton, &QPushButton::clicked, this, &Konsole::EditProfileDialog::removeColorScheme);
     connect(_appearanceUi->newColorSchemeButton, &QPushButton::clicked, this, &Konsole::EditProfileDialog::newColorScheme);
-    connect(_appearanceUi->downloadColorSchemeButton, &KNS3::Button::dialogFinished, this, &Konsole::EditProfileDialog::gotNewColorSchemes);
 
     connect(_appearanceUi->resetColorSchemeButton, &QPushButton::clicked, this, &Konsole::EditProfileDialog::resetColorScheme);
 
@@ -720,9 +731,7 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
     connect(_appearanceUi->useFontLineCharactersButton, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::useFontLineCharacters);
 
     _mouseUi->enableMouseWheelZoomButton->setChecked(profile->mouseWheelZoomEnabled());
-    connect(_mouseUi->enableMouseWheelZoomButton, &QCheckBox::toggled, this,
-            &Konsole::EditProfileDialog::toggleMouseWheelZoom);
-
+    connect(_mouseUi->enableMouseWheelZoomButton, &QCheckBox::toggled, this, &Konsole::EditProfileDialog::toggleMouseWheelZoom);
 
     // cursor options
     _appearanceUi->enableBlinkingCursorButton->setChecked(profile->property<bool>(Profile::BlinkingCursorEnabled));
@@ -785,6 +794,17 @@ void EditProfileDialog::setupAppearancePage(const Profile::Ptr &profile)
 
     _appearanceUi->displayVerticalLineAtColumn->setValue(profile->verticalLineAtChar());
     connect(_appearanceUi->displayVerticalLineAtColumn, QOverload<int>::of(&QSpinBox::valueChanged), this, &EditProfileDialog::setVerticalLineColumn);
+
+#if KNEWSTUFF_VERSION >= QT_VERSION_CHECK(5, 91, 0)
+    auto *getNewButton = new KNSWidgets::Button(this);
+    connect(getNewButton, &KNSWidgets::Button::dialogFinished, this, &Konsole::EditProfileDialog::gotNewColorSchemes);
+#else
+    auto *getNewButton = new KNS3::Button(this);
+    connect(getNewButton, &KNS3::Button::dialogFinished, this, &Konsole::EditProfileDialog::gotNewColorSchemes);
+#endif
+    getNewButton->setText(QStringLiteral("Get New..."));
+    getNewButton->setConfigFile(QStringLiteral("konsole.knsrc"));
+    _appearanceUi->colorSchemesBtnLayout->addWidget(getNewButton);
 }
 
 void EditProfileDialog::setAntialiasText(bool enable)
@@ -1061,7 +1081,7 @@ void EditProfileDialog::delayedPreview(int property, const QVariant &value)
 
 void EditProfileDialog::delayedPreviewActivate()
 {
-    Q_ASSERT(qobject_cast<QTimer *>(sender()));
+    Q_ASSERT(_delayedPreviewTimer);
 
     QMutableHashIterator<int, QVariant> iter(_delayedPreviewProperties);
     if (iter.hasNext()) {
@@ -1149,7 +1169,11 @@ void EditProfileDialog::removeColorScheme()
     }
 }
 
+#if KNEWSTUFF_VERSION >= QT_VERSION_CHECK(5, 91, 0)
+void EditProfileDialog::gotNewColorSchemes(const QList<KNSCore::EntryInternal> &changedEntries)
+#else
 void EditProfileDialog::gotNewColorSchemes(const KNS3::Entry::List &changedEntries)
+#endif
 {
     int failures = 0;
     for (auto &entry : qAsConst(changedEntries)) {
@@ -1839,7 +1863,11 @@ int EditProfileDialog::maxSpinBoxWidth(const KPluralHandlingSpinBox *spinBox, co
     opt.frame = spinBox->hasFrame();
 
     const QSize hint(width, spinBox->sizeHint().height());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    const QSize spinBoxSize = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, spinBox);
+#else
     const QSize spinBoxSize = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, spinBox).expandedTo(QApplication::globalStrut());
+#endif
 
     return spinBoxSize.width();
 }

@@ -10,7 +10,9 @@
 
 // KDE
 #include <KNS3/Entry>
+#include <KNSCore/EntryInternal>
 #include <KPageDialog>
+#include <knewstuff_version.h>
 
 // Konsole
 #include "colorscheme/ColorScheme.h"
@@ -28,6 +30,8 @@
 class KPluralHandlingSpinBox;
 class KLocalizedString;
 class QItemSelectionModel;
+class QTextCodec;
+
 namespace Ui
 {
 class EditProfileGeneralPage;
@@ -116,6 +120,8 @@ private Q_SLOTS:
     void initialDirChanged(const QString &dir);
     void startInSameDir(bool);
     void commandChanged(const QString &command);
+    void semanticUpDown(bool);
+    void semanticInputClick(bool enable);
 
     // tab page
     void tabTitleFormatChanged(const QString &format);
@@ -138,7 +144,6 @@ private Q_SLOTS:
     void editColorScheme();
     void saveColorScheme(const ColorScheme &scheme, bool isNewScheme);
     void removeColorScheme();
-    void gotNewColorSchemes(const KNS3::Entry::List &changedEntries);
     void setVerticalLine(bool);
     void setVerticalLineColumn(int);
     void toggleBlinkingCursor(bool);
@@ -150,6 +155,12 @@ private Q_SLOTS:
     void terminalMarginChanged(int margin);
     void lineSpacingChanged(int);
     void setTerminalCenter(bool enable);
+
+#if KNEWSTUFF_VERSION >= QT_VERSION_CHECK(5, 91, 0)
+    void gotNewColorSchemes(const QList<KNSCore::EntryInternal> &changedEntries);
+#else
+    void gotNewColorSchemes(const KNS3::Entry::List &changedEntries);
+#endif
 
     /**
      * Deletes the selected colorscheme from the user's home dir location
@@ -312,13 +323,13 @@ private:
     // otherwise returns true.
     bool isProfileNameValid();
 
-    Ui::EditProfileGeneralPage *_generalUi;
-    Ui::EditProfileTabsPage *_tabsUi;
-    Ui::EditProfileAppearancePage *_appearanceUi;
-    Ui::EditProfileScrollingPage *_scrollingUi;
-    Ui::EditProfileKeyboardPage *_keyboardUi;
-    Ui::EditProfileMousePage *_mouseUi;
-    Ui::EditProfileAdvancedPage *_advancedUi;
+    Ui::EditProfileGeneralPage *_generalUi = nullptr;
+    Ui::EditProfileTabsPage *_tabsUi = nullptr;
+    Ui::EditProfileAppearancePage *_appearanceUi = nullptr;
+    Ui::EditProfileScrollingPage *_scrollingUi = nullptr;
+    Ui::EditProfileKeyboardPage *_keyboardUi = nullptr;
+    Ui::EditProfileMousePage *_mouseUi = nullptr;
+    Ui::EditProfileAdvancedPage *_advancedUi = nullptr;
 
     using PageSetupMethod = void (EditProfileDialog::*)(const Profile::Ptr &);
     struct Page {
@@ -338,16 +349,16 @@ private:
     Profile::Ptr _tempProfile;
     Profile::Ptr _profile;
 
-    bool _isDefault;
+    bool _isDefault = false;
 
     QHash<int, QVariant> _previewedProperties;
 
     QHash<int, QVariant> _delayedPreviewProperties;
-    QTimer *_delayedPreviewTimer;
+    QTimer *_delayedPreviewTimer = nullptr;
 
-    ColorSchemeEditor *_colorDialog;
-    QDialogButtonBox *_buttonBox;
-    FontDialog *_fontDialog;
+    ColorSchemeEditor *_colorDialog = nullptr;
+    QDialogButtonBox *_buttonBox = nullptr;
+    FontDialog *_fontDialog = nullptr;
 
     InitialProfileState _profileState = ExistingProfile;
 };

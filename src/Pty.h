@@ -10,14 +10,13 @@
 
 // Qt
 #include <QSize>
+#include <QtContainerFwd>
 
 // KDE
 #include <KPtyProcess>
 
 // Konsole
 #include "konsoleprivate_export.h"
-
-class QStringList;
 
 namespace Konsole
 {
@@ -86,14 +85,16 @@ public:
     bool flowControlEnabled() const;
 
     /**
-     * Sets the size of the window (in columns and lines of characters)
-     * used by this teletype.
+     * Sets the size of the window (in columns and lines of characters,
+     * and width and height in pixels) used by this teletype.
      */
-    void setWindowSize(int columns, int lines);
-    void setPixelSize(int width, int height);
+    void setWindowSize(int columns, int lines, int width, int height);
 
-    /** Returns the size of the window used by this teletype.  See setWindowSize() */
+    /** Returns the size of the window used by this teletype in characters.  See setWindowSize() */
     QSize windowSize() const;
+
+    /** Returns the size of the window used by this teletype in pixels.  See setWindowSize() */
+    QSize pixelSize() const;
 
     /**
      * Sets the special character for erasing previous not-yet-erased character.
@@ -149,7 +150,11 @@ Q_SIGNALS:
     void receivedData(const char *buffer, int length);
 
 protected:
+    // TODO: remove this; the method is removed from QProcess in Qt6
+    // instead use setChildProcessModifier() in the constructor
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void setupChildProcess() override;
+#endif
 
 private Q_SLOTS:
     // called when data is received from the terminal process

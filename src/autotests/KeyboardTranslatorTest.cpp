@@ -91,7 +91,7 @@ void KeyboardTranslatorTest::testEntryTextWildcards()
 // Use FallbackKeyboardTranslator to test basic functionality
 void KeyboardTranslatorTest::testFallback()
 {
-    auto fallback = new FallbackKeyboardTranslator();
+    auto fallback = std::unique_ptr<FallbackKeyboardTranslator>(new FallbackKeyboardTranslator());
 
     QCOMPARE(QStringLiteral("fallback"), fallback->name());
     QCOMPARE(QStringLiteral("Fallback Keyboard Translator"), fallback->description());
@@ -111,8 +111,6 @@ void KeyboardTranslatorTest::testFallback()
     QCOMPARE(QStringLiteral("\\t"), entry.resultToString());
     QVERIFY(entry.matches(Qt::Key_Tab, Qt::NoModifier, KeyboardTranslator::NoState));
     QVERIFY(entry == fallback->findEntry(Qt::Key_Tab, Qt::NoModifier));
-
-    delete fallback;
 }
 
 void KeyboardTranslatorTest::testHexKeys()
@@ -121,7 +119,7 @@ void KeyboardTranslatorTest::testHexKeys()
     QVERIFY(linuxkeytab.exists());
     QVERIFY(linuxkeytab.open(QIODevice::ReadOnly));
 
-    KeyboardTranslator *translator = new KeyboardTranslator(QStringLiteral("testtranslator"));
+    auto translator = std::unique_ptr<KeyboardTranslator>(new KeyboardTranslator(QStringLiteral("testtranslator")));
 
     KeyboardTranslatorReader reader(&linuxkeytab);
     while (reader.hasNextEntry()) {
@@ -131,7 +129,6 @@ void KeyboardTranslatorTest::testHexKeys()
 
     // A worthless check ATM
     if (reader.parseError()) {
-        delete translator;
         QFAIL("Parse failure");
     }
 
@@ -183,8 +180,6 @@ void KeyboardTranslatorTest::testHexKeys()
     QVERIFY(entry == translator->findEntry(Qt::Key_Space, Qt::NoModifier));
     QVERIFY(!entry.matches(Qt::Key_Backspace, Qt::NoModifier, KeyboardTranslator::NoState));
     QVERIFY(!(entry == translator->findEntry(Qt::Key_Backspace, Qt::NoModifier)));
-
-    delete translator;
 }
 
 QTEST_GUILESS_MAIN(KeyboardTranslatorTest)

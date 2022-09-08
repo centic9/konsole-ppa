@@ -11,9 +11,7 @@
 
 // System
 #include <csignal>
-#if !defined(Q_OS_WIN)
 #include <sys/ioctl.h> //ioctl() and TIOCSWINSZ
-#endif
 #include <termios.h>
 
 // Qt
@@ -22,25 +20,44 @@
 
 // KDE
 #include <KPtyDevice>
+#include <kpty_version.h>
 
 using Konsole::Pty;
+
+Pty::Pty(QObject *aParent)
+    : Pty(-1, aParent)
+{
+}
 
 Pty::Pty(int masterFd, QObject *aParent)
     : KPtyProcess(masterFd, aParent)
 {
-    init();
-}
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    // Must call parent class child process modifier, as it sets file descriptors ...etc
+    auto parentChildProcModifier = KPtyProcess::childProcessModifier();
+    setChildProcessModifier([parentChildProcModifier = std::move(parentChildProcModifier)]() {
+        if (parentChildProcModifier) {
+            parentChildProcModifier();
+        }
 
-Pty::Pty(QObject *aParent)
-    : KPtyProcess(aParent)
-{
-    init();
-}
+        // reset all signal handlers
+        // this ensures that terminal applications respond to
+        // signals generated via key sequences such as Ctrl+C
+        // (which sends SIGINT)
+        struct sigaction action;
+        sigemptyset(&action.sa_mask);
+        action.sa_handler = SIG_DFL;
+        action.sa_flags = 0;
+        for (int signal = 1; signal < NSIG; signal++) {
+            sigaction(signal, &action, nullptr);
+        }
+    });
+#endif
 
-void Pty::init()
-{
     _windowColumns = 0;
     _windowLines = 0;
+    _windowWidth = 0;
+    _windowHeight = 0;
     _eraseChar = 0;
     _xonXoff = true;
     _utf8 = true;
@@ -49,7 +66,7 @@ void Pty::init()
     setFlowControlEnabled(_xonXoff);
     setUtf8Mode(_utf8);
 
-    setWindowSize(_windowColumns, _windowLines);
+    setWindowSize(_windowColumns, _windowLines, _windowWidth, _windowHeight);
 
     setUseUtmp(true);
     setPtyChannels(KPtyProcess::AllChannels);
@@ -81,14 +98,17 @@ void Pty::dataReceived()
     Q_EMIT receivedData(data.constData(), data.count());
 }
 
-void Pty::setWindowSize(int columns, int lines)
+void Pty::setWindowSize(int columns, int lines, int width, int height)
 {
     _windowColumns = columns;
     _windowLines = lines;
+    _windowWidth = width;
+    _windowHeight = height;
 
     if (pty()->masterFd() >= 0) {
-        pty()->setWinSize(lines, columns);
-#if !defined(Q_OS_WIN)
+#if KPTY_VERSION >= QT_VERSION_CHECK(5, 93, 0)
+        pty()->setWinSize(_windowLines, _windowColumns, _windowHeight, _windowWidth);
+#else
         struct winsize w;
         w.ws_xpixel = _windowWidth;
         w.ws_ypixel = _windowHeight;
@@ -99,15 +119,14 @@ void Pty::setWindowSize(int columns, int lines)
     }
 }
 
-void Pty::setPixelSize(int width, int height)
-{
-    _windowWidth = width;
-    _windowHeight = height;
-}
-
 QSize Pty::windowSize() const
 {
     return {_windowColumns, _windowLines};
+}
+
+QSize Pty::pixelSize() const
+{
+    return {_windowWidth, _windowHeight};
 }
 
 void Pty::setFlowControlEnabled(bool enable)
@@ -239,11 +258,7 @@ int Pty::start(const QString &programName, const QStringList &programArguments, 
 {
     clearProgram();
 
-    // For historical reasons, the first argument in programArguments is the
-    // name of the program to execute, so create a list consisting of all
-    // but the first argument to pass to setProgram()
-    Q_ASSERT(programArguments.count() >= 1);
-    setProgram(programName, programArguments.mid(1));
+    setProgram(programName, programArguments);
 
     addEnvironmentVariables(environmentList);
 
@@ -307,6 +322,7 @@ int Pty::foregroundProcessGroup() const
     return 0;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void Pty::setupChildProcess()
 {
     KPtyProcess::setupChildProcess();
@@ -323,3 +339,4 @@ void Pty::setupChildProcess()
         sigaction(signal, &action, nullptr);
     }
 }
+#endif

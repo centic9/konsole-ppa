@@ -17,7 +17,11 @@
 
 // KDE
 #include <KPluginFactory>
+#include <kcoreaddons_version.h>
+#if KCOREADDONS_VERSION < QT_VERSION_CHECK(5, 86, 0)
 #include <KPluginLoader>
+#endif
+
 #include <qtest.h>
 
 using namespace Konsole;
@@ -133,7 +137,7 @@ void TerminalInterfaceTest::testTerminalInterface()
     // #1A - Test signal currentDirectoryChanged(QString)
     currentDirectory = QStringLiteral("/tmp");
     terminal->sendInput(QStringLiteral("cd ") + currentDirectory + QLatin1Char('\n'));
-    stateSpy.wait(2000);
+    stateSpy.wait(5000);
     QCOMPARE(stateSpy.count(), 1);
 
     // Correct result?
@@ -151,7 +155,7 @@ void TerminalInterfaceTest::testTerminalInterface()
     // #1B - Test signal currentDirectoryChanged(QString)
     // Invalid directory - no signal should be emitted
     terminal->sendInput(QStringLiteral("cd /usrADADFASDF\n"));
-    stateSpy.wait(2000);
+    stateSpy.wait(2500);
     QCOMPARE(stateSpy.count(), 0);
 
     // Should be no change since the above cd didn't work
@@ -161,7 +165,7 @@ void TerminalInterfaceTest::testTerminalInterface()
     // Test starting a new program
     QString command = QStringLiteral("top");
     terminal->sendInput(command + QLatin1Char('\n'));
-    stateSpy.wait(2000);
+    stateSpy.wait(2500);
     // FIXME: find a good way to validate process id of 'top'
     foregroundProcessId = terminal->foregroundProcessId();
     QVERIFY(foregroundProcessId != -1);
@@ -169,7 +173,7 @@ void TerminalInterfaceTest::testTerminalInterface()
     QCOMPARE(foregroundProcessName, command);
 
     terminal->sendInput(QStringLiteral("q"));
-    stateSpy.wait(2000);
+    stateSpy.wait(2500);
 
     // Nothing running in foreground
     foregroundProcessId = terminal->foregroundProcessId();
@@ -191,9 +195,9 @@ void TerminalInterfaceTest::testTerminalInterface()
 
 void TerminalInterfaceTest::testTerminalInterfaceV2()
 {
-#ifdef USE_TERMINALINTERFACEV2
+#if USE_TERMINALINTERFACEV2
     Profile::Ptr testProfile(new Profile);
-    testProfile->useFallback();
+    testProfile->useBuiltin();
     ProfileManager::instance()->addProfile(testProfile);
 
     _terminalPart = createPart();
@@ -220,6 +224,15 @@ void TerminalInterfaceTest::testTerminalInterfaceV2()
 
 KParts::Part *TerminalInterfaceTest::createPart()
 {
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(5, 86, 0)
+    const KPluginMetaData metaData(QStringLiteral("konsolepart"));
+    Q_ASSERT(metaData.isValid());
+
+    KPluginFactory::Result<KParts::Part> result = KPluginFactory::instantiatePlugin<KParts::Part>(metaData, this);
+    Q_ASSERT(result);
+
+    return result.plugin;
+#else
     auto konsolePartPlugin = KPluginLoader::findPlugin(QStringLiteral("konsolepart"));
     if (konsolePartPlugin.isNull()) {
         return nullptr;
@@ -233,6 +246,7 @@ KParts::Part *TerminalInterfaceTest::createPart()
     auto *terminalPart = factory->create<KParts::Part>(this);
 
     return terminalPart;
+#endif
 }
 
 QTEST_MAIN(TerminalInterfaceTest)

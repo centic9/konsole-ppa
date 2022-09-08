@@ -32,7 +32,6 @@
 #include "profile/ProfileManager.h"
 #include "session/Session.h"
 #include "session/SessionManager.h"
-#include "terminalDisplay/TerminalDisplay.h"
 #include "widgets/ViewContainer.h"
 
 #include "pluginsystem/IKonsolePlugin.h"
@@ -52,11 +51,13 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
     const auto options = QVector<QCommandLineOption>{
         {{QStringLiteral("profile")}, i18nc("@info:shell", "Name of profile to use for new Konsole instance"), QStringLiteral("name")},
         {{QStringLiteral("layout")}, i18nc("@info:shell", "json layoutfile to be loaded to use for new Konsole instance"), QStringLiteral("file")},
-        {{QStringLiteral("fallback-profile")}, i18nc("@info:shell", "Use the internal FALLBACK profile")},
+        {{QStringLiteral("builtin-profile")}, i18nc("@info:shell", "Use the built-in profile instead of the default profile")},
         {{QStringLiteral("workdir")}, i18nc("@info:shell", "Set the initial working directory of the new tab or window to 'dir'"), QStringLiteral("dir")},
         {{QStringLiteral("hold"), QStringLiteral("noclose")}, i18nc("@info:shell", "Do not close the initial session automatically when it ends.")},
         // BR: 373440
-        {{QStringLiteral("new-tab")}, i18nc("@info:shell", "Create a new tab in an existing window rather than creating a new window ('Run all Konsole windows in a single process' must be enabled)")},
+        {{QStringLiteral("new-tab")},
+         i18nc("@info:shell",
+               "Create a new tab in an existing window rather than creating a new window ('Run all Konsole windows in a single process' must be enabled)")},
         {{QStringLiteral("tabs-from-file")}, i18nc("@info:shell", "Create tabs as specified in given tabs configuration file"), QStringLiteral("file")},
         {{QStringLiteral("background-mode")},
          i18nc("@info:shell", "Start Konsole in the background and bring to the front when Ctrl+Shift+F12 (by default) is pressed")},
@@ -73,7 +74,8 @@ void Application::populateCommandLineParser(QCommandLineParser *parser)
         {{QStringLiteral("e")},
          i18nc("@info:shell", "Command to execute. This option will catch all following arguments, so use it as the last option."),
          QStringLiteral("cmd")},
-        {{QStringLiteral("force-reuse")}, i18nc("@info:shell", "Force re-using the existing instance even if it breaks functionality, e. g. --new-tab. Mostly for debugging.")},
+        {{QStringLiteral("force-reuse")},
+         i18nc("@info:shell", "Force re-using the existing instance even if it breaks functionality, e. g. --new-tab. Mostly for debugging.")},
     };
 
     for (const auto &option : options) {
@@ -122,7 +124,13 @@ MainWindow *Application::newMainWindow()
     auto window = new MainWindow();
 
     connect(window, &Konsole::MainWindow::newWindowRequest, this, &Konsole::Application::createWindow);
-    connect(window, &Konsole::MainWindow::terminalsDetached, this, &Konsole::Application::detachTerminals);
+
+    connect(window,
+            &Konsole::MainWindow::terminalsDetached,
+            this,
+            [this, window](ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap) {
+                detachTerminals(window, splitter, sessionsMap);
+            });
 
     m_pluginManager.registerMainWindow(window);
 
@@ -136,9 +144,8 @@ void Application::createWindow(const Profile::Ptr &profile, const QString &direc
     window->show();
 }
 
-void Application::detachTerminals(ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap)
+void Application::detachTerminals(MainWindow *currentWindow, ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap)
 {
-    auto *currentWindow = qobject_cast<MainWindow *>(sender());
     MainWindow *window = newMainWindow();
     ViewManager *manager = window->viewManager();
 
@@ -403,25 +410,20 @@ MainWindow *Application::processWindowArgs(bool &createdNewMainWindow)
 
 // Loads a profile.
 // If --profile <name> is given, loads profile <name>.
-// If --fallback-profile is given, loads profile FALLBACK/.
+// If --builtin-profile is given, loads built-in profile.
 // Else loads the default profile.
 Profile::Ptr Application::processProfileSelectArgs()
 {
-    Profile::Ptr defaultProfile = ProfileManager::instance()->defaultProfile();
-
     if (m_parser->isSet(QStringLiteral("profile"))) {
         Profile::Ptr profile = ProfileManager::instance()->loadProfile(m_parser->value(QStringLiteral("profile")));
         if (profile) {
             return profile;
         }
-    } else if (m_parser->isSet(QStringLiteral("fallback-profile"))) {
-        Profile::Ptr profile = ProfileManager::instance()->loadProfile(QStringLiteral("FALLBACK/"));
-        if (profile) {
-            return profile;
-        }
+    } else if (m_parser->isSet(QStringLiteral("builtin-profile"))) {
+        // no need to check twice: built-in and default profiles are always available
+        return ProfileManager::instance()->builtinProfile();
     }
-
-    return defaultProfile;
+    return ProfileManager::instance()->defaultProfile();
 }
 
 bool Application::processHelpArgs()
@@ -448,11 +450,10 @@ void Application::listAvailableProfiles()
 
 void Application::listProfilePropertyInfo()
 {
-    Profile::Ptr tempProfile = ProfileManager::instance()->defaultProfile();
-    const QStringList names = tempProfile->propertiesInfoList();
+    const std::vector<std::string> &properties = Profile::propertiesInfoList();
 
-    for (const QString &name : names) {
-        printf("%s\n", name.toLocal8Bit().constData());
+    for (const auto &prop : properties) {
+        printf("%s\n", prop.c_str());
     }
 }
 
@@ -515,7 +516,7 @@ void Application::startBackgroundMode(MainWindow *window)
     QAction *action = collection->addAction(QStringLiteral("toggle-background-window"));
     action->setObjectName(QStringLiteral("Konsole Background Mode"));
     action->setText(i18nc("@item", "Toggle Background Window"));
-    KGlobalAccel::self()->setGlobalShortcut(action, QKeySequence(Konsole::ACCEL | Qt::SHIFT | Qt::Key_F12));
+    KGlobalAccel::self()->setGlobalShortcut(action, QKeySequence(Konsole::ACCEL | Qt::Key_F12));
     connect(action, &QAction::triggered, this, &Application::toggleBackgroundInstance);
 
     _backgroundInstance = window;

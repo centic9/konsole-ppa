@@ -30,13 +30,14 @@ public:
     LineProperty getLineProperty(const int lineNumber) const override;
 
     void addCells(const Character a[], const int count) override;
+    void addCellsMove(Character a[], const int count) override;
     void addLine(const LineProperty lineProperty = 0) override;
 
     void removeCells() override;
 
     void setMaxNbLines(const int lineCount);
 
-    int reflowLines(const int columns) override;
+    int reflowLines(const int columns, std::map<int, int> *deltas = nullptr) override;
 
 private:
     /**

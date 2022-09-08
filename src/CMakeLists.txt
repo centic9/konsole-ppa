@@ -21,7 +21,7 @@ configure_file(config-konsole.h.cmake
 
 ### Tests
 if(BUILD_TESTING)
-  find_package(Qt5Test ${QT_MIN_VERSION} CONFIG REQUIRED)
+  find_package(Qt${QT_MAJOR_VERSION}Test ${QT_MIN_VERSION} CONFIG REQUIRED)
   add_subdirectory(autotests)
   add_subdirectory(tests)
 endif()
@@ -40,9 +40,9 @@ option(KONSOLE_BUILD_UNI2CHARACTERWIDTH "Konsole: build uni2characterwidth execu
 # qdbuscpp2xml -M -s ViewManager.h -o org.kde.konsole.Konsole.xml
 
 # Generate dbus .xml files; do not store .xml in source folder
-qt5_generate_dbus_interface(ViewManager.h org.kde.konsole.Window.xml OPTIONS -m)
+qt_generate_dbus_interface(ViewManager.h org.kde.konsole.Window.xml OPTIONS -m)
 
-qt5_add_dbus_adaptor(windowadaptors_SRCS
+qt_add_dbus_adaptor(windowadaptors_SRCS
                     ${CMAKE_CURRENT_BINARY_DIR}/org.kde.konsole.Window.xml
                     ViewManager.h
                     Konsole::ViewManager)
@@ -50,8 +50,8 @@ qt5_add_dbus_adaptor(windowadaptors_SRCS
 
 set(konsole_LIBS
     KF5::XmlGui
-    Qt5::PrintSupport
-    Qt5::Xml
+    Qt::PrintSupport
+    Qt::Xml
     KF5::Notifications
     KF5::WindowSystem
     KF5::TextWidgets
@@ -89,6 +89,8 @@ ecm_qt_declare_logging_category(
 )
 
 add_library(konsoleprivate_core STATIC ${konsoleprivate_core_SRCS})
+# Needed to link this static lib to shared libs
+set_target_properties(konsoleprivate_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(konsoleprivate_core ${konsole_LIBS})
 
 set(konsolehelpers_SRCS
@@ -98,9 +100,10 @@ add_library(konsolehelpers
     STATIC
     ${konsolehelpers_SRCS}
 )
+set_target_properties(konsolehelpers PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(konsolehelpers
-    Qt5::Core
-    Qt5::Widgets
+    Qt::Core
+    Qt::Widgets
 )
 
 add_subdirectory(colorscheme)
@@ -225,7 +228,7 @@ ki18n_wrap_ui(konsoleprivate_SRCS
 )
 
 # add the resource files for the ui files
-qt5_add_resources( konsoleprivate_SRCS ../desktop/konsole.qrc)
+qt_add_resources( konsoleprivate_SRCS ../desktop/konsole.qrc)
 
 add_library(konsoleprivate ${konsoleprivate_SRCS})
 generate_export_header(konsoleprivate BASE_NAME konsoleprivate)
@@ -242,6 +245,7 @@ target_link_libraries(konsoleprivate
     konsoleprofile
     konsolecharacters
     konsoledecoders
+    KF5::NewStuffWidgets
     ${konsole_LIBS}
     ZLIB::ZLIB
 )

@@ -7,10 +7,11 @@
 */
 
 #include "TerminalBell.h"
+#include "TerminalDisplay.h"
 
 #include <QTimer>
-#include <QWidget>
 
+#include <KLocalizedString>
 #include <KNotification>
 
 #include <chrono>
@@ -26,19 +27,24 @@ TerminalBell::TerminalBell(Enum::BellModeEnum bellMode)
 {
 }
 
-void TerminalBell::bell(QWidget *terminalDisplay, const QString &message, bool terminalHasFocus)
+void TerminalBell::bell(TerminalDisplay *terminalDisplay, const QString &message, bool terminalHasFocus)
 {
     switch (_bellMode) {
     case Enum::SystemBeepBell:
         KNotification::beep();
         break;
-    case Enum::NotifyBell:
+    case Enum::NotifyBell: {
         // STABLE API:
         //     Please note that these event names, "BellVisible" and "BellInvisible",
         //     should not change and should be kept stable, because other applications
         //     that use this code via KPart rely on these names for notifications.
-        KNotification::event(terminalHasFocus ? QStringLiteral("BellVisible") : QStringLiteral("BellInvisible"), message, QPixmap(), terminalDisplay);
-        break;
+        KNotification *notification =
+            KNotification::event(terminalHasFocus ? QStringLiteral("BellVisible") : QStringLiteral("BellInvisible"), message, QPixmap(), terminalDisplay);
+        notification->setDefaultAction(i18n("Show session"));
+        connect(notification, &KNotification::defaultActivated, this, [notification, terminalDisplay]() {
+            terminalDisplay->notificationClicked(notification->xdgActivationToken());
+        });
+    } break;
     case Enum::VisualBell:
         Q_EMIT visualBell();
         break;

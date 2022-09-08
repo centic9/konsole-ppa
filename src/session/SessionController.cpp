@@ -216,7 +216,7 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
     // with the session
     _interactionTimer = new QTimer(session());
     _interactionTimer->setSingleShot(true);
-    _interactionTimer->setInterval(500);
+    _interactionTimer->setInterval(2000);
     connect(_interactionTimer, &QTimer::timeout, this, &Konsole::SessionController::snapshot);
     connect(view(), &Konsole::TerminalDisplay::compositeFocusChanged, this, [this](bool focused) {
         if (focused) {
@@ -224,13 +224,7 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
         }
     });
     connect(view(), &Konsole::TerminalDisplay::keyPressedSignal, this, &Konsole::SessionController::interactionHandler);
-
-    // take a snapshot of the session state periodically in the background
-    auto backgroundTimer = new QTimer(session());
-    backgroundTimer->setSingleShot(false);
-    backgroundTimer->setInterval(2000);
-    connect(backgroundTimer, &QTimer::timeout, this, &Konsole::SessionController::snapshot);
-    backgroundTimer->start();
+    connect(session()->emulation(), &Konsole::Emulation::outputChanged, this, &Konsole::SessionController::interactionHandler);
 
     // xterm '10;?' request
     connect(session(), &Konsole::Session::getForegroundColor, this, &Konsole::SessionController::sendForegroundColor);
@@ -319,7 +313,9 @@ void SessionController::viewFocusChangeHandler(bool focused)
 
 void SessionController::interactionHandler()
 {
-    _interactionTimer->start();
+    if (!_interactionTimer->isActive()) {
+        _interactionTimer->start();
+    }
 }
 
 void SessionController::snapshot()
@@ -355,11 +351,16 @@ void SessionController::snapshot()
     if (_monitorProcessFinish) {
         bool isForegroundProcessActive = session()->isForegroundProcessActive();
         if (!_previousForegroundProcessName.isNull() && !isForegroundProcessActive) {
-            KNotification::event(session()->hasFocus() ? QStringLiteral("ProcessFinished") : QStringLiteral("ProcessFinishedHidden"),
-                                 i18n("The process '%1' has finished running in session '%2'", _previousForegroundProcessName, session()->nameTitle()),
-                                 QPixmap(),
-                                 view(),
-                                 KNotification::CloseWhenWidgetActivated);
+            KNotification *notification =
+                KNotification::event(session()->hasFocus() ? QStringLiteral("ProcessFinished") : QStringLiteral("ProcessFinishedHidden"),
+                                     i18n("The process '%1' has finished running in session '%2'", _previousForegroundProcessName, session()->nameTitle()),
+                                     QPixmap(),
+                                     view(),
+                                     KNotification::CloseWhenWidgetActivated);
+            notification->setDefaultAction(i18n("Show session"));
+            connect(notification, &KNotification::defaultActivated, this, [this, notification]() {
+                view()->notificationClicked(notification->xdgActivationToken());
+            });
         }
         _previousForegroundProcessName = isForegroundProcessActive ? session()->foregroundProcessName() : QString();
     }
@@ -468,8 +469,16 @@ void SessionController::updateCopyAction(const bool selectionEmpty)
     QAction *copyAction = actionCollection()->action(QStringLiteral("edit_copy"));
     QAction *copyContextMenu = actionCollection()->action(QStringLiteral("edit_copy_contextmenu"));
     // copy action is meaningful only when some text is selected.
-    copyAction->setEnabled(!selectionEmpty);
-    copyContextMenu->setVisible(!selectionEmpty);
+    // Or when semantic integration is used.
+    bool hasRepl = view() && view()->screenWindow() && view()->screenWindow()->screen() && view()->screenWindow()->screen()->hasRepl();
+    copyAction->setEnabled(!selectionEmpty || hasRepl);
+    copyContextMenu->setVisible(!selectionEmpty || hasRepl);
+    QAction *Action = actionCollection()->action(QStringLiteral("edit_copy_contextmenu_in"));
+    Action->setVisible(!selectionEmpty && hasRepl);
+    Action = actionCollection()->action(QStringLiteral("edit_copy_contextmenu_out"));
+    Action->setVisible(!selectionEmpty && hasRepl);
+    Action = actionCollection()->action(QStringLiteral("edit_copy_contextmenu_in_out"));
+    Action->setVisible(!selectionEmpty && hasRepl);
 }
 
 void SessionController::updateWebSearchMenu()
@@ -513,7 +522,9 @@ void SessionController::updateWebSearchMenu()
                 action = new QAction(searchProvider, _webSearchMenu);
                 action->setIcon(QIcon::fromTheme(filterData.iconNameForPreferredSearchProvider(searchProvider)));
                 action->setData(filterData.queryForPreferredSearchProvider(searchProvider));
-                connect(action, &QAction::triggered, this, &Konsole::SessionController::handleWebShortcutAction);
+                connect(action, &QAction::triggered, this, [this, action]() {
+                    handleWebShortcutAction(action);
+                });
                 _webSearchMenu->addAction(action);
             }
 
@@ -529,9 +540,8 @@ void SessionController::updateWebSearchMenu()
     }
 }
 
-void SessionController::handleWebShortcutAction()
+void SessionController::handleWebShortcutAction(QAction *action)
 {
-    auto *action = qobject_cast<QAction *>(sender());
     if (action == nullptr) {
         return;
     }
@@ -571,19 +581,16 @@ void Konsole::SessionController::sendBackgroundColor(uint terminator)
     session()->reportBackgroundColor(c, terminator);
 }
 
-void SessionController::toggleReadOnly()
+void SessionController::toggleReadOnly(QAction *action)
 {
-    auto *action = qobject_cast<QAction *>(sender());
     if (action != nullptr) {
         bool readonly = !isReadOnly();
         session()->setReadOnly(readonly);
     }
 }
 
-void SessionController::toggleAllowMouseTracking()
+void SessionController::toggleAllowMouseTracking(QAction *action)
 {
-    QAction *action = qobject_cast<QAction*>(sender());
-
     if (action == nullptr) {
         // Crash if running in debug build (aka. someone developing)
         Q_ASSERT(false && "Invalid function called toggleAllowMouseTracking");
@@ -611,7 +618,10 @@ void SessionController::setupSearchBar()
     connect(_searchBar, &Konsole::IncrementalSearchBar::searchFromClicked, this, &Konsole::SessionController::searchFrom);
     connect(_searchBar, &Konsole::IncrementalSearchBar::findNextClicked, this, &Konsole::SessionController::findNextInHistory);
     connect(_searchBar, &Konsole::IncrementalSearchBar::findPreviousClicked, this, &Konsole::SessionController::findPreviousInHistory);
-    connect(_searchBar, &Konsole::IncrementalSearchBar::reverseSearchToggled, this, &Konsole::SessionController::updateMenuIconsAccordingToReverseSearchSetting);
+    connect(_searchBar,
+            &Konsole::IncrementalSearchBar::reverseSearchToggled,
+            this,
+            &Konsole::SessionController::updateMenuIconsAccordingToReverseSearchSetting);
     connect(_searchBar, &Konsole::IncrementalSearchBar::highlightMatchesToggled, this, &Konsole::SessionController::highlightMatches);
     connect(_searchBar, &Konsole::IncrementalSearchBar::matchCaseToggled, this, &Konsole::SessionController::changeSearchMatch);
     connect(_searchBar, &Konsole::IncrementalSearchBar::matchRegExpToggled, this, &Konsole::SessionController::changeSearchMatch);
@@ -633,7 +643,7 @@ void SessionController::setupCommonActions()
     action->setText(i18n("&Close Session"));
 
     action->setIcon(QIcon::fromTheme(QStringLiteral("tab-close")));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_W);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_W);
 
     // Open Browser
     action = collection->addAction(QStringLiteral("open-browser"), this, &SessionController::openBrowser);
@@ -642,13 +652,7 @@ void SessionController::setupCommonActions()
 
     // Copy and Paste
     action = KStandardAction::copy(this, &SessionController::copy, collection);
-#ifdef Q_OS_MACOS
-    // Don't use the Konsole::ACCEL const here, we really want the Command key (Qt::META)
-    // TODO: check what happens if we leave it to Qt to assign the default?
-    collection->setDefaultShortcut(action, Qt::META | Qt::Key_C);
-#else
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_C);
-#endif
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_C);
     // disabled at first, since nothing has been selected now
     action->setEnabled(false);
 
@@ -660,13 +664,29 @@ void SessionController::setupCommonActions()
     action->setVisible(false);
     connect(action, &QAction::triggered, this, &SessionController::copy);
 
+    action = collection->addAction(QStringLiteral("edit_copy_contextmenu_in_out"));
+    action->setText(i18n("Copy except prompts"));
+    action->setIcon(QIcon::fromTheme(QStringLiteral("edit-copy")));
+    action->setVisible(false);
+    connect(action, &QAction::triggered, this, &SessionController::copyInputOutput);
+
+    action = collection->addAction(QStringLiteral("edit_copy_contextmenu_in"));
+    action->setText(i18n("Copy user input"));
+    action->setIcon(QIcon::fromTheme(QStringLiteral("edit-copy")));
+    action->setVisible(false);
+    connect(action, &QAction::triggered, this, &SessionController::copyInput);
+
+    action = collection->addAction(QStringLiteral("edit_copy_contextmenu_out"));
+    action->setText(i18n("Copy command output"));
+    action->setIcon(QIcon::fromTheme(QStringLiteral("edit-copy")));
+    action->setVisible(false);
+    connect(action, &QAction::triggered, this, &SessionController::copyOutput);
+
     action = KStandardAction::paste(this, &SessionController::paste, collection);
     QList<QKeySequence> pasteShortcut;
-#ifdef Q_OS_MACOS
-    pasteShortcut.append(QKeySequence(Qt::META | Qt::Key_V));
+    pasteShortcut.append(QKeySequence(Konsole::ACCEL | Qt::Key_V));
+#ifndef Q_OS_MACOS
     // No Insert key on Mac keyboards
-#else
-    pasteShortcut.append(QKeySequence(Konsole::ACCEL | Qt::SHIFT | Qt::Key_V));
     pasteShortcut.append(QKeySequence(Qt::SHIFT | Qt::Key_Insert));
 #endif
     collection->setDefaultShortcuts(action, pasteShortcut);
@@ -674,9 +694,9 @@ void SessionController::setupCommonActions()
     action = collection->addAction(QStringLiteral("paste-selection"), this, &SessionController::pasteFromX11Selection);
     action->setText(i18n("Paste Selection"));
 #ifdef Q_OS_MACOS
-    collection->setDefaultShortcut(action, Qt::META | Qt::SHIFT | Qt::Key_V);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_V);
 #else
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_Insert);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Insert);
 #endif
 
     _webSearchMenu = new KActionMenu(i18n("Web Search"), this);
@@ -694,12 +714,12 @@ void SessionController::setupCommonActions()
     action = KStandardAction::saveAs(this, &SessionController::saveHistory, collection);
     action->setText(i18n("Save Output &As..."));
 #ifdef Q_OS_MACOS
-    action->setShortcut(QKeySequence(Qt::META | Qt::Key_S));
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
 #endif
 
     action = KStandardAction::print(this, &SessionController::requestPrint, collection);
     action->setText(i18n("&Print Screen..."));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_P);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_P);
 
     action = collection->addAction(QStringLiteral("adjust-history"), this, &SessionController::showHistoryOptions);
     action->setText(i18n("Adjust Scrollback..."));
@@ -712,7 +732,7 @@ void SessionController::setupCommonActions()
     action = collection->addAction(QStringLiteral("clear-history-and-reset"), this, &SessionController::clearHistoryAndReset);
     action->setText(i18n("Clear Scrollback and Reset"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear-history")));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_K);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_K);
 
     // Profile Options
     action = collection->addAction(QStringLiteral("edit-current-profile"), this, &SessionController::editCurrentProfile);
@@ -738,13 +758,13 @@ void SessionController::setupCommonActions()
     _findPreviousAction->setEnabled(false);
 
 #ifdef Q_OS_MACOS
-    collection->setDefaultShortcut(_findAction, Qt::META | Qt::Key_F);
-    collection->setDefaultShortcut(_findNextAction, Qt::META | Qt::Key_G);
-    collection->setDefaultShortcut(_findPreviousAction, Qt::META | Qt::SHIFT | Qt::Key_G);
+    collection->setDefaultShortcut(_findAction, Qt::CTRL | Qt::Key_F);
+    collection->setDefaultShortcut(_findNextAction, Qt::CTRL | Qt::Key_G);
+    collection->setDefaultShortcut(_findPreviousAction, Qt::CTRL | Qt::SHIFT | Qt::Key_G);
 #else
-    collection->setDefaultShortcut(_findAction, Konsole::ACCEL | Qt::SHIFT | Qt::Key_F);
+    collection->setDefaultShortcut(_findAction, Qt::CTRL | Qt::SHIFT | Qt::Key_F);
     collection->setDefaultShortcut(_findNextAction, Qt::Key_F3);
-    collection->setDefaultShortcut(_findPreviousAction, Qt::SHIFT | Qt::Key_F3);
+    collection->setDefaultShortcut(_findPreviousAction, QKeySequence{Qt::SHIFT | Qt::Key_F3});
 #endif
 
     // Character Encoding
@@ -764,12 +784,18 @@ void SessionController::setupCommonActions()
             &Konsole::SessionController::changeCodec);
 
     // Mouse tracking enabled
-    action = collection->addAction(QStringLiteral("allow-mouse-tracking"), this, &SessionController::toggleAllowMouseTracking);
+    action = collection->addAction(QStringLiteral("allow-mouse-tracking"), this);
+    connect(action, &QAction::toggled, this, [this, action]() {
+        toggleAllowMouseTracking(action);
+    });
     action->setText(i18nc("@item:inmenu Allows terminal applications to request mouse tracking", "Allow mouse tracking"));
     action->setCheckable(true);
 
     // Read-only
-    action = collection->addAction(QStringLiteral("view-readonly"), this, &SessionController::toggleReadOnly);
+    action = collection->addAction(QStringLiteral("view-readonly"), this);
+    connect(action, &QAction::toggled, this, [this, action]() {
+        toggleReadOnly(action);
+    });
     action->setText(i18nc("@item:inmenu A read only (locked) session", "Read-only"));
     action->setCheckable(true);
     updateReadOnlyActionStates();
@@ -783,7 +809,7 @@ void SessionController::setupExtraActions()
     QAction *action = collection->addAction(QStringLiteral("rename-session"), this, &SessionController::renameSession);
     action->setText(i18n("&Configure or Rename Tab..."));
     action->setIcon(QIcon::fromTheme(QStringLiteral("edit-rename")));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::ALT | Qt::Key_S);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_S);
 
     // Copy input to ==> all tabs
     auto *copyInputToAllTabsAction = collection->add<KToggleAction>(QStringLiteral("copy-input-to-all-tabs"));
@@ -795,13 +821,13 @@ void SessionController::setupExtraActions()
     // Copy input to ==> selected tabs
     auto *copyInputToSelectedTabsAction = collection->add<KToggleAction>(QStringLiteral("copy-input-to-selected-tabs"));
     copyInputToSelectedTabsAction->setText(i18n("&Select Tabs..."));
-    collection->setDefaultShortcut(copyInputToSelectedTabsAction, Konsole::ACCEL | Qt::SHIFT | Qt::Key_Period);
+    collection->setDefaultShortcut(copyInputToSelectedTabsAction, Konsole::ACCEL | Qt::Key_Period);
     copyInputToSelectedTabsAction->setData(CopyInputToSelectedTabsMode);
 
     // Copy input to ==> none
     auto *copyInputToNoneAction = collection->add<KToggleAction>(QStringLiteral("copy-input-to-none"));
     copyInputToNoneAction->setText(i18nc("@action:inmenu Do not select any tabs", "&None"));
-    collection->setDefaultShortcut(copyInputToNoneAction, Konsole::ACCEL | Qt::SHIFT | Qt::Key_Slash);
+    collection->setDefaultShortcut(copyInputToNoneAction, Konsole::ACCEL | Qt::Key_Slash);
     copyInputToNoneAction->setData(CopyInputToNoneMode);
     copyInputToNoneAction->setChecked(true); // the default state
 
@@ -817,17 +843,17 @@ void SessionController::setupExtraActions()
     action = collection->addAction(QStringLiteral("zmodem-upload"), this, &SessionController::zmodemUpload);
     action->setText(i18n("&ZModem Upload..."));
     action->setIcon(QIcon::fromTheme(QStringLiteral("document-open")));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::ALT | Qt::Key_U);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_U);
 
     // Monitor
     KToggleAction *toggleAction = new KToggleAction(i18n("Monitor for &Activity"), this);
-    collection->setDefaultShortcut(toggleAction, Konsole::ACCEL | Qt::SHIFT | Qt::Key_A);
+    collection->setDefaultShortcut(toggleAction, Konsole::ACCEL | Qt::Key_A);
     action = collection->addAction(QStringLiteral("monitor-activity"), toggleAction);
     connect(action, &QAction::toggled, this, &Konsole::SessionController::monitorActivity);
     action->setIcon(QIcon::fromTheme(QStringLiteral("tools-media-optical-burn")));
 
     toggleAction = new KToggleAction(i18n("Monitor for &Silence"), this);
-    collection->setDefaultShortcut(toggleAction, Konsole::ACCEL | Qt::SHIFT | Qt::Key_I);
+    collection->setDefaultShortcut(toggleAction, Konsole::ACCEL | Qt::Key_I);
     action = collection->addAction(QStringLiteral("monitor-silence"), toggleAction);
     connect(action, &QAction::toggled, this, &Konsole::SessionController::monitorSilence);
     action->setIcon(QIcon::fromTheme(QStringLiteral("tools-media-optical-copy")));
@@ -842,18 +868,18 @@ void SessionController::setupExtraActions()
     action->setText(i18n("Enlarge Font"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("format-font-size-more")));
     QList<QKeySequence> enlargeFontShortcut;
-    enlargeFontShortcut.append(QKeySequence(Konsole::ACCEL | Qt::Key_Plus));
-    enlargeFontShortcut.append(QKeySequence(Konsole::ACCEL | Qt::Key_Equal));
+    enlargeFontShortcut.append(QKeySequence(Qt::CTRL | Qt::Key_Plus));
+    enlargeFontShortcut.append(QKeySequence(Qt::CTRL | Qt::Key_Equal));
     collection->setDefaultShortcuts(action, enlargeFontShortcut);
 
     action = collection->addAction(QStringLiteral("shrink-font"), this, &SessionController::decreaseFontSize);
     action->setText(i18n("Shrink Font"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("format-font-size-less")));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_Minus);
+    collection->setDefaultShortcut(action, QKeySequence(Qt::CTRL | Qt::Key_Minus));
 
     action = collection->addAction(QStringLiteral("reset-font-size"), this, &SessionController::resetFontSize);
     action->setText(i18n("Reset Font Size"));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::ALT | Qt::Key_0);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_0);
 
     // Send signal
     auto *sendSignalActions = collection->add<KSelectAction>(QStringLiteral("send-signal"));
@@ -912,7 +938,7 @@ void SessionController::switchProfile(const Profile::Ptr &profile)
 void SessionController::setEditProfileActionText(const Profile::Ptr &profile)
 {
     QAction *action = actionCollection()->action(QStringLiteral("edit-current-profile"));
-    if (profile->isFallback()) {
+    if (profile->isBuiltin()) {
         action->setText(i18n("Create New Profile..."));
     } else {
         action->setText(i18n("Edit Current Profile..."));
@@ -947,8 +973,8 @@ void SessionController::editCurrentProfile()
 
     auto profile = SessionManager::instance()->sessionProfile(session());
     auto state = EditProfileDialog::ExistingProfile;
-    // Don't edit the Fallback profile, instead create a new one
-    if (profile->isFallback()) {
+    // Don't edit the built-in profile, instead create a new one
+    if (profile->isBuiltin()) {
         auto newProfile = Profile::Ptr(new Profile(profile));
         newProfile->clone(profile, true);
         const QString uniqueName = ProfileManager::instance()->generateUniqueName();
@@ -1044,8 +1070,8 @@ bool SessionController::confirmClose() const
         int result = KMessageBox::warningYesNo(view()->window(),
                                                question,
                                                i18n("Confirm Close"),
-                                               KStandardGuiItem::yes(),
-                                               KStandardGuiItem::no(),
+                                               KGuiItem(i18nc("@action:button", "Close Program"), QStringLiteral("application-exit")),
+                                               KStandardGuiItem::cancel(),
                                                QStringLiteral("CloseSingleTab"));
         return result == KMessageBox::Yes;
     }
@@ -1076,7 +1102,11 @@ bool SessionController::confirmForceClose() const
                 title);
         }
 
-        int result = KMessageBox::warningYesNo(view()->window(), question, i18n("Confirm Close"));
+        int result = KMessageBox::warningYesNo(view()->window(),
+                                               question,
+                                               i18n("Confirm Close"),
+                                               KGuiItem(i18nc("@action:button", "Kill Program"), QStringLiteral("application-exit")),
+                                               KStandardGuiItem::cancel());
         return result == KMessageBox::Yes;
     }
     return true;
@@ -1137,6 +1167,21 @@ void SessionController::openBrowser()
 void SessionController::copy()
 {
     view()->copyToClipboard();
+}
+
+void SessionController::copyInput()
+{
+    view()->copyToClipboard(Screen::ExcludePrompt | Screen::ExcludeOutput);
+}
+
+void SessionController::copyOutput()
+{
+    view()->copyToClipboard(Screen::ExcludePrompt | Screen::ExcludeInput);
+}
+
+void SessionController::copyInputOutput()
+{
+    view()->copyToClipboard(Screen::ExcludePrompt);
 }
 
 void SessionController::paste()
@@ -1684,7 +1729,7 @@ void SessionController::clearHistoryAndReset()
     QByteArray name = profile->defaultEncoding().toUtf8();
 
     Emulation *emulation = session()->emulation();
-    emulation->reset();
+    emulation->reset(false, true);
     session()->refresh();
     session()->setCodec(QTextCodec::codecForName(name));
     clearHistory();
@@ -1840,11 +1885,7 @@ void SessionController::showDisplayContextMenu(const QPoint &position)
 
         // We don't actually use this shortcut, but we need to display it for consistency :/
         QAction *copy = actionCollection()->action(QStringLiteral("edit_copy_contextmenu"));
-#ifdef Q_OS_MACOS
-        copy->setShortcut(Qt::META | Qt::Key_C);
-#else
-        copy->setShortcut(Konsole::ACCEL | Qt::SHIFT | Qt::Key_C);
-#endif
+        copy->setShortcut(Konsole::ACCEL | Qt::Key_C);
 
         // Adds a "Open Folder With" action
         const QUrl currentUrl = url().isLocalFile() ? url() : QUrl::fromLocalFile(QDir::homePath());
@@ -1865,7 +1906,7 @@ void SessionController::showDisplayContextMenu(const QPoint &position)
 #endif
 
         auto newActions = popup->actions();
-        for (auto* elm : old) {
+        for (auto *elm : old) {
             newActions.removeAll(elm);
         }
         // Finish Ading the "Open Folder With" action.

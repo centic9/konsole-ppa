@@ -1295,6 +1295,30 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>\</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Перегляд</guimenu
+> <guisubmenu
+>Розділений перегляд</guisubmenu
+> <guimenuitem
+>Однаковий розмір усіх панелей</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Встановити однаковий розмір для усіх панелей перегляду</action>
+</para
+></listitem>
+</varlistentry>
 
 <varlistentry>
 <term
@@ -2361,15 +2385,11 @@ Various search improvements
 <varlistentry>
 <term
 ><option
->--fallback-profile</option
+>--builtin-profile</option
 ></term>
 <listitem
 ><para
->Використовувати вбудований профіль FALLBACK. Цей параметр є скороченням для параметра <option
->--profile</option
-> <parameter
->FALLBACK/</parameter
->.</para
+>Використати вбудований профіль замість поточного типового профілю.</para
 ></listitem>
 </varlistentry>
 

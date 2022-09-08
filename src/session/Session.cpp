@@ -2,6 +2,7 @@
     SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
     SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
     SPDX-FileCopyrightText: 2009 Thomas Dreibholz <dreibh@iem.uni-due.de>
+    SPDX-FileCopyrightText: 2022 Harald Sitter <sitter@kde.org>
 
     SPDX-License-Identifier: GPL-2.0-or-later
 */
@@ -27,6 +28,7 @@
 #include <KLocalizedString>
 #include <KNotification>
 #include <KProcess>
+#include <KPtyDevice>
 #include <KShell>
 #include <kcoreaddons_version.h>
 
@@ -47,12 +49,17 @@
 #include "profile/ProfileManager.h"
 
 #include "terminalDisplay/TerminalDisplay.h"
+#include "terminalDisplay/TerminalFonts.h"
 #include "terminalDisplay/TerminalScrollBar.h"
 
 // Linux
-#ifdef HAVE_GETPWUID
+#if HAVE_GETPWUID
 #include <pwd.h>
 #include <sys/types.h>
+#endif
+
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(5, 97, 0)
+#include <KSandbox>
 #endif
 
 using namespace Konsole;
@@ -64,46 +71,6 @@ static const int ZMODEM_BUFFER_SIZE = 1048576; // 1 Mb
 
 Session::Session(QObject *parent)
     : QObject(parent)
-    , _uniqueIdentifier(QUuid())
-    , _shellProcess(nullptr)
-    , _emulation(nullptr)
-    , _views(QList<TerminalDisplay *>())
-    , _monitorActivity(false)
-    , _monitorSilence(false)
-    , _notifiedActivity(false)
-    , _silenceSeconds(10)
-    , _silenceTimer(nullptr)
-    , _activityTimer(nullptr)
-    , _autoClose(true)
-    , _closePerUserRequest(false)
-    , _nameTitle(QString())
-    , _displayTitle(QString())
-    , _userTitle(QString())
-    , _localTabTitleFormat(QString())
-    , _remoteTabTitleFormat(QString())
-    , _tabTitleSetByUser(false)
-    , _tabColorSetByUser(false)
-    , _iconName(QString())
-    , _iconText(QString())
-    , _addToUtmp(true)
-    , _flowControlEnabled(true)
-    , _program(QString())
-    , _arguments(QStringList())
-    , _environment(QStringList())
-    , _sessionId(0)
-    , _initialWorkingDir(QString())
-    , _currentWorkingDir(QString())
-    , _reportedWorkingUrl(QUrl())
-    , _sessionProcessInfo(nullptr)
-    , _foregroundProcessInfo(nullptr)
-    , _foregroundPid(0)
-    , _zmodemBusy(false)
-    , _zmodemProc(nullptr)
-    , _zmodemProgress(nullptr)
-    , _hasDarkBackground(false)
-    , _preferredSize(QSize())
-    , _readOnly(false)
-    , _isPrimaryScreen(true)
 {
     _uniqueIdentifier = QUuid::createUuid();
 
@@ -455,13 +422,26 @@ void Session::run()
 
     QStringList programs = {_program, QString::fromUtf8(qgetenv("SHELL")), QStringLiteral("/bin/sh")};
 
-#ifdef HAVE_GETPWUID
+#if HAVE_GETPWUID
     auto pw = getpwuid(getuid());
-    // pw may be NULL
-    if (pw != nullptr) {
-        programs.insert(1, QString::fromLocal8Bit(pw->pw_shell));
-    }
     // pw: Do not pass the returned pointer to free.
+    if (pw != nullptr) {
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(5, 97, 0)
+        if (KSandbox::isFlatpak()) {
+            QProcess proc;
+            proc.setProgram(QStringLiteral("getent"));
+            proc.setArguments({QStringLiteral("passwd"), QString::number(pw->pw_uid)});
+            KSandbox::startHostProcess(proc);
+            proc.waitForFinished();
+            const auto shell = proc.readAllStandardOutput().simplified().split(':').at(6);
+            programs.insert(1, QString::fromUtf8(shell));
+        } else {
+            programs.insert(1, QString::fromLocal8Bit(pw->pw_shell));
+        }
+#else
+        programs.insert(1, QString::fromLocal8Bit(pw->pw_shell));
+#endif
+    }
 #endif
 
     QString exec;
@@ -488,6 +468,11 @@ void Session::run()
     // if no arguments are specified, fall back to program name
     QStringList arguments = _arguments.join(QLatin1Char(' ')).isEmpty() ? QStringList() << exec : _arguments;
 
+    // For historical reasons, the first argument in _arguments is the
+    // name of the program to execute, remove it in favor of the actual program name
+    Q_ASSERT(arguments.count() >= 1);
+    arguments = arguments.mid(1);
+
     if (!_initialWorkingDir.isEmpty()) {
         _shellProcess->setInitialWorkingDirectory(_initialWorkingDir);
     } else {
@@ -497,6 +482,11 @@ void Session::run()
     _shellProcess->setFlowControlEnabled(_flowControlEnabled);
     _shellProcess->setEraseChar(_emulation->eraseChar());
     _shellProcess->setUseUtmp(_addToUtmp);
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(5, 97, 0)
+    if (KSandbox::isFlatpak()) {
+        _shellProcess->pty()->setCTtyEnabled(false); // not possibly inside sandbox
+    }
+#endif
 
     // this is not strictly accurate use of the COLORFGBG variable.  This does not
     // tell the terminal exactly which colors are being used, but instead approximates
@@ -515,7 +505,18 @@ void Session::run()
     const QString dbusObject = QStringLiteral("/Sessions/%1").arg(QString::number(_sessionId));
     addEnvironmentEntry(QStringLiteral("KONSOLE_DBUS_SESSION=%1").arg(dbusObject));
 
+#if KCOREADDONS_VERSION >= QT_VERSION_CHECK(5, 97, 0)
+    _shellProcess->setProgram(exec);
+    _shellProcess->setArguments(arguments);
+    _shellProcess->setEnvironment(_environment);
+    const auto context = KSandbox::makeHostContext(*_shellProcess);
+    // The Pty class is incredibly janky and will topple over when starting with environment, so unset it again.
+    _shellProcess->setEnvironment({});
+    const auto result = _shellProcess->start(context.program, context.arguments, _environment);
+#else
     int result = _shellProcess->start(exec, arguments, _environment);
+#endif
+
     if (result < 0) {
         terminalWarning(i18n("Could not start program '%1' with arguments '%2'.", exec, arguments.join(QLatin1String(" "))));
         terminalWarning(_shellProcess->errorString());
@@ -661,11 +662,15 @@ void Session::silenceTimerDone()
         view = _views.first();
     }
 
-    KNotification::event(hasFocus() ? QStringLiteral("Silence") : QStringLiteral("SilenceHidden"),
-                         i18n("Silence in '%1' (Session '%2')", _displayTitle, _nameTitle),
-                         QPixmap(),
-                         view,
-                         KNotification::CloseWhenWidgetActivated);
+    KNotification *notification = KNotification::event(hasFocus() ? QStringLiteral("Silence") : QStringLiteral("SilenceHidden"),
+                                                       i18n("Silence in '%1' (Session '%2')", _displayTitle, _nameTitle),
+                                                       QPixmap(),
+                                                       view,
+                                                       KNotification::CloseWhenWidgetActivated);
+    notification->setDefaultAction(i18n("Show session"));
+    connect(notification, &KNotification::defaultActivated, this, [view, notification]() {
+        view->notificationClicked(notification->xdgActivationToken());
+    });
     setPendingNotification(Notification::Silence);
 }
 
@@ -724,9 +729,8 @@ void Session::sessionAttributeRequest(int id, uint terminator)
     }
 }
 
-void Session::onViewSizeChange(int height, int width)
+void Session::onViewSizeChange(int /* height */, int /* width */)
 {
-    _shellProcess->setPixelSize(width, height);
     updateTerminalSize();
 }
 
@@ -758,7 +762,17 @@ void Session::updateTerminalSize()
 void Session::updateWindowSize(int lines, int columns)
 {
     Q_ASSERT(lines > 0 && columns > 0);
-    _shellProcess->setWindowSize(columns, lines);
+
+    int width = 0;
+    int height = 0;
+    if (!_views.isEmpty()) {
+        // This is somewhat arbitrary. Views having potentially different font sizes is
+        // irreconcilable with the PTY user having accurate knowledge of the geometry.
+        QSize cr = _views.at(0)->contentRect().size();
+        width = cr.width();
+        height = cr.height();
+    }
+    _shellProcess->setWindowSize(columns, lines, width, height);
 }
 void Session::refresh()
 {
@@ -777,10 +791,11 @@ void Session::refresh()
     // send an email with method or patches to konsole-devel@kde.org
 
     const QSize existingSize = _shellProcess->windowSize();
-    _shellProcess->setWindowSize(existingSize.width() + 1, existingSize.height());
+    const QSize existingPxSize = _shellProcess->pixelSize();
+    _shellProcess->setWindowSize(existingSize.width() + 1, existingSize.height(), existingPxSize.width() + 1, existingPxSize.height());
     // introduce small delay to avoid changing size too quickly
     QThread::usleep(500);
-    _shellProcess->setWindowSize(existingSize.width(), existingSize.height());
+    _shellProcess->setWindowSize(existingSize.width(), existingSize.height(), existingPxSize.width(), existingPxSize.height());
 }
 
 void Session::sendSignal(int signal)
@@ -845,7 +860,9 @@ void Session::close()
         }
     } else {
         // terminal process has finished, just close the session
-        QTimer::singleShot(1, this, &Konsole::Session::finished);
+        QTimer::singleShot(1, this, [this]() {
+            Q_EMIT finished(this);
+        });
     }
 }
 
@@ -861,7 +878,7 @@ bool Session::closeInNormalWay()
     // 3). the user closes the tab explicitly
     //
     if (!isRunning()) {
-        Q_EMIT finished();
+        Q_EMIT finished(this);
         return true;
     }
 
@@ -910,7 +927,7 @@ void Session::sendText(const QString &text) const
         return;
     }
 
-#if !defined(REMOVE_SENDTEXT_RUNCOMMAND_DBUS_METHODS)
+#if !REMOVE_SENDTEXT_RUNCOMMAND_DBUS_METHODS
     if (show_disallow_certain_dbus_methods_message) {
         KNotification::event(KNotification::Warning,
                              QStringLiteral("Konsole D-Bus Warning"),
@@ -956,7 +973,7 @@ void Session::done(int exitCode, QProcess::ExitStatus exitStatus)
     }
 
     if (_closePerUserRequest) {
-        Q_EMIT finished();
+        Q_EMIT finished(this);
         return;
     }
 
@@ -978,7 +995,7 @@ void Session::done(int exitCode, QProcess::ExitStatus exitStatus)
         message = i18n("Program '%1' crashed.", _program);
         terminalWarning(message);
     } else {
-        Q_EMIT finished();
+        Q_EMIT finished(this);
     }
 }
 
@@ -1751,11 +1768,15 @@ void Session::handleActivity()
     }
 
     if (_monitorActivity && !_notifiedActivity) {
-        KNotification::event(hasFocus() ? QStringLiteral("Activity") : QStringLiteral("ActivityHidden"),
-                             i18n("Activity in '%1' (Session '%2')", _displayTitle, _nameTitle),
-                             QPixmap(),
-                             view,
-                             KNotification::CloseWhenWidgetActivated);
+        KNotification *notification = KNotification::event(hasFocus() ? QStringLiteral("Activity") : QStringLiteral("ActivityHidden"),
+                                                           i18n("Activity in '%1' (Session '%2')", _displayTitle, _nameTitle),
+                                                           QPixmap(),
+                                                           view,
+                                                           KNotification::CloseWhenWidgetActivated);
+        notification->setDefaultAction(i18n("Show session"));
+        connect(notification, &KNotification::defaultActivated, this, [view, notification]() {
+            view->notificationClicked(notification->xdgActivationToken());
+        });
 
         // mask activity notification for a while to avoid flooding
         _notifiedActivity = true;

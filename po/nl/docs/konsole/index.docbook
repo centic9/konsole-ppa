@@ -1281,6 +1281,30 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>\</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Beeld</guimenu
+><guisubmenu
+>Beeld splitsen</guisubmenu
+><guimenuitem
+>Alle weergaven gelijke grootte</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Stelt dezelfde grootte in voor alle weergaven</action>
+</para
+></listitem>
+</varlistentry>
 
 <varlistentry>
 <term
@@ -1330,7 +1354,7 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
-<varlistentry>
+<varlistentry id="save-layout">
 <term
 ><menuchoice
 ><guimenu
@@ -2326,15 +2350,28 @@ Various search improvements
 <varlistentry>
 <term
 ><option
->--fallback-profile</option
+>--layout</option
+> <parameter
+>bestand</parameter
 ></term>
 <listitem
 ><para
->Gebruik het interne FALLBACK profiel. Deze optie is een sneltoets voor <option
->--profile</option
-> <parameter
->FALLBACK/</parameter
+><action
+>&konsole; opstarten</action
+> met een <link linkend="save-layout"
+>opgeslagen &JSON;-indelingsbestand</link
 >.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><option
+>--builtin-profile</option
+></term>
+<listitem
+><para
+>Het ingebouwde profiel gebruiken in plaats van het huidige standaard profiel.</para
 ></listitem>
 </varlistentry>
 

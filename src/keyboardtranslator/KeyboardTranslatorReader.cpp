@@ -122,6 +122,10 @@ bool KeyboardTranslatorReader::parseAsCommand(const QString &text, KeyboardTrans
         command = KeyboardTranslator::ScrollUpToTopCommand;
     } else if (text.compare(QLatin1String("scrolldowntobottom"), Qt::CaseInsensitive) == 0) {
         command = KeyboardTranslator::ScrollDownToBottomCommand;
+    } else if (text.compare(QLatin1String("scrollpromptup"), Qt::CaseInsensitive) == 0) {
+        command = KeyboardTranslator::ScrollPromptUpCommand;
+    } else if (text.compare(QLatin1String("scrollpromptdown"), Qt::CaseInsensitive) == 0) {
+        command = KeyboardTranslator::ScrollPromptDownCommand;
     } else {
         return false;
     }
@@ -241,9 +245,13 @@ bool KeyboardTranslatorReader::parseAsStateFlag(const QString &item, KeyboardTra
 
 bool KeyboardTranslatorReader::parseAsKeyCode(const QString &item, int &keyCode)
 {
-    QKeySequence sequence = QKeySequence::fromString(item);
+    const QKeySequence sequence = QKeySequence::fromString(item);
     if (!sequence.isEmpty()) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        keyCode = sequence[0].toCombined();
+#else
         keyCode = sequence[0];
+#endif
 
         if (sequence.count() > 1) {
             qCDebug(KonsoleDebug) << "Unhandled key codes in sequence: " << item;

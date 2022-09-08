@@ -20,6 +20,7 @@
 #include <KConfigGroup>
 
 // Konsole
+#include "Emulation.h" // to connect the URL escape sequence extractor
 #include "Enumeration.h"
 #include "EscapeSequenceUrlExtractor.h"
 #include "Screen.h"
@@ -41,11 +42,6 @@
 using namespace Konsole;
 
 SessionManager::SessionManager()
-    : _sessions(QList<Session *>())
-    , _sessionProfiles(QHash<Session *, Profile::Ptr>())
-    , _sessionRuntimeProfiles(QHash<Session *, Profile::Ptr>())
-    , _restoreMapping(QHash<Session *, int>())
-    , _isClosingAllSessions(false)
 {
     ProfileManager *profileMananger = ProfileManager::instance();
     connect(profileMananger, &Konsole::ProfileManager::profileChanged, this, &Konsole::SessionManager::profileChanged);
@@ -104,12 +100,12 @@ Session *SessionManager::createSession(Profile::Ptr profile)
     Q_ASSERT(session);
     applyProfile(session, profile, false);
 
-    connect(session, &Konsole::Session::profileChangeCommandReceived, this, &Konsole::SessionManager::sessionProfileCommandReceived);
+    connect(session, &Konsole::Session::profileChangeCommandReceived, this, [this, session](const QString &text) {
+        sessionProfileCommandReceived(session, text);
+    });
 
     // ask for notification when session dies
-    connect(session, &Konsole::Session::finished, this, [this, session]() {
-        sessionTerminated(session);
-    });
+    connect(session, &Konsole::Session::finished, this, &SessionManager::sessionTerminated);
 
     // add session to active list
     _sessions << session;
@@ -277,16 +273,25 @@ void SessionManager::applyProfile(Session *session, const Profile::Ptr &profile,
     if (apply.shouldApply(Profile::SilenceSeconds)) {
         session->setMonitorSilenceSeconds(profile->silenceSeconds());
     }
-
-    for (TerminalDisplay *view : session->views()) {
-        view->screenWindow()->screen()->urlExtractor()->setAllowedLinkSchema(profile->escapedLinksSchema());
-        view->screenWindow()->screen()->setReflowLines(profile->property<bool>(Profile::ReflowLines));
+    if (apply.shouldApply(Profile::AllowEscapedLinks) || apply.shouldApply(Profile::ReflowLines)) {
+        const bool shouldEnableUrlExtractor = profile->allowEscapedLinks();
+        const bool enableReflowLines = profile->allowEscapedLinks();
+        for (TerminalDisplay *view : session->views()) {
+            view->screenWindow()->screen()->setReflowLines(enableReflowLines);
+            view->screenWindow()->screen()->setEnableUrlExtractor(shouldEnableUrlExtractor);
+            if (shouldEnableUrlExtractor) {
+                view->screenWindow()->screen()->urlExtractor()->setAllowedLinkSchema(profile->escapedLinksSchema());
+                connect(session->emulation(),
+                        &Emulation::toggleUrlExtractionRequest,
+                        view->screenWindow()->screen()->urlExtractor(),
+                        &EscapeSequenceUrlExtractor::toggleUrlInput);
+            }
+        }
     }
 }
 
-void SessionManager::sessionProfileCommandReceived(const QString &text)
+void SessionManager::sessionProfileCommandReceived(Session *session, const QString &text)
 {
-    auto *session = qobject_cast<Session *>(sender());
     Q_ASSERT(session);
 
     // store the font for each view if zoom was applied so that they can

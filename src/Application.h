@@ -11,11 +11,11 @@
 #include <QCommandLineParser>
 
 // Konsole
-#include "widgets/ViewSplitter.h"
-
-#include "pluginsystem/PluginManager.h"
-
 #include "konsole_export.h"
+#include "pluginsystem/PluginManager.h"
+#include "profile/Profile.h"
+#include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/ViewSplitter.h"
 
 namespace Konsole
 {
@@ -60,7 +60,7 @@ public:
 
 private Q_SLOTS:
     void createWindow(const QExplicitlySharedDataPointer<Profile> &profile, const QString &directory);
-    void detachTerminals(ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap);
+    void detachTerminals(MainWindow *currentWindow, ViewSplitter *splitter, const QHash<TerminalDisplay *, Session *> &sessionsMap);
 
     void toggleBackgroundInstance();
 

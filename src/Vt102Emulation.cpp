@@ -16,19 +16,19 @@
 #include <QEvent>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QtEndian>
 
 // KDE
 #include <KLocalizedString>
 
 // Konsole
 #include "EscapeSequenceUrlExtractor.h"
-#include "keyboardtranslator/KeyboardTranslator.h"
 #include "session/SessionController.h"
 #include "terminalDisplay/TerminalColor.h"
 #include "terminalDisplay/TerminalDisplay.h"
 #include "terminalDisplay/TerminalFonts.h"
 
-#include <zlib.h>
+#include <konsoledebug.h>
 
 using Konsole::Vt102Emulation;
 
@@ -51,7 +51,7 @@ unsigned short Konsole::vt100_graphics[32] = {
     // 0/8     1/9    2/10    3/11    4/12    5/13    6/14    7/15
     0x0020, 0x25C6, 0x2592, 0x2409, 0x240c, 0x240d, 0x240a, 0x00b0,
     0x00b1, 0x2424, 0x240b, 0x2518, 0x2510, 0x250c, 0x2514, 0x253c,
-    0xF800, 0xF801, 0x2500, 0xF803, 0xF804, 0x251c, 0x2524, 0x2534,
+    0x23ba, 0x23bb, 0x2500, 0x23bc, 0x23bd, 0x251c, 0x2524, 0x2534,
     0x252c, 0x2502, 0x2264, 0x2265, 0x03C0, 0x2260, 0x00A3, 0x00b7
 };
 /* clang-format on */
@@ -72,12 +72,9 @@ Vt102Emulation::Vt102Emulation()
     QObject::connect(_sessionAttributesUpdateTimer, &QTimer::timeout, this, &Konsole::Vt102Emulation::updateSessionAttributes);
 
     initTokenizer();
-    imageData = QByteArray();
     imageId = 0;
     savedKeys = QMap<char, qint64>();
     tokenData = QByteArray();
-
-    _graphicsImages = std::map<int, QImage *>();
 
     for (int i = 0; i < 256; i++) {
         colorTable[i] = QColor();
@@ -86,9 +83,6 @@ Vt102Emulation::Vt102Emulation()
 
 Vt102Emulation::~Vt102Emulation()
 {
-    for (std::map<int, QImage *>::iterator iter = _graphicsImages.begin(); iter != _graphicsImages.end(); ++iter) {
-        delete iter->second;
-    }
 }
 
 void Vt102Emulation::clearEntireScreen()
@@ -97,7 +91,14 @@ void Vt102Emulation::clearEntireScreen()
     bufferedUpdate();
 }
 
-void Vt102Emulation::reset(bool softReset)
+void Vt102Emulation::clearHistory()
+{
+    _graphicsImages.clear();
+
+    Emulation::clearHistory();
+}
+
+void Vt102Emulation::reset(bool softReset, bool preservePrompt)
 {
     // Save the current codec so we can set it later.
     // Ideally we would want to use the profile setting
@@ -114,9 +115,9 @@ void Vt102Emulation::reset(bool softReset)
     }
 
     resetCharset(0);
-    _screen[0]->reset(softReset);
+    _screen[0]->reset(softReset, preservePrompt);
     resetCharset(1);
-    _screen[1]->reset(softReset);
+    _screen[1]->reset(softReset, preservePrompt);
 
     if (currentCodec != nullptr) {
         setCodec(currentCodec);
@@ -251,6 +252,14 @@ constexpr int token_csi_pq(int a)
 {
     return token_construct(13, a, 0);
 }
+constexpr int token_osc(int a)
+{
+    return token_construct(14, a, 0);
+}
+constexpr int token_apc(int a)
+{
+    return token_construct(15, a, 0);
+}
 
 const int MAX_ARGUMENT = 40960;
 
@@ -259,36 +268,51 @@ const int MAX_ARGUMENT = 40960;
 /* The tokenizer's state
 
    The state is represented by the buffer (tokenBuffer, tokenBufferPos),
-   and accompanied by decoded arguments kept in (argv,argc).
+   and accompanied by decoded arguments kept in params.
    Note that they are kept internal in the tokenizer.
 */
 
 void Vt102Emulation::resetTokenizer()
 {
     tokenBufferPos = 0;
-    argc = 0;
-    argv[0] = 0;
-    argv[1] = 0;
+    params.count = 0;
+    params.value[0] = 0;
+    params.value[1] = 0;
+    params.sub[0].value[0] = 0;
+    params.sub[0].count = 0;
+    params.hasSubParams = false;
     tokenState = -1;
 }
 
 void Vt102Emulation::addDigit(int digit)
 {
-    argv[argc] = qMin(10 * argv[argc] + digit, MAX_ARGUMENT);
+    if (params.sub[params.count].count == 0) {
+        params.value[params.count] = qMin(10 * params.value[params.count] + digit, MAX_ARGUMENT);
+    } else {
+        struct subParam *sub = &params.sub[params.count];
+        sub->value[sub->count] = qMin(10 * sub->value[sub->count] + digit, MAX_ARGUMENT);
+    }
 }
 
 void Vt102Emulation::addArgument()
 {
-    argc = qMin(argc + 1, MAXARGS - 1);
-    argv[argc] = 0;
+    params.count = qMin(params.count + 1, MAXARGS - 1);
+    params.value[params.count] = 0;
+    params.sub[params.count].value[0] = 0;
+    params.sub[params.count].count = 0;
+}
+
+void Vt102Emulation::addSub()
+{
+    struct subParam *sub = &params.sub[params.count];
+    sub->count = qMin(sub->count + 1, MAXARGS - 1);
+    sub->value[sub->count] = 0;
+    params.hasSubParams = true;
 }
 
 void Vt102Emulation::addToCurrentToken(uint cc)
 {
-    if (tokenBufferPos == MAX_TOKEN_LENGTH) {
-        tokenBufferPos--;
-        tokenBuffer[tokenBufferPos - 1] = tokenBuffer[tokenBufferPos];
-    }
+    tokenBufferPos = qMin(tokenBufferPos, MAX_TOKEN_LENGTH - 1);
     tokenBuffer[tokenBufferPos] = cc;
     tokenBufferPos++;
 }
@@ -373,6 +397,7 @@ void Vt102Emulation::initTokenizer()
 #define epsp( )    (p >=  5  && s[3] == SP )
 #define osc        (tokenBufferPos >= 2 && tokenBuffer[1] == ']')
 //#define apc(C)     (p >= 3 && s[1] == '_' && s[2] == C)
+#define pm         (tokenBufferPos >= 2 && tokenBuffer[1] == '^')
 #define apc        (tokenBufferPos >= 2 && tokenBuffer[1] == '_')
 #define ces(C)     (cc < 256 && (charClass[cc] & (C)) == (C))
 #define dcs        (p >= 2   && s[0] == ESC && s[1] == 'P')
@@ -386,267 +411,553 @@ const int DEL = 127;
 const int SP = 32;
 
 // process an incoming unicode character
-void Vt102Emulation::receiveChars(const QVector<uint> &chars)
+//
+// Parser based on the vt100.net diagram:
+// Williams, Paul Flo. “A parser for DEC’s ANSI-compatible video
+// terminals.” VT100.net. https://vt100.net/emu/dec_ansi_parser
+
+void Vt102Emulation::switchState(const ParserStates newState, const uint cc)
 {
-    for (uint cc : chars) {
-        if (cc == DEL) {
-            continue; // VT100: ignore.
-        }
+    switch (_state) {
+    case DcsPassthrough:
+        unhook();
+        break;
+    case OscString:
+        osc_end(cc);
+        break;
+    case SosPmApcString:
+        apc_end();
+        break;
+    default:
+        break;
+    }
 
-        // early out for displayable characters
-        if (!getMode(MODE_Sixel) && getMode(MODE_Ansi) && tokenBufferPos == 0 && cc >= 32 && cc != (ESC + 128)) {
-            _currentScreen->displayCharacter(applyCharset(cc));
-            continue;
-        }
+    _state = newState;
+}
 
-        if (!getMode(MODE_Sixel) && ces(CTL)) {
-            // ignore control characters in the text part of osc (aka OSC) "ESC]"
-            // escape sequences; this matches what XTERM docs say
-            // Allow BEL and ESC here, it will either end the text or be removed later.
-            if ((osc || apc) && cc != 0x1b && cc != 0x07) {
-                continue;
-            }
-
-            if (!osc && !apc) {
-                // DEC HACK ALERT! Control Characters are allowed *within* esc sequences in VT100
-                // This means, they do neither a resetTokenizer() nor a pushToToken(). Some of them, do
-                // of course. Guess this originates from a weakly layered handling of the X-on
-                // X-off protocol, which comes really below this level.
-                if (cc == CNTL('X') || cc == CNTL('Z') || cc == ESC) {
-                    resetTokenizer(); // VT100: CAN or SUB
-                }
-                if (cc != ESC) {
-                    processToken(token_ctl(cc + '@'), 0, 0);
-                    continue;
-                }
-            }
-        }
-        // advance the state
-        addToCurrentToken(cc);
-
-        uint *s = tokenBuffer;
-        const int p = tokenBufferPos;
-
-        if (getMode(MODE_Sixel) && processSixel(cc)) {
-            continue;
-        }
-
-        if (getMode(MODE_Ansi)) {
-            if (lec(1, 0, ESC)) {
-                continue;
-            }
-            if (lec(1, 0, ESC + 128)) {
-                s[0] = ESC;
-                receiveChars(QVector<uint>{'['});
-                continue;
-            }
-            if (les(2, 1, GRP)) {
-                continue;
-            }
-            // Operating System Command
-            if (p > 2 && s[1] == ']') {
-                // <ESC> ']' ... <ESC> '\'
-                if (s[p - 2] == ESC && s[p - 1] == '\\') {
-                    // This runs two times per link, the first prepares the link to be read,
-                    // the second finalizes it. The escape sequence is in two parts
-                    //  start: '\e ] 8 ; <id-path> ; <url-part> \e \\'
-                    //  end:   '\e ] 8 ; ; \e \\'
-                    // GNU libtextstyle inserts the IDs, for instance; many examples
-                    // do not.
-                    if (s[2] == XTERM_EXTENDED::URL_LINK) {
-                        // printf '\e]8;;https://example.com\e\\This is a link\e]8;;\e\\\n'
-                        _currentScreen->urlExtractor()->toggleUrlInput();
-                    }
-                    processSessionAttributeRequest(p - 1);
-                    resetTokenizer();
-                    continue;
-                }
-                // <ESC> ']' ... <ESC> + one character for reprocessing
-                if (s[p - 2] == ESC) {
-                    processSessionAttributeRequest(p - 1);
-                    resetTokenizer();
-                    receiveChars(QVector<uint>{cc});
-                    continue;
-                }
-                // <ESC> ']' ... <BEL>
-                if (s[p - 1] == 0x07) {
-                    processSessionAttributeRequest(p);
-                    resetTokenizer();
-                    continue;
-                }
-                // Special case: iterm file protocol is a long escape sequence
-                if (tokenState == -1) {
-                    tokenStateChange = "1337;File=:";
-                    tokenState = 0;
-                }
-                if (tokenState >= 0) {
-                    if ((uint)tokenStateChange[tokenState] == s[p - 1]) {
-                        tokenState++;
-                        tokenPos = p;
-                        if ((uint)tokenState == strlen(tokenStateChange)) {
-                            tokenState = -2;
-                            tokenData.clear();
-                        }
-                        continue;
-                    }
-                } else if (tokenState == -2) {
-                    if (p - tokenPos == 4) {
-                        tokenData.append(QByteArray::fromBase64(QString::fromUcs4(&tokenBuffer[tokenPos], 4).toLocal8Bit()));
-                        tokenBufferPos -= 4;
-                        continue;
-                    }
-                }
-            }
-            // Application Program Command
-            if (p > 2 && s[1] == '_') {
-                // <ESC> '_' ... <ESC> '\'
-                if (p > 3 && s[2] == 'G') {
-                    if (tokenState == -1) {
-                        tokenStateChange = ";";
-                        tokenState = 0;
-                    } else if (tokenState >= 0) {
-                        if ((uint)tokenStateChange[tokenState] == s[p - 1]) {
-                            tokenState++;
-                            tokenPos = p;
-                            if ((uint)tokenState == strlen(tokenStateChange)) {
-                                tokenState = -2;
-                                tokenData.clear();
-                            }
-                            continue;
-                        }
-                    } else if (tokenState == -2) {
-                        if (p - tokenPos == 4) {
-                            tokenData.append(QByteArray::fromBase64(QString::fromUcs4(&tokenBuffer[tokenPos], 4).toLocal8Bit()));
-                            tokenBufferPos -= 4;
-                            continue;
-                        }
-                    }
-                }
-                if (s[p - 1] == 0x07 || (s[p - 2] == ESC && s[p - 1] == '\\')) {
-                    if (s[2] == 'G') {
-                        // Graphics command
-                        processGraphicsToken(p);
-                    }
-                    resetTokenizer();
-                    continue;
-                }
-            }
-
-            /* clang-format off */
-        // <ESC> ']' ...
-        if (osc         ) { continue; }
-        if (apc         ) { continue; }
-        if (p >= 3 && s[1] == '[') { // parsing a CSI sequence
-            if (lec(3,2,'?')) { continue; }
-            if (lec(3,2,'=')) { continue; }
-            if (lec(3,2,'>')) { continue; }
-            if (lec(3,2,'!')) { continue; }
-            if (lec(3,2,SP )) { continue; }
-            if (lec(4,3,SP )) { continue; }
-            if (eps(    CPN)) { processToken(token_csi_pn(cc), argv[0],argv[1]);  resetTokenizer(); continue; }
-
-            // resize = \e[8;<row>;<col>t
-            if (eps(CPS)) {
-                processToken(token_csi_ps(cc, argv[0]), argv[1], argv[2]);
-                resetTokenizer();
-                continue;
-            }
-
-            if (epe(   )) { processToken(token_csi_pe(cc), 0, 0); resetTokenizer(); continue; }
-
-            if (esp (   )) { processToken(token_csi_sp(cc), 0, 0);           resetTokenizer(); continue; }
-            if (epsp(   )) { processToken(token_csi_psp(cc, argv[0]), 0, 0); resetTokenizer(); continue; }
-
-            if (ees(DIG)) { addDigit(cc-'0'); continue; }
-            if (eec(';')) { addArgument();    continue; }
-            if (ees(INT)) { continue; }
-            if (p >= 3 && cc == 'y' && s[p - 2] == '*') { processChecksumRequest(argc, argv); resetTokenizer(); continue; }
-            for (int i = 0; i <= argc; i++) {
-                if (epp()) {
-                    processToken(token_csi_pr(cc,argv[i]), i, 0);
-                } else if (eeq()) {
-                    processToken(token_csi_pq(cc), 0, 0); // spec. case for ESC[=0c or ESC[=c
-                } else if (egt()) {
-                    processToken(token_csi_pg(cc), 0, 0); // spec. case for ESC[>0c or ESC[>c
-                } else if (cc == 'm' && argc - i >= 4 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 2)
-                {
-                    // ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
-                    i += 2;
-                    processToken(token_csi_ps(cc, argv[i-2]), COLOR_SPACE_RGB, (argv[i] << 16) | (argv[i+1] << 8) | argv[i+2]);
-                    i += 2;
-                } else if (cc == 'm' && argc - i >= 2 && (argv[i] == 38 || argv[i] == 48) && argv[i+1] == 5) {
-                    // ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
-                    i += 2;
-                    processToken(token_csi_ps(cc, argv[i-2]), COLOR_SPACE_256, argv[i]);
-                } else if (p < 2 || (charClass[s[p-2]] & (INT)) != (INT)) {
-                    processToken(token_csi_ps(cc,argv[i]), 0, 0);
-                }
-            }
-        } else {
-            if (dcs) {
-                // Check for Sixel DCS q
-                if (p > 2 && cc == 'q') {
-                    setMode(MODE_Sixel);
-                    // This parameter appears to be ignored
-                    // m_preserveBackground = argv[2] == 1;
-                    resetTokenizer();
-                }
-                if (ccc(DIG)) { addDigit(cc-'0');}
-                if (cc == ';') { addArgument();}
-                continue;
-            }
-            if (lec(2,0,ESC)) { processToken(token_esc(s[1]), 0, 0);              resetTokenizer(); continue; }
-            if (les(3,1,SCS)) { processToken(token_esc_cs(s[1],s[2]), 0, 0);      resetTokenizer(); continue; }
-            if (lec(3,1,'#')) { processToken(token_esc_de(s[2]), 0, 0);           resetTokenizer(); continue; }
-        }
-        resetTokenizer();
-        /* clang-format on */
-        } else {
-            // VT52 Mode
-            if (lec(1, 0, ESC)) {
-                continue;
-            }
-            if (les(1, 0, CHR)) {
-                processToken(token_chr(), s[0], 0);
-                resetTokenizer();
-                continue;
-            }
-            if (lec(2, 1, 'Y')) {
-                continue;
-            }
-            if (lec(3, 1, 'Y')) {
-                continue;
-            }
-            if (p < 4) {
-                processToken(token_vt52(s[1]), 0, 0);
-                resetTokenizer();
-                continue;
-            }
-            processToken(token_vt52(s[1]), s[2], s[3]);
-            resetTokenizer();
-            continue;
+void Vt102Emulation::esc_dispatch(const uint cc)
+{
+    if (_ignore)
+        return;
+    if (_nIntermediate == 0) {
+        processToken(token_esc(cc), 0, 0);
+    } else if (_nIntermediate == 1) {
+        const uint intermediate = _intermediate[0];
+        if ((charClass[intermediate] & SCS) == SCS) {
+            processToken(token_esc_cs(intermediate, cc), 0, 0);
+        } else if (intermediate == '#') {
+            processToken(token_esc_de(cc), 0, 0);
         }
     }
 }
 
-void Vt102Emulation::processChecksumRequest([[maybe_unused]] int argc, int argv[])
+void Vt102Emulation::clear()
+{
+    _nIntermediate = 0;
+    _ignore = false;
+    resetTokenizer();
+}
+
+#define MAX_INTERMEDIATES 1
+void Vt102Emulation::collect(const uint cc)
+{
+    addToCurrentToken(cc);
+    if (cc > 0x30)
+        return;
+    if (_nIntermediate >= MAX_INTERMEDIATES) {
+        _ignore = true;
+        return;
+    }
+    _intermediate[_nIntermediate++] = cc;
+}
+
+void Vt102Emulation::param(const uint cc)
+{
+    addToCurrentToken(cc);
+    if ((charClass[cc] & DIG) == DIG) {
+        addDigit(cc - '0');
+    } else if (cc == ';') {
+        addArgument();
+    } else if (cc == ':') {
+        addSub();
+    }
+}
+
+void Vt102Emulation::csi_dispatch(const uint cc)
+{
+    if (_ignore || (params.hasSubParams && cc != 'm')) // Be conservative for now
+        return;
+    if ((tokenBufferPos == 0 || (tokenBuffer[0] != '?' && tokenBuffer[0] != '!' && tokenBuffer[0] != '=' && tokenBuffer[0] != '>')) && cc < 256
+        && (charClass[cc] & CPN) == CPN && _nIntermediate == 0) {
+        processToken(token_csi_pn(cc), params.value[0], params.value[1]);
+    } else if ((tokenBufferPos == 0 || (tokenBuffer[0] != '?' && tokenBuffer[0] != '!' && tokenBuffer[0] != '=' && tokenBuffer[0] != '>')) && cc < 256
+               && (charClass[cc] & CPS) == CPS && _nIntermediate == 0) {
+        processToken(token_csi_ps(cc, params.value[0]), params.value[1], params.value[2]);
+    } else if (tokenBufferPos != 0 && tokenBuffer[0] == '!') {
+        processToken(token_csi_pe(cc), 0, 0);
+    } else if (_nIntermediate == 1 && _intermediate[0] == ' ') {
+        if (tokenBufferPos == 1) {
+            processToken(token_csi_sp(cc), 0, 0);
+        } else {
+            processToken(token_csi_psp(cc, params.value[0]), 0, 0);
+        }
+    } else if (cc == 'y' && _nIntermediate == 1 && _intermediate[0] == '*') {
+        processChecksumRequest(params.count, params.value);
+    } else {
+        for (int i = 0; i <= params.count; i++) {
+            if (tokenBufferPos != 0 && tokenBuffer[0] == '?') {
+                processToken(token_csi_pr(cc, params.value[i]), i, 0);
+            } else if (tokenBufferPos != 0 && tokenBuffer[0] == '=') {
+                processToken(token_csi_pq(cc), 0, 0);
+            } else if (tokenBufferPos != 0 && tokenBuffer[0] == '>') {
+                processToken(token_csi_pg(cc), 0, 0);
+            } else if (cc == 'm' && !params.sub[i].count && params.count - i >= 4 && (params.value[i] == 38 || params.value[i] == 48)
+                       && params.value[i + 1] == 2) {
+                // ESC[ ... 48;2;<red>;<green>;<blue> ... m -or- ESC[ ... 38;2;<red>;<green>;<blue> ... m
+                i += 2;
+                processToken(token_csi_ps(cc, params.value[i - 2]),
+                             COLOR_SPACE_RGB,
+                             (params.value[i] << 16) | (params.value[i + 1] << 8) | params.value[i + 2]);
+                i += 2;
+            } else if (cc == 'm' && params.sub[i].count >= 5 && (params.value[i] == 38 || params.value[i] == 48) && params.sub[i].value[1] == 2) {
+                // ESC[ ... 48:2:<id>:<red>:<green>:<blue> ... m -or- ESC[ ... 38:2:<id>:<red>:<green>:<blue> ... m
+                processToken(token_csi_ps(cc, params.value[i]),
+                             COLOR_SPACE_RGB,
+                             (params.sub[i].value[3] << 16) | (params.sub[i].value[4] << 8) | params.sub[i].value[5]);
+            } else if (cc == 'm' && params.sub[i].count == 4 && (params.value[i] == 38 || params.value[i] == 48) && params.sub[i].value[1] == 2) {
+                // ESC[ ... 48:2:<red>:<green>:<blue> ... m -or- ESC[ ... 38:2:<red>:<green>:<blue> ... m
+                processToken(token_csi_ps(cc, params.value[i]),
+                             COLOR_SPACE_RGB,
+                             (params.sub[i].value[2] << 16) | (params.sub[i].value[3] << 8) | params.sub[i].value[4]);
+            } else if (cc == 'm' && !params.sub[i].count && params.count - i >= 2 && (params.value[i] == 38 || params.value[i] == 48)
+                       && params.value[i + 1] == 5) {
+                // ESC[ ... 48;5;<index> ... m -or- ESC[ ... 38;5;<index> ... m
+                i += 2;
+                processToken(token_csi_ps(cc, params.value[i - 2]), COLOR_SPACE_256, params.value[i]);
+            } else if (cc == 'm' && params.sub[i].count >= 2 && (params.value[i] == 38 || params.value[i] == 48) && params.sub[i].value[1] == 5) {
+                // ESC[ ... 48:5:<index> ... m -or- ESC[ ... 38:5:<index> ... m
+                processToken(token_csi_ps(cc, params.value[i]), COLOR_SPACE_256, params.sub[i].value[2]);
+            } else if (_nIntermediate == 0) {
+                processToken(token_csi_ps(cc, params.value[i]), 0, 0);
+            }
+        }
+    }
+}
+
+void Vt102Emulation::osc_start()
+{
+    tokenBufferPos = 0;
+}
+
+void Vt102Emulation::osc_put(const uint cc)
+{
+    addToCurrentToken(cc);
+
+    // Special case: iterm file protocol is a long escape sequence
+    if (tokenState == -1) {
+        tokenStateChange = "1337;File=:";
+        tokenState = 0;
+    }
+    if (tokenState >= 0) {
+        if ((uint)tokenStateChange[tokenState] == tokenBuffer[tokenBufferPos - 1]) {
+            tokenState++;
+            tokenPos = tokenBufferPos;
+            if ((uint)tokenState == strlen(tokenStateChange)) {
+                tokenState = -2;
+                tokenData.clear();
+            }
+            return;
+        }
+    } else if (tokenState == -2) {
+        if (tokenBufferPos - tokenPos == 4) {
+            tokenData.append(QByteArray::fromBase64(QString::fromUcs4(&tokenBuffer[tokenPos], 4).toLocal8Bit()));
+            tokenBufferPos -= 4;
+            return;
+        }
+    }
+}
+
+void Vt102Emulation::osc_end(const uint cc)
+{
+    // This runs two times per link, the first prepares the link to be read,
+    // the second finalizes it. The escape sequence is in two parts
+    //  start: '\e ] 8 ; <id-path> ; <url-part> \e \\'
+    //  end:   '\e ] 8 ; ; \e \\'
+    // GNU libtextstyle inserts the IDs, for instance; many examples
+    // do not.
+    if (tokenBuffer[0] == XTERM_EXTENDED::URL_LINK) {
+        // printf '\e]8;;https://example.com\e\\This is a link\e]8;;\e\\\n'
+        emit toggleUrlExtractionRequest();
+    }
+
+    processSessionAttributeRequest(tokenBufferPos, cc);
+}
+
+void Vt102Emulation::put(const uint cc)
+{
+    if (m_SixelPictureDefinition && cc >= 0x21) {
+        addToCurrentToken(cc);
+        processSixel(cc);
+    }
+}
+
+void Vt102Emulation::hook(const uint cc)
+{
+    if (cc == 'q' && _nIntermediate == 0) {
+        m_SixelPictureDefinition = true;
+        resetTokenizer();
+    }
+}
+
+void Vt102Emulation::unhook()
+{
+    m_SixelPictureDefinition = false;
+    SixelModeDisable();
+    resetTokenizer();
+}
+
+void Vt102Emulation::apc_start(const uint cc)
+{
+    tokenBufferPos = 0;
+    if (cc == 0x9F || cc == 0x5F) {
+        _sosPmApc = Apc;
+    } else if (cc == 0x9E || cc == 0x5E) {
+        _sosPmApc = Pm;
+    } else {
+        // 0x98, 0x58
+        _sosPmApc = Sos;
+    }
+}
+
+void Vt102Emulation::apc_put(const uint cc)
+{
+    if (_sosPmApc != Apc) {
+        return;
+    }
+
+    addToCurrentToken(cc);
+
+    // <ESC> '_' ... <ESC> '\'
+    if (tokenBufferPos > 1 && tokenBuffer[0] == 'G') {
+        if (tokenState == -1) {
+            tokenStateChange = ";";
+            tokenState = 0;
+        } else if (tokenState >= 0) {
+            if ((uint)tokenStateChange[tokenState] == tokenBuffer[tokenBufferPos - 1]) {
+                tokenState++;
+                tokenPos = tokenBufferPos;
+                if ((uint)tokenState == strlen(tokenStateChange)) {
+                    tokenState = -2;
+                    tokenData.clear();
+                }
+            }
+        } else if (tokenState == -2) {
+            if (tokenBufferPos - tokenPos == 4) {
+                tokenData.append(QByteArray::fromBase64(QString::fromUcs4(&tokenBuffer[tokenPos], 4).toLocal8Bit()));
+                tokenBufferPos -= 4;
+            }
+        }
+    }
+}
+
+void Vt102Emulation::apc_end()
+{
+    if (_sosPmApc == Apc && tokenBuffer[0] == 'G') {
+        // Graphics command
+        processGraphicsToken(tokenBufferPos);
+        resetTokenizer();
+    }
+}
+
+void Vt102Emulation::receiveChars(const QVector<uint> &chars)
+{
+    for (uint cc : chars) {
+        // early out for displayable characters
+        if (_state == Ground && ((cc >= 0x20 && cc <= 0x7E) || cc >= 0xA0)) {
+            _currentScreen->displayCharacter(applyCharset(cc));
+            continue;
+        }
+
+        if (getMode(MODE_Ansi)) {
+            // First, process characters that act the same on all states, i.e.
+            // coming from "anywhere" in the VT100.net diagram.
+            if (cc == 0x1B) {
+                switchState(Escape, cc);
+                clear();
+            } else if (cc == 0x9B) {
+                switchState(CsiEntry, cc);
+                clear();
+            } else if (cc == 0x90) {
+                switchState(DcsEntry, cc);
+                clear();
+            } else if (cc == 0x9D) {
+                osc_start();
+                switchState(OscString, cc);
+            } else if (cc == 0x98 || cc == 0x9E || cc == 0x9F) {
+                apc_start(cc);
+                switchState(SosPmApcString, cc);
+            } else if (cc == 0x18 || cc == 0x1A || (cc >= 0x80 && cc <= 0x9A)) { // 0x90, 0x98 taken care of just above.
+                // konsole has always ignored CAN and SUB in OSC, extend the behavior a bit
+                // this differs from VT240, where 7-bit ST, 8-bit ST, ESC + chr, ***CAN, SUB, C1*** terminate and show SIXEL
+                if (_state != OscString && _state != SosPmApcString && _state != DcsPassthrough) {
+                    processToken(token_ctl(cc + '@'), 0, 0);
+                    switchState(Ground, cc);
+                }
+            } else if (cc == 0x9C) {
+                // no action
+                switchState(Ground, cc);
+
+            } else {
+                // Now take the current state into account
+                switch (_state) {
+                case Ground:
+                    if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else {
+                        // 0x7F is ignored by displayCharacter(), since its Character::width() is -1
+                        _currentScreen->displayCharacter(applyCharset(cc));
+                    }
+                    break;
+                case Escape:
+                    if (cc == 0x5B) {
+                        switchState(CsiEntry, cc);
+                        clear();
+                    } else if ((cc >= 0x30 && cc <= 0x4F) || (cc >= 0x51 && cc <= 0x57) || (cc >= 0x59 && cc <= 0x5A) || cc == 0x5C
+                               || (cc >= 0x60 && cc <= 0x7E)) {
+                        esc_dispatch(cc);
+                        switchState(Ground, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                        switchState(EscapeIntermediate, cc);
+                    } else if (cc == 0x5D) {
+                        osc_start();
+                        switchState(OscString, cc);
+                    } else if (cc == 0x50) {
+                        switchState(DcsEntry, cc);
+                        clear();
+                    } else if (cc == 0x58 || cc == 0x5E || cc == 0x5F) {
+                        apc_start(cc);
+                        switchState(SosPmApcString, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case EscapeIntermediate:
+                    if (cc >= 0x30 && cc <= 0x7E) {
+                        esc_dispatch(cc);
+                        switchState(Ground, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case CsiEntry:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        csi_dispatch(cc);
+                        switchState(Ground, cc);
+                    } else if (cc >= 0x30 && cc <= 0x3B) { // recognize 0x3A as part of params
+                        param(cc);
+                        switchState(CsiParam, cc);
+                    } else if (cc >= 0x3C && cc <= 0x3F) {
+                        collect(cc);
+                        switchState(CsiParam, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                        switchState(CsiIntermediate, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case CsiParam:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        csi_dispatch(cc);
+                        switchState(Ground, cc);
+                    } else if (cc >= 0x30 && cc <= 0x3B) { // recognize 0x3A as part of params
+                        param(cc);
+                    } else if (cc >= 0x3C && cc <= 0x3F) {
+                        switchState(CsiIgnore, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                        switchState(CsiIntermediate, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case CsiIntermediate:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        csi_dispatch(cc);
+                        switchState(Ground, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                    } else if (cc >= 0x30 && cc <= 0x3F) {
+                        switchState(CsiIgnore, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case CsiIgnore:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        switchState(Ground, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if ((/*cc >= 0x20 && */ cc <= 0x3F) || cc == 0x7F) { // cc <= 0x1F taking care of just above
+                        // ignore
+                    }
+                    break;
+                case DcsEntry:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        hook(cc);
+                        switchState(DcsPassthrough, cc);
+                    } else if (cc >= 0x30 && cc <= 0x3B) { // recognize 0x3A as part of params
+                        param(cc);
+                        switchState(DcsParam, cc);
+                    } else if (cc >= 0x3C && cc <= 0x3F) {
+                        collect(cc);
+                        switchState(DcsParam, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                        switchState(DcsIntermediate, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case DcsParam:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        hook(cc);
+                        switchState(DcsPassthrough, cc);
+                    } else if (cc >= 0x30 && cc <= 0x3B) { // recognize 0x3A as part of params
+                        param(cc);
+                    } else if (cc >= 0x3C && cc <= 0x3F) {
+                        switchState(DcsIgnore, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                        switchState(DcsIntermediate, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case DcsIntermediate:
+                    if (cc >= 0x40 && cc <= 0x7E) {
+                        hook(cc);
+                        switchState(DcsPassthrough, cc);
+                    } else if (cc >= 0x20 && cc <= 0x2F) {
+                        collect(cc);
+                    } else if (cc >= 0x30 && cc <= 0x3F) {
+                        switchState(DcsIgnore, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of.
+                        processToken(token_ctl(cc + '@'), 0, 0);
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case DcsPassthrough:
+                    if (cc <= 0x7E || cc >= 0xA0) { // 0x18, 0x1A, 0x1B already taken care of
+                        put(cc);
+                    // 0x9C already taken care of.
+                    } else if (cc == 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case DcsIgnore:
+                    // 0x9C already taken care of.
+                    if (cc <= 0x7F) {
+                        // ignore
+                    }
+                    break;
+                case OscString:
+                    if ((cc >= 0x20 && cc <= 0x7F) || cc >= 0xA0) {
+                        osc_put(cc);
+                    } else if (cc == 0x07 // recognize BEL as OSC terminator
+                               || cc == 0x9C) {
+                        switchState(Ground, cc);
+                    } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B already taken care of. 0x07 taken care of just above.
+                        // ignore
+                    }
+                    break;
+                case SosPmApcString:
+                    if (cc <= 0x7F || cc >= 0xA0) { // 0x18, 0x1A, 0x1B already taken care of.
+                        apc_put(cc); // while the vt100.net diagram has ignore here, konsole does process some APCs (kitty images).
+                    }
+                    // 0x9C already taken care of.
+                    break;
+                default:
+                    break;
+                }
+            }
+        } else {
+            // VT52 Mode
+
+            // First, process characters that act the same on all states
+            if (cc == 0x18 || cc == 0x1A) {
+                processToken(token_ctl(cc + '@'), 0, 0);
+                switchState(Ground, cc);
+            } else if (cc == 0x1B) {
+                switchState(Vt52Escape, cc);
+            } else if (cc <= 0x1F) { // 0x18, 0x1A, 0x1B taken care of just above
+                processToken(token_ctl(cc + '@'), 0, 0);
+            } else {
+                // Now take the current state into account
+                switch (_state) {
+                case Ground:
+                    _currentScreen->displayCharacter(applyCharset(cc));
+                    break;
+                case Vt52Escape:
+                    if (cc == 'Y') {
+                        switchState(Vt52CupRow, cc);
+                    } else if ((cc >= 0x20 && cc <= 'X') || (cc >= 'Z' && cc <= 0x7F)) {
+                        processToken(token_vt52(cc), 0, 0);
+                        switchState(Ground, cc);
+                    }
+                    break;
+                case Vt52CupRow:
+                    tokenBuffer[0] = cc;
+                    switchState(Vt52CupColumn, cc);
+                    break;
+                case Vt52CupColumn:
+                    processToken(token_vt52('Y'), tokenBuffer[0], cc);
+                    switchState(Ground, cc);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void Vt102Emulation::processChecksumRequest([[maybe_unused]] int crargc, int crargv[])
 {
     int checksum = 0;
 
-#if defined(ENABLE_DECRQCRA)
+#if ENABLE_DECRQCRA
     int top, left, bottom, right;
 
     /* DEC STD-070 5-179 "If Pp is 0 or omitted, subsequent parameters are ignored
      *  and a checksum for all page memory will be reported."
      */
-    if (argv[1] == 0) {
-        argc = 1;
+    if (crargv[1] == 0) {
+        crargc = 1;
     }
     /* clang-format off */
-    if (argc >= 2) { top    = argv[2]; } else { top    = 1; }
-    if (argc >= 3) { left   = argv[3]; } else { left   = 1; }
-    if (argc >= 4) { bottom = argv[4]; } else { bottom = _currentScreen->getLines();   }
-    if (argc >= 5) { right  = argv[5]; } else { right  = _currentScreen->getColumns(); }
+    if (crargc >= 2) { top    = crargv[2]; } else { top    = 1; }
+    if (crargc >= 3) { left   = crargv[3]; } else { left   = 1; }
+    if (crargc >= 4) { bottom = crargv[4]; } else { bottom = _currentScreen->getLines();   }
+    if (crargc >= 5) { right  = crargv[5]; } else { right  = _currentScreen->getColumns(); }
     /* clang-format on */
 
     if (top > bottom || left > right) {
@@ -693,23 +1004,19 @@ void Vt102Emulation::processChecksumRequest([[maybe_unused]] int argc, int argv[
     char tmp[30];
     checksum = -checksum;
     checksum &= 0xffff;
-    snprintf(tmp, sizeof(tmp), "\033P%d!~%04X\033\\", argv[0], checksum);
+    snprintf(tmp, sizeof(tmp), "\033P%d!~%04X\033\\", crargv[0], checksum);
     sendString(tmp);
 }
 
-void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
+void Vt102Emulation::processSessionAttributeRequest(const int tokenSize, const uint terminator)
 {
     // Describes the window or terminal session attribute to change
     // See Session::SessionAttributes for possible values
     int attribute = 0;
     int i;
 
-    // ignore last character (ESC or BEL)
-    --tokenSize;
-
     /* clang-format off */
-    // skip first two characters (ESC, ']')
-    for (i = 2; i < tokenSize &&
+    for (i = 0; i < tokenSize &&
                 tokenBuffer[i] >= '0'  &&
                 tokenBuffer[i] <= '9'; i++)
     {
@@ -718,37 +1025,49 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
     /* clang-format on */
 
     if (tokenBuffer[i] != ';') {
-        reportDecodingError();
+        reportDecodingError(token_osc(terminator));
         return;
     }
     // skip initial ';'
     ++i;
 
     QString value = QString::fromUcs4(&tokenBuffer[i], tokenSize - i);
-    if (_currentScreen->urlExtractor()->reading()) {
+    if (_currentScreen->urlExtractor() && _currentScreen->urlExtractor()->reading()) {
         // To handle '\e ] 8 ; <id-part> ; <url-part>' we discard
         // the <id-part>. Often it is empty, but GNU libtextstyle
         // may output an id here, see e.g.
         // https://www.gnu.org/software/gettext/libtextstyle/manual/libtextstyle.html#index-styled_005fostream_005fset_005fhyperlink
-        value.remove(0, value.indexOf(QLatin1Char(';'))+1);
+        value.remove(0, value.indexOf(QLatin1Char(';')) + 1);
         _currentScreen->urlExtractor()->setUrl(value);
         return;
     }
 
     if (attribute == 133) {
-        if (value == QLatin1String("A")) {
-            _currentScreen->setLineProperty(LINE_PROMPT_START, true);
+        if (value[0] == L'A' || value[0] == L'N' || value[0] == L'P') {
+            _currentScreen->setReplMode(REPL_PROMPT);
+        }
+        if (value[0] == L'L' && _currentScreen->getCursorX() > 0) {
+            _currentScreen->nextLine();
+        }
+        if (value[0] == L'B') {
+            _currentScreen->setReplMode(REPL_INPUT);
+        }
+        if (value[0] == L'C') {
+            _currentScreen->setReplMode(REPL_OUTPUT);
+        }
+        if (value[0] == L'D') {
+            _currentScreen->setReplMode(REPL_None);
         }
     }
     if (attribute == 4) {
         // RGB colors
         QStringList params = value.split(QLatin1Char(';'));
-        for (int i = 0; i < params.length(); i += 2) {
-            if (params.length() == i + 1) {
+        for (int j = 0; j < params.length(); j += 2) {
+            if (params.length() == j + 1) {
                 return;
             }
-            int c = params[i].toInt();
-            if (params[i + 1] == QLatin1String("?")) {
+            int c = params[j].toInt();
+            if (params[j + 1] == QLatin1String("?")) {
                 QColor color = colorTable[c];
                 if (!color.isValid()) {
                     color = CharacterColor(COLOR_SPACE_256, c).color(ColorScheme::defaultTable);
@@ -764,8 +1083,8 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
     if (attribute == 104) {
         // RGB colors
         QStringList params = value.split(QLatin1Char(';'));
-        for (int i = 0; i < params.length(); i++) {
-            int c = params[i].toInt();
+        for (int k = 0; k < params.length(); k++) {
+            int c = params[k].toInt();
             colorTable[c] = QColor();
         }
     }
@@ -773,17 +1092,13 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
     if (value == QLatin1String("?")) {
         // pass terminator type indication here, because OSC response terminator
         // should match the terminator of OSC request.
-        Q_EMIT sessionAttributeRequest(attribute, tokenBuffer[tokenSize]);
+        Q_EMIT sessionAttributeRequest(attribute, terminator);
         return;
     }
 
     if (attribute == Session::ProfileChange) {
         if (value.startsWith(QLatin1String("CursorShape="))) {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             const auto numStr = QStringView(value).right(1);
-#else
-            const auto numStr = value.rightRef(1);
-#endif
             const Enum::CursorShapeEnum shape = static_cast<Enum::CursorShapeEnum>(numStr.toInt());
             Q_EMIT setCursorStyleRequest(shape);
             return;
@@ -791,6 +1106,10 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
     }
 
     if (attribute == 1337) {
+        if (value.startsWith(QLatin1String("ReportCellSize"))) {
+            iTermReportCellSize();
+            return;
+        }
         if (!value.startsWith(QLatin1String("File="))) {
             return;
         }
@@ -822,7 +1141,7 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
                 }
                 if (var == QLatin1String("width")) {
                     int unitPos = val.toStdString().find_first_not_of("0123456789");
-                    scaledWidth = val.midRef(0, unitPos).toInt();
+                    scaledWidth = QStringView(val).mid(0, unitPos).toInt();
                     if (unitPos == -1) {
                         scaledWidth *= _currentScreen->currentTerminalDisplay()->terminalFont()->fontWidth();
                     } else {
@@ -833,7 +1152,7 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
                 }
                 if (var == QLatin1String("height")) {
                     int unitPos = val.toStdString().find_first_not_of("0123456789");
-                    scaledHeight = val.midRef(0, unitPos).toInt();
+                    scaledHeight = QStringView(val).mid(0, unitPos).toInt();
                     if (unitPos == -1) {
                         scaledHeight *= _currentScreen->currentTerminalDisplay()->terminalFont()->fontHeight();
                     } else {
@@ -845,7 +1164,7 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
             }
         }
 
-        QPixmap pixmap = QPixmap();
+        QPixmap pixmap;
         pixmap.loadFromData(tokenData);
         tokenData.clear();
         if (pixmap.isNull()) {
@@ -1320,7 +1639,7 @@ void Vt102Emulation::processToken(int token, int p, int q)
     case token_vt52('>'      ) :        resetMode      (MODE_AppKeyPad); break; //VT52
 
     default:
-        reportDecodingError();
+        reportDecodingError(token);
         break;
     }
     /* clang-format on */
@@ -1333,16 +1652,16 @@ void delete_func(void *p)
 
 void Vt102Emulation::processGraphicsToken(int tokenSize)
 {
-    QString value = QString::fromUcs4(&tokenBuffer[3], tokenSize - 4);
+    QString value = QString::fromUcs4(&tokenBuffer[1], tokenSize - 1);
     QStringList list;
-    QImage *image = nullptr;
+    QPixmap pixmap;
 
     int dataPos = value.indexOf(QLatin1Char(';'));
     if (dataPos == -1) {
-        dataPos = value.size() - 1;
+        dataPos = value.size();
     }
     if (dataPos > 1024) {
-        reportDecodingError();
+        reportDecodingError(token_apc('G'));
         return;
     }
     list = value.mid(0, dataPos).split(QLatin1Char(','));
@@ -1375,11 +1694,11 @@ void Vt102Emulation::processGraphicsToken(int tokenSize)
 
     for (int i = 0; i < list.size(); i++) {
         if (list.at(i).at(1).toLatin1() != '=') {
-            reportDecodingError();
+            reportDecodingError(token_apc('G'));
             return;
         }
         if (list.at(i).at(2).isNumber() || list.at(i).at(2).toLatin1() == '-') {
-            keys[list.at(i).at(0).toLatin1()] = list.at(i).midRef(2).toInt();
+            keys[list.at(i).at(0).toLatin1()] = QStringView(list.at(i)).mid(2).toInt();
         } else {
             keys[list.at(i).at(0).toLatin1()] = list.at(i).at(2).toLatin1();
         }
@@ -1406,68 +1725,40 @@ void Vt102Emulation::processGraphicsToken(int tokenSize)
             imageId = 0;
             savedKeys = QMap<char, qint64>();
             QByteArray out;
+
+            uint32_t byteCount = 0;
+            if (keys['f'] == 24 || keys['f'] == 32) {
+                int bpp = keys['f'] / 8;
+                byteCount = bpp * keys['s'] * keys['v'];
+            } else {
+                byteCount = 8 * 1024 * 1024;
+            }
+
             if (keys['o'] == 'z') {
-                int alloc;
-                unsigned char *data = (unsigned char *)imageData.constData();
-                z_stream stream;
-                int ret;
-                if (keys['f'] == 24 || keys['f'] == 32) {
-                    int bpp = keys['f'] / 8;
-                    alloc = bpp * keys['s'] * keys['v'];
-                } else {
-                    alloc = 8 * 1024 * 1024;
-                }
-                out.resize(alloc);
-
-                /* allocate inflate state */
-                stream.zalloc = (alloc_func)Z_NULL;
-                stream.zfree = (free_func)Z_NULL;
-                stream.opaque = (voidpf)Z_NULL;
-                stream.avail_in = imageData.size();
-                stream.next_in = (Bytef *)data;
-                stream.avail_out = out.size();
-                stream.next_out = (Bytef *)out.constData();
-                stream.total_out = 0;
-                stream.total_in = 0;
-
-                ret = inflateInit(&stream);
-                if (ret != Z_OK) {
-                    imageData.clear();
-                    return;
-                }
-                ret = inflate(&stream, Z_FINISH);
-                inflateEnd(&stream);
-                if (ret != Z_OK && ret != Z_STREAM_END) {
-                    imageData.clear();
-                    return;
-                }
+                char header[sizeof byteCount];
+                qToBigEndian(byteCount, header);
+                imageData.prepend(header, sizeof header);
+                out = qUncompress(imageData);
 
                 if (keys['f'] != 24 && keys['f'] != 32) {
-                    imageData.clear();
-                    imageData.append(out);
+                    imageData = out;
                 }
             }
+            if (out.isEmpty()) {
+                out = imageData;
+            }
+
             if (keys['f'] == 24 || keys['f'] == 32) {
-                enum QImage::Format format = keys['f'] == 24 ? QImage::Format_RGB888 : QImage::Format_RGBA8888;
-                QByteArray *pixelData; // Copy of the pixel data (imageData or out) that lives while the image does
-                if (out.isNull()) {
-                    pixelData = new QByteArray(imageData.constData(), imageData.size());
-                } else {
-                    pixelData = new QByteArray(out.constData(), out.size());
+                if (unsigned(out.size()) < byteCount) {
+                    qCWarning(KonsoleDebug) << "Not enough image data" << out.size() << "require" << byteCount;
+                    imageData.clear();
+                    return;
                 }
-                image = new QImage((unsigned char *)pixelData->constData(),
-                                   0 + keys['s'],
-                                   0 + keys['v'],
-                                   0 + keys['s'] * keys['f'] / 8,
-                                   format,
-                                   delete_func,
-                                   pixelData);
+                QImage::Format format = keys['f'] == 24 ? QImage::Format_RGB888 : QImage::Format_RGBA8888;
+                pixmap = QPixmap::fromImage(QImage((const uchar *)out.constData(), 0 + keys['s'], 0 + keys['v'], 0 + keys['s'] * keys['f'] / 8, format));
+                pixmap.detach();
             } else {
-                image = new QImage();
-                if (out.isNull()) {
-                    out = imageData;
-                }
-                image->loadFromData(out);
+                pixmap.loadFromData(out);
             }
 
             if (keys['a'] == 'q') {
@@ -1475,7 +1766,7 @@ void Vt102Emulation::processGraphicsToken(int tokenSize)
                 sendGraphicsReply(params, QString());
             } else {
                 if (keys['i']) {
-                    _graphicsImages[keys['i']] = image;
+                    _graphicsImages[keys['i']] = pixmap;
                 }
                 if (keys['q'] == 0 && keys['a'] == 't') {
                     QString params = QStringLiteral("i=") + QString::number(keys['i']);
@@ -1495,14 +1786,9 @@ void Vt102Emulation::processGraphicsToken(int tokenSize)
     }
     if (keys['a'] == 'p' || (keys['a'] == 'T' && keys['m'] == 0)) {
         if (keys['a'] == 'p') {
-            image = _graphicsImages[keys['i']];
+            pixmap = _graphicsImages[keys['i']];
         }
-        if (image) {
-            QPixmap pixmap = QPixmap::fromImage(*image);
-            if (!keys['i']) {
-                // We did not save the image, so delete it
-                delete image;
-            }
+        if (!pixmap.isNull()) {
             if (keys['x'] || keys['y'] || keys['w'] || keys['h']) {
                 int w = keys['w'] ? keys['w'] : pixmap.width() - keys['x'];
                 int h = keys['h'] ? keys['h'] : pixmap.height() - keys['y'];
@@ -1599,6 +1885,17 @@ void Vt102Emulation::reportPixelSize()
              "\033[4;%d;%dt",
              _currentScreen->currentTerminalDisplay()->terminalFont()->fontHeight() * _currentScreen->getLines(),
              _currentScreen->currentTerminalDisplay()->terminalFont()->fontWidth() * _currentScreen->getColumns());
+    sendString(tmp);
+}
+
+void Vt102Emulation::iTermReportCellSize()
+{
+    char tmp[50];
+    snprintf(tmp,
+             sizeof(tmp),
+             "\033]1337;ReportCellSize=%d.0;%d.0;1.0\007",
+             _currentScreen->currentTerminalDisplay()->terminalFont()->fontHeight(),
+             _currentScreen->currentTerminalDisplay()->terminalFont()->fontWidth());
     sendString(tmp);
 }
 
@@ -1715,11 +2012,64 @@ void Vt102Emulation::reportAnswerBack()
         0 = Mouse button press
         1 = Mouse drag
         2 = Mouse button release
+        3 = Mouse click to move cursor in input field
 */
 
 void Vt102Emulation::sendMouseEvent(int cb, int cx, int cy, int eventType)
 {
     if (cx < 1 || cy < 1) {
+        return;
+    }
+
+    if (eventType == 3) {
+        // We know we are in input mode
+        TerminalDisplay *currentView = _currentScreen->currentTerminalDisplay();
+        bool isReadOnly = false;
+        if (currentView != nullptr && currentView->sessionController() != nullptr) {
+            isReadOnly = currentView->sessionController()->isReadOnly();
+        }
+        auto point = std::make_pair(cy, cx);
+        if (!isReadOnly && _currentScreen->replModeStart() <= point && point <= _currentScreen->replModeEnd()) {
+            KeyboardTranslator::States states = KeyboardTranslator::NoState;
+
+            // get current states
+            if (getMode(MODE_NewLine)) {
+                states |= KeyboardTranslator::NewLineState;
+            }
+            if (getMode(MODE_Ansi)) {
+                states |= KeyboardTranslator::AnsiState;
+            }
+            if (getMode(MODE_AppCuKeys)) {
+                states |= KeyboardTranslator::CursorKeysState;
+            }
+            if (getMode(MODE_AppScreen)) {
+                states |= KeyboardTranslator::AlternateScreenState;
+            }
+            KeyboardTranslator::Entry LRKeys[2] = {_keyTranslator->findEntry(Qt::Key_Left, Qt::NoModifier, states),
+                                                   _keyTranslator->findEntry(Qt::Key_Right, Qt::NoModifier, states)};
+            QVector<LineProperty> lineProperties = _currentScreen->getLineProperties(cy + _currentScreen->getHistLines(), cy + _currentScreen->getHistLines());
+            cx = qMin(cx, LineLength(lineProperties[0]));
+            int cuX = _currentScreen->getCursorX();
+            int cuY = _currentScreen->getCursorY();
+            QByteArray textToSend;
+            if (cuY != cy) {
+                for (int i = abs(cy - cuY); i > 0; i--) {
+                    emulateUpDown(cy < cuY, LRKeys[cy > cuY], textToSend, i == 1 ? cx : -1);
+                    textToSend += LRKeys[cy > cuY].text();
+                }
+            } else {
+                if (cuX < cx) {
+                    for (int i = 0; i < cx - cuX; i++) {
+                        textToSend += LRKeys[1].text();
+                    }
+                } else {
+                    for (int i = 0; i < cuX - cx; i++) {
+                        textToSend += LRKeys[0].text();
+                    }
+                }
+            }
+            Q_EMIT sendData(textToSend);
+        }
         return;
     }
 
@@ -1761,8 +2111,8 @@ void Vt102Emulation::sendMouseEvent(int cb, int cx, int cy, int eventType)
             // coordinate+32, no matter what the locale is. We could easily
             // convert manually, but QString can also do it for us.
             QChar coords[2];
-            coords[0] = cx + 0x20;
-            coords[1] = cy + 0x20;
+            coords[0] = QChar(cx + 0x20);
+            coords[1] = QChar(cy + 0x20);
             QString coordsStr = QString(coords, 2);
             QByteArray utf8 = coordsStr.toUtf8();
             snprintf(command, sizeof(command), "\033[M%c%s", cb + 0x20, utf8.constData());
@@ -1772,6 +2122,33 @@ void Vt102Emulation::sendMouseEvent(int cb, int cx, int cy, int eventType)
     }
 
     sendString(command);
+}
+
+void Vt102Emulation::emulateUpDown(bool up, KeyboardTranslator::Entry entry, QByteArray &textToSend, int toCol)
+{
+    int cuX = _currentScreen->getCursorX();
+    int cuY = _currentScreen->getCursorY();
+    int realX = cuX;
+    QVector<LineProperty> lineProperties = _currentScreen->getLineProperties(cuY - 1 + _currentScreen->getHistLines(),
+                                                                             qMin(_currentScreen->getLines() - 1, cuY + 1) + _currentScreen->getHistLines());
+    int num = _currentScreen->getColumns();
+    if (up) {
+        if ((lineProperties[0] & LINE_WRAPPED) == 0) {
+            num = cuX + qMax(0, LineLength(lineProperties[0]) - cuX) + 1;
+        }
+    } else {
+        if ((lineProperties[1] & LINE_WRAPPED) == 0 || (lineProperties[2] & LINE_WRAPPED) == 0) {
+            realX = qMin(cuX, LineLength(lineProperties[2]) + 1);
+            num = LineLength(lineProperties[1]) - cuX + realX;
+        }
+    }
+    if (toCol > -1) {
+        num += up ? realX - toCol : toCol - realX;
+    }
+    for (int i = 1; i < num; i++) {
+        // One more will be added by the rest of the code.
+        textToSend += entry.text();
+    }
 }
 
 /**
@@ -1832,20 +2209,38 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
             case Qt::Key_S:
                 Q_EMIT flowControlKeyPressed(true);
                 break;
-            case Qt::Key_Q:
-            case Qt::Key_C: // cancel flow control
+            case Qt::Key_C:
+                if (m_SixelStarted) {
+                    SixelModeAbort();
+                }
+
+                // Allow the user to take back control
+                resetTokenizer();
+                Q_EMIT flowControlKeyPressed(false);
+                break;
+            case Qt::Key_Q: // cancel flow control
                 Q_EMIT flowControlKeyPressed(false);
                 break;
             }
         }
     }
-
     // look up key binding
     if (_keyTranslator != nullptr) {
         KeyboardTranslator::Entry entry = _keyTranslator->findEntry(event->key(), modifiers, states);
-
         // send result to terminal
         QByteArray textToSend;
+
+        int cuX = _currentScreen->getCursorX();
+        int cuY = _currentScreen->getCursorY();
+        if ((event->key() == Qt::Key_Up || event->key() == Qt::Key_Down) && _currentScreen->replMode() == REPL_INPUT
+            && _currentScreen->currentTerminalDisplay()->semanticUpDown()) {
+            bool up = event->key() == Qt::Key_Up;
+            if ((up && _currentScreen->replModeStart() <= std::make_pair(cuY - 1, cuX))
+                || (!up && std::make_pair(cuY + 1, cuX) <= _currentScreen->replModeEnd())) {
+                entry = _keyTranslator->findEntry(up ? Qt::Key_Left : Qt::Key_Right, Qt::NoModifier, states);
+                emulateUpDown(up, entry, textToSend);
+            }
+        }
 
         // special handling for the Alt (aka. Meta) modifier.  pressing
         // Alt+[Character] results in Esc+[Character] being sent
@@ -1879,6 +2274,10 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
                     currentView->scrollScreenWindow(ScreenWindow::ScrollLines, -currentView->screenWindow()->currentLine());
                 } else if ((entry.command() & KeyboardTranslator::ScrollDownToBottomCommand) != 0) {
                     currentView->scrollScreenWindow(ScreenWindow::ScrollLines, lineCount());
+                } else if ((entry.command() & KeyboardTranslator::ScrollPromptUpCommand) != 0) {
+                    currentView->scrollScreenWindow(ScreenWindow::ScrollPrompts, -1);
+                } else if ((entry.command() & KeyboardTranslator::ScrollPromptDownCommand) != 0) {
+                    currentView->scrollScreenWindow(ScreenWindow::ScrollPrompts, 1);
                 }
             }
         } else if (!entry.text().isEmpty()) {
@@ -2223,27 +2622,65 @@ static QString hexdump2(uint *s, int len)
     return returnDump;
 }
 
-void Vt102Emulation::reportDecodingError()
+void Vt102Emulation::reportDecodingError(int token)
 {
-    if (tokenBufferPos == 0 || (tokenBufferPos == 1 && (tokenBuffer[0] & 0xff) >= 32)) {
-        return;
+    QString outputError = QStringLiteral("Undecodable sequence: ");
+
+    switch (token & 0xff) {
+    case 2:
+    case 3:
+    case 4:
+        outputError.append(QStringLiteral("ESC "));
+        break;
+    case 5:
+    case 6:
+    case 7:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+        outputError.append(QStringLiteral("CSI "));
+        break;
+    case 14:
+        outputError.append(QStringLiteral("OSC "));
+        break;
+    case 15:
+        outputError.append(QStringLiteral("APC "));
+        break;
+    }
+    if ((token & 0xff) != 8) { // VT52
+        outputError.append(hexdump2(tokenBuffer, tokenBufferPos));
+    } else {
+        outputError.append(QStringLiteral("(VT52) ESC"));
     }
 
-    QString outputError = QStringLiteral("Undecodable sequence: ");
-    outputError.append(hexdump2(tokenBuffer, tokenBufferPos));
+    if ((token & 0xff) != 3) { // SCS
+        outputError.append((token >> 8) & 0xff);
+    } else {
+        outputError.append((token >> 16) & 0xff);
+    }
+
+    qCDebug(KonsoleDebug).noquote() << outputError;
+
+    resetTokenizer();
+
+    if (m_SixelStarted) {
+        SixelModeAbort();
+    }
 }
 
 void Vt102Emulation::sixelQuery(int q)
 {
     char tmp[30];
     if (q == 1) {
-        if (argv[1] == 1 || argv[1] == 4) {
+        if (params.value[1] == 1 || params.value[1] == 4) {
             snprintf(tmp, sizeof(tmp), "\033[?1;0;%dS", MAX_SIXEL_COLORS);
             sendString(tmp);
         }
     }
     if (q == 2) {
-        if (argv[1] == 1 || argv[1] == 4) {
+        if (params.value[1] == 1 || params.value[1] == 4) {
             snprintf(tmp, sizeof(tmp), "\033[?2;0;%d;%dS", MAX_IMAGE_DIM, MAX_IMAGE_DIM);
             sendString(tmp);
         }
@@ -2300,6 +2737,8 @@ void Vt102Emulation::SixelModeAbort()
     if (!m_SixelStarted) {
         return;
     }
+    resetMode(MODE_Sixel);
+    resetTokenizer();
     m_SixelStarted = false;
     m_currentImage = QImage();
 }
@@ -2471,10 +2910,6 @@ void Vt102Emulation::SixelCharacterAdd(uint8_t character, int repeat)
 
 bool Vt102Emulation::processSixel(uint cc)
 {
-    if (cc == ESC) {
-        return false;
-    }
-
     switch (cc) {
     case '$':
         SixelCharacterAdd('\r');
@@ -2491,25 +2926,6 @@ bool Vt102Emulation::processSixel(uint cc)
     uint *s = tokenBuffer;
     const int p = tokenBufferPos;
 
-    if (p == 2 && s[0] == ESC) {
-        switch (s[1]) {
-        case '\\':
-            resetMode(MODE_Sixel);
-            SixelModeDisable();
-            resetTokenizer();
-            return true;
-        case ESC:
-            resetTokenizer();
-            receiveChars(QVector<uint>{s[1]}); // re-send the actual character
-            return true;
-        default:
-            resetMode(MODE_Sixel);
-            SixelModeAbort();
-            resetTokenizer();
-            receiveChars(QVector<uint>{s[0], s[1]}); // re-send the actual character
-            return true;
-        }
-    }
     if (!m_SixelStarted && (sixel() || s[0] == '!' || s[0] == '#')) {
         m_aspect = qMakePair(1, 1);
         SixelModeEnable(30, 6);
@@ -2534,19 +2950,27 @@ bool Vt102Emulation::processSixel(uint cc)
         }
         addArgument();
 
-        if (argc == 4) {
+        if (params.count == 4 || params.count == 2) {
             // We just ignore the pixel aspect ratio, it's dumb
-            // const int pixelWidth = argv[0];
-            // const int pixelHeight = argv[1];
+            // const int pixelWidth = params.value[0];
+            // const int pixelHeight = params.value[1];
 
             if (!m_SixelStarted) {
-                if (argv[1] == 0 || argv[0] == 0) {
+                if (params.value[1] == 0 || params.value[0] == 0) {
                     m_aspect = qMakePair(1, 1);
                 } else {
-                    m_aspect = qMakePair(argv[0], argv[1]);
+                    m_aspect = qMakePair(params.value[0], params.value[1]);
                 }
-                const int width = argv[2];
-                const int height = argv[3];
+                int width;
+                int height;
+                if (params.count == 4) {
+                    width = params.value[2];
+                    height = params.value[3];
+                } else {
+                    // Default size
+                    width = 8;
+                    height = 6;
+                }
                 SixelModeEnable(width, height);
             }
             resetTokenizer();
@@ -2566,7 +2990,7 @@ bool Vt102Emulation::processSixel(uint cc)
             return true;
         }
 
-        SixelCharacterAdd(cc, argv[0]);
+        SixelCharacterAdd(cc, params.value[0]);
         resetTokenizer();
         return true;
     }
@@ -2576,24 +3000,24 @@ bool Vt102Emulation::processSixel(uint cc)
             return true;
         }
         addArgument();
-        if (argc < 1) {
+        if (params.count < 1) {
             return false;
         }
-        const int index = argv[0];
-        if (argc == 5) {
-            const int colorspace = argv[1];
+        const int index = params.value[0];
+        if (params.count == 5) {
+            const int colorspace = params.value[1];
             switch (colorspace) {
             case 1:
                 // Confusingly it is in HLS order...
-                SixelColorChangeHSL(index, argv[2], argv[4], argv[3]);
+                SixelColorChangeHSL(index, params.value[2], params.value[4], params.value[3]);
                 break;
             case 2:
-                SixelColorChangeRGB(index, argv[2], argv[3], argv[4]);
+                SixelColorChangeRGB(index, params.value[2], params.value[3], params.value[4]);
                 break;
             default:
                 return false;
             }
-        } else if (argc == 1 && index >= 0) { // Negative index is an error. Too large index is ignored
+        } else if (params.count == 1 && index >= 0) { // Negative index is an error. Too large index is ignored
             if (index < MAX_SIXEL_COLORS) {
                 m_currentColor = index;
             }

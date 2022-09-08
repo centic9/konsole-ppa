@@ -113,14 +113,14 @@ void ViewManager::setupActions()
     action->setText(i18nc("@action:inmenu", "Split View Left/Right"));
     connect(action, &QAction::triggered, this, &ViewManager::splitLeftRight);
     collection->addAction(QStringLiteral("split-view-left-right"), action);
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_ParenLeft);
+    collection->setDefaultShortcut(action, QKeySequence(Qt::CTRL | Qt::Key_ParenLeft));
     splitViewActions->addAction(action);
 
     action = new QAction(this);
     action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-top-bottom")));
     action->setText(i18nc("@action:inmenu", "Split View Top/Bottom"));
     connect(action, &QAction::triggered, this, &ViewManager::splitTopBottom);
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_ParenRight);
+    collection->setDefaultShortcut(action, QKeySequence(Qt::CTRL | Qt::Key_ParenRight));
     collection->addAction(QStringLiteral("split-view-top-bottom"), action);
     splitViewActions->addAction(action);
 
@@ -157,13 +157,13 @@ void ViewManager::setupActions()
     action->setText(i18nc("@action:inmenu", "Expand View"));
     action->setEnabled(false);
     connect(action, &QAction::triggered, this, &ViewManager::expandActiveContainer);
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_BracketRight);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_BracketRight);
     collection->addAction(QStringLiteral("expand-active-view"), action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(this);
     action->setText(i18nc("@action:inmenu", "Shrink View"));
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_BracketLeft);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_BracketLeft);
     action->setEnabled(false);
     collection->addAction(QStringLiteral("shrink-active-view"), action);
     connect(action, &QAction::triggered, this, &ViewManager::shrinkActiveContainer);
@@ -179,7 +179,7 @@ void ViewManager::setupActions()
 
     // Ctrl+Shift+D is not used as a shortcut by default because it is too close
     // to Ctrl+D - which will terminate the session in many cases
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_H);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_H);
 
     action = collection->addAction(QStringLiteral("detach-tab"));
     action->setEnabled(true);
@@ -190,7 +190,7 @@ void ViewManager::setupActions()
 
     // keyboard shortcut only actions
     action = new QAction(i18nc("@action Shortcut entry", "Next Tab"), this);
-    const QList<QKeySequence> nextViewActionKeys{Qt::SHIFT | Qt::Key_Right, Qt::CTRL | Qt::Key_PageDown};
+    const QList<QKeySequence> nextViewActionKeys{QKeySequence{Qt::SHIFT | Qt::Key_Right}, QKeySequence{Qt::CTRL | Qt::Key_PageDown}};
     collection->setDefaultShortcuts(action, nextViewActionKeys);
     collection->addAction(QStringLiteral("next-tab"), action);
     connect(action, &QAction::triggered, this, &ViewManager::nextView);
@@ -198,7 +198,7 @@ void ViewManager::setupActions()
     // _viewSplitter->addAction(nextViewAction);
 
     action = new QAction(i18nc("@action Shortcut entry", "Previous Tab"), this);
-    const QList<QKeySequence> previousViewActionKeys{Qt::SHIFT | Qt::Key_Left, Qt::CTRL | Qt::Key_PageUp};
+    const QList<QKeySequence> previousViewActionKeys{QKeySequence{Qt::SHIFT | Qt::Key_Left}, QKeySequence{Qt::CTRL | Qt::Key_PageUp}};
     collection->setDefaultShortcuts(action, previousViewActionKeys);
     collection->addAction(QStringLiteral("previous-tab"), action);
     connect(action, &QAction::triggered, this, &ViewManager::previousView);
@@ -208,25 +208,25 @@ void ViewManager::setupActions()
     action = new QAction(i18nc("@action Shortcut entry", "Focus Above Terminal"), this);
     connect(action, &QAction::triggered, this, &ViewManager::focusUp);
     collection->addAction(QStringLiteral("focus-view-above"), action);
-    collection->setDefaultShortcut(action, Qt::SHIFT | Qt::CTRL | Qt::Key_Up);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Up);
     _viewContainer->addAction(action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Below Terminal"), this);
-    collection->setDefaultShortcut(action, Qt::SHIFT | Qt::CTRL | Qt::Key_Down);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Down);
     collection->addAction(QStringLiteral("focus-view-below"), action);
     connect(action, &QAction::triggered, this, &ViewManager::focusDown);
     _multiSplitterOnlyActions << action;
     _viewContainer->addAction(action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Left Terminal"), this);
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Konsole::LEFT);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Left);
     connect(action, &QAction::triggered, this, &ViewManager::focusLeft);
     collection->addAction(QStringLiteral("focus-view-left"), action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Right Terminal"), this);
-    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Konsole::RIGHT);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Right);
     connect(action, &QAction::triggered, this, &ViewManager::focusRight);
     collection->addAction(QStringLiteral("focus-view-right"), action);
     _multiSplitterOnlyActions << action;
@@ -238,7 +238,7 @@ void ViewManager::setupActions()
 
     action = new QAction(i18nc("@action Shortcut entry", "Last Used Tabs"), this);
     connect(action, &QAction::triggered, this, &ViewManager::lastUsedView);
-    collection->setDefaultShortcut(action, Qt::CTRL | Qt::Key_Tab);
+    collection->setDefaultShortcut(action, QKeySequence(Qt::CTRL | Qt::Key_Tab));
     collection->addAction(QStringLiteral("last-used-tab"), action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Toggle Between Two Tabs"), this);
@@ -274,6 +274,20 @@ void ViewManager::setupActions()
     _multiTabOnlyActions << action;
     _viewContainer->addAction(action);
 
+    action = new QAction(i18nc("@action Shortcut entry", "Setup semantic integration (bash)"), this);
+    collection->addAction(QStringLiteral("semantic-setup-bash"), action);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_BracketRight);
+    connect(action, &QAction::triggered, this, &ViewManager::semanticSetupBash);
+    _viewContainer->addAction(action);
+
+    action = new QAction(this);
+    action->setText(i18nc("@action:inmenu", "Equal size to all views"));
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_Backslash);
+    action->setEnabled(false);
+    collection->addAction(QStringLiteral("equal-size-view"), action);
+    connect(action, &QAction::triggered, this, &ViewManager::equalSizeAllContainers);
+    _multiSplitterOnlyActions << action;
+
     // _viewSplitter->addAction(lastUsedViewReverseAction);
     const int SWITCH_TO_TAB_COUNT = 19;
     for (int i = 0; i < SWITCH_TO_TAB_COUNT; ++i) {
@@ -289,7 +303,7 @@ void ViewManager::setupActions()
             collection->setDefaultShortcut(action, QStringLiteral("Alt+%1").arg(i + 1));
         } else if (i == 9) {
             // add shortcut for 10th tab
-            collection->setDefaultShortcut(action, Qt::ALT | Qt::Key_0);
+            collection->setDefaultShortcut(action, QKeySequence(Qt::ALT | Qt::Key_0));
         }
     }
 
@@ -462,6 +476,22 @@ void ViewManager::detachTab(int tabIdx)
     Q_EMIT terminalsDetached(splitter, detachedSessions);
 }
 
+void ViewManager::semanticSetupBash()
+{
+    int currentSessionId = currentSession();
+    // At least one display/session exists if we are splitting
+    Q_ASSERT(currentSessionId >= 0);
+
+    Session *activeSession = SessionManager::instance()->idToSession(currentSessionId);
+    Q_ASSERT(activeSession);
+
+    activeSession->sendTextToTerminal(QStringLiteral(R"(if [[ ! $PS1 =~ 133 ]] ; then
+        PS1='\[\e]133;L\a\]\[\e]133;A\a\]'$PS1'\[\e]133;B\a\]' ;
+        PS2='\[\e]133;A\a\]'$PS2'\[\e]133;B\a\]' ;
+        PS0='\[\e]133;C\a\]' ; fi)"),
+                                      QChar());
+}
+
 QHash<TerminalDisplay *, Session *> ViewManager::forgetAll(ViewSplitter *splitter)
 {
     splitter->setParent(nullptr);
@@ -499,7 +529,7 @@ Session *ViewManager::createSession(const Profile::Ptr &profile, const QString &
     return session;
 }
 
-void ViewManager::sessionFinished()
+void ViewManager::sessionFinished(Session *session)
 {
     // if this slot is called after the view manager's main widget
     // has been destroyed, do nothing
@@ -516,7 +546,6 @@ void ViewManager::sessionFinished()
         }
     }
 
-    auto *session = qobject_cast<Session *>(sender());
     Q_ASSERT(session);
 
     auto view = _sessionMap.key(session);
@@ -632,6 +661,36 @@ void ViewManager::shrinkActiveContainer()
     _viewContainer->activeViewSplitter()->adjustActiveTerminalDisplaySize(-10);
 }
 
+void ViewManager::equalSizeAllContainers()
+{
+    std::function<void(ViewSplitter *)> processChildren = [&processChildren](ViewSplitter *viewSplitter) -> void {
+        // divide the size of the parent widget by the amount of children splits
+        auto hintSize = viewSplitter->size();
+        auto sizes = viewSplitter->sizes();
+        auto sharedSize = hintSize / sizes.size();
+        if (viewSplitter->orientation() == Qt::Horizontal) {
+            for (auto &&size : sizes) {
+                size = sharedSize.width();
+            }
+        } else {
+            for (auto &&size : sizes) {
+                size = sharedSize.height();
+            }
+        }
+        // set new sizes
+        viewSplitter->setSizes(sizes);
+
+        // set equal sizes for each splitter children
+        for (auto &&child : viewSplitter->children()) {
+            auto childViewSplitter = qobject_cast<ViewSplitter *>(child);
+            if (childViewSplitter) {
+                processChildren(childViewSplitter);
+            }
+        }
+    };
+    processChildren(_viewContainer->activeViewSplitter()->getToplevelSplitter());
+}
+
 SessionController *ViewManager::createController(Session *session, TerminalDisplay *view)
 {
     // create a new controller for the session, and ensure that this view manager
@@ -652,9 +711,8 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
     return controller;
 }
 
-void ViewManager::forgetController()
+void ViewManager::forgetController(SessionController *controller)
 {
-    auto controller = static_cast<SessionController *>(sender());
     Q_ASSERT(controller->session() != nullptr && controller->view() != nullptr);
 
     forgetTerminal(controller->view());
@@ -732,6 +790,7 @@ TerminalDisplay *ViewManager::createView(Session *session)
     session->setDarkBackground(colorSchemeForProfile(profile)->hasDarkBackground());
     display->setFocus(Qt::OtherFocusReason);
     //     updateDetachViewState();
+    connect(display, &TerminalDisplay::activationRequest, this, &Konsole::ViewManager::activationRequest);
 
     return display;
 }

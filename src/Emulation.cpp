@@ -21,17 +21,6 @@
 using namespace Konsole;
 
 Emulation::Emulation()
-    : _windows(QList<ScreenWindow *>())
-    , _currentScreen(nullptr)
-    , _codec(nullptr)
-    , _keyTranslator(nullptr)
-    , _usesMouseTracking(false)
-    , _bracketedPasteMode(false)
-    , _bulkTimer1(QTimer(this))
-    , _bulkTimer2(QTimer(this))
-    , _imageSizeInitialized(false)
-    , _peekingPrimary(false)
-    , _activeScreenIndex(0)
 {
     // create screens with a default size
     _screen[0] = new Screen(40, 80);
@@ -244,7 +233,7 @@ void Emulation::receiveData(const char *text, int length)
     // this check into the above for loop?
     auto *found = static_cast<const char *>(memchr(text, '\030', length));
     if (found) {
-        auto startPos = text - found;
+        auto startPos = found - text;
         if (startPos < 0) {
             return;
         }

@@ -177,7 +177,7 @@ Q_SIGNALS:
     /**
      * Emitted when the TerminalDisplay is drag-and-dropped to a new window.
      */
-    void viewDragAndDropped();
+    void viewDragAndDropped(SessionController *controller);
 
 public Q_SLOTS:
     /**
@@ -223,6 +223,9 @@ private Q_SLOTS:
     // menu item handlers
     void openBrowser();
     void copy();
+    void copyInput();
+    void copyOutput();
+    void copyInputOutput();
     void paste();
     void selectAll();
     void selectLine();
@@ -250,15 +253,16 @@ private Q_SLOTS:
     void monitorProcessFinish(bool monitor);
     void renameSession();
     void switchProfile(const QExplicitlySharedDataPointer<Profile> &profile);
+
     // Set the action text to either "Edit" or "Create New" Profile
     void setEditProfileActionText(const QExplicitlySharedDataPointer<Profile> &profile);
-    void handleWebShortcutAction();
+    void handleWebShortcutAction(QAction *action);
     void configureWebShortcuts();
     void sendSignal(QAction *action);
     void sendForegroundColor(uint terminator);
     void sendBackgroundColor(uint terminator);
-    void toggleReadOnly();
-    void toggleAllowMouseTracking();
+    void toggleReadOnly(QAction *action);
+    void toggleAllowMouseTracking(QAction *action);
 
     // other
     void setupSearchBar();
