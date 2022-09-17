@@ -20,7 +20,6 @@
 #include "KeyBindingEditor.h"
 
 // Qt
-#include <QDialog>
 #include <QDialogButtonBox>
 #include <QKeyEvent>
 #include <QIcon>
@@ -31,9 +30,11 @@
 
 // Konsole
 #include "ui_KeyBindingEditor.h"
-#include "EditProfileDialog.h"
-#include "KeyboardTranslator.h"
-#include "KeyboardTranslatorManager.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
+#include "keyboardtranslator/KeyboardTranslatorReader.h"
+#include "keyboardtranslator/KeyboardTranslatorManager.h"
+
+#include "widgets/EditProfileDialog.h"
 
 using namespace Konsole;
 

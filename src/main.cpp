@@ -17,13 +17,17 @@
     02110-1301  USA.
 */
 
+// To time the creation and total launch time (i. e. until window is
+// visible/responsive):
+//#define PROFILE_STARTUP
+
 // Own
 #include "Application.h"
 #include "MainWindow.h"
 #include "config-konsole.h"
 #include "KonsoleSettings.h"
 #include "ViewManager.h"
-#include "ViewContainer.h"
+#include "widgets/ViewContainer.h"
 
 // OS specific
 #include <qplatformdefs.h>
@@ -42,6 +46,12 @@
 #include <kdbusservice.h>
 
 using Konsole::Application;
+
+#ifdef PROFILE_STARTUP
+#include <QElapsedTimer>
+#include <QTimer>
+#include <QDebug>
+#endif
 
 // fill the KAboutData structure with information about contributors to Konsole.
 void fillAboutData(KAboutData &aboutData);
@@ -84,6 +94,10 @@ public:
 // ***
 extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
 {
+#ifdef PROFILE_STARTUP
+    QElapsedTimer timer; timer.start();
+#endif
+
     // enable high dpi support
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
@@ -225,6 +239,13 @@ extern "C" int Q_DECL_EXPORT kdemain(int argc, char *argv[])
         }
     }
 
+#ifdef PROFILE_STARTUP
+    qDebug() << "Construction completed in" << timer.elapsed() << "ms";
+    QTimer::singleShot(0, [&timer]() {
+        qDebug() << "Startup complete in" << timer.elapsed() << "ms";
+    });
+#endif
+
     // Since we've allocated the QApplication on the heap for the KDBusService workaround,
     // we need to delete it manually before returning from main().
     int ret = app->exec();
@@ -279,7 +300,7 @@ bool shouldUseNewProcess(int argc, char *argv[])
         }
     }
 
-    // if users have explictly requested starting a new process
+    // if users have explicitly requested starting a new process
     // Support --nofork to retain argument compatibility with older
     // versions.
     if (arguments.contains(QStringLiteral("--separate"))

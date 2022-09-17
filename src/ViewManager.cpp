@@ -34,15 +34,18 @@
 // Konsole
 #include <windowadaptor.h>
 
-#include "ColorScheme.h"
-#include "ColorSchemeManager.h"
-#include "Session.h"
-#include "TerminalDisplay.h"
-#include "SessionController.h"
-#include "SessionManager.h"
-#include "ProfileManager.h"
-#include "ViewSplitter.h"
-#include "ViewContainer.h"
+#include "colorscheme/ColorScheme.h"
+#include "colorscheme/ColorSchemeManager.h"
+
+#include "profile/ProfileManager.h"
+
+#include "session/Session.h"
+#include "session/SessionController.h"
+#include "session/SessionManager.h"
+
+#include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/ViewContainer.h"
+#include "widgets/ViewSplitter.h"
 
 using namespace Konsole;
 
@@ -1019,9 +1022,11 @@ QStringList ViewManager::sessionList()
 {
     QStringList ids;
 
-    QHash<TerminalDisplay *, Session *>::const_iterator i;
-    for (i = _sessionMap.constBegin(); i != _sessionMap.constEnd(); ++i) {
-        ids.append(QString::number(i.value()->sessionId()));
+    for (int i = 0; i < _viewContainer->count(); i++) {
+        auto terminaldisplayList = _viewContainer->widget(i)->findChildren<TerminalDisplay *>();
+        for (auto *terminaldisplay : terminaldisplayList) {
+            ids.append(QString::number(terminaldisplay->sessionController()->session()->sessionId()));
+        }
     }
 
     return ids;
@@ -1046,6 +1051,11 @@ void ViewManager::setCurrentSession(int sessionId)
     auto *display = session->views().at(0);
     if (display != nullptr) {
         display->setFocus(Qt::OtherFocusReason);
+
+        auto *splitter = qobject_cast<ViewSplitter *>(display->parent());
+        if (splitter != nullptr) {
+                _viewContainer->setCurrentWidget(splitter->getToplevelSplitter());
+        }
     }
 }
 

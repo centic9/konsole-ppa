@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QCommandLineParser>
 #include <QStandardPaths>
+#include <QTimer>
 
 // KDE
 #include <KActionCollection>
@@ -34,16 +35,17 @@
 #include <KLocalizedString>
 
 // Konsole
-#include "SessionManager.h"
-#include "ProfileManager.h"
-#include "MainWindow.h"
-#include "Session.h"
-#include "ShellCommand.h"
 #include "KonsoleSettings.h"
+#include "MainWindow.h"
+#include "ShellCommand.h"
 #include "ViewManager.h"
 #include "WindowSystemInfo.h"
-#include "ViewContainer.h"
-#include "TerminalDisplay.h"
+#include "profile/ProfileManager.h"
+#include "profile/ProfileCommandParser.h"
+#include "session/Session.h"
+#include "session/SessionManager.h"
+#include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/ViewContainer.h"
 
 using namespace Konsole;
 
@@ -178,7 +180,7 @@ void Application::createWindow(const Profile::Ptr &profile, const QString &direc
 {
     MainWindow *window = newMainWindow();
     window->createSession(profile, directory);
-    finalizeNewMainWindow(window);
+    window->show();
 }
 
 void Application::detachTerminals(ViewSplitter *splitter,const QHash<TerminalDisplay*, Session*>& sessionsMap)
@@ -257,9 +259,9 @@ int Application::newInstance()
         // If not restoring size from last time or only adding new tab,
         // resize window to chosen profile size (see Bug:345403)
         if (createdNewMainWindow) {
-            finalizeNewMainWindow(window);
+            QTimer::singleShot(0, window, &MainWindow::show);
         } else {
-            window->setWindowState(window->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+            window->setWindowState(window->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
             window->show();
             window->activateWindow();
         }
@@ -608,10 +610,3 @@ void Application::slotActivateRequested(QStringList args, const QString & /*work
     newInstance();
 }
 
-void Application::finalizeNewMainWindow(MainWindow *window)
-{
-    if (!KonsoleSettings::saveGeometryOnExit()) {
-        window->resize(window->sizeHint());
-    }
-    window->show();
-}

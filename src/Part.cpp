@@ -35,18 +35,17 @@
 #include <KConfigDialog>
 
 // Konsole
-#include "EditProfileDialog.h"
 #include "Emulation.h"
-#include "Session.h"
-#include "SessionController.h"
-#include "SessionManager.h"
-#include "ProfileManager.h"
-#include "TerminalDisplay.h"
-#include "ViewManager.h"
-#include "ViewContainer.h"
 #include "KonsoleSettings.h"
+#include "ViewManager.h"
+#include "profile/ProfileManager.h"
+#include "session/SessionController.h"
+#include "session/SessionManager.h"
 #include "settings/PartInfo.h"
 #include "settings/ProfileSettings.h"
+#include "widgets/EditProfileDialog.h"
+#include "terminalDisplay/TerminalDisplay.h"
+#include "widgets/ViewContainer.h"
 
 using namespace Konsole;
 
@@ -111,7 +110,7 @@ Session *Part::activeSession() const
         Q_ASSERT(_viewManager->activeViewController()->session());
 
         return _viewManager->activeViewController()->session();
-    } 
+    }
     return nullptr;
 }
 
@@ -175,7 +174,7 @@ int Part::foregroundProcessId()
 
     if (activeSession()->isForegroundProcessActive()) {
         return activeSession()->foregroundProcessId();
-    } 
+    }
     return -1;
 }
 
@@ -185,7 +184,7 @@ QString Part::foregroundProcessName()
 
     if (activeSession()->isForegroundProcessActive()) {
         return activeSession()->foregroundProcessName();
-    } 
+    }
     return QString();
 }
 
@@ -283,11 +282,8 @@ void Part::activeViewChanged(SessionController *controller)
     connect(controller, &Konsole::SessionController::currentDirectoryChanged, this,
             &Konsole::Part::currentDirectoryChanged);
 
-    const char *displaySignal = SIGNAL(overrideShortcutCheck(QKeyEvent*,bool&));
-    const char *partSlot = SLOT(overrideTerminalShortcut(QKeyEvent*,bool&));
-
-    disconnect(controller->view(), displaySignal, this, partSlot);
-    connect(controller->view(), displaySignal, this, partSlot);
+    disconnect(controller->view(), &TerminalDisplay::overrideShortcutCheck, this, &Part::overrideTerminalShortcut);
+    connect(controller->view(), &TerminalDisplay::overrideShortcutCheck, this, &Part::overrideTerminalShortcut);
 
     _pluggedController = controller;
 }
@@ -297,7 +293,7 @@ void Part::overrideTerminalShortcut(QKeyEvent *event, bool &override)
     // Shift+Insert is commonly used as the alternate shortcut for
     // pasting in KDE apps(including konsole), so it deserves some
     // special treatment.
-    if (((event->modifiers() & Qt::ShiftModifier) != 0u)
+    if (((event->modifiers() & Qt::ShiftModifier) != 0U)
         && (event->key() == Qt::Key_Insert)) {
         override = false;
         return;

@@ -21,13 +21,14 @@
 #ifndef SAVEHISTORYTASK_H
 #define SAVEHISTORYTASK_H
 
-#include "SessionTask.h"
-#include "TerminalCharacterDecoder.h"
+#include "session/SessionTask.h"
 
 #include <kio/job.h>
 
 namespace Konsole
 {
+
+class TerminalCharacterDecoder;
 
 /**
  * A task which prompts for a URL for each session and saves that session's output

@@ -36,9 +36,10 @@
 #include <KLocalizedString>
 
 // Konsole
-#include "KeyboardTranslator.h"
-#include "SessionController.h"
-#include "TerminalDisplay.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
+#include "session/SessionController.h"
+#include "terminalDisplay/TerminalDisplay.h"
+#include "EscapeSequenceUrlExtractor.h"
 
 using Konsole::Vt102Emulation;
 
@@ -62,6 +63,10 @@ unsigned short Konsole::vt100_graphics[32] = {
     0x00b1, 0x2424, 0x240b, 0x2518, 0x2510, 0x250c, 0x2514, 0x253c,
     0xF800, 0xF801, 0x2500, 0xF803, 0xF804, 0x251c, 0x2524, 0x2534,
     0x252c, 0x2502, 0x2264, 0x2265, 0x03C0, 0x2260, 0x00A3, 0x00b7
+};
+
+enum XTERM_EXTENDED {
+    URL_LINK = '8'
 };
 
 Vt102Emulation::Vt102Emulation() :
@@ -291,20 +296,20 @@ void Vt102Emulation::initTokenizer()
     for (i = 32; i < 256; ++i) {
         charClass[i] |= CHR;
     }
-    for (s = (quint8 *)"@ABCDEFGHILMPSTXZbcdfry"; *s != 0u; ++s) {
+    for (s = (quint8 *)"@ABCDEFGHILMPSTXZbcdfry"; *s != 0U; ++s) {
         charClass[*s] |= CPN;
     }
     // resize = \e[8;<row>;<col>t
-    for (s = (quint8 *)"t"; *s != 0u; ++s) {
+    for (s = (quint8 *)"t"; *s != 0U; ++s) {
         charClass[*s] |= CPS;
     }
-    for (s = (quint8 *)"0123456789"; *s != 0u; ++s) {
+    for (s = (quint8 *)"0123456789"; *s != 0U; ++s) {
         charClass[*s] |= DIG;
     }
-    for (s = (quint8 *)"()+*%"; *s != 0u; ++s) {
+    for (s = (quint8 *)"()+*%"; *s != 0U; ++s) {
         charClass[*s] |= SCS;
     }
-    for (s = (quint8 *)"()+*#[]%"; *s != 0u; ++s) {
+    for (s = (quint8 *)"()+*#[]%"; *s != 0U; ++s) {
         charClass[*s] |= GRP;
     }
 
@@ -396,7 +401,17 @@ void Vt102Emulation::receiveChar(uint cc)
     // Operating System Command
     if (p > 2 && s[1] == ']') {
       // <ESC> ']' ... <ESC> '\'
-      if (s[p-2] == ESC && s[p-1] == '\\') { processSessionAttributeRequest(p-1); resetTokenizer(); return; }
+      if (s[p-2] == ESC && s[p-1] == '\\') {
+          // This runs two times per link, the first prepares the link to be read,
+          // the second finalizes it.
+          if (s[2] == XTERM_EXTENDED::URL_LINK) {
+                // printf '\e]8;;http://example.com\e\\This is a link\e]8;;\e\\\n'
+               _currentScreen->urlExtractor()->toggleUrlInput();
+          }
+          processSessionAttributeRequest(p-1);
+          resetTokenizer();
+          return;
+      }
       // <ESC> ']' ... <ESC> + one character for reprocessing
       if (s[p-2] == ESC) { processSessionAttributeRequest(p-1); resetTokenizer(); receiveChar(cc); return; }
       // <ESC> ']' ... <BEL>
@@ -509,10 +524,17 @@ void Vt102Emulation::processSessionAttributeRequest(int tokenSize)
   // skip ';'
   ++i;
 
-  const QString value = QString::fromUcs4(&tokenBuffer[i], tokenSize - i);
+  QString value = QString::fromUcs4(&tokenBuffer[i], tokenSize - i);
+  if (_currentScreen->urlExtractor()->reading()) {
+      value.remove(0,1);
+      _currentScreen->urlExtractor()->setUrl(value);
+      return;
+  }
 
   if (value == QLatin1String("?")) {
-      emit sessionAttributeRequest(attribute);
+      // pass terminator type indication here, because OSC response terminator
+      // should match the terminator of OSC request.
+      emit sessionAttributeRequest(attribute, tokenBuffer[tokenSize]);
       return;
   }
 
@@ -552,7 +574,8 @@ void Vt102Emulation::processToken(int token, int p, int q)
 {
   switch (token)
   {
-    case token_chr(         ) : _currentScreen->displayCharacter     (p         ); break; //UTF16
+    case token_chr(         ) :
+        _currentScreen->displayCharacter     (p         ); break; //UTF16
 
     //             127 DEL    : ignored on input
 
@@ -1145,13 +1168,13 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
     if (getMode(MODE_AppScreen)) {
         states |= KeyboardTranslator::AlternateScreenState;
     }
-    if (getMode(MODE_AppKeyPad) && ((modifiers &Qt::KeypadModifier) != 0u)) {
+    if (getMode(MODE_AppKeyPad) && ((modifiers &Qt::KeypadModifier) != 0U)) {
         states |= KeyboardTranslator::ApplicationKeypadState;
     }
 
     if (!isReadOnly) {
         // check flow control state
-        if ((modifiers &Qt::ControlModifier) != 0u) {
+        if ((modifiers &Qt::ControlModifier) != 0U) {
             switch (event->key()) {
             case Qt::Key_S:
                 emit flowControlKeyPressed(true);
@@ -1178,17 +1201,17 @@ void Vt102Emulation::sendKeyEvent(QKeyEvent *event)
         // Alt+[Character] results in Esc+[Character] being sent
         // (unless there is an entry defined for this particular combination
         //  in the keyboard modifier)
-        const bool wantsAltModifier = ((entry.modifiers() & entry.modifierMask() & Qt::AltModifier) != 0u);
-        const bool wantsMetaModifier = ((entry.modifiers() & entry.modifierMask() & Qt::MetaModifier) != 0u);
+        const bool wantsAltModifier = ((entry.modifiers() & entry.modifierMask() & Qt::AltModifier) != 0U);
+        const bool wantsMetaModifier = ((entry.modifiers() & entry.modifierMask() & Qt::MetaModifier) != 0U);
         const bool wantsAnyModifier = ((entry.state() &
                                 entry.stateMask() & KeyboardTranslator::AnyModifierState) != 0);
 
-        if ( ((modifiers & Qt::AltModifier) != 0u) && !(wantsAltModifier || wantsAnyModifier)
+        if ( ((modifiers & Qt::AltModifier) != 0U) && !(wantsAltModifier || wantsAnyModifier)
              && !event->text().isEmpty() )
         {
             textToSend.prepend("\033");
         }
-        if ( ((modifiers & Qt::MetaModifier) != 0u) && !(wantsMetaModifier || wantsAnyModifier)
+        if ( ((modifiers & Qt::MetaModifier) != 0U) && !(wantsMetaModifier || wantsAnyModifier)
              && !event->text().isEmpty() )
         {
             textToSend.prepend("\030@s");

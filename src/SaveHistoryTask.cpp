@@ -30,8 +30,11 @@
 #include <KConfig>
 #include <KConfigGroup>
 
-#include "SessionManager.h"
+#include "session/SessionManager.h"
 #include "Emulation.h"
+
+#include "PlainTextDecoder.h"
+#include "HTMLDecoder.h"
 
 namespace Konsole {
 
