@@ -7,8 +7,11 @@
 
 #include "sshmanagerpluginwidget.h"
 
+#include "ProcessInfo.h"
 #include "konsoledebug.h"
+#include "session/Session.h"
 #include "session/SessionController.h"
+
 #include "sshmanagermodel.h"
 #include "terminalDisplay/TerminalDisplay.h"
 
@@ -21,6 +24,7 @@
 
 #include <QAction>
 #include <QDebug>
+#include <QFileDialog>
 #include <QIntValidator>
 #include <QItemSelectionModel>
 #include <QMenu>
@@ -29,6 +33,9 @@
 #include <QRegularExpression>
 #include <QRegularExpressionValidator>
 #include <QSortFilterProxyModel>
+#include <QStandardPaths>
+
+#include <KMessageBox>
 
 struct SSHManagerTreeWidget::Private {
     SSHManagerModel *model = nullptr;
@@ -61,9 +68,17 @@ SSHManagerTreeWidget::SSHManagerTreeWidget(QWidget *parent)
     connect(ui->newSSHConfig, &QPushButton::clicked, this, &SSHManagerTreeWidget::showInfoPane);
     connect(ui->btnCancel, &QPushButton::clicked, this, &SSHManagerTreeWidget::clearSshInfo);
     connect(ui->btnEdit, &QPushButton::clicked, this, &SSHManagerTreeWidget::editSshInfo);
-    connect(ui->btnImport, &QPushButton::clicked, this, &SSHManagerTreeWidget::requestImport);
     connect(ui->btnRemove, &QPushButton::clicked, this, &SSHManagerTreeWidget::triggerRemove);
     connect(ui->btnInvertFilter, &QPushButton::clicked, d->filterModel, &SSHManagerFilterModel::setInvertFilter);
+
+    connect(ui->btnFindSshKey, &QPushButton::clicked, this, [this] {
+        const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        const QString sshFile = QFileDialog::getOpenFileName(this, i18n("SSH Key"), homeFolder + QStringLiteral("/.ssh"));
+        if (sshFile.isEmpty()) {
+            return;
+        }
+        ui->sshkey->setText(sshFile);
+    });
 
     connect(ui->filterText, &QLineEdit::textChanged, this, [this] {
         d->filterModel->setFilterRegularExpression(ui->filterText->text());
@@ -71,11 +86,28 @@ SSHManagerTreeWidget::SSHManagerTreeWidget(QWidget *parent)
     });
 
     ui->profile->setModel(Konsole::ProfileModel::instance());
+    ui->profile->setModelColumn(Konsole::ProfileModel::PROFILE);
 
     ui->treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
     connect(ui->treeView, &QTreeView::customContextMenuRequested, [this](const QPoint &pos) {
-        if (!ui->treeView->indexAt(pos).isValid()) {
+        QModelIndex idx = ui->treeView->indexAt(pos);
+        if (!idx.isValid()) {
             return;
+        }
+
+        if (idx.data(Qt::DisplayRole) == i18n("SSH Config")) {
+            return;
+        }
+
+        auto sourceIdx = d->filterModel->mapToSource(idx);
+        const bool isParent = sourceIdx.parent() == d->model->invisibleRootItem()->index();
+        if (!isParent) {
+            const auto item = d->model->itemFromIndex(sourceIdx);
+            const auto data = item->data(SSHManagerModel::SSHRole).value<SSHConfigurationData>();
+            if (data.importedFromSshConfig) {
+                return;
+            }
         }
 
         QMenu *menu = new QMenu(this);
@@ -91,6 +123,9 @@ SSHManagerTreeWidget::SSHManagerTreeWidget(QWidget *parent)
     connect(ui->treeView, &SshTreeView::mouseButtonClicked, this, &SSHManagerTreeWidget::handleTreeClick);
 
     ui->treeView->setModel(d->filterModel);
+
+    // We have nothing selected, so there's nothing to edit.
+    ui->btnEdit->setEnabled(false);
 
     clearSshInfo();
 }
@@ -158,9 +193,19 @@ void SSHManagerTreeWidget::triggerRemove()
         ? i18n("You are about to remove the folder %1,\n with multiple SSH Configurations, are you sure?", text)
         : i18n("You are about to remove %1, are you sure?", text);
 
-    int result = QMessageBox::warning(this, i18n("Remove SSH Configurations"), dialogMessage, QMessageBox::Ok, QMessageBox::Cancel);
+    const QString dontAskAgainKey =
+        ui->treeView->model()->rowCount(selection.at(0)) ? QStringLiteral("remove_ssh_folder") : QStringLiteral("remove_ssh_config");
 
-    if (result == QMessageBox::Cancel) {
+    KMessageBox::ButtonCode result = KMessageBox::messageBox(this,
+                                                             KMessageBox::DialogType::WarningYesNo,
+                                                             dialogMessage,
+                                                             i18n("Remove SSH Configurations"),
+                                                             KStandardGuiItem::yes(),
+                                                             KStandardGuiItem::no(),
+                                                             KStandardGuiItem::cancel(),
+                                                             dontAskAgainKey);
+
+    if (result == KMessageBox::ButtonCode::No) {
         return;
     }
 
@@ -190,8 +235,6 @@ void SSHManagerTreeWidget::editSshInfo()
     ui->username->setText(data.username);
     ui->useSshConfig->setCheckState(data.useSshConfig ? Qt::Checked : Qt::Unchecked);
 
-    setEditComponentsEnabled(!data.importedFromSshConfig);
-
     // This is just for add. To edit the folder, the user will drag & drop.
     ui->folder->setCurrentText(QStringLiteral("not-used-here"));
     ui->folderLabel->hide();
@@ -205,12 +248,14 @@ void SSHManagerTreeWidget::editSshInfo()
 
 void SSHManagerTreeWidget::handleImportedData(bool isImported)
 {
+    QList<QWidget *> elements = {ui->hostname, ui->port, ui->username, ui->sshkey, ui->useSshConfig};
     if (isImported) {
-        ui->errorPanel->setText(QStringLiteral("You are currently viewing an imported SSH Profile, those are read only."));
+        ui->errorPanel->setText(QStringLiteral("Imported SSH Profile <br/> Some settings are read only."));
         ui->errorPanel->show();
-        ui->btnAdd->hide();
-    } else {
-        ui->errorPanel->hide();
+    }
+
+    for (auto *element : elements) {
+        element->setEnabled(!isImported);
     }
 }
 
@@ -230,15 +275,15 @@ void SSHManagerTreeWidget::clearSshInfo()
     hideInfoPane();
     ui->name->setText({});
     ui->hostname->setText({});
-    ui->port->setText({});
+    ui->port->setText(QStringLiteral("22"));
     ui->sshkey->setText({});
+    ui->treeView->setEnabled(true);
 }
 
 void SSHManagerTreeWidget::hideInfoPane()
 {
     ui->newSSHConfig->show();
     ui->btnRemove->show();
-    ui->btnImport->show();
     ui->btnEdit->show();
     ui->sshInfoPane->hide();
     ui->btnAdd->hide();
@@ -250,7 +295,6 @@ void SSHManagerTreeWidget::showInfoPane()
 {
     ui->newSSHConfig->hide();
     ui->btnRemove->hide();
-    ui->btnImport->hide();
     ui->btnEdit->hide();
     ui->sshInfoPane->show();
     ui->btnAdd->show();
@@ -267,6 +311,12 @@ void SSHManagerTreeWidget::showInfoPane()
     ui->btnAdd->setText(tr("Add"));
     disconnect(ui->btnAdd, nullptr, this, nullptr);
     connect(ui->btnAdd, &QPushButton::clicked, this, &SSHManagerTreeWidget::addSshInfo);
+
+    // Disable the tree view when in edit mode.
+    // This is important so the user don't click around
+    // losing the configuration he did.
+    // this will be enabled again when the user closes the panel.
+    ui->treeView->setEnabled(false);
 }
 
 void SSHManagerTreeWidget::setModel(SSHManagerModel *model)
@@ -279,7 +329,9 @@ void SSHManagerTreeWidget::setModel(SSHManagerModel *model)
 void SSHManagerTreeWidget::setCurrentController(Konsole::SessionController *controller)
 {
     qCDebug(KonsoleDebug) << "Controller changed to" << controller;
+
     d->controller = controller;
+    d->model->setSessionController(controller);
 }
 
 std::pair<bool, QString> SSHManagerTreeWidget::checkFields() const
@@ -297,11 +349,6 @@ std::pair<bool, QString> SSHManagerTreeWidget::checkFields() const
     if (ui->name->text().isEmpty()) {
         error = true;
         errorString += li + i18n("Missing Name") + il;
-    }
-
-    if (ui->port->text().isEmpty()) {
-        error = true;
-        errorString += li + i18n("Missing Port") + il;
     }
 
     if (ui->useSshConfig->checkState() == Qt::Checked) {
@@ -345,6 +392,13 @@ void SSHManagerTreeWidget::handleTreeClick(Qt::MouseButton btn, const QModelInde
 
         if (isParent) {
             setEditComponentsEnabled(false);
+            if (sourceIdx.data(Qt::DisplayRole).toString() == i18n("SSH Config")) {
+                ui->btnRemove->setEnabled(false);
+                ui->btnRemove->setToolTip(i18n("Cannot remove this folder"));
+            } else {
+                ui->btnRemove->setEnabled(true);
+                ui->btnRemove->setToolTip(i18n("Remove folder and all of its contents"));
+            }
             ui->btnEdit->setEnabled(false);
             if (ui->sshInfoPane->isVisible()) {
                 ui->errorPanel->setText(i18n("Double click to change the folder name."));
@@ -352,8 +406,9 @@ void SSHManagerTreeWidget::handleTreeClick(Qt::MouseButton btn, const QModelInde
         } else {
             const auto item = d->model->itemFromIndex(sourceIdx);
             const auto data = item->data(SSHManagerModel::SSHRole).value<SSHConfigurationData>();
-            ui->btnEdit->setEnabled(!data.importedFromSshConfig);
-
+            ui->btnEdit->setEnabled(true);
+            ui->btnRemove->setEnabled(!data.importedFromSshConfig);
+            ui->btnRemove->setToolTip(data.importedFromSshConfig ? i18n("You can't remove an automatically added entry.") : i18n("Remove selected entry"));
             if (ui->sshInfoPane->isVisible()) {
                 handleImportedData(data.importedFromSshConfig);
                 editSshInfo();
@@ -380,6 +435,40 @@ void SSHManagerTreeWidget::connectRequested(const QModelIndex &idx)
 
     auto sourceIdx = d->filterModel->mapToSource(idx);
     if (sourceIdx.parent() == d->model->invisibleRootItem()->index()) {
+        return;
+    }
+
+    Konsole::ProcessInfo *info = d->controller->session()->getProcessInfo();
+    bool ok = false;
+    QString processName = info->name(&ok);
+    if (!ok) {
+        KMessageBox::messageBox(this,
+                                KMessageBox::DialogType::Sorry,
+                                i18n("Could not get the process name, assume that we can't request a connection"),
+                                i18n("Error issuing SSH Command"),
+                                KStandardGuiItem::yes(),
+                                KStandardGuiItem::no(),
+                                KStandardGuiItem::cancel(),
+                                QStringLiteral("error_process_name"));
+        return;
+    }
+
+    if (!QVector<QString>({QStringLiteral("fish"),
+                           QStringLiteral("bash"),
+                           QStringLiteral("dash"),
+                           QStringLiteral("sh"),
+                           QStringLiteral("csh"),
+                           QStringLiteral("ksh"),
+                           QStringLiteral("zsh")})
+             .contains(processName)) {
+        KMessageBox::messageBox(this,
+                                KMessageBox::DialogType::Sorry,
+                                i18n("Can't issue SSH command outside the shell application (eg, bash, zsh, sh)"),
+                                i18n("Error issuing SSH Command"),
+                                KStandardGuiItem::yes(),
+                                KStandardGuiItem::no(),
+                                KStandardGuiItem::cancel(),
+                                QStringLiteral("error_process_not_shell"));
         return;
     }
 

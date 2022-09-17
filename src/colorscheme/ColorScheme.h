@@ -13,8 +13,16 @@
 #include <QMetaType>
 #include <QSharedData>
 
+// C++
+#include <memory>
+
 // Konsole
 #include "ColorSchemeWallpaper.h"
+
+#include <ki18n_version.h>
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+#include <KLazyLocalizedString>
+#endif
 
 class KConfig;
 class QPixmap;
@@ -125,7 +133,8 @@ public:
      */
     bool blur() const;
 
-    void setWallpaper(const QString &path);
+    void setWallpaper(const QString &path, const ColorSchemeWallpaper::FillStyle style, const QPointF &anchor, const qreal &opacity);
+    void setWallpaper(const QString &path, const QString &style, const QPointF &anchor, const qreal &opacity);
 
     ColorSchemeWallpaper::Ptr wallpaper() const;
 
@@ -182,10 +191,14 @@ private:
     ColorSchemeWallpaper::Ptr _wallpaper;
 
     static const char *const colorNames[TABLE_COLORS];
+#if KI18N_VERSION >= QT_VERSION_CHECK(5, 89, 0)
+    static const KLazyLocalizedString translatedColorNames[TABLE_COLORS];
+#else
     static const char *const translatedColorNames[TABLE_COLORS];
+#endif
 };
 }
 
-Q_DECLARE_METATYPE(const Konsole::ColorScheme *)
+Q_DECLARE_METATYPE(std::shared_ptr<const Konsole::ColorScheme>)
 
 #endif // COLORSCHEME_H

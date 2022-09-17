@@ -11,6 +11,9 @@
 // Konsole
 #include "CharacterColor.h"
 #include "CharacterWidth.h"
+#include "ExtendedCharTable.h"
+#include "Hangul.h"
+#include "LineBlockCharacters.h"
 
 // Qt
 #include <QVector>
@@ -27,6 +30,7 @@ const int LINE_WRAPPED              = (1 << 0);
 const int LINE_DOUBLEWIDTH          = (1 << 1);
 const int LINE_DOUBLEHEIGHT_TOP     = (1 << 2);
 const int LINE_DOUBLEHEIGHT_BOTTOM  = (1 << 3);
+const int LINE_PROMPT_START         = (1 << 4);
 
 const RenditionFlags DEFAULT_RENDITION  = 0;
 const RenditionFlags RE_BOLD            = (1 << 0);
@@ -40,7 +44,7 @@ const RenditionFlags RE_FAINT           = (1 << 7);
 const RenditionFlags RE_STRIKEOUT       = (1 << 8);
 const RenditionFlags RE_CONCEAL         = (1 << 9);
 const RenditionFlags RE_OVERLINE        = (1 << 10);
-const RenditionFlags RE_BLEND_SELECTION_COLORS = (1 << 11);
+const RenditionFlags RE_SELECTED        = (1 << 11);
 /* clang-format on */
 
 /**
@@ -62,11 +66,11 @@ public:
      * @param _real Indicate whether this character really exists, or exists
      *              simply as place holder.
      */
-    explicit inline Character(uint _c = ' ',
-                              CharacterColor _f = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR),
-                              CharacterColor _b = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR),
-                              RenditionFlags _r = DEFAULT_RENDITION,
-                              bool _real = true)
+    explicit constexpr Character(uint _c = ' ',
+                                 CharacterColor _f = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR),
+                                 CharacterColor _b = CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR),
+                                 RenditionFlags _r = DEFAULT_RENDITION,
+                                 bool _real = true)
         : character(_c)
         , rendition(_r)
         , foregroundColor(_f)
@@ -106,21 +110,21 @@ public:
     /**
      * returns true if the format (color, rendition flag) of the compared characters is equal
      */
-    bool equalsFormat(const Character &other) const;
+    constexpr bool equalsFormat(const Character &other) const;
 
     /**
      * Compares two characters and returns true if they have the same unicode character value,
      * rendition and colors.
      */
-    friend bool operator==(const Character &a, const Character &b);
+    friend constexpr bool operator==(const Character &a, const Character &b);
 
     /**
      * Compares two characters and returns true if they have different unicode character values,
      * renditions or colors.
      */
-    friend bool operator!=(const Character &a, const Character &b);
+    friend constexpr bool operator!=(const Character &a, const Character &b);
 
-    inline bool isSpace() const
+    constexpr bool isSpace() const
     {
         if (rendition & RE_EXTENDED_CHAR) {
             return false;
@@ -129,21 +133,45 @@ public:
         }
     }
 
-    inline int width() const
+    int width() const
     {
         return width(character);
     }
 
     static int width(uint ucs4)
     {
+        // ASCII
+        if (ucs4 >= 0x20 && ucs4 < 0x7f)
+            return 1;
+
+        if (ucs4 >= 0xA0 && ucs4 <= 0xFF)
+            return 1;
+
+        // NULL
+        if (ucs4 == 0)
+            return 0;
+
+        // Control chars
+        if ((ucs4 > 0x0 && ucs4 < 0x20) || (ucs4 >= 0x7F && ucs4 < 0xA0))
+            return -1;
+
         return characterWidth(ucs4);
     }
 
     static int stringWidth(const uint *ucs4Str, int len)
     {
         int w = 0;
+        Hangul::SyllablePos hangulSyllablePos = Hangul::NotInSyllable;
+
         for (int i = 0; i < len; ++i) {
-            w += width(ucs4Str[i]);
+            const uint c = ucs4Str[i];
+
+            if (!Hangul::isHangul(c)) {
+                w += width(c);
+                hangulSyllablePos = Hangul::NotInSyllable;
+            } else {
+                w += Hangul::width(c, width(c), hangulSyllablePos);
+            }
         }
         return w;
     }
@@ -153,19 +181,85 @@ public:
         QVector<uint> ucs4Str = str.toUcs4();
         return stringWidth(ucs4Str.constData(), ucs4Str.length());
     }
+
+    inline bool canBeGrouped(bool bidirectionalEnabled, bool isDoubleWidth) const
+    {
+        if (character <= 0x7e) {
+            return true;
+        }
+
+        if (QChar::script(character) == QChar::Script_Braille) {
+            return false;
+        }
+
+        return (rendition & RE_EXTENDED_CHAR) || (bidirectionalEnabled && !isDoubleWidth);
+    }
+
+    inline uint baseCodePoint() const
+    {
+        if (rendition & RE_EXTENDED_CHAR) {
+            ushort extendedCharLength = 0;
+            const uint *chars = ExtendedCharTable::instance.lookupExtendedChar(character, extendedCharLength);
+            // FIXME: Coverity-Dereferencing chars, which is known to be nullptr
+            return chars[0];
+        }
+        return character;
+    }
+
+    inline bool isSameScript(Character lhs) const
+    {
+        const QChar::Script script = QChar::script(lhs.baseCodePoint());
+        const QChar::Script currentScript = QChar::script(baseCodePoint());
+        if (currentScript == QChar::Script_Common || script == QChar::Script_Common || currentScript == QChar::Script_Inherited
+            || script == QChar::Script_Inherited) {
+            return true;
+        }
+        return currentScript == script;
+    };
+
+    inline bool hasSameColors(Character lhs) const
+    {
+        return lhs.foregroundColor == foregroundColor && lhs.backgroundColor == backgroundColor;
+    }
+
+    inline bool hasSameRendition(Character lhs) const
+    {
+        return (lhs.rendition & ~RE_EXTENDED_CHAR) == (rendition & ~RE_EXTENDED_CHAR);
+    };
+
+    inline bool hasSameLineDrawStatus(Character lhs) const
+    {
+        const bool lineDraw = LineBlockCharacters::canDraw(character);
+        return LineBlockCharacters::canDraw(lhs.character) == lineDraw;
+    };
+
+    inline bool hasSameAttributes(Character lhs) const
+    {
+        return hasSameColors(lhs) && hasSameRendition(lhs) && hasSameLineDrawStatus(lhs) && isSameScript(lhs);
+    }
+
+    inline bool isRightHalfOfDoubleWide() const
+    {
+        return character == 0;
+    }
+
+    inline void setRightHalfOfDoubleWide()
+    {
+        character = 0;
+    }
 };
 
-inline bool operator==(const Character &a, const Character &b)
+constexpr bool operator==(const Character &a, const Character &b)
 {
     return a.character == b.character && a.equalsFormat(b);
 }
 
-inline bool operator!=(const Character &a, const Character &b)
+constexpr bool operator!=(const Character &a, const Character &b)
 {
     return !operator==(a, b);
 }
 
-inline bool Character::equalsFormat(const Character &other) const
+constexpr bool Character::equalsFormat(const Character &other) const
 {
     return backgroundColor == other.backgroundColor && foregroundColor == other.foregroundColor && rendition == other.rendition;
 }

@@ -52,7 +52,7 @@ FileFilterHotSpot::FileFilterHotSpot(int startLine,
     , _session(session)
     , _thumbnailFinished(false)
 {
-    setType(Link);
+    setType(File);
 }
 
 void FileFilterHotSpot::activate(QObject *)
@@ -181,15 +181,17 @@ QList<QAction *> FileFilterHotSpot::actions()
 
 QList<QAction *> FileFilterHotSpot::setupMenu(QMenu *menu)
 {
+    if (!_menuActions)
+        _menuActions = new KFileItemActions;
     const QList<QAction *> currentActions = menu->actions();
 
     const KFileItem fileItem(QUrl::fromLocalFile(_filePath));
     const KFileItemList itemList({fileItem});
     const KFileItemListProperties itemProperties(itemList);
-    _menuActions.setParent(this);
-    _menuActions.setItemListProperties(itemProperties);
+    _menuActions->setParent(this);
+    _menuActions->setItemListProperties(itemProperties);
 #if KIO_VERSION < QT_VERSION_CHECK(5, 82, 0)
-    _menuActions.addOpenWithActionsTo(menu);
+    _menuActions->addOpenWithActionsTo(menu);
 
     // Here we added the actions to the last part of the menu, but we need to move them up.
     // TODO: As soon as addOpenWithActionsTo accepts a index, change this.
@@ -206,7 +208,7 @@ QList<QAction *> FileFilterHotSpot::setupMenu(QMenu *menu)
     menu->insertAction(firstAction, separator);
 #else
     const QList<QAction *> actionList = menu->actions();
-    _menuActions.insertOpenWithActionsTo(!actionList.isEmpty() ? actionList.at(0) : nullptr, menu, QStringList());
+    _menuActions->insertOpenWithActionsTo(!actionList.isEmpty() ? actionList.at(0) : nullptr, menu, QStringList());
 #endif
 
     QList<QAction *> addedActions = menu->actions();

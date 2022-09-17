@@ -14,6 +14,7 @@
 // Qt
 #include <QMetaType>
 #include <QSharedData>
+#include <QPointF>
 
 // Konsole
 #include "../characters/CharacterColor.h"
@@ -30,25 +31,48 @@ namespace Konsole
 class ColorSchemeWallpaper : public QSharedData
 {
 public:
+    enum FillStyle
+    {
+        Tile = 0,
+        Stretch,
+        Crop,
+        Adapt,
+        NoScaling
+    };
+    Q_ENUM(FillStyle)
+
     typedef QExplicitlySharedDataPointer<ColorSchemeWallpaper> Ptr;
 
-    explicit ColorSchemeWallpaper(const QString &path);
+    explicit ColorSchemeWallpaper(const QString &path, const ColorSchemeWallpaper::FillStyle style, const QPointF &anchor, const qreal &opacity);
     ~ColorSchemeWallpaper();
 
     void load();
 
     /** Returns true if wallpaper available and drawn */
-    bool draw(QPainter &painter, const QRect rect, qreal opacity = 1.0);
+    bool draw(QPainter &painter, const QRect rect, qreal bgColorOpacity, const QColor &backgroundColor);
 
     bool isNull() const;
 
     QString path() const;
 
+    FillStyle style() const;
+
+    QPointF anchor() const;
+
+    qreal opacity() const;
+
 private:
+    Q_GADGET
     Q_DISABLE_COPY(ColorSchemeWallpaper)
 
     QString _path;
     std::unique_ptr<QPixmap> _picture;
+    FillStyle _style;
+    QPointF _anchor;
+    qreal _opacity;
+
+    QRectF ScaledRect(const QSize viewportSize, const QSize pictureSize, const QRect rect);
+    Qt::AspectRatioMode RatioMode();
 };
 
 }

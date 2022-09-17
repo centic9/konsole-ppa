@@ -20,9 +20,13 @@
 // KDE
 #include <KMainWindow>
 #include <KPluginFactory>
+#include <qtest.h>
+#include <kservice_version.h>
+
+#if KSERVICE_VERSION < QT_VERSION_CHECK(5, 86, 0)
 #include <KPluginLoader>
 #include <KService>
-#include <qtest.h>
+#endif
 
 // Konsole
 #include "../Pty.h"
@@ -105,6 +109,7 @@ void PartManualTest::shortcutTriggered()
 
 KParts::Part *PartManualTest::createPart()
 {
+#if KSERVICE_VERSION < QT_VERSION_CHECK(5, 86, 0)
     KService::Ptr service = KService::serviceByDesktopName(QStringLiteral("konsolepart"));
     Q_ASSERT(service);
     KPluginFactory *factory = KPluginLoader(service->library()).factory();
@@ -113,6 +118,12 @@ KParts::Part *PartManualTest::createPart()
     auto *terminalPart = factory->create<KParts::Part>(this);
 
     return terminalPart;
+#else
+    const KPluginFactory::Result<KParts::Part> result = KPluginFactory::instantiatePlugin<KParts::Part>(KPluginMetaData(QStringLiteral("konsolepart")), this);
+    Q_ASSERT(result);
+
+    return result.plugin;
+#endif
 }
 
 QTEST_MAIN(PartManualTest)

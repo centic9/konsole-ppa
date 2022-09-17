@@ -179,7 +179,7 @@ public:
     TerminalDisplay *createView(Session *session);
     void attachView(TerminalDisplay *terminal, Session *session);
 
-    static const ColorScheme *colorSchemeForProfile(const QExplicitlySharedDataPointer<Profile> &profile);
+    static std::shared_ptr<const ColorScheme> colorSchemeForProfile(const QExplicitlySharedDataPointer<Profile> &profile);
     /** Reorder the terminal display history list */
     void updateTerminalDisplayHistory(TerminalDisplay *terminalDisplay = nullptr, bool remove = false);
 
@@ -385,6 +385,13 @@ private Q_SLOTS:
 
     // called when a SessionController gains focus
     void controllerChanged(SessionController *controller);
+
+    /**
+     * Disconnect this ViewManager and MainWindow from SessionController
+     * sender() and its associated view/session pair such as after a
+     * split-view has been drag-and-dropped to a new window.
+     */
+    void forgetController();
 
     /* Detaches the tab at index tabIdx */
     void detachTab(int tabIdx);

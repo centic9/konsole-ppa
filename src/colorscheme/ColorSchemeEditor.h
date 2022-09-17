@@ -48,14 +48,14 @@ public:
     ~ColorSchemeEditor() override;
 
     /** Initializes the dialog with the properties of the specified color scheme. */
-    void setup(const ColorScheme *scheme, bool isNewScheme);
+    void setup(const std::shared_ptr<const ColorScheme> &scheme, bool isNewScheme);
     /** Returns the modified color scheme. */
     ColorScheme &colorScheme() const;
     bool isNewScheme() const;
 
 Q_SIGNALS:
     /** Emitted when the colors in the color scheme change. */
-    void colorsChanged(ColorScheme *scheme);
+    void colorsChanged(std::shared_ptr<ColorScheme> scheme);
     /** Used to send back colorscheme changes into the profile edited */
     void colorSchemeSaveRequested(const ColorScheme &scheme, bool isNewScheme);
 
@@ -68,7 +68,11 @@ private Q_SLOTS:
     void setBlur(bool blur);
     void setRandomizedBackgroundColor(bool randomized);
     void editColorItem(QTableWidgetItem *item);
+    void setWallpaperOpacity(int percent);
     void wallpaperPathChanged(const QString &path);
+    void scalingTypeChanged(QString style);
+    void horizontalAnchorChanged(int pos);
+    void verticalAnchorChanged(int pos);
     void selectWallpaper();
     /** Triggered by apply/ok buttons */
     void saveColorScheme();
@@ -76,11 +80,12 @@ private Q_SLOTS:
 private:
     Q_DISABLE_COPY(ColorSchemeEditor)
 
-    void setupColorTable(const ColorScheme *table);
+    void setupColorTable(const std::shared_ptr<ColorScheme> &table);
+    void enableWallpaperSettings(bool enable);
 
     bool _isNewScheme;
     Ui::ColorSchemeEditor *_ui;
-    ColorScheme *_colors;
+    std::shared_ptr<ColorScheme> _colors;
 };
 }
 

@@ -8,12 +8,12 @@
     SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include "Screen.h"
 #include <QObject>
 #include <QPointer>
 
 namespace Konsole
 {
+class Screen;
 /* Like QPoint, but with Row / Col
  * easier to read than x / y
  */
@@ -64,6 +64,8 @@ private:
     /* Pointer to the Screen, that actually holds the text data. */
     Screen *_screen;
 
+    void appendUrlText_impl(QChar c);
+
 public:
     /* This needs to have access to the Session
      * calculate the row / col of the current URL.
@@ -78,7 +80,10 @@ public:
     void setScreen(Screen *screen);
 
     /* If we are parsing a URL */
-    bool reading() const;
+    bool reading() const
+    {
+        return _reading;
+    }
 
     /* We found an URL, starting to parse */
     void beginUrlInput();
@@ -91,7 +96,13 @@ public:
 
     /* The URL is parsed at once, but not the text. We received
      * one character per time until we hit the end byte. */
-    void appendUrlText(QChar c);
+    void appendUrlText(QChar c)
+    {
+        if (!reading()) {
+            return;
+        }
+        appendUrlText_impl(c);
+    }
 
     /* The URL is parsed at once, store it at once. */
     void setUrl(const QString &url);
@@ -103,7 +114,7 @@ public:
     /* Clear all the URL's, this is triggered when the Screen is cleared. */
     void clear();
 
-    /* Iterates trough all the URL's and remove the ones that are currently
+    /* Iterates through all the URL's and remove the ones that are currently
      * out of bounds because we removed lines in the History
      */
     void historyLinesRemoved(int lines);

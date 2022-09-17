@@ -8,9 +8,18 @@
 #ifndef SSHMANAGERMODEL_H
 #define SSHMANAGERMODEL_H
 
+#include <QFileSystemWatcher>
+#include <QMap>
 #include <QStandardItemModel>
 
 #include <memory>
+#include <optional>
+
+namespace Konsole
+{
+class SessionController;
+class Session;
+}
 
 class SSHConfigurationData;
 
@@ -22,8 +31,15 @@ public:
         SSHRole = Qt::UserRole + 1,
     };
 
-    SSHManagerModel(QObject *parent = nullptr);
+    explicit SSHManagerModel(QObject *parent = nullptr);
     ~SSHManagerModel() override;
+
+    void setSessionController(Konsole::SessionController *controller);
+
+    /** Connected to Session::hostnameChanged, tries to set the profile to
+     * the current configured profile for the specified SSH host
+     */
+    Q_SLOT void triggerProfileChange(const QString &sshHost);
 
     QStandardItem *addTopLevelItem(const QString &toplevel);
     void addChildItem(const SSHConfigurationData &config, const QString &parentName);
@@ -38,6 +54,16 @@ public:
     void importFromSshConfigFile(const QString &file);
     void load();
     void save();
+
+    bool hasHost(const QString &hostName) const;
+    std::optional<QString> profileForHost(const QString &host) const;
+
+private:
+    QStandardItem *m_sshConfigTopLevelItem = nullptr;
+    QFileSystemWatcher m_sshConfigWatcher;
+    Konsole::Session *m_session = nullptr;
+
+    QHash<Konsole::Session *, QString> m_sessionToProfileName;
 };
 
 #endif

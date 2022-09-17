@@ -294,7 +294,7 @@
 >Copia</guimenuitem
 > des del menú <guimenu
 >Edita</guimenu
-> per a copiar el text marcat al porta-retalls i que es pugui usar més tard amb el &konsole; o una altra aplicació. El text seleccionat es pot arrossegar i deixar en aplicacions compatibles. Manteniu premuda la tecla &Ctrl; i arrossegueu el text cap a la ubicació desitjada.</para>
+> per a copiar el text marcat al porta-retalls i que es pugui usar més tard amb el &konsole; o una altra aplicació. El text seleccionat es pot arrossegar i deixar anar en aplicacions compatibles. Manteniu premuda la tecla &Ctrl; i arrossegueu el text cap a la ubicació desitjada.</para>
 
 <para
 >Normalment, s'inseriran caràcters de salt de línia al final de cada línia seleccionada. Això és millor per a retallar codi font, o la sortida d'una ordre en particular. Per a text normal, els salts de línia no solen ser importants. A vegades un preferiria que el text fos una cadena de caràcters que es formati automàticament en enganxar-los en una altra aplicació. Per a seleccionar el mode de text com a cadena, manteniu premuda la tecla &Ctrl; mentre continueu seleccionant normalment.</para>
@@ -428,19 +428,19 @@
 
 <sect1 id="drag-and-drop">
 <title
->Arrossegar i deixar</title>
+>Arrossegar i deixar anar</title>
 <para
 >Si arrossegueu un fitxer, carpeta o &URL; sobre una finestra del &konsole;, apareixerà un menú contextual amb les següents accions: </para>
 <screenshot>
 <screeninfo
->Menú contextual «Arrossega i deixa»</screeninfo>
+>Menú contextual «Arrossega i deixa anar»</screeninfo>
 <mediaobject>
 <imageobject>
 <imagedata fileref="draganddrop-contextmenu.png" format="PNG"/>
 </imageobject>
 <textobject>
 <phrase
->Menú contextual «Arrossega i deixa»</phrase>
+>Menú contextual «Arrossega i deixa anar»</phrase>
 </textobject>
 </mediaobject>
 </screenshot>
@@ -530,17 +530,17 @@
 </term
 > <listitem>
 <para
->Suspèn l'acció d'arrossegar i deixar.</para
+>Suspèn l'acció d'arrossegar i deixar anar.</para
 ></listitem>
 </varlistentry>
 
 </variablelist>
 
 <para
->Si premeu les dreceres abans de deixar anar el &BER; durant l'arrossega i deixa, no apareixerà cap menú contextual i les accions s'executaran immediatament. </para>
+>Si premeu les dreceres abans de deixar anar el &BER; durant l'arrossegament i deixat anar, no apareixerà cap menú contextual i les accions s'executaran immediatament. </para>
 
 <para
->Si voleu utilitzar de manera predeterminada la tecla &Ctrl; per a arrossegar i deixar, o inhabilitar el menú contextual per a inserir els &URL; com a text, activeu les opcions corresponents a la pestanya <guilabel
+>Si voleu utilitzar de manera predeterminada la tecla &Ctrl; per a arrossegar i deixar anar, o inhabilitar el menú contextual per a inserir els &URL; com a text, activeu les opcions corresponents a la pestanya <guilabel
 >Ratolí</guilabel
 > en el diàleg de configuració del perfil. </para>
 
@@ -989,7 +989,7 @@
 </informaltable>
 
 <para
->Referiu-vos a les pàgines del manual del sistema per a obtenir més informació sobre donar l'ordre: <userinput
+>Consulteu les pàgines del manual del sistema per a obtenir més informació sobre donar l'ordre: <userinput
 ><command
 >man</command
 > <option
@@ -1330,7 +1330,7 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
-<varlistentry>
+<varlistentry id="save-layout">
 <term
 ><menuchoice
 ><guimenu
@@ -2316,6 +2316,23 @@ Various search improvements
 ><action
 >Inicia el &konsole;</action
 > emprant el perfil indicat en comptes del perfil predeterminat.</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><option
+>--layout</option
+> <parameter
+>fitxer</parameter
+></term>
+<listitem
+><para
+><action
+>Inicia el &konsole;</action
+> emprant el <link linkend="save-layout"
+>fitxer de disposició en &JSON; desat</link
+>.</para
 ></listitem>
 </varlistentry>
 

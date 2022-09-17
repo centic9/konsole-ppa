@@ -57,13 +57,13 @@ public Q_SLOTS:
                       QVector<LineProperty> lineProperties);
 
     // draw a transparent rectangle over the line of the current match
-    void drawCurrentResultRect(QPainter &painter, QRect searchResultRect);
+    void drawCurrentResultRect(QPainter &painter, const QRect &searchResultRect);
 
     // draw a thin highlight on the left of the screen for lines that have been scrolled into view
     void highlightScrolledLines(QPainter &painter, bool isTimerActive, QRect rect);
 
     // compute which region need to be repainted for scrolled lines highlight
-    QRegion highlightScrolledLinesRegion(bool nothingChanged, TerminalScrollBar *scrollBar);
+    QRegion highlightScrolledLinesRegion(TerminalScrollBar *scrollBar);
 
     // draws the background for a text fragment
     // if useOpacitySetting is true then the color's alpha value will be set to
@@ -75,7 +75,7 @@ public Q_SLOTS:
     void drawCharacters(QPainter &painter,
                         const QRect &rect,
                         const QString &text,
-                        const Character *style,
+                        const Character style,
                         const QColor &characterColor,
                         const LineProperty lineProperty);
 
@@ -84,18 +84,19 @@ public Q_SLOTS:
 
 private:
     // draws a string of line graphics
-    void drawLineCharString(TerminalDisplay *display, QPainter &painter, int x, int y, const QString &str, const Character *attributes);
+    void drawLineCharString(TerminalDisplay *display, QPainter &painter, int x, int y, const QString &str, const Character attributes);
 
     // draws a section of text, all the text in this section
     // has a common color and style
     void drawTextFragment(QPainter &painter,
                           const QRect &rect,
                           const QString &text,
-                          const Character *style,
+                          Character style,
                           const QColor *colorTable,
+                          const bool invertedRendition,
                           const LineProperty lineProperty);
 
-    void drawPrinterFriendlyTextFragment(QPainter &painter, const QRect &rect, const QString &text, const Character *style, const LineProperty lineProperty);
+    void drawPrinterFriendlyTextFragment(QPainter &painter, const QRect &rect, const QString &text, Character style, const LineProperty lineProperty);
 
     // draws the cursor character
     void drawCursor(QPainter &painter, const QRect &rect, const QColor &foregroundColor, const QColor &backgroundColor, QColor &characterColor);

@@ -16,6 +16,7 @@
 // Qt
 #include <QAction>
 #include <QApplication>
+
 #include <QFileDialog>
 #include <QIcon>
 #include <QKeyEvent>
@@ -46,9 +47,13 @@
 #include <KIO/CommandLauncherJob>
 
 #include <KIO/JobUiDelegate>
+#include <KIO/OpenFileManagerWindowJob>
 #include <KIO/OpenUrlJob>
 
+#include <KFileItemListProperties>
+
 #include <kconfigwidgets_version.h>
+#include <kio_version.h>
 #include <kwidgetsaddons_version.h>
 
 // Konsole
@@ -63,6 +68,7 @@
 #include "filterHotSpots/ColorFilter.h"
 #include "filterHotSpots/EscapeSequenceUrlFilter.h"
 #include "filterHotSpots/FileFilter.h"
+#include "filterHotSpots/FileFilterHotspot.h"
 #include "filterHotSpots/Filter.h"
 #include "filterHotSpots/FilterChain.h"
 #include "filterHotSpots/HotSpot.h"
@@ -116,6 +122,8 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
     , _webSearchMenu(nullptr)
     , _listenForScreenWindowUpdates(false)
     , _preventClose(false)
+    , _selectionEmpty(false)
+    , _selectionChanged(true)
     , _selectedText(QString())
     , _showMenuAction(nullptr)
     , _bookmarkValidProgramsToClear(QStringList())
@@ -155,8 +163,10 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
 
     connect(view(), &TerminalDisplay::compositeFocusChanged, this, &SessionController::viewFocusChangeHandler);
 
+    Profile::Ptr currentProfile = SessionManager::instance()->sessionProfile(session());
+
     // install filter on the view to highlight URLs and files
-    updateFilterList(SessionManager::instance()->sessionProfile(session()));
+    updateFilterList(currentProfile);
 
     // listen for changes in session, we might need to change the enabled filters
     connect(ProfileManager::instance(), &Konsole::ProfileManager::profileChanged, this, &Konsole::SessionController::updateFilterList);
@@ -236,6 +246,11 @@ SessionController::SessionController(Session *sessionParam, TerminalDisplay *vie
 
     setupSearchBar();
     _searchBar->setVisible(_isSearchBarEnabled);
+
+    // Setup default state for mouse tracking
+    const bool allowMouseTracking = currentProfile->property<bool>(Profile::AllowMouseTracking);
+    view()->setAllowMouseTracking(allowMouseTracking);
+    actionCollection()->action(QStringLiteral("allow-mouse-tracking"))->setChecked(allowMouseTracking);
 }
 
 SessionController::~SessionController()
@@ -343,7 +358,7 @@ void SessionController::snapshot()
             KNotification::event(session()->hasFocus() ? QStringLiteral("ProcessFinished") : QStringLiteral("ProcessFinishedHidden"),
                                  i18n("The process '%1' has finished running in session '%2'", _previousForegroundProcessName, session()->nameTitle()),
                                  QPixmap(),
-                                 QApplication::activeWindow(),
+                                 view(),
                                  KNotification::CloseWhenWidgetActivated);
         }
         _previousForegroundProcessName = isForegroundProcessActive ? session()->foregroundProcessName() : QString();
@@ -441,19 +456,20 @@ void SessionController::setupPrimaryScreenSpecificActions(bool use)
     selectLineAction->setEnabled(use);
 }
 
-void SessionController::selectionChanged(const QString &selectedText)
+void SessionController::selectionChanged(const bool selectionEmpty)
 {
-    _selectedText = selectedText;
-    updateCopyAction(selectedText);
+    _selectionChanged = true;
+    _selectionEmpty = selectionEmpty;
+    updateCopyAction(selectionEmpty);
 }
 
-void SessionController::updateCopyAction(const QString &selectedText)
+void SessionController::updateCopyAction(const bool selectionEmpty)
 {
     QAction *copyAction = actionCollection()->action(QStringLiteral("edit_copy"));
     QAction *copyContextMenu = actionCollection()->action(QStringLiteral("edit_copy_contextmenu"));
     // copy action is meaningful only when some text is selected.
-    copyAction->setEnabled(!selectedText.isEmpty());
-    copyContextMenu->setVisible(!selectedText.isEmpty());
+    copyAction->setEnabled(!selectionEmpty);
+    copyContextMenu->setVisible(!selectionEmpty);
 }
 
 void SessionController::updateWebSearchMenu()
@@ -462,10 +478,14 @@ void SessionController::updateWebSearchMenu()
     _webSearchMenu->setVisible(false);
     _webSearchMenu->menu()->clear();
 
-    if (_selectedText.isEmpty()) {
+    if (_selectionEmpty) {
         return;
     }
 
+    if (_selectionChanged) {
+        _selectedText = view()->screenWindow()->selectedText(Screen::PreserveLineBreaks);
+        _selectionChanged = false;
+    }
     QString searchText = _selectedText;
     searchText = searchText.replace(QLatin1Char('\n'), QLatin1Char(' ')).replace(QLatin1Char('\r'), QLatin1Char(' ')).simplified();
 
@@ -558,6 +578,19 @@ void SessionController::toggleReadOnly()
         bool readonly = !isReadOnly();
         session()->setReadOnly(readonly);
     }
+}
+
+void SessionController::toggleAllowMouseTracking()
+{
+    QAction *action = qobject_cast<QAction*>(sender());
+
+    if (action == nullptr) {
+        // Crash if running in debug build (aka. someone developing)
+        Q_ASSERT(false && "Invalid function called toggleAllowMouseTracking");
+        return;
+    }
+
+    _sessionDisplayConnection->view()->setAllowMouseTracking(action->isChecked());
 }
 
 void SessionController::removeSearchFilter()
@@ -729,6 +762,11 @@ void SessionController::setupCommonActions()
             this,
 #endif
             &Konsole::SessionController::changeCodec);
+
+    // Mouse tracking enabled
+    action = collection->addAction(QStringLiteral("allow-mouse-tracking"), this, &SessionController::toggleAllowMouseTracking);
+    action->setText(i18nc("@item:inmenu Allows terminal applications to request mouse tracking", "Allow mouse tracking"));
+    action->setCheckable(true);
 
     // Read-only
     action = collection->addAction(QStringLiteral("view-readonly"), this, &SessionController::toggleReadOnly);
@@ -977,7 +1015,7 @@ void SessionController::renameSession()
     dialog->show();
 }
 
-// This is called upon Menu->Close Sesssion and right-click on tab->Close Tab
+// This is called upon Menu->Close Session and right-click on tab->Close Tab
 bool SessionController::confirmClose() const
 {
     if (session()->isForegroundProcessActive()) {
@@ -1075,11 +1113,25 @@ void SessionController::closeSession()
 //   2) transform url to get the desired result (ssh -> sftp, etc)
 void SessionController::openBrowser()
 {
-    const QUrl currentUrl = url().isLocalFile() ? url() : QUrl::fromLocalFile(QDir::homePath());
+    // if we requested the browser on a file, we can't use OpenUrlJob
+    // because it does not open the file in a browser, it opens another program
+    // based on it's mime type.
+    // so force open dolphin with  it selected.
+    // TODO: and for people that have other default file browsers such as
+    // konqueror and krusader?
 
-    auto *job = new KIO::OpenUrlJob(currentUrl);
-    job->setUiDelegate(new KIO::JobUiDelegate(KJobUiDelegate::AutoHandlingEnabled, QApplication::activeWindow()));
-    job->start();
+    if (_currentHotSpot && _currentHotSpot->type() == HotSpot::File) {
+        auto *fileHotSpot = qobject_cast<FileFilterHotSpot *>(_currentHotSpot.get());
+        assert(fileHotSpot);
+        auto *job = new KIO::OpenFileManagerWindowJob();
+        job->setHighlightUrls({fileHotSpot->fileItem().url()});
+        job->start();
+    } else {
+        const QUrl currentUrl = url().isLocalFile() ? url() : QUrl::fromLocalFile(QDir::homePath());
+        auto *job = new KIO::OpenUrlJob(currentUrl);
+        job->setUiDelegate(new KIO::JobUiDelegate(KJobUiDelegate::AutoHandlingEnabled, QApplication::activeWindow()));
+        job->start();
+    }
 }
 
 void SessionController::copy()
@@ -1226,7 +1278,7 @@ void SessionController::copyInputToNone()
         return;
     }
 
-    // Once Qt5.14+ is the mininum, change to use range constructors
+    // Once Qt5.14+ is the minimum, change to use range constructors
     const QList<Session *> groupList = SessionManager::instance()->sessions();
     QSet<Session *> group(groupList.begin(), groupList.end());
 
@@ -1794,13 +1846,51 @@ void SessionController::showDisplayContextMenu(const QPoint &position)
         copy->setShortcut(Konsole::ACCEL | Qt::SHIFT | Qt::Key_C);
 #endif
 
+        // Adds a "Open Folder With" action
+        const QUrl currentUrl = url().isLocalFile() ? url() : QUrl::fromLocalFile(QDir::homePath());
+        KFileItem item(currentUrl);
+
+        const auto old = popup->actions();
+
+        const KFileItemListProperties props({item});
+        QScopedPointer<KFileItemActions> ac(new KFileItemActions());
+        ac->setItemListProperties(props);
+
+#if KIO_VERSION >= QT_VERSION_CHECK(5, 82, 0)
+        ac->insertOpenWithActionsTo(popup->actions().value(4, nullptr), popup, QStringList{qApp->desktopFileName()});
+#elif KIO_VERSION >= QT_VERSION_CHECK(5, 78, 0)
+        ac->insertOpenWithActionsTo(popup->actions().value(4, nullptr), popup, QString());
+#else
+        ac->addOpenWithActionsTo(popup);
+#endif
+
+        auto newActions = popup->actions();
+        for (auto* elm : old) {
+            newActions.removeAll(elm);
+        }
+        // Finish Ading the "Open Folder With" action.
+
         QList<QAction *> toRemove;
         // prepend content-specific actions such as "Open Link", "Copy Email Address" etc
-        QSharedPointer<HotSpot> hotSpot = view()->filterActions(position);
-        if (hotSpot != nullptr) {
-            popup->insertActions(popup->actions().value(0, nullptr), hotSpot->actions() << contentSeparator);
+        _currentHotSpot = view()->filterActions(position);
+        if (_currentHotSpot != nullptr) {
+            popup->insertActions(popup->actions().value(0, nullptr), _currentHotSpot->actions() << contentSeparator);
             popup->addAction(contentSeparator);
-            toRemove = hotSpot->setupMenu(popup.data());
+            toRemove = _currentHotSpot->setupMenu(popup.data());
+
+            // The action above can create an action for Open Folder With,
+            // for the selected folder, but then we have two different
+            // Open Folder With - with different folders on each.
+            // Change the text of the second one, that points to the
+            // current folder.
+            for (auto *action : newActions) {
+                if (action->objectName() == QStringLiteral("openWith_submenu")) {
+                    action->setText(i18n("Open Current Folder With"));
+                }
+            }
+            toRemove = toRemove + newActions;
+        } else {
+            toRemove = newActions;
         }
 
         // always update this submenu before showing the context menu,

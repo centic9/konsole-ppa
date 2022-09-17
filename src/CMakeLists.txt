@@ -29,6 +29,9 @@ endif()
 ### Security concerns about sendText and runCommand dbus methods being public
 option(REMOVE_SENDTEXT_RUNCOMMAND_DBUS_METHODS "Konsole: remove sendText and runCommand dbus methods" OFF)
 
+### Security concerns about reading arbitrary screen positions
+option(ENABLE_DECRQCRA "Konsole: enable DEC request checksum rectangular area" OFF)
+
 ### Development tools
 option(KONSOLE_BUILD_UNI2CHARACTERWIDTH "Konsole: build uni2characterwidth executable" OFF)
 
@@ -227,6 +230,8 @@ qt5_add_resources( konsoleprivate_SRCS ../desktop/konsole.qrc)
 add_library(konsoleprivate ${konsoleprivate_SRCS})
 generate_export_header(konsoleprivate BASE_NAME konsoleprivate)
 
+find_package(ZLIB)
+
 target_link_libraries(konsoleprivate
     PUBLIC
     konsoleprivate_core
@@ -238,6 +243,7 @@ target_link_libraries(konsoleprivate
     konsolecharacters
     konsoledecoders
     ${konsole_LIBS}
+    ZLIB::ZLIB
 )
 
 set_target_properties(konsoleprivate PROPERTIES
@@ -273,7 +279,7 @@ target_link_libraries(konsoleapp
 )
 
 set_target_properties(konsoleapp PROPERTIES
-    VERSION ${KONSOLEPRIVATE_VERSION_STRING}
+    VERSION ${KONSOLEPRIVATE_VERSION}
     SOVERSION ${KONSOLEPRIVATE_SOVERSION}
 )
 

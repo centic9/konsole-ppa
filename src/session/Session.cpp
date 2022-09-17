@@ -656,10 +656,15 @@ void Session::silenceTimerDone()
         return;
     }
 
+    TerminalDisplay *view = nullptr;
+    if (!_views.isEmpty()) {
+        view = _views.first();
+    }
+
     KNotification::event(hasFocus() ? QStringLiteral("Silence") : QStringLiteral("SilenceHidden"),
                          i18n("Silence in '%1' (Session '%2')", _displayTitle, _nameTitle),
                          QPixmap(),
-                         QApplication::activeWindow(),
+                         view,
                          KNotification::CloseWhenWidgetActivated);
     setPendingNotification(Notification::Silence);
 }
@@ -719,8 +724,9 @@ void Session::sessionAttributeRequest(int id, uint terminator)
     }
 }
 
-void Session::onViewSizeChange(int /*height*/, int /*width*/)
+void Session::onViewSizeChange(int height, int width)
 {
+    _shellProcess->setPixelSize(width, height);
     updateTerminalSize();
 }
 
@@ -1099,12 +1105,26 @@ bool Session::isRemote()
 QString Session::getDynamicTitle()
 {
     ProcessInfo *process = getProcessInfo();
+    std::unique_ptr<SSHProcessInfo> sshProcess;
 
     // format tab titles using process info
     bool ok = false;
     if (process->name(&ok) == QLatin1String("ssh") && ok) {
-        SSHProcessInfo sshInfo(*process);
-        return sshInfo.format(tabTitleFormat(Session::RemoteTabTitle));
+        sshProcess = std::make_unique<SSHProcessInfo>(*process);
+    }
+
+    QString currHostName = sshProcess ? sshProcess->host() : process->localHost();
+
+    if (_currentHostName != currHostName) {
+        _currentHostName = currHostName;
+        Q_EMIT hostnameChanged(currHostName);
+    }
+
+    if (sshProcess) {
+        QString title = tabTitleFormat(Session::RemoteTabTitle);
+        title.replace(QLatin1String("%w"), userTitle());
+        title.replace(QLatin1String("%#"), QString::number(sessionId()));
+        return sshProcess->format(title);
     }
 
     /*
@@ -1124,6 +1144,9 @@ QString Session::getDynamicTitle()
      *      'bob' would be returned)
      * </li>
      * <li> %D - Replaced with the current working directory of the process. </li>
+     * <li> %h - Replaced with the local host name. <li>
+     * <li> %w - Replaced with the window title set by the shell. </li>
+     * <li> %# - Replaced with the number of the session. <li>
      * </ul>
      */
     QString title = tabTitleFormat(Session::LocalTabTitle);
@@ -1144,6 +1167,9 @@ QString Session::getDynamicTitle()
     title.replace(QLatin1String("%u"), process->userName());
     title.replace(QLatin1String("%h"), Konsole::ProcessInfo::localHost());
     title.replace(QLatin1String("%n"), process->name(&ok));
+
+    title.replace(QLatin1String("%w"), userTitle());
+    title.replace(QLatin1String("%#"), QString::number(sessionId()));
 
     QString dir = _reportedWorkingUrl.toLocalFile();
     ok = true;
@@ -1719,11 +1745,16 @@ void Session::handleActivity()
     // TODO: should this hardcoded interval be user configurable?
     const int activityMaskInSeconds = 15;
 
+    TerminalDisplay *view = nullptr;
+    if (!_views.isEmpty()) {
+        view = _views.first();
+    }
+
     if (_monitorActivity && !_notifiedActivity) {
         KNotification::event(hasFocus() ? QStringLiteral("Activity") : QStringLiteral("ActivityHidden"),
                              i18n("Activity in '%1' (Session '%2')", _displayTitle, _nameTitle),
                              QPixmap(),
-                             QApplication::activeWindow(),
+                             view,
                              KNotification::CloseWhenWidgetActivated);
 
         // mask activity notification for a while to avoid flooding

@@ -257,6 +257,10 @@ void MainWindow::activeViewChanged(SessionController *controller)
 
     // Update window icon to newly activated session's icon
     updateWindowIcon();
+
+    for (IKonsolePlugin *plugin : _plugins) {
+        plugin->activeViewChanged(controller, this);
+    }
 }
 
 void MainWindow::activeViewTitleChanged(ViewProperties *properties)
@@ -471,8 +475,8 @@ void MainWindow::newTab()
 
 void MainWindow::addPlugin(IKonsolePlugin *plugin)
 {
-    _plugins.append(plugin);
-    connect(_viewManager, &Konsole::ViewManager::activeViewChanged, plugin, &IKonsolePlugin::activeViewChanged);
+    Q_ASSERT(std::find(_plugins.cbegin(), _plugins.cend(), plugin) == _plugins.cend());
+    _plugins.push_back(plugin);
 }
 
 void MainWindow::cloneTab()
@@ -769,13 +773,13 @@ void MainWindow::showSettingsDialog(const bool showProfilePage)
 
     auto *profileSettings = new ProfileSettings(confDialog);
     auto *profilePage = new KPageWidgetItem(profileSettings, profilePageName);
-    profilePage->setIcon(QIcon::fromTheme(QStringLiteral("preferences-system-profiles")));
+    profilePage->setIcon(QIcon::fromTheme(QStringLiteral("preferences-desktop-theme")));
     confDialog->addPage(profilePage, true);
     connect(confDialog, &QDialog::accepted, profileSettings, &ProfileSettings::slotAccepted);
 
     const QString tabBarPageName = i18nc("@title Preferences page name", "Tab Bar / Splitters");
     auto tabBarPage = new KPageWidgetItem(new TabBarSettings(confDialog), tabBarPageName);
-    tabBarPage->setIcon(QIcon::fromTheme(QStringLiteral("system-run")));
+    tabBarPage->setIcon(QIcon::fromTheme(QStringLiteral("preferences-tabs")));
     confDialog->addPage(tabBarPage, true);
 
     const QString temporaryFilesPageName = i18nc("@title Preferences page name", "Temporary Files");
@@ -904,7 +908,7 @@ void MainWindow::showEvent(QShowEvent *event)
             // Delay resizing to here, so that the other parts of the UI
             // (ViewManager, TabbedViewContainer, TerminalDisplay ... etc)
             // have been created and TabbedViewContainer::sizeHint() returns
-            // a usuable size.
+            // a usable size.
 
             // Remove the WindowMaximized state to override the Window-Maximized
             // config key

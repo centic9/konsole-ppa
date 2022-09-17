@@ -110,8 +110,10 @@ void ViewSplitter::addTerminalDisplay(TerminalDisplay *terminalDisplay, Qt::Orie
     if (splitter->count() < 2) {
         splitter->insertWidget(behavior == AddBehavior::AddBefore ? currentIndex : currentIndex + 1, terminalDisplay);
         splitter->setOrientation(containerOrientation);
+        splitter->updateSizes();
     } else if (containerOrientation == splitter->orientation()) {
         splitter->insertWidget(currentIndex, terminalDisplay);
+        splitter->updateSizes();
     } else {
         QList<int> sizes = splitter->sizes();
         auto newSplitter = new ViewSplitter();
@@ -304,6 +306,15 @@ void ViewSplitter::handleMinimizeMaximize(bool maximize)
     }
 }
 
+void ViewSplitter::clearMaximized()
+{
+    ViewSplitter *top = getToplevelSplitter();
+    Q_ASSERT(top);
+    if (top->terminalMaximized()) {
+        top->toggleMaximizeCurrentTerminal();
+    }
+}
+
 ViewSplitter *ViewSplitter::getToplevelSplitter()
 {
     ViewSplitter *current = this;
@@ -366,6 +377,8 @@ void Konsole::ViewSplitter::dropEvent(QDropEvent *ev)
             return;
         }
         if (currentDragTarget != nullptr) {
+            m_blockPropagatedDeletion = true;
+
             currentDragTarget->hideDragTarget();
             auto source = qobject_cast<TerminalDisplay *>(ev->source());
             source->setVisible(false);
@@ -378,12 +391,16 @@ void Konsole::ViewSplitter::dropEvent(QDropEvent *ev)
 
             Qt::Orientation orientation = droppedEdge == Qt::LeftEdge || droppedEdge == Qt::RightEdge ? Qt::Horizontal : Qt::Vertical;
 
+            // Add the display so it can be counted correctly by ViewManager
+            addTerminalDisplay(source, orientation, behavior);
+
             // topLevel is the splitter that's connected with the ViewManager
             // that in turn can call the SessionController.
             Q_EMIT getToplevelSplitter()->terminalDisplayDropped(source);
-            addTerminalDisplay(source, orientation, behavior);
             source->setVisible(true);
             currentDragTarget = nullptr;
+
+            m_blockPropagatedDeletion = false;
         }
     }
 }

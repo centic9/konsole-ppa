@@ -10,21 +10,21 @@
 # Alexander Potashev <aspotashev@gmail.com>, 2009, 2010, 2011, 2014, 2015, 2016, 2017, 2019.
 # Yuri Efremov <yur.arh@gmail.com>, 2012, 2013.
 # Alexander Lakhin <exclusion@gmail.com>, 2013, 2014.
-# Alexander Yavorsky <kekcuha@gmail.com>, 2018, 2019, 2020, 2021.
-# Olesya Gerasimenko <translation-team@basealt.ru>, 2021, 2022.
+# Alexander Yavorsky <kekcuha@gmail.com>, 2018, 2019, 2020, 2021, 2022.
+# Olesya Gerasimenko <translation-team@basealt.ru>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-01-07 02:08+0000\n"
-"PO-Revision-Date: 2022-02-04 17:25+0300\n"
+"POT-Creation-Date: 2022-04-06 02:12+0000\n"
+"PO-Revision-Date: 2022-03-23 12:02+0300\n"
 "Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
 "Language-Team: Basealt Translation Team\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 21.08.3\n"
+"X-Generator: Lokalize 21.12.1\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Environment: kde\n"
@@ -36,14 +36,14 @@ msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr ""
 "Денис Першин,Герман Жеболдов,Григорий Мохин,Леонид Кантер,Андрей Черепанов,"
-"Александр Яворский,Ярослав Сидловский,Олеся Герасименко"
+"Александр Яворский,Ярослав Сидловский"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr ""
 "dyp@perchine.com,Hermann.Zheboldov@shq.ru,mok@kde.ru,leon@asplinux.ru,"
-"skull@kde.ru,kekcuha@gmail.com,zawertun@gmail.com,translation-team@basealt.ru"
+"skull@kde.ru,kekcuha@gmail.com,zawertun@gmail.com"
 
 #. i18n: ectx: Menu (file)
 #: ../desktop/konsoleui.rc:6
@@ -53,7 +53,7 @@ msgstr "Файл"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnEdit)
 #. i18n: ectx: Menu (edit)
-#: ../desktop/konsoleui.rc:16 plugins/SSHManager/sshwidget.ui:224
+#: ../desktop/konsoleui.rc:16 plugins/SSHManager/sshwidget.ui:265
 #, kde-format
 msgid "Edit"
 msgstr "Правка"
@@ -101,10 +101,10 @@ msgid "S&crollback"
 msgstr "&Журнал"
 
 #. i18n: ectx: ToolBar (sessionToolbar)
-#: ../desktop/sessionui.rc:64
+#: ../desktop/sessionui.rc:67
 #, kde-format
 msgid "Session Toolbar"
-msgstr "Панель инструментов сеанса"
+msgstr "Панель управления сеансом"
 
 #: AppColorSchemeChooser.cpp:36
 #, kde-format
@@ -122,8 +122,7 @@ msgstr "Название профиля, используемого для но�
 msgctxt "@info:shell"
 msgid "json layoutfile to be loaded to use for new Konsole instance"
 msgstr ""
-"Файл макета JSON, который следует загрузить для использования в новом "
-"экземпляре Konsole."
+"Файл макета окна в формате JSON, используемый для новых сеансов Konsole."
 
 #: Application.cpp:55
 #, kde-format
@@ -150,8 +149,8 @@ msgid ""
 "Create a new tab in an existing window rather than creating a new window "
 "('Run all Konsole windows in a single process' must be enabled)"
 msgstr ""
-"Запустить сеанс в новой вкладке, а не в новом окне (должен быть включён "
-"параметр «Запускать все окна Konsole внутри одного процесса»)"
+"Запустить сеанс в новой вкладке, а не в новом окне. (Необходимо включение "
+"параметра «Запускать все окна Konsole внутри одного процесса»)"
 
 #: Application.cpp:60
 #, kde-format
@@ -242,241 +241,252 @@ msgstr ""
 "Команда для выполнения. Все последующие аргументы считаются частью этой "
 "команды, поэтому указывайте её в самом конце."
 
-#: Application.cpp:80
+#: Application.cpp:76
+#, kde-format
+msgctxt "@info:shell"
+msgid ""
+"Force re-using the existing instance even if it breaks functionality, e. g. "
+"--new-tab. Mostly for debugging."
+msgstr ""
+"Принудительно использовать запущенный экземпляр приложения, даже если это "
+"нарушает работоспособность, например, при использовании параметра «--new-"
+"tab». В основном, используется для целей отладки."
+
+#: Application.cpp:83
 #, kde-format
 msgctxt "@info:shell"
 msgid "Arguments passed to command"
 msgstr "Аргументы для команды."
 
-#: Application.cpp:514
+#: Application.cpp:517
 #, kde-format
 msgctxt "@item"
 msgid "Toggle Background Window"
 msgstr "Скрыть/показать фоновое окно"
 
-#: BookmarkHandler.cpp:106
+#: BookmarkHandler.cpp:109
 #, kde-format
 msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
 msgid "%1 on %2"
 msgstr "%1 на %2"
 
-#: BookmarkHandler.cpp:108
+#: BookmarkHandler.cpp:111
 #, kde-format
 msgctxt "@item:inmenu The host the user is connected to via ssh"
 msgid "%1"
 msgstr "%1"
 
-#: colorscheme/ColorScheme.cpp:117
+#: colorscheme/ColorScheme.cpp:132
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground"
 msgstr "Текст"
 
-#: colorscheme/ColorScheme.cpp:118
+#: colorscheme/ColorScheme.cpp:133
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background"
 msgstr "Фон"
 
-#: colorscheme/ColorScheme.cpp:119
+#: colorscheme/ColorScheme.cpp:134
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 1"
 msgstr "Цвет 1"
 
-#: colorscheme/ColorScheme.cpp:120
+#: colorscheme/ColorScheme.cpp:135
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 2"
 msgstr "Цвет 2"
 
-#: colorscheme/ColorScheme.cpp:121
+#: colorscheme/ColorScheme.cpp:136
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 3"
 msgstr "Цвет 3"
 
-#: colorscheme/ColorScheme.cpp:122
+#: colorscheme/ColorScheme.cpp:137
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 4"
 msgstr "Цвет 4"
 
-#: colorscheme/ColorScheme.cpp:123
+#: colorscheme/ColorScheme.cpp:138
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 5"
 msgstr "Цвет 5"
 
-#: colorscheme/ColorScheme.cpp:124
+#: colorscheme/ColorScheme.cpp:139
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 6"
 msgstr "Цвет 6"
 
-#: colorscheme/ColorScheme.cpp:125
+#: colorscheme/ColorScheme.cpp:140
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 7"
 msgstr "Цвет 7"
 
-#: colorscheme/ColorScheme.cpp:126
+#: colorscheme/ColorScheme.cpp:141
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 8"
 msgstr "Цвет 8"
 
-#: colorscheme/ColorScheme.cpp:127
+#: colorscheme/ColorScheme.cpp:142
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground (Intense)"
 msgstr "Цвет текста (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:128
+#: colorscheme/ColorScheme.cpp:143
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background (Intense)"
 msgstr "Цвет фона (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:129
+#: colorscheme/ColorScheme.cpp:144
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 1 (Intense)"
 msgstr "Цвет 1 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:130
+#: colorscheme/ColorScheme.cpp:145
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 2 (Intense)"
 msgstr "Цвет 2 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:131
+#: colorscheme/ColorScheme.cpp:146
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 3 (Intense)"
 msgstr "Цвет 3 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:132
+#: colorscheme/ColorScheme.cpp:147
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 4 (Intense)"
 msgstr "Цвет 4 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:133
+#: colorscheme/ColorScheme.cpp:148
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 5 (Intense)"
 msgstr "Цвет 5 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:134
+#: colorscheme/ColorScheme.cpp:149
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 6 (Intense)"
 msgstr "Цвет 6 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:135
+#: colorscheme/ColorScheme.cpp:150
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 7 (Intense)"
 msgstr "Цвет 7 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:136
+#: colorscheme/ColorScheme.cpp:151
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 8 (Intense)"
 msgstr "Цвет 8 (насыщенный)"
 
-#: colorscheme/ColorScheme.cpp:137
+#: colorscheme/ColorScheme.cpp:152
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground (Faint)"
 msgstr "Цвет текста (бледный)"
 
-#: colorscheme/ColorScheme.cpp:138
+#: colorscheme/ColorScheme.cpp:153
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background (Faint)"
 msgstr "Цвет фона (бледный)"
 
-#: colorscheme/ColorScheme.cpp:139
+#: colorscheme/ColorScheme.cpp:154
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 1 (Faint)"
 msgstr "Цвет 1 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:140
+#: colorscheme/ColorScheme.cpp:155
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 2 (Faint)"
 msgstr "Цвет 2 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:141
+#: colorscheme/ColorScheme.cpp:156
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 3 (Faint)"
 msgstr "Цвет 3 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:142
+#: colorscheme/ColorScheme.cpp:157
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 4 (Faint)"
 msgstr "Цвет 4 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:143
+#: colorscheme/ColorScheme.cpp:158
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 5 (Faint)"
 msgstr "Цвет 5 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:144
+#: colorscheme/ColorScheme.cpp:159
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 6 (Faint)"
 msgstr "Цвет 6 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:145
+#: colorscheme/ColorScheme.cpp:160
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 7 (Faint)"
 msgstr "Цвет 7 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:146
+#: colorscheme/ColorScheme.cpp:161
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 8 (Faint)"
 msgstr "Цвет 8 (бледный)"
 
-#: colorscheme/ColorScheme.cpp:441
+#: colorscheme/ColorScheme.cpp:463
 #, kde-format
 msgctxt "@item"
 msgid "Un-named Color Scheme"
 msgstr "Безымянная цветовая схема"
 
-#: colorscheme/ColorSchemeEditor.cpp:101
+#: colorscheme/ColorSchemeEditor.cpp:106
 #, kde-format
 msgctxt "@label:listbox Column header text for color names"
 msgid "Name"
 msgstr "Название"
 
-#: colorscheme/ColorSchemeEditor.cpp:101
+#: colorscheme/ColorSchemeEditor.cpp:106
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual colors"
 msgid "Color"
 msgstr "Цвет"
 
-#: colorscheme/ColorSchemeEditor.cpp:102
+#: colorscheme/ColorSchemeEditor.cpp:107
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual intense colors"
 msgid "Intense color"
 msgstr "Насыщенный цвет"
 
-#: colorscheme/ColorSchemeEditor.cpp:103
+#: colorscheme/ColorSchemeEditor.cpp:108
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual faint colors"
 msgid "Faint color"
 msgstr "Бледный цвет"
 
-#: colorscheme/ColorSchemeEditor.cpp:128
+#: colorscheme/ColorSchemeEditor.cpp:133
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -486,43 +496,43 @@ msgstr ""
 "Невозможно установить прозрачность фона, так как ваша графическая система не "
 "поддерживает прозрачные окна."
 
-#: colorscheme/ColorSchemeEditor.cpp:180
+#: colorscheme/ColorSchemeEditor.cpp:184
 #, kde-format
 msgctxt "@title:window"
 msgid "Select wallpaper image file"
 msgstr "Выбор файла фонового изображения"
 
-#: colorscheme/ColorSchemeEditor.cpp:182
+#: colorscheme/ColorSchemeEditor.cpp:186
 #, kde-format
 msgctxt "@label:textbox Filter in file open dialog"
 msgid "Supported Images"
 msgstr "Поддерживаемые изображения"
 
-#: colorscheme/ColorSchemeEditor.cpp:240
+#: colorscheme/ColorSchemeEditor.cpp:293
 #, kde-format
 msgctxt "@title:window"
 msgid "New Color Scheme"
 msgstr "Создание цветовой схемы"
 
-#: colorscheme/ColorSchemeEditor.cpp:243
+#: colorscheme/ColorSchemeEditor.cpp:296
 #, kde-format
 msgctxt "@title:window"
 msgid "Edit Color Scheme"
 msgstr "Изменение цветовой схемы"
 
-#: colorscheme/ColorSchemeEditor.cpp:279
+#: colorscheme/ColorSchemeEditor.cpp:341
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose color"
 msgstr "Нажмите, чтобы выбрать цвет"
 
-#: colorscheme/ColorSchemeEditor.cpp:284
+#: colorscheme/ColorSchemeEditor.cpp:346
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose intense color"
 msgstr "Нажмите, чтобы выбрать насыщенный цвет"
 
-#: colorscheme/ColorSchemeEditor.cpp:289
+#: colorscheme/ColorSchemeEditor.cpp:351
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose Faint color"
@@ -565,39 +575,108 @@ msgstr "Размытие фона"
 #. i18n: ectx: property (text), widget (QLabel, transparencyLabel)
 #: colorscheme/ColorSchemeEditor.ui:69
 #, kde-format
-msgid "Background transparency:"
-msgstr "Прозрачность фона:"
+msgid "Background color transparency:"
+msgstr "Прозрачность цвета фона:"
 
 #. i18n: ectx: property (text), widget (QLabel, transparencyPercentLabel)
-#: colorscheme/ColorSchemeEditor.ui:89
+#. i18n: ectx: property (text), widget (QLabel, wallpaperTransparencyPercentLabel)
+#: colorscheme/ColorSchemeEditor.ui:89 colorscheme/ColorSchemeEditor.ui:123
 #, kde-format
 msgid "Percent"
 msgstr "%"
 
-#. i18n: ectx: property (text), widget (QLabel, wallpaperLabel)
+#. i18n: ectx: property (text), widget (QLabel, wallpaperTransparencyLabel)
 #: colorscheme/ColorSchemeEditor.ui:103
+#, kde-format
+msgid "Wallpaper transparency:"
+msgstr "Прозрачность обоев:"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperLabel)
+#: colorscheme/ColorSchemeEditor.ui:137
 #, kde-format
 msgid "Background image:"
 msgstr "Фоновое изображение:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, wallpaperPath)
-#: colorscheme/ColorSchemeEditor.ui:110
+#: colorscheme/ColorSchemeEditor.ui:144
 #, kde-format
 msgid "Edit the path of the background image"
 msgstr "Введите путь к файлу фонового изображения"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, wallpaperSelectButton)
-#: colorscheme/ColorSchemeEditor.ui:117
+#: colorscheme/ColorSchemeEditor.ui:151
 #, kde-format
 msgid "Choose the background image"
 msgstr "Выбрать фоновое изображение"
 
 #. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
-#: colorscheme/ColorSchemeEditor.ui:120 widgets/EditProfileGeneralPage.ui:179
+#. i18n: ectx: property (text), widget (QToolButton, btnFindSshKey)
+#: colorscheme/ColorSchemeEditor.ui:154 plugins/SSHManager/sshwidget.ui:130
+#: widgets/EditProfileGeneralPage.ui:179
 #, kde-format
 msgid "..."
 msgstr "…"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperScalingLabel)
+#: colorscheme/ColorSchemeEditor.ui:165
+#, kde-format
+msgid "Wallpaper scaling:"
+msgstr "Масштабирование фонового изображения:"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
+#: colorscheme/ColorSchemeEditor.ui:173
+#, kde-format
+msgid "Tile"
+msgstr "Черепицей"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
+#: colorscheme/ColorSchemeEditor.ui:178
+#, kde-format
+msgid "Stretch"
+msgstr "Растянуть"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
+#: colorscheme/ColorSchemeEditor.ui:183
+#, kde-format
+msgid "Crop"
+msgstr "Кадрировать"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
+#: colorscheme/ColorSchemeEditor.ui:188
+#, kde-format
+msgid "Adapt"
+msgstr "Адаптировать"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
+#: colorscheme/ColorSchemeEditor.ui:193
+#, kde-format
+msgid "NoScaling"
+msgstr "Не масштабировать"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperHorizontalAnchorLabel)
+#: colorscheme/ColorSchemeEditor.ui:205
+#, kde-format
+msgid "Horizontal Anchor:"
+msgstr "Привязка по горизонтали:"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperHorizontalAnchorPosition)
+#: colorscheme/ColorSchemeEditor.ui:231
+#, kde-format
+msgid "Left"
+msgstr "По левому краю"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperVerticalAnchorLabel)
+#: colorscheme/ColorSchemeEditor.ui:242
+#, kde-format
+msgid "Vertical Anchor:"
+msgstr "Привязка по вертикали:"
+
+#. i18n: ectx: property (text), widget (QLabel, wallpaperVerticalAnchorPosition)
+#: colorscheme/ColorSchemeEditor.ui:268
+#, kde-format
+msgid "Top"
+msgstr "По верхнему краю"
 
 #: colorscheme/ColorSchemeViewDelegate.cpp:50
 #, kde-format
@@ -644,32 +723,32 @@ msgstr ""
 msgid "Copy Location"
 msgstr "Копировать расположение"
 
-#: filterHotSpots/FileFilterHotspot.cpp:199
+#: filterHotSpots/FileFilterHotspot.cpp:201
 #, kde-format
 msgid "open with"
 msgstr "Открыть с помощью"
 
-#: filterHotSpots/FileFilterHotspot.cpp:297
+#: filterHotSpots/FileFilterHotspot.cpp:299
 #, kde-format
 msgid "Generating Thumbnail"
 msgstr "Создание миниатюры…"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:95
+#: filterHotSpots/UrlFilterHotspot.cpp:91
 #, kde-format
 msgid "Open Link"
 msgstr "Открыть ссылку"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:97
+#: filterHotSpots/UrlFilterHotspot.cpp:93
 #, kde-format
 msgid "Copy Link Address"
 msgstr "Копировать ссылку"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:100
+#: filterHotSpots/UrlFilterHotspot.cpp:96
 #, kde-format
 msgid "Send Email To..."
 msgstr "Отправить письмо…"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:102
+#: filterHotSpots/UrlFilterHotspot.cpp:98
 #, kde-format
 msgid "Copy Email Address"
 msgstr "Копировать адрес электронной почты"
@@ -746,7 +825,8 @@ msgstr "Для сохранения список привязок клавиш �
 
 #. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
 #. i18n: ectx: property (text), widget (QPushButton, btnAdd)
-#: KeyBindingEditor.ui:65 plugins/SSHManager/sshwidget.ui:231
+#: KeyBindingEditor.ui:65 plugins/QuickCommands/qcwidget.ui:107
+#: plugins/SSHManager/sshwidget.ui:275
 #, kde-format
 msgid "Add"
 msgstr "Добавить"
@@ -779,226 +859,226 @@ msgstr "Ввод:"
 msgid "Output:"
 msgstr "Вывод:"
 
-#: main.cpp:145
+#: main.cpp:147
 #, kde-format
 msgctxt "@title"
 msgid "Konsole"
 msgstr "Konsole"
 
-#: main.cpp:147
+#: main.cpp:149
 #, kde-format
 msgctxt "@title"
 msgid "Terminal emulator"
 msgstr "Эмулятор терминала"
 
-#: main.cpp:149
+#: main.cpp:151
 #, kde-format
 msgctxt "@info:credit"
 msgid "(c) 1997-2022, The Konsole Developers"
 msgstr "© Разработчики Konsole, 1997–2022"
 
-#: main.cpp:319
+#: main.cpp:325
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kurt Hindenburg"
 msgstr "Kurt Hindenburg"
 
-#: main.cpp:321
+#: main.cpp:327
 #, kde-format
 msgctxt "@info:credit"
 msgid "General maintainer, bug fixes and general improvements"
 msgstr "Основной сопровождающий, исправления и улучшения"
 
-#: main.cpp:324
+#: main.cpp:330
 #, kde-format
 msgctxt "@info:credit"
 msgid "Robert Knight"
 msgstr "Robert Knight"
 
-#: main.cpp:325
+#: main.cpp:331
 #, kde-format
 msgctxt "@info:credit"
 msgid "Previous maintainer, ported to KDE4"
 msgstr "Предыдущий сопровождающий, перенос на KDE4"
 
-#: main.cpp:327
+#: main.cpp:333
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Doelle"
 msgstr "Lars Doelle"
 
-#: main.cpp:327
+#: main.cpp:333
 #, kde-format
 msgctxt "@info:credit"
 msgid "Original author"
 msgstr "Первоначальный автор"
 
-#: main.cpp:328
+#: main.cpp:334
 #, kde-format
 msgctxt "@info:credit"
 msgid "Ahmad Samir"
 msgstr "Ahmad Samir"
 
-#: main.cpp:329 main.cpp:332 main.cpp:335 main.cpp:338
+#: main.cpp:335 main.cpp:338 main.cpp:341 main.cpp:344
 #, kde-format
 msgctxt "@info:credit"
 msgid "Major refactoring, bug fixes and major improvements"
 msgstr ""
 "Значительный рефакторинг кода, исправления ошибок и значительные улучшения"
 
-#: main.cpp:331
+#: main.cpp:337
 #, kde-format
 msgctxt "@info:credit"
 msgid "Carlos Alves"
 msgstr "Carlos Alves"
 
-#: main.cpp:334
+#: main.cpp:340
 #, kde-format
 msgctxt "@info:credit"
 msgid "Tomaz Canabrava"
 msgstr "Tomaz Canabrava"
 
-#: main.cpp:337
+#: main.cpp:343
 #, kde-format
 msgctxt "@info:credit"
 msgid "Gustavo Carneiro"
 msgstr "Gustavo Carneiro"
 
-#: main.cpp:340
+#: main.cpp:346
 #, kde-format
 msgctxt "@info:credit"
 msgid "Edwin Pujols"
 msgstr "Edwin Pujols"
 
-#: main.cpp:341 main.cpp:344 main.cpp:346 main.cpp:351 main.cpp:353
-#: main.cpp:354 main.cpp:355
+#: main.cpp:347 main.cpp:350 main.cpp:352 main.cpp:357 main.cpp:359
+#: main.cpp:360 main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and general improvements"
 msgstr "Исправления и улучшения"
 
-#: main.cpp:343
+#: main.cpp:349
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin T. H. Sandsmark"
 msgstr "Martin T. H. Sandsmark"
 
-#: main.cpp:346
+#: main.cpp:352
 #, kde-format
 msgctxt "@info:credit"
 msgid "Nate Graham"
 msgstr "Nate Graham"
 
-#: main.cpp:347
+#: main.cpp:353
 #, kde-format
 msgctxt "@info:credit"
 msgid "Mariusz Glebocki"
 msgstr "Mariusz Glebocki"
 
-#: main.cpp:348
+#: main.cpp:354
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and major improvements"
 msgstr "Исправления и значительные улучшения"
 
-#: main.cpp:350
+#: main.cpp:356
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Surrel"
 msgstr "Thomas Surrel"
 
-#: main.cpp:353
+#: main.cpp:359
 #, kde-format
 msgctxt "@info:credit"
 msgid "Jekyll Wu"
 msgstr "Jekyll Wu"
 
-#: main.cpp:354
+#: main.cpp:360
 #, kde-format
 msgctxt "@info:credit"
 msgid "Waldo Bastian"
 msgstr "Waldo Bastian"
 
-#: main.cpp:355
+#: main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Binner"
 msgstr "Stephan Binner"
 
-#: main.cpp:356
+#: main.cpp:362
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Dreibholz"
 msgstr "Thomas Dreibholz"
 
-#: main.cpp:356
+#: main.cpp:362
 #, kde-format
 msgctxt "@info:credit"
 msgid "General improvements"
 msgstr "Общие улучшения"
 
-#: main.cpp:357
+#: main.cpp:363
 #, kde-format
 msgctxt "@info:credit"
 msgid "Chris Machemer"
 msgstr "Chris Machemer"
 
-#: main.cpp:357 main.cpp:358 main.cpp:385 main.cpp:386 main.cpp:387
-#: main.cpp:388
+#: main.cpp:363 main.cpp:364 main.cpp:391 main.cpp:392 main.cpp:393
+#: main.cpp:394
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes"
 msgstr "Исправление ошибок"
 
-#: main.cpp:358
+#: main.cpp:364
 #, kde-format
 msgctxt "@info:credit"
 msgid "Francesco Cecconi"
 msgstr "Francesco Cecconi"
 
-#: main.cpp:359
+#: main.cpp:365
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Kulow"
 msgstr "Stephan Kulow"
 
-#: main.cpp:359
+#: main.cpp:365
 #, kde-format
 msgctxt "@info:credit"
 msgid "Solaris support and history"
 msgstr "Поддержка Solaris и журнала вывода"
 
-#: main.cpp:360
+#: main.cpp:366
 #, kde-format
 msgctxt "@info:credit"
 msgid "Alexander Neundorf"
 msgstr "Alexander Neundorf"
 
-#: main.cpp:361
+#: main.cpp:367
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and improved startup performance"
 msgstr "Исправление ошибок и ускорение запуска"
 
-#: main.cpp:363
+#: main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "Peter Silva"
 msgstr "Peter Silva"
 
-#: main.cpp:363
+#: main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "Marking improvements"
 msgstr "Улучшения"
 
-#: main.cpp:364
+#: main.cpp:370
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lotzi Boloni"
 msgstr "Lotzi Boloni"
 
-#: main.cpp:366
+#: main.cpp:372
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1008,13 +1088,13 @@ msgstr ""
 "Компонент терминала\n"
 "Панель инструментов и названия сеансов"
 
-#: main.cpp:369
+#: main.cpp:375
 #, kde-format
 msgctxt "@info:credit"
 msgid "David Faure"
 msgstr "David Faure"
 
-#: main.cpp:371
+#: main.cpp:377
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1024,25 +1104,25 @@ msgstr ""
 "Компонент встраиваемого терминала\n"
 "Общие улучшения"
 
-#: main.cpp:374
+#: main.cpp:380
 #, kde-format
 msgctxt "@info:credit"
 msgid "Antonio Larrosa"
 msgstr "Antonio Larrosa"
 
-#: main.cpp:374
+#: main.cpp:380
 #, kde-format
 msgctxt "@info:credit"
 msgid "Visual effects"
 msgstr "Визуальные эффекты"
 
-#: main.cpp:375
+#: main.cpp:381
 #, kde-format
 msgctxt "@info:credit"
 msgid "Matthias Ettrich"
 msgstr "Matthias Ettrich"
 
-#: main.cpp:377
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1052,127 +1132,127 @@ msgstr ""
 "Код из проекта kvt\n"
 "Общие улучшения"
 
-#: main.cpp:380
+#: main.cpp:386
 #, kde-format
 msgctxt "@info:credit"
 msgid "Warwick Allison"
 msgstr "Warwick Allison"
 
-#: main.cpp:381
+#: main.cpp:387
 #, kde-format
 msgctxt "@info:credit"
 msgid "Schema and text selection improvements"
 msgstr "Схемы и выделение текста"
 
-#: main.cpp:383
+#: main.cpp:389
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dan Pilone"
 msgstr "Dan Pilone"
 
-#: main.cpp:383
+#: main.cpp:389
 #, kde-format
 msgctxt "@info:credit"
 msgid "SGI port"
 msgstr "Перенос на SGI"
 
-#: main.cpp:384
+#: main.cpp:390
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kevin Street"
 msgstr "Kevin Street"
 
-#: main.cpp:384
+#: main.cpp:390
 #, kde-format
 msgctxt "@info:credit"
 msgid "FreeBSD port"
 msgstr "Перенос на FreeBSD"
 
-#: main.cpp:385
+#: main.cpp:391
 #, kde-format
 msgctxt "@info:credit"
 msgid "Sven Fischer"
 msgstr "Sven Fischer"
 
-#: main.cpp:386
+#: main.cpp:392
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dale M. Flaven"
 msgstr "Dale M. Flaven"
 
-#: main.cpp:387
+#: main.cpp:393
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin Jones"
 msgstr "Martin Jones"
 
-#: main.cpp:388
+#: main.cpp:394
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Knoll"
 msgstr "Lars Knoll"
 
-#: main.cpp:389
+#: main.cpp:395
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thanks to many others.\n"
 msgstr "Благодарности остальным принявшим участие.\n"
 
-#: MainWindow.cpp:303
+#: MainWindow.cpp:307
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&New Tab"
 msgstr "&Новая вкладка"
 
-#: MainWindow.cpp:313
+#: MainWindow.cpp:317
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Clone Tab"
 msgstr "&Создать копию вкладки"
 
-#: MainWindow.cpp:320
+#: MainWindow.cpp:324
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "New &Window"
 msgstr "Новое &окно"
 
-#: MainWindow.cpp:327
+#: MainWindow.cpp:331
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Window"
 msgstr "Закрыть окно"
 
-#: MainWindow.cpp:332
+#: MainWindow.cpp:336
 #, kde-format
 msgctxt "@title:menu"
 msgid "&Bookmarks"
 msgstr "&Закладки"
 
-#: MainWindow.cpp:353
+#: MainWindow.cpp:357
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
 msgstr "Управление профилями…"
 
-#: MainWindow.cpp:359
+#: MainWindow.cpp:363
 #, kde-format
 msgctxt "@item"
 msgid "Activate Menu"
 msgstr "Открыть меню"
 
-#: MainWindow.cpp:365
+#: MainWindow.cpp:369
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Save tab layout to file"
 msgstr "Сохранить макет вкладки в файл"
 
-#: MainWindow.cpp:374
+#: MainWindow.cpp:378
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Load tab layout from file"
 msgstr "Загрузить макет вкладки из файла"
 
-#: MainWindow.cpp:607 MainWindow.cpp:624
+#: MainWindow.cpp:611 MainWindow.cpp:628
 #, kde-format
 msgctxt "@info"
 msgid "There is a process running in this window. Do you still want to quit?"
@@ -1183,55 +1263,55 @@ msgstr[1] "В этом окне работают %1 процесса, вы де�
 msgstr[2] "В этом окне работают %1 процессов, вы действительно хотите выйти?"
 msgstr[3] "В этом окне работает %1 процесс, вы действительно хотите выйти?"
 
-#: MainWindow.cpp:613 MainWindow.cpp:630 MainWindow.cpp:644
+#: MainWindow.cpp:617 MainWindow.cpp:634 MainWindow.cpp:648
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Close"
 msgstr "Подтверждение выхода"
 
-#: MainWindow.cpp:614 MainWindow.cpp:631 MainWindow.cpp:645
+#: MainWindow.cpp:618 MainWindow.cpp:635 MainWindow.cpp:649
 #, kde-format
 msgctxt "@action:button"
 msgid "Close &Window"
 msgstr "Закрыть о&кно"
 
-#: MainWindow.cpp:632 MainWindow.cpp:646
+#: MainWindow.cpp:636 MainWindow.cpp:650
 #, kde-format
 msgctxt "@action:button"
 msgid "Close Current &Tab"
 msgstr "Закрыть текущую &вкладку"
 
-#: MainWindow.cpp:641
+#: MainWindow.cpp:645
 #, kde-format
 msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "В этом окне открыто несколько терминалов (%1). Действительно выйти?"
 
-#: MainWindow.cpp:748 Part.cpp:297
+#: MainWindow.cpp:752 Part.cpp:297
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Профили"
 
-#: MainWindow.cpp:765
+#: MainWindow.cpp:769
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Общие"
 
-#: MainWindow.cpp:776
+#: MainWindow.cpp:780
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr "Панель вкладок / Разделение окна"
 
-#: MainWindow.cpp:781
+#: MainWindow.cpp:785
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "Временные файлы"
 
-#: MainWindow.cpp:786
+#: MainWindow.cpp:790
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -1243,12 +1323,130 @@ msgctxt "@title Preferences page name"
 msgid "Part Info"
 msgstr "Компонент Konsole"
 
+#. i18n: ectx: property (windowTitle), widget (QWidget, QuickCommandsWidget)
+#. i18n: ectx: property (windowTitle), widget (QWidget, SSHTreeWidget)
+#: plugins/QuickCommands/qcwidget.ui:14 plugins/SSHManager/sshwidget.ui:14
+#, kde-format
+msgid "Form"
+msgstr "Форма"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, group)
 #. i18n: ectx: property (currentText), widget (QComboBox, folder)
-#: plugins/SSHManager/sshmanagermodel.cpp:37
-#: plugins/SSHManager/sshwidget.ui:132
+#: plugins/QuickCommands/qcwidget.ui:40
+#: plugins/SSHManager/sshmanagermodel.cpp:50
+#: plugins/SSHManager/sshwidget.ui:189
 #, kde-format
 msgid "Default"
 msgstr "По умолчанию"
+
+#. i18n: ectx: property (text), widget (QLabel, labelGroup)
+#: plugins/QuickCommands/qcwidget.ui:48
+#, kde-format
+msgid "Group"
+msgstr "Группа"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: plugins/QuickCommands/qcwidget.ui:55
+#, kde-format
+msgid "Command"
+msgstr "Команда"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: plugins/QuickCommands/qcwidget.ui:72
+#, kde-format
+msgid "Title"
+msgstr "Название"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: plugins/QuickCommands/qcwidget.ui:79
+#, kde-format
+msgid "Tooltip"
+msgstr "Подсказка"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnSave)
+#: plugins/QuickCommands/qcwidget.ui:114
+#, kde-format
+msgid "Save"
+msgstr "Сохранить"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnUpdate)
+#: plugins/QuickCommands/qcwidget.ui:121
+#, kde-format
+msgid "Update"
+msgstr "Обновить"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnCancel)
+#: plugins/QuickCommands/qcwidget.ui:128 plugins/SSHManager/sshwidget.ui:285
+#, kde-format
+msgid "Cancel"
+msgstr "Отмена"
+
+#: plugins/QuickCommands/quickcommandsplugin.cpp:39
+#, kde-format
+msgid "Quick Commands"
+msgstr "Быстрые команды"
+
+#: plugins/QuickCommands/quickcommandsplugin.cpp:58
+#, kde-format
+msgid "Show Quick Commands"
+msgstr ""
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:116
+#: plugins/QuickCommands/quickcommandswidget.cpp:127
+#, kde-format
+msgid "A duplicate item exists"
+msgstr "Такой объект уже существует"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:170
+#, kde-format
+msgid ""
+"You are about to remove the group %1,\n"
+" with multiple configurations, are you sure?"
+msgstr ""
+"Подтвердите удаление группы «%1»,\n"
+"содержащей конфигурации подключений SSH."
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:171
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:194
+#, kde-format
+msgid "You are about to remove %1, are you sure?"
+msgstr "Подтвердите удаление «%1»."
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:176
+#, kde-format
+msgid "Remove Quick Commands Configurations"
+msgstr "Удалить конфигурацию быстрых команд"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:209
+#, kde-format
+msgid "Title can not be empty or blank"
+msgstr "Название не может быть пустым"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:213
+#, kde-format
+msgid "Command can not be empty"
+msgstr "Команда не может быть пустой"
+
+#: plugins/SSHManager/sshmanagermodel.cpp:47
+#: plugins/SSHManager/sshmanagermodel.cpp:80
+#: plugins/SSHManager/sshmanagermodel.cpp:304
+#: plugins/SSHManager/sshmanagermodel.cpp:372
+#: plugins/SSHManager/sshmanagermodel.cpp:405
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:99
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:395
+#, kde-format
+msgid "SSH Config"
+msgstr "Конфигурация SSH"
+
+#: plugins/SSHManager/sshmanagermodel.cpp:76
+#, kde-format
+msgid "%1 is a folder for SSH entries"
+msgstr "Для хранения записей о SSH-подключениях используется папка «%1»"
+
+#: plugins/SSHManager/sshmanagermodel.cpp:104
+#, kde-format
+msgid "Host: %1"
+msgstr "Хост: %1"
 
 #: plugins/SSHManager/sshmanagerplugin.cpp:51
 #, kde-format
@@ -1260,7 +1458,14 @@ msgstr "Менеджер SSH"
 msgid "Show SSH Manager"
 msgstr "Показать менеджер SSH"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:158
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:76
+#: plugins/SSHManager/sshwidget.ui:108
+#, kde-format
+msgid "SSH Key"
+msgstr "Ключ SSH:"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:193
 #, kde-format
 msgid ""
 "You are about to remove the folder %1,\n"
@@ -1269,63 +1474,87 @@ msgstr ""
 "Подтвердите удаление папки «%1»,\n"
 "содержащей конфигурации для подключений SSH."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:159
-#, kde-format
-msgid "You are about to remove %1, are you sure?"
-msgstr "Подтвердите удаление «%1»."
-
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:161
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:202
 #, kde-format
 msgid "Remove SSH Configurations"
 msgstr "Удалить конфигурации SSH"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:294
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:346
 #, kde-format
 msgid "Missing Hostname"
 msgstr "Не указано имя хоста"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:299
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:351
 #, kde-format
 msgid "Missing Name"
-msgstr "Не указано имя"
+msgstr "Не указно имя"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:304
-#, kde-format
-msgid "Missing Port"
-msgstr "Не указан порт"
-
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:310
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:357
 #, kde-format
 msgid "If Use Ssh Config is set, do not specify sshkey or username."
 msgstr ""
-"Если задано использование конфигурации SSH, не указывайте ключ SSH или имя "
-"пользователя."
+"Если включён параметр «Конфигурация SSH», то использовать параметры «Ключ "
+"SSH» и «Имя пользователя» не требуется."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:315
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:362
 #, kde-format
 msgid "At least Username or SSHKey must be set"
 msgstr "Необходимо задать имя пользователя или ключ SSH"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:321
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:368
 #, kde-format
 msgid "Missing Folder"
-msgstr "Папка отсутствует"
+msgstr "Папка отсуствует"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:326
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:373
 #, kde-format
 msgid "An SSH session must have a profile"
-msgstr "У сеанса SSH должен быть профиль"
+msgstr "Для сеанса SSH необходимо задать используемый им профиль Konsole"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:350
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:397
+#, kde-format
+msgid "Cannot remove this folder"
+msgstr "Не удалось удалить эту папку"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:400
+#, kde-format
+msgid "Remove folder and all of its contents"
+msgstr "Удалить папку и всё её содержимое"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:404
 #, kde-format
 msgid "Double click to change the folder name."
 msgstr "Щёлкните дважды, чтобы изменить имя папки"
 
-#. i18n: ectx: property (windowTitle), widget (QWidget, SSHTreeWidget)
-#: plugins/SSHManager/sshwidget.ui:14
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
 #, kde-format
-msgid "Form"
-msgstr "Форма"
+msgid "You can't remove an automatically added entry."
+msgstr "Запись, добавленная автоматически, не может быть удалена."
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
+#, kde-format
+msgid "Remove selected entry"
+msgstr "Удалить выбранную запись"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:447
+#, kde-format
+msgid ""
+"Could not get the process name, assume that we can't request a connection"
+msgstr ""
+"Не удалось получить имя процесса. Скорее всего это связано с невозможностью "
+"получить данные подключения"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:448
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:467
+#, kde-format
+msgid "Error issuing SSH Command"
+msgstr "Ошибка формирования команды SSH"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:466
+#, kde-format
+msgid ""
+"Can't issue SSH command outside the shell application (eg, bash, zsh, sh)"
+msgstr "Ошибка передачи команды SSH из приложения оболочки (bash, zsh, sh...)"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, filterText)
 #: plugins/SSHManager/sshwidget.ui:22
@@ -1333,8 +1562,14 @@ msgstr "Форма"
 msgid "Filter..."
 msgstr "Введите текст для фильтрации…"
 
-#. i18n: ectx: property (text), widget (QPushButton, btnInvertFilter)
+#. i18n: ectx: property (toolTip), widget (QCheckBox, btnInvertFilter)
 #: plugins/SSHManager/sshwidget.ui:32
+#, kde-format
+msgid "Show entries that don't match the filter"
+msgstr "Показать записи, не соответствующие заданному фильтру"
+
+#. i18n: ectx: property (text), widget (QCheckBox, btnInvertFilter)
+#: plugins/SSHManager/sshwidget.ui:35
 #, kde-format
 msgid "Invert"
 msgstr "Инвертировать"
@@ -1343,91 +1578,150 @@ msgstr "Инвертировать"
 #: plugins/SSHManager/sshwidget.ui:57
 #, kde-format
 msgid "Identifier"
-msgstr "Идентификатор"
+msgstr "Идентификатор:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, name)
+#: plugins/SSHManager/sshwidget.ui:64
+#, kde-format
+msgid "A name for this ssh entry"
+msgstr "Название этой записи ssh"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, name)
-#: plugins/SSHManager/sshwidget.ui:64
+#: plugins/SSHManager/sshwidget.ui:67
 #, kde-format
 msgid "The name of this entry on the list"
 msgstr "Название этой записи"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: plugins/SSHManager/sshwidget.ui:71
+#: plugins/SSHManager/sshwidget.ui:74
 #, kde-format
 msgid "SSH Hostname"
-msgstr "Хост SSH"
+msgstr "Хост SSH:"
 
+#. i18n: ectx: property (toolTip), widget (QLineEdit, hostname)
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, hostname)
-#: plugins/SSHManager/sshwidget.ui:78
+#: plugins/SSHManager/sshwidget.ui:81 plugins/SSHManager/sshwidget.ui:84
 #, kde-format
 msgid "The hostname of the server"
 msgstr "Имя хоста SSH"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: plugins/SSHManager/sshwidget.ui:85
+#: plugins/SSHManager/sshwidget.ui:91
 #, kde-format
 msgid "Port"
-msgstr "Порт"
+msgstr "Порт:"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, port)
+#: plugins/SSHManager/sshwidget.ui:98
+#, kde-format
+msgid "The port of the server, 22 is the default for ssh connections"
+msgstr "Номер порта сервера. По умолчанию для ssh используется порт 22."
 
 #. i18n: ectx: property (text), widget (QLineEdit, port)
-#: plugins/SSHManager/sshwidget.ui:92
+#: plugins/SSHManager/sshwidget.ui:101
 #, kde-format
 msgid "22"
 msgstr "22"
 
-#. i18n: ectx: property (text), widget (QLabel, label_4)
-#: plugins/SSHManager/sshwidget.ui:99
+#. i18n: ectx: property (toolTip), widget (QLineEdit, sshkey)
+#: plugins/SSHManager/sshwidget.ui:117
 #, kde-format
-msgid "SSH Key"
-msgstr "Ключ SSH"
+msgid "The private key to be used for this connection"
+msgstr "Закрытый ключ, используемый в этой записи"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, sshkey)
-#: plugins/SSHManager/sshwidget.ui:109
+#: plugins/SSHManager/sshwidget.ui:123
 #, kde-format
 msgid "The private key"
 msgstr "Закрытый ключ"
 
-#. i18n: ectx: property (text), widget (QLabel, folderLabel)
-#: plugins/SSHManager/sshwidget.ui:116
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: plugins/SSHManager/sshwidget.ui:143
 #, kde-format
-msgid "Folder"
-msgstr "Папка"
+msgid "Username"
+msgstr "Имя пользователя:"
 
-#. i18n: ectx: property (text), widget (QLabel, label_5)
-#: plugins/SSHManager/sshwidget.ui:139
+#. i18n: ectx: property (toolTip), widget (QLineEdit, username)
+#: plugins/SSHManager/sshwidget.ui:150
 #, kde-format
-msgid "Profile"
-msgstr "Профиль"
+msgid "The username for the connection"
+msgstr "Имя пользователя, используемое в этой записи"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, username)
-#: plugins/SSHManager/sshwidget.ui:156
+#: plugins/SSHManager/sshwidget.ui:153
 #, kde-format
 msgid "Your username"
 msgstr "Имя пользователя"
 
-#. i18n: ectx: property (text), widget (QLabel, label_7)
-#: plugins/SSHManager/sshwidget.ui:163
+#. i18n: ectx: property (toolTip), widget (QCheckBox, useSshConfig)
+#: plugins/SSHManager/sshwidget.ui:160
 #, kde-format
-msgid "Username"
-msgstr "Имя пользователя"
+msgid ""
+"If this is set, we don't rely on the SSH key set above, but on the "
+"configuration on ~/.ssh/config"
+msgstr ""
+"При включении этого параметра будет использован ключ, сохранённый в папке "
+"«~/.ssh/config», а не указанны выше"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useSshConfig)
-#: plugins/SSHManager/sshwidget.ui:170
+#: plugins/SSHManager/sshwidget.ui:163
 #, kde-format
 msgid "Use ~/.ssh/config for key"
 msgstr "Использовать ключ из ~/.ssh/config"
 
-#. i18n: ectx: property (text), widget (QPushButton, btnImport)
-#: plugins/SSHManager/sshwidget.ui:217
+#. i18n: ectx: property (text), widget (QLabel, folderLabel)
+#: plugins/SSHManager/sshwidget.ui:170
 #, kde-format
-msgid "Import"
-msgstr "Импорт"
+msgid "Folder"
+msgstr "Папка:"
 
-#. i18n: ectx: property (text), widget (QPushButton, btnCancel)
-#: plugins/SSHManager/sshwidget.ui:238
+#. i18n: ectx: property (toolTip), widget (QComboBox, folder)
+#: plugins/SSHManager/sshwidget.ui:183
 #, kde-format
-msgid "Cancel"
-msgstr "Отмена"
+msgid "For organizational purposes, this entry will be inside of this folder."
+msgstr "Запись будет сохранена внутри этой папки."
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: plugins/SSHManager/sshwidget.ui:196
+#, kde-format
+msgid "Profile"
+msgstr "Профиль:"
+
+#. i18n: ectx: property (toolTip), widget (QComboBox, profile)
+#: plugins/SSHManager/sshwidget.ui:209
+#, kde-format
+msgid "The profile to be active when the ssh session starts"
+msgstr "Профиль, активируемый при запуске сеанса "
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, newSSHConfig)
+#: plugins/SSHManager/sshwidget.ui:234
+#, kde-format
+msgid "Add a new SSH Entry"
+msgstr "Создать запись"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnRemove)
+#: plugins/SSHManager/sshwidget.ui:248
+#, kde-format
+msgid "Remove selected SSH entry"
+msgstr "Удалить выбранную запись"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnEdit)
+#: plugins/SSHManager/sshwidget.ui:262
+#, kde-format
+msgid "Edit selected entry"
+msgstr "Изменить выбранную запись"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnAdd)
+#: plugins/SSHManager/sshwidget.ui:272
+#, kde-format
+msgid "Add new SSH Configuration"
+msgstr "Добавить новую запись подключения с использованием протокола SSH"
+
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnCancel)
+#: plugins/SSHManager/sshwidget.ui:282
+#, kde-format
+msgid "Cancel Add or Edit"
+msgstr "Отменить создание или изменение записи"
 
 #: pluginsystem/PluginManager.cpp:66
 #, kde-format
@@ -1455,7 +1749,7 @@ msgstr "Э&кономный режим (чёрный текст, без фона
 msgid "&Scale output"
 msgstr "&Масштабировать вывод"
 
-#: profile/Profile.cpp:165
+#: profile/Profile.cpp:166
 #, kde-format
 msgctxt "Name of the default/builtin profile"
 msgid "Default"
@@ -1652,12 +1946,12 @@ msgstr ""
 msgid "Could not start program '%1' with arguments '%2'."
 msgstr "Невозможно запустить программу «%1» с параметрами «%2»."
 
-#: session/Session.cpp:660
+#: session/Session.cpp:665
 #, kde-format
 msgid "Silence in '%1' (Session '%2')"
 msgstr "Нет активности в «%1» (сеанс «%2»)"
 
-#: session/Session.cpp:911
+#: session/Session.cpp:917
 #, kde-format
 msgid ""
 "The D-Bus methods sendText/runCommand were just used.  There are security "
@@ -1671,288 +1965,299 @@ msgstr ""
 "Konsole с другими параметрами. <p>Это предупреждение больше не будет "
 "показываться, пока вы не запустите следующий экземпляр Konsole.</p>"
 
-#: session/Session.cpp:947
+#: session/Session.cpp:953
 #, kde-format
 msgctxt "@info:shell This session is done"
 msgid "Finished"
 msgstr "Завершена."
 
-#: session/Session.cpp:961 session/Session.cpp:972
+#: session/Session.cpp:967 session/Session.cpp:978
 #, kde-format
 msgid "Program '%1' crashed."
 msgstr "Сбой программы «%1»."
 
-#: session/Session.cpp:963
+#: session/Session.cpp:969
 #, kde-format
 msgid "Program '%1' exited with status %2."
 msgstr "Программа «%1» завершилась с кодом %2."
 
-#: session/Session.cpp:1397
+#: session/Session.cpp:1423
 #, kde-format
 msgid "ZModem Progress"
 msgstr "Состояние ZModem"
 
-#: session/Session.cpp:1724
+#: session/Session.cpp:1755
 #, kde-format
 msgid "Activity in '%1' (Session '%2')"
 msgstr "Активность в «%1» (сеанс «%2»)"
 
-#: session/SessionController.cpp:135
+#: session/SessionController.cpp:143
 #, kde-format
 msgid "Konsole"
 msgstr "Konsole"
 
-#: session/SessionController.cpp:344
+#: session/SessionController.cpp:359
 #, kde-format
 msgid "The process '%1' has finished running in session '%2'"
 msgstr "Процесс «%1» завершил работу в сеансе «%2»"
 
-#: session/SessionController.cpp:422
+#: session/SessionController.cpp:437
 #, kde-format
 msgid "Konsole does not know how to open the bookmark: "
 msgstr "Konsole не может открыть закладку: "
 
-#: session/SessionController.cpp:488
+#: session/SessionController.cpp:508
 #, kde-format
 msgid "Search for '%1' with"
 msgstr "Искать «%1» в"
 
-#: session/SessionController.cpp:502
+#: session/SessionController.cpp:522
 #, kde-format
 msgid "Configure Web Shortcuts..."
 msgstr "Настроить веб-сокращения…"
 
-#: session/SessionController.cpp:600
+#: session/SessionController.cpp:633
 #, kde-format
 msgid "&Close Session"
 msgstr "Закрыть с&еанс"
 
-#: session/SessionController.cpp:607
+#: session/SessionController.cpp:640
 #, kde-format
 msgid "Open File Manager"
 msgstr "Открыть диспетчер файлов"
 
-#: session/SessionController.cpp:625
+#: session/SessionController.cpp:658
 #, kde-format
 msgid "Copy"
 msgstr "Копировать"
 
-#: session/SessionController.cpp:642
+#: session/SessionController.cpp:675
 #, kde-format
 msgid "Paste Selection"
 msgstr "Вставить выделенное"
 
-#: session/SessionController.cpp:649
+#: session/SessionController.cpp:682
 #, kde-format
 msgid "Web Search"
 msgstr "Поиск в Интернете"
 
-#: session/SessionController.cpp:655
+#: session/SessionController.cpp:688
 #, kde-format
 msgid "&Select All"
 msgstr "&Выделить всё"
 
-#: session/SessionController.cpp:659
+#: session/SessionController.cpp:692
 #, kde-format
 msgid "Select &Line"
 msgstr "Выделить &строку"
 
-#: session/SessionController.cpp:662
+#: session/SessionController.cpp:695
 #, kde-format
 msgid "Save Output &As..."
 msgstr "Сохранить вывод в файле…"
 
-#: session/SessionController.cpp:668
+#: session/SessionController.cpp:701
 #, kde-format
 msgid "&Print Screen..."
 msgstr "Пе&чать экрана…"
 
-#: session/SessionController.cpp:672
+#: session/SessionController.cpp:705
 #, kde-format
 msgid "Adjust Scrollback..."
 msgstr "Настроить журнал вывода…"
 
-#: session/SessionController.cpp:676
+#: session/SessionController.cpp:709
 #, kde-format
 msgid "Clear Scrollback"
 msgstr "Очистить журнал предыдущего вывода"
 
-#: session/SessionController.cpp:680
+#: session/SessionController.cpp:713
 #, kde-format
 msgid "Clear Scrollback and Reset"
 msgstr "Очистить журнал и экран"
 
-#: session/SessionController.cpp:689
+#: session/SessionController.cpp:722
 #, kde-format
 msgid "Switch Profile"
 msgstr "Сменить профиль"
 
-#: session/SessionController.cpp:718
+#: session/SessionController.cpp:751
 #, kde-format
 msgid "Set &Encoding"
 msgstr "Установить кодировку"
 
-#: session/SessionController.cpp:735
+#: session/SessionController.cpp:768
+#, kde-format
+msgctxt "@item:inmenu Allows terminal applications to request mouse tracking"
+msgid "Allow mouse tracking"
+msgstr "Разрешить отслеживание курсора мыши"
+
+#: session/SessionController.cpp:773
 #, kde-format
 msgctxt "@item:inmenu A read only (locked) session"
 msgid "Read-only"
 msgstr "Только чтение"
 
-#: session/SessionController.cpp:746
+#: session/SessionController.cpp:784
 #, kde-format
 msgid "&Configure or Rename Tab..."
 msgstr "&Настроить или переименовать вкладку…"
 
-#: session/SessionController.cpp:752
+#: session/SessionController.cpp:790
 #, kde-format
 msgid "&All Tabs in Current Window"
 msgstr "Во &все вкладки данного окна"
 
-#: session/SessionController.cpp:759
+#: session/SessionController.cpp:797
 #, kde-format
 msgid "&Select Tabs..."
 msgstr "В &некоторые вкладки…"
 
-#: session/SessionController.cpp:765
+#: session/SessionController.cpp:803
 #, kde-format
 msgctxt "@action:inmenu Do not select any tabs"
 msgid "&None"
 msgstr "Н&и в одну вкладку"
 
-#: session/SessionController.cpp:773
+#: session/SessionController.cpp:811
 #, kde-format
 msgid "Copy Input To"
 msgstr "Направлять ввод также"
 
-#: session/SessionController.cpp:780
+#: session/SessionController.cpp:818
 #, kde-format
 msgid "&ZModem Upload..."
 msgstr "&Передать по ZModem…"
 
-#: session/SessionController.cpp:785
+#: session/SessionController.cpp:823
 #, kde-format
 msgid "Monitor for &Activity"
 msgstr "Монитор &активности"
 
-#: session/SessionController.cpp:791
+#: session/SessionController.cpp:829
 #, kde-format
 msgid "Monitor for &Silence"
 msgstr "Монитор &простоя"
 
-#: session/SessionController.cpp:797
+#: session/SessionController.cpp:835
 #, kde-format
 msgid "Monitor for Process Finishing"
 msgstr "Монитор завершения работы процесса"
 
-#: session/SessionController.cpp:804
+#: session/SessionController.cpp:842
 #, kde-format
 msgid "Enlarge Font"
 msgstr "Увеличить размер шрифта"
 
-#: session/SessionController.cpp:812
+#: session/SessionController.cpp:850
 #, kde-format
 msgid "Shrink Font"
 msgstr "Уменьшить размер шрифта"
 
-#: session/SessionController.cpp:817
+#: session/SessionController.cpp:855
 #, kde-format
 msgid "Reset Font Size"
 msgstr "Сбросить размер шрифта"
 
-#: session/SessionController.cpp:822
+#: session/SessionController.cpp:860
 #, kde-format
 msgid "Send Signal"
 msgstr "Отправить сигнал"
 
-#: session/SessionController.cpp:826
+#: session/SessionController.cpp:864
 #, kde-format
 msgid "&Suspend Task"
 msgstr "Прио&становить процесс (STOP)"
 
-#: session/SessionController.cpp:831
+#: session/SessionController.cpp:869
 #, kde-format
 msgid "&Continue Task"
 msgstr "В&озобновить процесс (CONT)"
 
-#: session/SessionController.cpp:836
+#: session/SessionController.cpp:874
 #, kde-format
 msgid "&Hangup"
 msgstr "П&еречитать конфигурацию (HUP)"
 
-#: session/SessionController.cpp:841
+#: session/SessionController.cpp:879
 #, kde-format
 msgid "&Interrupt Task"
 msgstr "Прер&вать процесс (INT)"
 
-#: session/SessionController.cpp:846
+#: session/SessionController.cpp:884
 #, kde-format
 msgid "&Terminate Task"
 msgstr "&Завершить процесс (TERM)"
 
-#: session/SessionController.cpp:851
+#: session/SessionController.cpp:889
 #, kde-format
 msgid "&Kill Task"
 msgstr "&Уничтожить процесс (KILL)"
 
-#: session/SessionController.cpp:856
+#: session/SessionController.cpp:894
 #, kde-format
 msgid "User Signal &1"
 msgstr "Пользовательский &1 (USR1)"
 
-#: session/SessionController.cpp:861
+#: session/SessionController.cpp:899
 #, kde-format
 msgid "User Signal &2"
 msgstr "Пользовательский &2 (USR2)"
 
-#: session/SessionController.cpp:878
+#: session/SessionController.cpp:916
 #, kde-format
 msgid "Create New Profile..."
 msgstr "Создать новый профиль…"
 
-#: session/SessionController.cpp:880
+#: session/SessionController.cpp:918
 #, kde-format
 msgid "Edit Current Profile..."
 msgstr "Настроить профиль…"
 
-#: session/SessionController.cpp:997
+#: session/SessionController.cpp:1035
 #, kde-format
 msgid ""
 "A program is currently running in this session.  Are you sure you want to "
 "close it?"
 msgstr "В сеансе выполняется программа. Прекратить её работу?"
 
-#: session/SessionController.cpp:1001
+#: session/SessionController.cpp:1039
 #, kde-format
 msgid ""
 "The program '%1' is currently running in this session.  Are you sure you "
 "want to close it?"
 msgstr "В сеансе выполняется программа «%1». Прекратить её работу?"
 
-#: session/SessionController.cpp:1008 session/SessionController.cpp:1041
+#: session/SessionController.cpp:1046 session/SessionController.cpp:1079
 #, kde-format
 msgid "Confirm Close"
 msgstr "Подтверждение выхода"
 
-#: session/SessionController.cpp:1032
+#: session/SessionController.cpp:1070
 #, kde-format
 msgid ""
 "A program in this session would not die.  Are you sure you want to kill it "
 "by force?"
 msgstr "В сеансе выполняется программа. Прекратить её работу?"
 
-#: session/SessionController.cpp:1036
+#: session/SessionController.cpp:1074
 #, kde-format
 msgid ""
 "The program '%1' is in this session would not die.  Are you sure you want to "
 "kill it by force?"
 msgstr "В сеансе выполняется программа «%1». Прекратить её работу?"
 
-#: session/SessionController.cpp:1868
+#: session/SessionController.cpp:1888
+#, kde-format
+msgid "Open Current Folder With"
+msgstr "Открыть текущую папку с помощью"
+
+#: session/SessionController.cpp:1958
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "Сохранить получаемый по ZModem файл в…"
 
-#: session/SessionController.cpp:1878
+#: session/SessionController.cpp:1968
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -1963,14 +2268,14 @@ msgstr ""
 "программ для работы с этим протоколом.</p><p>Вы можете установить пакет "
 "«rzsz» или «lrzsz».</p>"
 
-#: session/SessionController.cpp:1888
+#: session/SessionController.cpp:1978
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr ""
 "<p>В данном сеансе уже выполняется передача файла по протоколу ZModem.</p>"
 
-#: session/SessionController.cpp:1898
+#: session/SessionController.cpp:1988
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -1979,7 +2284,7 @@ msgstr ""
 "<p>Не найдено программ для работы с протоколом ZModem.</p><p>Вы можете "
 "установить пакет «rzsz» или «lrzsz».</p>"
 
-#: session/SessionController.cpp:1903
+#: session/SessionController.cpp:1993
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Выберите файлы для передачи по ZModem"
@@ -2663,20 +2968,20 @@ msgstr "Ctrl"
 #: settings/ThumbnailsSettings.ui:93
 #, kde-format
 msgid "Enable thumbnails generation"
-msgstr "Включить генерацию миниатюр"
+msgstr "Создавать миниатюры"
 
-#: terminalDisplay/TerminalDisplay.cpp:682
-#: terminalDisplay/TerminalDisplay.cpp:683
+#: terminalDisplay/TerminalDisplay.cpp:702
+#: terminalDisplay/TerminalDisplay.cpp:703
 #, kde-format
 msgid "Size: XXX x XXX"
 msgstr "Размер: XXX × XXX"
 
-#: terminalDisplay/TerminalDisplay.cpp:694
+#: terminalDisplay/TerminalDisplay.cpp:714
 #, kde-format
 msgid "Size: %1 x %2"
 msgstr "Размер: %1 × %2"
 
-#: terminalDisplay/TerminalDisplay.cpp:2074
+#: terminalDisplay/TerminalDisplay.cpp:2201
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
@@ -2685,57 +2990,57 @@ msgstr[1] "Действительно вставить %1 символа?"
 msgstr[2] "Действительно вставить %1 символов?"
 msgstr[3] "Действительно вставить %1 символ?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2075
+#: terminalDisplay/TerminalDisplay.cpp:2202
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Подтверждение вставки"
 
-#: terminalDisplay/TerminalDisplay.cpp:2108
+#: terminalDisplay/TerminalDisplay.cpp:2235
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr ""
 "Символ End-Of-Text / Interrupt (^C): Может вызвать выход из текущего процесса"
 
-#: terminalDisplay/TerminalDisplay.cpp:2109
+#: terminalDisplay/TerminalDisplay.cpp:2236
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr ""
 "Символ End-Of-Transmission (^D) End of transmission: Может вызвать выход из "
 "текущего процесса"
 
-#: terminalDisplay/TerminalDisplay.cpp:2110
+#: terminalDisplay/TerminalDisplay.cpp:2237
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "Символ Bell (^G ): Воспроизведение звукового сигнала"
 
-#: terminalDisplay/TerminalDisplay.cpp:2111
+#: terminalDisplay/TerminalDisplay.cpp:2238
 #, kde-format
 msgid "Backspace"
 msgstr "Символ Backspace (^H): Удаление символа слева"
 
-#: terminalDisplay/TerminalDisplay.cpp:2112
+#: terminalDisplay/TerminalDisplay.cpp:2239
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr "Символ Device Control Three / XOFF (^S): Приостановка вывода"
 
-#: terminalDisplay/TerminalDisplay.cpp:2113
+#: terminalDisplay/TerminalDisplay.cpp:2240
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr ""
 "Символ Substitute / Suspend (^Z): Может вызвать приостановку текущего "
 "процесса"
 
-#: terminalDisplay/TerminalDisplay.cpp:2114
+#: terminalDisplay/TerminalDisplay.cpp:2241
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr "Символ Escape (^[): Используется для управления состоянием терминала"
 
-#: terminalDisplay/TerminalDisplay.cpp:2115
+#: terminalDisplay/TerminalDisplay.cpp:2242
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr "Символ Separator / Quit: Может прервать выполнение текущего процесса"
 
-#: terminalDisplay/TerminalDisplay.cpp:2138
+#: terminalDisplay/TerminalDisplay.cpp:2265
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
@@ -2744,31 +3049,31 @@ msgstr ""
 "Вставляемый текст содержит скрытые управляющие символы. Удалить управляющие "
 "символы из вставляемого текста?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2141
+#: terminalDisplay/TerminalDisplay.cpp:2268
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Подтверждение вставки"
 
-#: terminalDisplay/TerminalDisplay.cpp:2142
+#: terminalDisplay/TerminalDisplay.cpp:2269
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "&Удалить скрытые символы и вставить"
 
-#: terminalDisplay/TerminalDisplay.cpp:2143
+#: terminalDisplay/TerminalDisplay.cpp:2270
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "Вставить без изменения"
 
-#: terminalDisplay/TerminalDisplay.cpp:2144
+#: terminalDisplay/TerminalDisplay.cpp:2271
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "О&тменить вставку"
 
-#: terminalDisplay/TerminalDisplay.cpp:2373
+#: terminalDisplay/TerminalDisplay.cpp:2500
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -2779,17 +3084,17 @@ msgstr ""
 "\">приостановлен</a> по нажатию Ctrl+S. Нажмите <b>Ctrl+Q</b> для "
 "продолжения вывода.</qt>"
 
-#: terminalDisplay/TerminalDisplay.cpp:2416
+#: terminalDisplay/TerminalDisplay.cpp:2538
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "Этот терминал открыт только для чтения."
 
-#: terminalDisplay/TerminalDisplay.cpp:2639
+#: terminalDisplay/TerminalDisplay.cpp:2769
 #, kde-format
 msgid "Change &Directory To"
 msgstr "Сменить рабочий каталог на"
 
-#: terminalDisplay/TerminalDisplay.cpp:2672
+#: terminalDisplay/TerminalDisplay.cpp:2802
 #, kde-format
 msgid "&Paste Location"
 msgstr "&Вставить адрес"
@@ -2944,17 +3249,17 @@ msgctxt "@action Shortcut entry"
 msgid "Switch to Tab %1"
 msgstr "Переключиться на вкладку %1"
 
-#: ViewManager.cpp:932
+#: ViewManager.cpp:950
 #, kde-format
 msgid "Save File"
 msgstr "Сохранение файла"
 
-#: ViewManager.cpp:932 ViewManager.cpp:1001
+#: ViewManager.cpp:950 ViewManager.cpp:1019
 #, kde-format
 msgid "Konsole View Layout (*.json)"
 msgstr "Макет окна Konsole (*.json)"
 
-#: ViewManager.cpp:935
+#: ViewManager.cpp:953
 #, kde-format
 msgid ""
 "A problem occurred when saving the Layout.\n"
@@ -2963,7 +3268,7 @@ msgstr ""
 "Ошибка сохранения макета.\n"
 "%1"
 
-#: ViewManager.cpp:991
+#: ViewManager.cpp:1009
 #, kde-format
 msgid ""
 "A problem occurred when loading the Layout.\n"
@@ -2972,12 +3277,12 @@ msgstr ""
 "Ошибка загрузки макета.\n"
 "%1"
 
-#: ViewManager.cpp:1001
+#: ViewManager.cpp:1019
 #, kde-format
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: Vt102Emulation.cpp:1255
+#: Vt102Emulation.cpp:1899
 #, kde-format
 msgid ""
 "No keyboard translator available.  The information needed to convert key "
@@ -3458,17 +3763,18 @@ msgid ""
 ">Either change the permissions of that file or set a different name to save "
 "the settings to a new profile."
 msgstr ""
-"Недостаточно прав для сохранения параметров в <filename>%1</filename>.<nl/"
-">Измените разрешения на доступ к файлу или задайте другое имя, чтобы "
-"сохранить параметры в новый профиль."
+"У приложения недостаточно прав доступа для сохранения параметров "
+"конфигурации в файл <filename>%1</filename>.<nl/> Чтобы сохранить изменённые "
+"параметры, следует изменить права доступа к файлу конфигурации, либо "
+"сохранить изменения в новый профиль."
 
 #: widgets/EditProfileDialog.cpp:319
 #, kde-format
 msgctxt "@info"
 msgid "Profile Name was empty; please set a name to be able to save settings."
 msgstr ""
-"Не указано имя профиля; укажите имя, чтобы получить возможность сохранить "
-"параметры."
+"Поле названия профиля не может быть пустым. Для сохранения параметров "
+"заполните это поле."
 
 #: widgets/EditProfileDialog.cpp:327
 #, kde-format
@@ -3542,7 +3848,7 @@ msgstr "Игнорировать сигналы"
 #: widgets/EditProfileDialog.cpp:485
 #, kde-format
 msgid "Default profile for new terminal sessions in %1"
-msgstr "Профиль по умолчанию для новых сеансов в %1"
+msgstr "Сделать профилем по умолчанию для новых сеансов в %1"
 
 #: widgets/EditProfileDialog.cpp:526
 #, kde-format
@@ -3569,13 +3875,13 @@ msgstr[3] " секунда"
 msgid "Select Initial Directory"
 msgstr "Выбор начального каталога"
 
-#: widgets/EditProfileDialog.cpp:1159
+#: widgets/EditProfileDialog.cpp:1166
 #, kde-kuit-format
 msgctxt "@info"
 msgid "Scheme <resource>%1</resource> failed to load."
 msgstr "Не удалось загрузить схему <resource>%1</resource>."
 
-#: widgets/EditProfileDialog.cpp:1338
+#: widgets/EditProfileDialog.cpp:1345
 #, kde-format
 msgid ""
 "This color scheme uses a transparent background which does not appear to be "
@@ -3584,16 +3890,16 @@ msgstr ""
 "В выбранной цветовой схеме фон должен быть прозрачным, но данная система не "
 "настроена соответствующим образом"
 
-#: widgets/EditProfileDialog.cpp:1344
+#: widgets/EditProfileDialog.cpp:1351
 #, kde-format
 msgid ""
 "Konsole was started before desktop effects were enabled. You need to restart "
 "Konsole to see transparent background."
 msgstr ""
-"Программа Konsole была запущена до включения эффектов рабочего стола. Чтобы "
+"Konsole был запущен до того, как эффекты рабочего стола были включены. Чтобы "
 "активировать прозрачный фон, перезапустите приложение."
 
-#: widgets/EditProfileDialog.cpp:1735
+#: widgets/EditProfileDialog.cpp:1744
 #, kde-format
 msgid ""
 "The format is e.g. 'editorExec PATH:LINE:COLUMN'\n"
@@ -3609,20 +3915,20 @@ msgid ""
 "will be ignored and the file will be opened by the default text\n"
 "editor."
 msgstr ""
-"Пример формата: 'editorExec PATH:LINE:COLUMN'\n"
+"Формат (например: 'editorExec PATH:LINE:COLUMN')\n"
 "\n"
-"PATH    заменяется путём к текстовому файлу\n"
-"LINE    заменяется номером строки\n"
-"COLUMN  (необязательно) заменяется номером столбца\n"
-"Примечание: «PATH:LINE:COLUMN» необходимо заменить\n"
-"тем синтаксисом, который фактически поддерживается\n"
-"выбранным редактором, например: gedit +LINE:COLUMN PATH\n"
+"  PATH — будет заменено на полный путь к текстовому файлу;\n"
+"  LINE — будет заменено на номер строки;\n"
+"  COLUMN (необязательное поле) — будет заменено на номер столбца.\n"
+"Примечание: аргументы PATH:LINE:COLUMN следует указывать с учётом "
+"синтаксиса, поддерживаемого тектовым редактором, к примеру: «gedit +LINE:"
+"COLUMN PATH»\n"
 "\n"
-"Если в команде нет указания PATH или LINE, этот параметр\n"
-"игнорируется, а файл будет открыт в текстовом редакторе\n"
-"по умолчанию."
+"Если поля PATH или LINE не указаны, то данный параметр\n"
+"не будет использован, а файл будет открыт в приложении\n"
+"для редактирования текста, используемом по умолчанию."
 
-#: widgets/EditProfileDialog.cpp:1748
+#: widgets/EditProfileDialog.cpp:1757
 #, kde-format
 msgid "Text Editor Custom Command"
 msgstr "Команда для запуска редактора текста"
@@ -3945,7 +4251,7 @@ msgstr "Подчёркивать файлы"
 #: widgets/EditProfileMousePage.ui:285
 #, kde-format
 msgid "Text Editor Command: "
-msgstr "Команда текстового редактора: "
+msgstr "Команда для запуска редактора текста: "
 
 #. i18n: ectx: property (toolTip), widget (QLabel, textEditorCommandLabel)
 #. i18n: ectx: property (toolTip), widget (QComboBox, textEditorCombo)
@@ -3954,8 +4260,8 @@ msgstr "Команда текстового редактора: "
 msgctxt "@info:tooltip"
 msgid "Text editor to use when opening text file URLs at a given line/column."
 msgstr ""
-"Текстовый редактор, который следует использовать при открытии URL-адресов "
-"текстового файла на указанной строке и столбце."
+"Редактор текста, используемый для открытия текстового файла по ссылке на "
+"заданной строке и столбце."
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, openLinksByDirectClickButton)
 #: widgets/EditProfileMousePage.ui:329
@@ -3987,10 +4293,9 @@ msgid ""
 "to be shown as another URL or hidden.<br>Make sure you understand the "
 "implications before turning this on."
 msgstr ""
-"<b>ПРЕДУПРЕЖДЕНИЕ</b>: это влияет на безопасность системы, так как "
-"вредоносные URL-адреса могут быть показаны как другие URL-адреса или скрыты."
-"<br>Примите во внимание возможные последствия перед включением этого "
-"параметра."
+"<b>ПРЕДУПРЕЖДЕНИЕ</b>: Это действие влияет на безопасность, поскольку "
+"позволяет подменять или скрывать вредоносные URL.<br>Продолжайте, только "
+"если уверены в том, что делаете."
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
 #: widgets/EditProfileMousePage.ui:368
@@ -4071,14 +4376,33 @@ msgid ""
 "When positioning the mouse over a hexadecimal color it will be displayed in "
 "a frame next to the mouse pointer"
 msgstr ""
-"Если навести указатель мыши на шестнадцатеричный цвет, он будет показан в "
-"рамке рядом с указателем мыши"
+"Показывать цвет при наведении курсора мыши на шестнадцатеричное значение "
+"цвета"
 
 #. i18n: ectx: property (text), widget (QCheckBox, allowColorFilters)
 #: widgets/EditProfileMousePage.ui:432
 #, kde-format
 msgid "Allow Color Filters"
-msgstr "Разрешить цветные фильтры"
+msgstr "Использовать фильтры цветов"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, allowMouseTrackingButton)
+#: widgets/EditProfileMousePage.ui:452
+#, kde-format
+msgid ""
+"Some terminal applications have mouse support, this allows them to get it by "
+"default. It can be toggled on/off while running as well."
+msgstr ""
+"Этот параметр позволяет по умолчанию консольным приложениям, поддерживающим "
+"работу с мышью, получать доступ к ней. Состояние параметра также возможно "
+"изменять во время работы."
+
+#. i18n: ectx: property (text), widget (QCheckBox, allowMouseTrackingButton)
+#: widgets/EditProfileMousePage.ui:455
+#, kde-format
+msgid "Allow terminal applications to handle clicks and drags"
+msgstr ""
+"Разрешить консольным приложениям обрабатывать нажатия кнопок и "
+"перетаскивания мышью"
 
 #. i18n: ectx: property (text), widget (QLabel, historySizeLabel)
 #: widgets/EditProfileScrollingPage.ui:43
@@ -4397,7 +4721,7 @@ msgstr "Окно печати"
 #, kde-format
 msgctxt "@label:listbox No color selected"
 msgid "None"
-msgstr "Нет"
+msgstr "Отсутствует"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, remoteTabTitleEdit)
 #: widgets/RenameTabWidget.ui:41
@@ -4564,6 +4888,12 @@ msgctxt "@action:inmenu"
 msgid "Close Tab"
 msgstr "Закрыть вкладку"
 
+#~ msgid "Import"
+#~ msgstr "Импорт"
+
+#~ msgid "Missing Port"
+#~ msgstr "Не указан порт"
+
 #~ msgid "Show menubar"
 #~ msgstr "Показывать меню"
 
@@ -4574,6 +4904,7 @@ msgstr "Закрыть вкладку"
 #~ msgstr "Показывать меню в каждом окне"
 
 #, fuzzy
+#~| msgid "Open File Manager"
 #~ msgid "Hide SSH Manager"
 #~ msgstr "Открыть диспетчер файлов"
 
@@ -4582,12 +4913,10 @@ msgstr "Закрыть вкладку"
 #~ msgstr "<p>Перед сохранением профиля на диск укажите его название.</p>"
 
 #, fuzzy
+#~| msgid " (Default)"
 #~ msgctxt "@label:textbox Name of the current default profile"
 #~ msgid " (Default)"
 #~ msgstr " (Стандартный)"
-
-#~ msgid "Edit the selected profile(s)"
-#~ msgstr "Изменить выбранный профиль"
 
 #~ msgid "Color from theme"
 #~ msgstr "На основе цветовой схемы"
@@ -4907,11 +5236,14 @@ msgstr "Закрыть вкладку"
 #~ msgstr "Щёлкните, чтобы переименовать профиль"
 
 #, fuzzy
+#~| msgctxt "@title"
+#~| msgid "Konsole"
 #~ msgctxt "@title"
 #~ msgid "Demo KonsolePart"
 #~ msgstr "Konsole"
 
 #, fuzzy
+#~| msgid "(c) 1997-2015, The Konsole Developers"
 #~ msgctxt "@info:credit"
 #~ msgid "(c) 2017, The Konsole Developers"
 #~ msgstr "© Разработчики Konsole, 1997-2015"
@@ -4991,21 +5323,16 @@ msgstr "Закрыть вкладку"
 #~ msgid "Configure Current Profile..."
 #~ msgstr "Настроить текущий профиль..."
 
-#~ msgid "Wallpaper:"
-#~ msgstr "Фоновое изображение:"
-
 #~ msgid "The wallpaper picture file path"
 #~ msgstr "Путь к файлу фонового изображения"
 
 #, fuzzy
+#~| msgid "Edit Profile"
 #~ msgid "&Switch Profile"
 #~ msgstr "Изменить профиль"
 
 #~ msgid "Debug"
 #~ msgstr "Отладка"
-
-#~ msgid "Command to execute"
-#~ msgstr "Команда для выполнения"
 
 #~ msgid "Show or hide the menu bar in terminal windows"
 #~ msgstr "Показывать или скрывать меню в окнах терминалов"
@@ -5043,9 +5370,6 @@ msgstr "Закрыть вкладку"
 #~ msgid "Remote Connection..."
 #~ msgstr "Удалённое соединение..."
 
-#~ msgid "Host:"
-#~ msgstr "Сервер:"
-
 #~ msgid "User:"
 #~ msgstr "Пользователь:"
 
@@ -5066,9 +5390,6 @@ msgstr "Закрыть вкладку"
 
 #~ msgid "Save as custom session"
 #~ msgstr "Сохранить как пользовательский сеанс"
-
-#~ msgid "New Remote Connection"
-#~ msgstr "Соединение с удалённой системой"
 
 #~ msgid "Connect"
 #~ msgstr "Подключиться"
@@ -5114,6 +5435,7 @@ msgstr "Закрыть вкладку"
 #~ msgstr "Дополнительные символы слова: "
 
 #, fuzzy
+#~| msgid "Clear && Reset"
 #~ msgid "Clear and Reset"
 #~ msgstr "Удалить весь в&ывод сеанса и сбросить"
 
