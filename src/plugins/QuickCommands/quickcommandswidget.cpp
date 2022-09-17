@@ -3,21 +3,28 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "quickcommandswidget.h"
+#include "filtermodel.h"
 #include "konsoledebug.h"
-#include "quickcommandsmodel.h"
-#include "session/SessionController.h"
 #include "terminalDisplay/TerminalDisplay.h"
 
 #include <QMenu>
-#include <QSortFilterProxyModel>
 
 #include "ui_qcwidget.h"
+#include <KLocalizedString>
 #include <KMessageBox>
+#include <QStandardPaths>
+#include <QTabWidget>
+#include <QTemporaryFile>
+#include <QTimer>
+#include <kmessagebox.h>
+#include <kstandardguiitem.h>
 
 struct QuickCommandsWidget::Private {
     QuickCommandsModel *model = nullptr;
-    QSortFilterProxyModel *filterModel = nullptr;
+    FilterModel *filterModel = nullptr;
     Konsole::SessionController *controller = nullptr;
+    bool hasShellCheck = false;
+    QTimer shellCheckTimer;
 };
 
 QuickCommandsWidget::QuickCommandsWidget(QWidget *parent)
@@ -27,37 +34,38 @@ QuickCommandsWidget::QuickCommandsWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    priv->filterModel = new QSortFilterProxyModel(this);
+    priv->hasShellCheck = !QStandardPaths::findExecutable(QStringLiteral("shellcheck")).isEmpty();
+    if (!priv->hasShellCheck) {
+        ui->warning->setPlainText(QStringLiteral("Missing executable shellcheck"));
+    }
+    priv->shellCheckTimer.setSingleShot(true);
+
+    priv->filterModel = new FilterModel(this);
     connect(ui->btnAdd, &QPushButton::clicked, this, &QuickCommandsWidget::addMode);
     connect(ui->btnSave, &QPushButton::clicked, this, &QuickCommandsWidget::saveCommand);
     connect(ui->btnUpdate, &QPushButton::clicked, this, &QuickCommandsWidget::updateCommand);
     connect(ui->btnCancel, &QPushButton::clicked, this, &QuickCommandsWidget::viewMode);
+    connect(ui->btnRun, &QPushButton::clicked, this, &QuickCommandsWidget::runCommand);
+
+    connect(ui->invertFilter, &QPushButton::clicked, priv->filterModel, &FilterModel::setInvertFilter);
+
+    connect(ui->filterLine, &QLineEdit::textChanged, this, [this] {
+        priv->filterModel->setFilterRegularExpression(ui->filterLine->text());
+        priv->filterModel->invalidate();
+    });
 
     ui->commandsTreeView->setModel(priv->filterModel);
     ui->commandsTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->commandsTreeView, &QTreeView::doubleClicked, this, &QuickCommandsWidget::invokeCommand);
-    connect(ui->commandsTreeView, &QTreeView::customContextMenuRequested, [this](const QPoint &pos) {
-        QModelIndex idx = ui->commandsTreeView->indexAt(pos);
-        if (!idx.isValid())
-            return;
-        auto sourceIdx = priv->filterModel->mapToSource(idx);
-        const bool isParent = sourceIdx.parent() == priv->model->invisibleRootItem()->index();
-        QMenu *menu = new QMenu(this);
+    connect(ui->commandsTreeView, &QTreeView::clicked, this, &QuickCommandsWidget::indexSelected);
 
-        if (!isParent) {
-            auto actionEdit = new QAction(QStringLiteral("Edit"), ui->commandsTreeView);
-            menu->addAction(actionEdit);
-            connect(actionEdit, &QAction::triggered, this, &QuickCommandsWidget::triggerEdit);
-        } else {
-            auto actionRename = new QAction(QStringLiteral("Rename"), ui->commandsTreeView);
-            menu->addAction(actionRename);
-            connect(actionRename, &QAction::triggered, this, &QuickCommandsWidget::triggerRename);
-        }
-        auto actionDelete = new QAction(QStringLiteral("Delete"), ui->commandsTreeView);
-        menu->addAction(actionDelete);
-        connect(actionDelete, &QAction::triggered, this, &QuickCommandsWidget::triggerDelete);
-        menu->popup(ui->commandsTreeView->viewport()->mapToGlobal(pos));
+    connect(ui->commandsTreeView, &QTreeView::customContextMenuRequested, this, &QuickCommandsWidget::createMenu);
+
+    connect(&priv->shellCheckTimer, &QTimer::timeout, this, &QuickCommandsWidget::runShellCheck);
+    connect(ui->command, &QPlainTextEdit::textChanged, this, [this] {
+        priv->shellCheckTimer.start(250);
     });
+
     viewMode();
 }
 
@@ -86,15 +94,38 @@ void QuickCommandsWidget::viewMode()
 
 void QuickCommandsWidget::addMode()
 {
-    ui->command->setPlainText({});
-    ui->name->setText({});
-    ui->tooltip->setText({});
-
     ui->btnAdd->hide();
     ui->btnSave->show();
     ui->btnUpdate->hide();
     ui->btnCancel->show();
     prepareEdit();
+}
+
+void QuickCommandsWidget::indexSelected(const QModelIndex &idx)
+{
+    Q_UNUSED(idx)
+
+    const auto sourceIdx = priv->filterModel->mapToSource(ui->commandsTreeView->currentIndex());
+    if (priv->model->rowCount(sourceIdx) != 0) {
+        ui->name->setText({});
+        ui->tooltip->setText({});
+        ui->command->setPlainText({});
+        ui->group->setCurrentText({});
+        return;
+    }
+
+    const auto item = priv->model->itemFromIndex(sourceIdx);
+
+    if (item != nullptr && item->parent() != nullptr) {
+        const auto data = item->data(QuickCommandsModel::QuickCommandRole).value<QuickCommandData>();
+        ui->name->setText(data.name);
+        ui->tooltip->setText(data.tooltip);
+        ui->command->setPlainText(data.command);
+        ui->group->setCurrentText(item->parent()->text());
+
+        runShellCheck();
+    }
+
 }
 
 void QuickCommandsWidget::editMode()
@@ -129,6 +160,11 @@ void QuickCommandsWidget::updateCommand()
 
 void QuickCommandsWidget::invokeCommand(const QModelIndex &idx)
 {
+    if (!ui->warning->toPlainText().isEmpty()) {
+        QMessageBox::warning(this, QStringLiteral("Shell Errors"), i18n("Please fix all the warnings before trying to run this script"));
+        return;
+    }
+
     if (!priv->controller) {
         return;
     }
@@ -145,16 +181,25 @@ void QuickCommandsWidget::invokeCommand(const QModelIndex &idx)
     }
 }
 
-void QuickCommandsWidget::triggerEdit()
+void QuickCommandsWidget::runCommand()
 {
-    const auto sourceIdx = priv->filterModel->mapToSource(ui->commandsTreeView->currentIndex());
-    const auto item = priv->model->itemFromIndex(sourceIdx);
-    const auto data = item->data(QuickCommandsModel::QuickCommandRole).value<QuickCommandData>();
-    ui->name->setText(data.name);
-    ui->tooltip->setText(data.tooltip);
-    ui->command->setPlainText(data.command);
-    ui->group->setCurrentText(item->parent()->text());
-    editMode();
+    if (!ui->warning->toPlainText().isEmpty()) {
+        auto choice = KMessageBox::questionYesNo(this,
+                                                 i18n("There are some errors on the script, do you really want to run it?"),
+                                                 i18n("Shell Errors"),
+                                                 KGuiItem(i18nc("@action:button", "Run"), QStringLiteral("system-run")),
+                                                 KStandardGuiItem::cancel(),
+                                                 QStringLiteral("quick-commands-question"));
+        if (choice == KMessageBox::ButtonCode::No) {
+            return;
+        }
+    }
+
+    const QString command = ui->command->toPlainText();
+    priv->controller->session()->sendTextToTerminal(command, QLatin1Char('\r'));
+    if (priv->controller->session()->views().count()) {
+        priv->controller->session()->views().at(0)->setFocus();
+    }
 }
 
 void QuickCommandsWidget::triggerRename()
@@ -167,16 +212,11 @@ void QuickCommandsWidget::triggerDelete()
     const auto idx = ui->commandsTreeView->currentIndex();
     const QString text = idx.data(Qt::DisplayRole).toString();
     const QString dialogMessage = ui->commandsTreeView->model()->rowCount(idx)
-        ? i18n("You are about to remove the group %1,\n with multiple configurations, are you sure?", text)
-        : i18n("You are about to remove %1, are you sure?", text);
+        ? i18n("You are about to delete the group %1,\n with multiple configurations, are you sure?", text)
+        : i18n("You are about to delete %1, are you sure?", text);
 
-    KMessageBox::ButtonCode result = KMessageBox::messageBox(this,
-                                                             KMessageBox::DialogType::WarningYesNo,
-                                                             dialogMessage,
-                                                             i18n("Remove Quick Commands Configurations"),
-                                                             KStandardGuiItem::yes(),
-                                                             KStandardGuiItem::no(),
-                                                             KStandardGuiItem::cancel());
+    int result =
+        KMessageBox::warningYesNo(this, dialogMessage, i18n("Delete Quick Commands Configurations"), KStandardGuiItem::del(), KStandardGuiItem::cancel());
     if (result != KMessageBox::ButtonCode::Yes)
         return;
 
@@ -214,4 +254,57 @@ bool QuickCommandsWidget::valid()
         return false;
     }
     return true;
+}
+
+void QuickCommandsWidget::createMenu(const QPoint &pos)
+{
+    QModelIndex idx = ui->commandsTreeView->indexAt(pos);
+    if (!idx.isValid())
+        return;
+    auto sourceIdx = priv->filterModel->mapToSource(idx);
+    const bool isParent = sourceIdx.parent() == priv->model->invisibleRootItem()->index();
+    QMenu *menu = new QMenu(this);
+
+    if (!isParent) {
+        auto actionEdit = new QAction(i18n("Edit"), ui->commandsTreeView);
+        menu->addAction(actionEdit);
+        connect(actionEdit, &QAction::triggered, this, &QuickCommandsWidget::editMode);
+    } else {
+        auto actionRename = new QAction(i18n("Rename"), ui->commandsTreeView);
+        menu->addAction(actionRename);
+        connect(actionRename, &QAction::triggered, this, &QuickCommandsWidget::triggerRename);
+    }
+    auto actionDelete = new QAction(i18n("Delete"), ui->commandsTreeView);
+    menu->addAction(actionDelete);
+    connect(actionDelete, &QAction::triggered, this, &QuickCommandsWidget::triggerDelete);
+    menu->popup(ui->commandsTreeView->viewport()->mapToGlobal(pos));
+}
+
+void QuickCommandsWidget::runShellCheck()
+{
+    if (!priv->hasShellCheck) {
+        return;
+    }
+
+    QTemporaryFile file;
+    file.open();
+
+    QTextStream ts(&file);
+    ts << "#!/bin/bash\n";
+    ts << ui->command->toPlainText();
+    file.close();
+
+    QString fName = file.fileName();
+    QProcess process;
+    process.start(QStringLiteral("shellcheck"), {fName});
+    process.waitForFinished();
+
+    const QString errorString = QString::fromLocal8Bit(process.readAllStandardOutput());
+    ui->warning->setPlainText(errorString);
+
+    if (errorString.isEmpty()) {
+        ui->tabWidget->setTabText(1, i18n("Warnings"));
+    } else {
+        ui->tabWidget->setTabText(1, i18n("Warnings (*)"));
+    }
 }

@@ -26,15 +26,12 @@
 #include "characters/ExtendedCharTable.h"
 #include "history/HistoryScrollNone.h"
 #include "history/HistoryType.h"
-#include "profile/Profile.h"
 
-#ifdef HAVE_MALLOC_H
-    // For malloc_trim, which is a GNU extension
-    #ifdef __GNUC__
-    extern "C" {
-            #include <malloc.h>
-    }
-    #endif
+#if HAVE_MALLOC_TRIM
+// For malloc_trim, which is a GNU extension
+extern "C" {
+#include <malloc.h>
+}
 #endif
 
 using namespace Konsole;
@@ -53,7 +50,7 @@ using namespace Konsole;
 #endif
 
 const Character Screen::DefaultChar =
-    Character(' ', CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR), CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR), DEFAULT_RENDITION, false);
+    Character(' ', CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR), CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR), DEFAULT_RENDITION, 0);
 
 Screen::Screen(int lines, int columns)
     : _currentTerminalDisplay(nullptr)
@@ -76,6 +73,9 @@ Screen::Screen(int lines, int columns)
     , _currentRendition(DEFAULT_RENDITION)
     , _topMargin(0)
     , _bottomMargin(0)
+    , _replMode(REPL_None)
+    , _hasRepl(false)
+    , _replLastOutputStart(std::pair(-1, -1))
     , _tabStops(QBitArray())
     , _selBegin(0)
     , _selTopLeft(0)
@@ -86,9 +86,8 @@ Screen::Screen(int lines, int columns)
     , _effectiveRendition(DEFAULT_RENDITION)
     , _lastPos(-1)
     , _lastDrawnChar(0)
-    , _escapeSequenceUrlExtractor(std::make_unique<EscapeSequenceUrlExtractor>())
+    , _escapeSequenceUrlExtractor(nullptr)
 {
-    _escapeSequenceUrlExtractor->setScreen(this);
     std::fill(_lineProperties.begin(), _lineProperties.end(), LINE_DEFAULT);
 
     _graphicsPlacements = std::vector<std::unique_ptr<TerminalGraphicsPlacement_t>>();
@@ -226,6 +225,7 @@ void Screen::reverseIndex()
 void Screen::nextLine()
 //=NEL
 {
+    _lineProperties[_cuY] = SetLineLength(_lineProperties[_cuY], _cuX);
     toStartOfLine();
     index();
 }
@@ -245,9 +245,20 @@ void Screen::eraseChars(int n)
 void Screen::eraseBlock(int y, int x, int height, int width)
 {
     width = qBound(0, width, _columns - x - 1);
+    int endCol = x + width;
     height = qBound(0, height, _lines - y - 1);
+    Character chr(' ', CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_FORE_COLOR), CharacterColor(COLOR_SPACE_DEFAULT, DEFAULT_BACK_COLOR), RE_TRANSPARENT, 0);
     for (int row = y; row < y + height; row++) {
-        clearImage(loc(x, row), loc(x + width - 1, row), ' ', false);
+        QVector<Character> &line = _screenLines[row];
+        if (line.size() < endCol + 1) {
+            line.resize(endCol + 1);
+        }
+        if (endCol == _columns - 1) {
+            line.resize(endCol + 1);
+        }
+        if (x <= endCol) {
+            std::fill(line.begin() + x, line.begin() + (endCol + 1), chr);
+        }
     }
 }
 
@@ -275,7 +286,7 @@ void Screen::deleteChars(int n)
     _screenLines[_cuY].remove(_cuX, n);
 
     // Append space(s) with current attributes
-    Character spaceWithCurrentAttrs(' ', _effectiveForeground, _effectiveBackground, _effectiveRendition, false);
+    Character spaceWithCurrentAttrs(' ', _effectiveForeground, _effectiveBackground, _effectiveRendition, 0);
 
     for (int i = 0; i < n; ++i) {
         _screenLines[_cuY].append(spaceWithCurrentAttrs);
@@ -469,7 +480,6 @@ void Screen::resizeImage(int new_lines, int new_columns)
     if ((new_lines == _lines) && (new_columns == _columns)) {
         return;
     }
-
     // Adjust scroll position, and fix glitches
     _oldTotalLines = getLines() + getHistLines();
     _isResize = true;
@@ -483,13 +493,19 @@ void Screen::resizeImage(int new_lines, int new_columns)
         while (!_screenLines.empty() && _history->isWrappedLine(_history->getLines() - 1)) {
             fastAddHistLine();
             --cursorLine;
+            scrollPlacements(1);
         }
-        auto removedLines = _history->reflowLines(new_columns);
+        std::map<int, int> deltas = {};
+        auto removedLines = _history->reflowLines(new_columns, &deltas);
 
         // If _history size > max history size it will drop a line from _history.
         // We need to verify if we need to remove a URL.
-        if (removedLines) {
+        if (removedLines && _escapeSequenceUrlExtractor) {
             _escapeSequenceUrlExtractor->historyLinesRemoved(removedLines);
+        }
+
+        for (const auto &[pos, delta] : deltas) {
+            scrollPlacements(delta, INT64_MIN, pos);
         }
     }
 
@@ -524,6 +540,7 @@ void Screen::resizeImage(int new_lines, int new_columns)
                 _screenLines.erase(_screenLines.begin() + currentPos + 1);
                 _lineProperties.erase(_lineProperties.begin() + currentPos);
                 --cursorLine;
+                scrollPlacements(1, currentPos);
                 continue;
             }
 
@@ -541,6 +558,7 @@ void Screen::resizeImage(int new_lines, int new_columns)
                 _screenLines.insert(_screenLines.begin() + currentPos + 1, std::move(values));
                 _lineProperties[currentPos] |= LINE_WRAPPED;
                 ++cursorLine;
+                scrollPlacements(-1, currentPos);
             }
             currentPos += 1;
         }
@@ -550,6 +568,7 @@ void Screen::resizeImage(int new_lines, int new_columns)
     while (cursorLine > new_lines - 1) {
         fastAddHistLine();
         --cursorLine;
+        scrollPlacements(1);
     }
 
     if (_enableReflowLines) {
@@ -565,6 +584,7 @@ void Screen::resizeImage(int new_lines, int new_columns)
             _lineProperties.insert(_lineProperties.begin(), lineProperty);
             _history->removeCells();
             ++cursorLine;
+            scrollPlacements(-1);
         }
     }
 
@@ -782,23 +802,29 @@ int Screen::getScreenLineColumns(const int line) const
     return _columns;
 }
 
-void Screen::reset(bool softReset)
+void Screen::reset(bool softReset, bool preservePrompt)
 {
-    // Clear screen, but preserve the current line
+    setDefaultRendition();
+
     if (!softReset) {
-        scrollUp(0, _cuY);
-        _cuY = 0;
-        _cuX = 0;
+        if (preservePrompt) {
+            // Clear screen, but preserve the current line and X position
+            scrollUp(0, _cuY);
+            _cuY = 0;
+            if (_hasGraphics) {
+                delPlacements();
+                _currentTerminalDisplay->update();
+            }
+        } else {
+            clearEntireScreen();
+            _cuY = 0;
+            _cuX = 0;
+        }
 
         resetMode(MODE_Screen); // screen not inverse
         resetMode(MODE_NewLine);
 
         initTabStops();
-
-        if (_hasGraphics) {
-            delPlacements();
-            _currentTerminalDisplay->update();
-        }
     }
 
     _currentModes[MODE_Origin] = 0;
@@ -818,7 +844,6 @@ void Screen::reset(bool softReset)
     // Other terminal emulators reset the entire scroll history during a reset
     //    setScroll(getScroll(), false);
 
-    setDefaultRendition();
     saveCursor();
 
     // DECSTR homes the saved cursor even though it doesn't home the current cursor
@@ -895,6 +920,7 @@ void Screen::initTabStops()
 void Screen::newLine()
 {
     if (getMode(MODE_NewLine)) {
+        _lineProperties[_cuY] = SetLineLength(_lineProperties[_cuY], _cuX);
         toStartOfLine();
     }
 
@@ -1025,7 +1051,7 @@ notcombine:
     currentChar.foregroundColor = _effectiveForeground;
     currentChar.backgroundColor = _effectiveBackground;
     currentChar.rendition = _effectiveRendition;
-    currentChar.isRealCharacter = true;
+    currentChar.flags = setRepl(EF_REAL, _replMode);
 
     _lastDrawnChar = c;
 
@@ -1043,12 +1069,21 @@ notcombine:
         ch.foregroundColor = _effectiveForeground;
         ch.backgroundColor = _effectiveBackground;
         ch.rendition = _effectiveRendition;
-        ch.isRealCharacter = false;
+        ch.flags = setRepl(EF_UNREAL, _replMode);
 
         --w;
     }
     _cuX = newCursorX;
-    _escapeSequenceUrlExtractor->appendUrlText(QChar(c));
+    if (_replMode != REPL_None && std::make_pair(_cuY, _cuX) >= _replModeEnd) {
+        _replModeEnd = std::make_pair(_cuY, _cuX);
+    }
+    if (LineLength(_lineProperties[_cuY]) < _cuX) {
+        _lineProperties[_cuY] = SetLineLength(_lineProperties[_cuY], _cuX);
+    }
+
+    if (_escapeSequenceUrlExtractor) {
+        _escapeSequenceUrlExtractor->appendUrlText(QChar(c));
+    }
 }
 
 int Screen::scrolledLines() const
@@ -1105,7 +1140,17 @@ void Screen::scrollUp(int from, int n)
     moveImage(loc(0, from), loc(0, from + n), loc(_columns, _bottomMargin));
     clearImage(loc(0, _bottomMargin - n + 1), loc(_columns - 1, _bottomMargin), ' ');
     if (_hasGraphics) {
-        scrollUpVisiblePlacements(n);
+        scrollPlacements(n);
+    }
+    if (_replMode != REPL_None) {
+        if (_replModeStart.first > 0) {
+            _replModeStart = std::make_pair(_replModeStart.first - 1, _replModeStart.second);
+            _replModeEnd = std::make_pair(_replModeEnd.first - 1, _replModeEnd.second);
+        }
+        if (_replLastOutputStart.first > -1) {
+            _replLastOutputStart = std::make_pair(_replLastOutputStart.first - 1, _replLastOutputStart.second);
+            _replLastOutputEnd = std::make_pair(_replLastOutputEnd.first - 1, _replLastOutputEnd.second);
+        }
     }
 }
 
@@ -1190,17 +1235,34 @@ void Screen::clearImage(int loca, int loce, char c, bool resetLineRendition)
     const int topLine = loca / _columns;
     const int bottomLine = loce / _columns;
 
-    Character clearCh(uint(c), _currentForeground, _currentBackground, DEFAULT_RENDITION, false);
+    // When readline shortens text, it uses clearImage() to remove the extraneous text
+    if (_replMode != REPL_None && std::make_pair(topLine, loca % _columns) <= _replModeEnd) {
+        _replModeEnd = std::make_pair(topLine, loca % _columns);
+    }
+
+    Character clearCh(uint(c), _currentForeground, _currentBackground, DEFAULT_RENDITION, 0);
 
     // if the character being used to clear the area is the same as the
     // default character, the affected _lines can simply be shrunk.
     const bool isDefaultCh = (clearCh == Screen::DefaultChar);
 
     for (int y = topLine; y <= bottomLine; ++y) {
-        _lineProperties[y] &= ~LINE_WRAPPED;
-
         const int endCol = (y == bottomLine) ? loce % _columns : _columns - 1;
         const int startCol = (y == topLine) ? loca % _columns : 0;
+
+        if (endCol < _columns - 1 || startCol > 0) {
+            _lineProperties[y] &= ~LINE_WRAPPED;
+            if (LineLength(_lineProperties[y]) < endCol && LineLength(_lineProperties[y]) > startCol) {
+                _lineProperties[y] = SetLineLength(_lineProperties[y], startCol);
+            }
+        } else {
+            if (resetLineRendition) {
+                _lineProperties[y] = LINE_DEFAULT;
+            }
+            {
+                _lineProperties[y] &= ~(LINE_WRAPPED | LINE_PROMPT_START | LINE_INPUT_START | LINE_OUTPUT_START);
+            }
+        }
 
         QVector<Character> &line = _screenLines[y];
 
@@ -1218,10 +1280,6 @@ void Screen::clearImage(int loca, int loce, char c, bool resetLineRendition)
             if (startCol <= endCol) {
                 std::fill(line.begin() + startCol, line.begin() + (endCol + 1), clearCh);
             }
-        }
-
-        if (resetLineRendition && startCol == 0 && endCol == _columns - 1) {
-            _lineProperties[y] &= ~(LINE_DOUBLEWIDTH | LINE_DOUBLEHEIGHT_TOP | LINE_DOUBLEHEIGHT_BOTTOM);
         }
     }
 }
@@ -1443,7 +1501,7 @@ void Screen::setSelectionStart(const int x, const int y, const bool blockSelecti
     _blockSelectionMode = blockSelectionMode;
 }
 
-void Screen::setSelectionEnd(const int x, const int y)
+void Screen::setSelectionEnd(const int x, const int y, const bool trimTrailingWhitespace)
 {
     if (_selBegin == -1) {
         return;
@@ -1464,8 +1522,8 @@ void Screen::setSelectionEnd(const int x, const int y)
         _selBottomRight = endPos;
     }
 
-    // Normalize the selection in column mode
     if (_blockSelectionMode) {
+        // Normalize the selection in column mode
         const int topRow = _selTopLeft / _columns;
         const int topColumn = _selTopLeft % _columns;
         const int bottomRow = _selBottomRight / _columns;
@@ -1473,6 +1531,40 @@ void Screen::setSelectionEnd(const int x, const int y)
 
         _selTopLeft = loc(qMin(topColumn, bottomColumn), topRow);
         _selBottomRight = loc(qMax(topColumn, bottomColumn), bottomRow);
+    } else {
+        // Extend the selection to the rightmost column if beyond the last character in the line
+        const int bottomRow = _selBottomRight / _columns;
+        const int bottomColumn = _selBottomRight % _columns;
+
+        bool beyondLastColumn = true;
+        if (bottomRow < _history->getLines()) {
+            ImageLine histLine;
+            const int histLineLen = _history->getLineLen(bottomRow);
+            histLine.resize(histLineLen);
+
+            _history->getCells(bottomRow, 0, histLineLen, histLine.data());
+
+            for (int j = bottomColumn; j < histLineLen; j++) {
+                if ((histLine.at(j).flags & EF_REAL) != 0 && (!trimTrailingWhitespace || !QChar(histLine.at(j).character).isSpace())) {
+                    beyondLastColumn = false;
+                }
+            }
+        } else {
+            const size_t line = bottomRow - _history->getLines();
+            const int lastColumn = (line < _lineProperties.size() && _lineProperties[line] & LINE_DOUBLEWIDTH) ? _columns / 2 : _columns;
+            const auto *data = _screenLines[line].data();
+            const int length = _screenLines.at(line).count();
+
+            for (int k = bottomColumn; k < lastColumn && k < length; k++) {
+                if ((data[k].flags & EF_REAL) != 0 && (!trimTrailingWhitespace || !QChar(data[k].character).isSpace())) {
+                    beyondLastColumn = false;
+                }
+            }
+        }
+
+        if (beyondLastColumn) {
+            _selBottomRight = loc(_columns - 1, bottomRow);
+        }
     }
 }
 
@@ -1487,9 +1579,120 @@ bool Screen::isSelected(const int x, const int y) const
     return pos >= _selTopLeft && pos <= _selBottomRight && columnInSelection;
 }
 
+Character Screen::getCharacter(int col, int row) const
+{
+    Character ch;
+    if (row >= _history->getLines()) {
+        ch = _screenLines[row - _history->getLines()].value(col);
+    } else {
+        if (col < _history->getLineLen(row)) {
+            _history->getCells(row, col, 1, &ch);
+        } else {
+            ch = Character();
+        }
+    }
+    return ch;
+}
+
+void Screen::selectReplContigious(const int x, const int y)
+{
+    // Avoid searching if in current input
+    if (_replMode == REPL_INPUT && _replModeStart <= std::pair(y, x) && std::pair(y, x) <= _replModeEnd) {
+        setSelectionStart(_replModeStart.second, _replModeStart.first, false);
+        setSelectionEnd(_replModeEnd.second, _replModeEnd.first, true);
+        Q_EMIT _currentTerminalDisplay->screenWindow()->selectionChanged();
+        return;
+    }
+    int col = x;
+    int row = y;
+    if (row < _history->getLines()) {
+        col = std::min(col, _history->getLineLen(row) - 1);
+    } else {
+        col = std::min(col, _screenLines[row - _history->getLines()].size() - 1);
+    }
+    while (col > 0 && (getCharacter(col, row).flags & EF_REPL) == EF_REPL_NONE) {
+        col--;
+    }
+    if ((getCharacter(col, row).flags & EF_REPL) == EF_REPL_NONE) {
+        return;
+    }
+    int mode = getCharacter(col, row).flags & EF_REPL;
+    int startX = x;
+    int startY = y;
+    int lastX = x;
+    int lastY = y;
+    bool stop = false;
+    while (true) {
+        while (startX >= 0) {
+            // mode or NONE continue search, but ignore last run of NONEs
+            if (getCharacter(startX, startY).repl() == mode) {
+                lastX = startX;
+                lastY = startY;
+            }
+            if (getCharacter(startX, startY).repl() != mode && getCharacter(startX, startY).repl() != EF_REPL_NONE) {
+                stop = true;
+                startX = lastX;
+                startY = lastY;
+                break;
+            }
+            startX--;
+        }
+        if (stop) {
+            break;
+        }
+        startY--;
+        if (startY < 0) {
+            startY = 0;
+            startX = 0;
+            break;
+        }
+        startX = getLineLength(startY) - 1;
+    }
+    int endX = x;
+    int endY = y;
+    stop = false;
+    while (endY < _lines + _history->getLines()) {
+        while (endX < getLineLength(endY)) {
+            if (getCharacter(endX, endY).repl() != mode && getCharacter(endX, endY).repl() != EF_REPL_NONE) {
+                stop = true;
+                break;
+            }
+            endX++;
+        }
+        if (stop) {
+            break;
+        }
+        endX = 0;
+        endY++;
+    }
+    if (endX == 0) {
+        endY--;
+        endX = getLineLength(endY) - 1;
+    } else {
+        endX--;
+    }
+    setSelectionStart(startX, startY, false);
+    setSelectionEnd(endX, endY, true);
+    Q_EMIT _currentTerminalDisplay->screenWindow()->selectionChanged();
+}
+
 QString Screen::selectedText(const DecodingOptions options) const
 {
     if (!isSelectionValid()) {
+        if (!_hasRepl) {
+            return QString();
+        }
+        int currentStart = (_history->getLines() + _replModeStart.first) * _columns + _replModeStart.second;
+        int currentEnd = (_history->getLines() + _replModeEnd.first) * _columns + _replModeEnd.second - 1;
+
+        if (_replMode == REPL_INPUT && currentStart > currentEnd && _replLastOutputStart.first > -1) {
+            // If no input yet, copy last output
+            currentStart = (_history->getLines() + _replLastOutputStart.first) * _columns + _replLastOutputStart.second;
+            currentEnd = (_history->getLines() + _replLastOutputEnd.first) * _columns + _replLastOutputEnd.second - 1;
+        }
+        if (currentEnd >= currentStart) {
+            return text(currentStart, currentEnd, options);
+        }
         return QString();
     }
 
@@ -1606,9 +1809,7 @@ int Screen::copyLineToStream(int line,
         // ensure that start position is before end of line
         start = qBound(0, start, lineLength - 1);
 
-        // retrieve line from history buffer.  It is assumed
-        // that the history buffer does not store trailing white space
-        // at the end of the line, so it does not need to be trimmed here
+        // retrieve line from history buffer
         if (count == -1) {
             count = lineLength - start;
         } else {
@@ -1622,8 +1823,21 @@ int Screen::copyLineToStream(int line,
 
         _history->getCells(line, start, count, characterBuffer);
 
+        // Exclude trailing empty cells from count and don't bother processing them further.
+        // See the comment on the similar case for screen lines for an explanation.
+        while (count > 0 && (characterBuffer[start + count - 1].flags & EF_REAL) == 0) {
+            count--;
+        }
+
         if (_history->isWrappedLine(line)) {
             currentLineProperties |= LINE_WRAPPED;
+        } else {
+            if (options.testFlag(TrimTrailingWhitespace)) {
+                // ignore trailing white space at the end of the line
+                while (count > 0 && QChar(characterBuffer[start + count - 1].character).isSpace()) {
+                    count--;
+                }
+            }
         }
     } else {
         if (count == -1) {
@@ -1640,6 +1854,16 @@ int Screen::copyLineToStream(int line,
 
         auto *data = _screenLines[screenLine].data();
         int length = _screenLines.at(screenLine).count();
+
+        // Exclude trailing empty cells from count and don't bother processing them further.
+        // This is necessary because a newline gets added to the last line when
+        // the selection extends beyond the last character (last non-whitespace
+        // character when TrimTrailingWhitespace is true), so the returned
+        // count from this function must not include empty cells beyond that
+        // last character.
+        while (length > 0 && (data[length - 1].flags & EF_REAL) == 0) {
+            length--;
+        }
 
         // Don't remove end spaces in lines that wrap
         if (options.testFlag(TrimTrailingWhitespace) && ((_lineProperties.at(screenLine) & LINE_WRAPPED) == 0)) {
@@ -1687,9 +1911,34 @@ int Screen::copyLineToStream(int line,
 
         count -= spacesCount;
     }
+    // Filter CharacterBuffer
+    Character *newBuffer;
+    bool todel = false;
+    if ((options & (ExcludePrompt | ExcludeInput | ExcludeOutput)) != 0) {
+        newBuffer = new Character[count];
+        todel = true;
+        int p = 0;
+        for (int i = 0; i < count; i++) {
+            Character c = characterBuffer[spacesCount + i];
+            // fprintf(stderr, "copy %i   %i %i\n", i, c.character, c.flags);
+            if (((options & ExcludePrompt) != 0 && (c.flags & EF_REPL) == EF_REPL_PROMPT)
+                || ((options & ExcludeInput) != 0 && (c.flags & EF_REPL) == EF_REPL_INPUT)
+                || ((options & ExcludeOutput) != 0 && (c.flags & EF_REPL) == EF_REPL_OUTPUT)) {
+                continue;
+            }
+            newBuffer[p++] = c;
+        }
+        count = p;
+    } else {
+        newBuffer = characterBuffer + spacesCount;
+    }
 
     // decode line and write to text stream
-    decoder->decodeLine(characterBuffer + spacesCount, count, currentLineProperties);
+    decoder->decodeLine(newBuffer, count, currentLineProperties);
+
+    if (todel) {
+        delete[] newBuffer;
+    }
 
     return count;
 }
@@ -1707,7 +1956,7 @@ void Screen::fastAddHistLine()
 
     // If _history size > max history size it will drop a line from _history.
     // We need to verify if we need to remove a URL.
-    if (removeLine) {
+    if (removeLine && _escapeSequenceUrlExtractor) {
         _escapeSequenceUrlExtractor->historyLinesRemoved(1);
     }
 
@@ -1735,11 +1984,13 @@ void Screen::addHistLine()
 
         // If the history is full, increment the count
         // of dropped _lines
-        if (newHistLines == oldHistLines) {
-            ++_droppedLines;
+        if (newHistLines <= oldHistLines) {
+            _droppedLines += oldHistLines - newHistLines + 1;
 
-            // We removed a line, we need to verify if we need to remove a URL.
-            _escapeSequenceUrlExtractor->historyLinesRemoved(1);
+            // We removed some lines, we need to verify if we need to remove a URL.
+            if (_escapeSequenceUrlExtractor) {
+                _escapeSequenceUrlExtractor->historyLinesRemoved(oldHistLines - newHistLines + 1);
+            }
         }
     }
 
@@ -1798,13 +2049,12 @@ void Screen::setScroll(const HistoryType &t, bool copyPreviousScroll)
         auto oldHistory = std::move(_history);
         t.scroll(_history);
     }
+    _graphicsPlacements.clear();
+#if HAVE_MALLOC_TRIM
 
-#ifdef HAVE_MALLOC_H
 #ifdef Q_OS_LINUX
-#ifdef __GNUC__
     // We might have been using gigabytes of memory, so make sure it is actually released
     malloc_trim(0);
-#endif
 #endif
 #endif
 }
@@ -1827,9 +2077,44 @@ void Screen::setLineProperty(LineProperty property, bool enable)
         _lineProperties[_cuY] = static_cast<LineProperty>(_lineProperties.at(_cuY) & ~property);
     }
 }
+
+void Screen::setReplMode(int mode)
+{
+    if (_replMode != mode) {
+        if (_replMode == REPL_OUTPUT) {
+            _replLastOutputStart = _replModeStart;
+            _replLastOutputEnd = _replModeEnd;
+        }
+        _replMode = mode;
+        _replModeStart = std::make_pair(_cuY, _cuX);
+        _replModeEnd = std::make_pair(_cuY, _cuX);
+    }
+    if (mode != REPL_None) {
+        _hasRepl = true;
+        Q_EMIT _currentTerminalDisplay->screenWindow()->selectionChanged(); // Enable copy action
+        setLineProperty(LINE_PROMPT_START << (mode - REPL_PROMPT), true);
+    }
+}
+
 void Screen::fillWithDefaultChar(Character *dest, int count)
 {
     std::fill_n(dest, count, Screen::DefaultChar);
+}
+
+void Konsole::Screen::setEnableUrlExtractor(const bool enable)
+{
+    if (enable) {
+        if (_escapeSequenceUrlExtractor) {
+            return;
+        }
+        _escapeSequenceUrlExtractor = std::make_unique<EscapeSequenceUrlExtractor>();
+        _escapeSequenceUrlExtractor->setScreen(this);
+    } else {
+        if (!_escapeSequenceUrlExtractor) {
+            return;
+        }
+        _escapeSequenceUrlExtractor.reset();
+    }
 }
 
 Konsole::EscapeSequenceUrlExtractor *Konsole::Screen::urlExtractor() const
@@ -1955,14 +2240,14 @@ TerminalGraphicsPlacement_t *Screen::getGraphicsPlacement(unsigned int i)
     return _graphicsPlacements[i].get();
 }
 
-void Screen::scrollUpVisiblePlacements(int n)
+void Screen::scrollPlacements(int n, qint64 below, qint64 above)
 {
     std::vector<std::unique_ptr<TerminalGraphicsPlacement_t>>::iterator i;
     int histMaxLines = _history->getMaxLines();
     i = _graphicsPlacements.begin();
     while (i != _graphicsPlacements.end()) {
         TerminalGraphicsPlacement_t *placement = i->get();
-        if (placement->scrolling) {
+        if ((placement->scrolling && below == INT64_MAX) || (placement->row > below && placement->row < above)) {
             placement->row -= n;
             if (placement->row + placement->rows < -histMaxLines) {
                 i = _graphicsPlacements.erase(i);

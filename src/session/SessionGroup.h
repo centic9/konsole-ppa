@@ -73,14 +73,14 @@ public:
     void setMasterMode(int mode);
 
 private Q_SLOTS:
-    void sessionFinished();
+    void sessionFinished(Session *session);
     void forwardData(const QByteArray &data);
 
 private:
     // maps sessions to their master status
     QHash<Session *, bool> _sessions;
 
-    int _masterMode;
+    int _masterMode = 0;
 };
 } // namespace Konsole
 

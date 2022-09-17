@@ -10,10 +10,8 @@
 // Own
 #include "NullProcessInfo.h"
 #include "ProcessInfo.h"
-#if !defined(Q_OS_WIN)
-#include "UnixProcessInfo.h"
-#endif
 #include "SSHProcessInfo.h"
+#include "UnixProcessInfo.h"
 
 // Unix
 #include <arpa/inet.h>
@@ -508,7 +506,7 @@ public:
 protected:
     bool readCurrentDir(int pid) override
     {
-#if defined(HAVE_OS_DRAGONFLYBSD)
+#if HAVE_OS_DRAGONFLYBSD
         char buf[PATH_MAX];
         int managementInfoBase[4];
         size_t len;
@@ -573,7 +571,7 @@ private:
             return false;
         }
 
-#if defined(HAVE_OS_DRAGONFLYBSD)
+#if HAVE_OS_DRAGONFLYBSD
         setName(QString::fromUtf8(kInfoProc->kp_comm));
         setPid(kInfoProc->kp_pid);
         setParentPid(kInfoProc->kp_ppid);

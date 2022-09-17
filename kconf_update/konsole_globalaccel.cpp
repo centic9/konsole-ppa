@@ -1,3 +1,8 @@
+/*
+    SPDX-FileCopyrightText: 2022 Vlad Zahorodnii <vlad.zahorodnii@kde.org>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+*/
 #include <QAction>
 #include <QCoreApplication>
 #include <QKeySequence>
@@ -6,6 +11,8 @@
 #include <KConfigGroup>
 #include <KGlobalAccel>
 #include <KService>
+
+#include <optional>
 
 static void migrateShortcut(const QString &desktopFile, const QList<QKeySequence> &shortcuts)
 {
@@ -26,24 +33,22 @@ int main(int argc, char **argv)
 
     KConfig khotkeysrc(QStringLiteral("khotkeysrc"), KConfig::SimpleConfig);
     const int dataCount = KConfigGroup(&khotkeysrc, "Data").readEntry("DataCount", 0);
-    bool foundKmenuedit = false;
-    int kmenueditIndex;
+    std::optional<int> kmenueditIndex = std::nullopt;
     KConfigGroup kmenueditGroup;
     for (int i = 1; i <= dataCount; ++i) {
         kmenueditGroup = KConfigGroup(&khotkeysrc, QStringLiteral("Data_%1").arg(i));
         if (kmenueditGroup.readEntry("Name") == QLatin1String("KMenuEdit")) {
-            foundKmenuedit = true;
             kmenueditIndex = i;
             break;
         }
     }
-    if (!foundKmenuedit) {
+    if (!kmenueditIndex.has_value()) {
         return 0;
     }
 
     const int shortcutCount = kmenueditGroup.readEntry("DataCount", 0);
     for (int i = 1; i <= shortcutCount; ++i) {
-        const QString groupName = QStringLiteral("Data_%1_%2").arg(kmenueditIndex).arg(i);
+        const QString groupName = QStringLiteral("Data_%1_%2").arg(kmenueditIndex.value()).arg(i);
         if (KConfigGroup(&khotkeysrc, groupName).readEntry("Type") == QLatin1String("MENUENTRY_SHORTCUT_ACTION_DATA")) {
             const QString desktopFile = KConfigGroup(&khotkeysrc, groupName + QStringLiteral("Actions0")).readEntry("CommandURL");
             if (desktopFile == QLatin1String("org.kde.konsole.desktop")) {

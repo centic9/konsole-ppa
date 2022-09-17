@@ -17,6 +17,8 @@
 #include <QStringList>
 #include <QVariant>
 
+#include <vector>
+
 // Konsole
 #include "konsoleprofile_export.h"
 
@@ -347,7 +349,19 @@ public:
         ColorFilterEnabled,
 
         /** (bool) Allows mouse tracking */
-        AllowMouseTracking
+        AllowMouseTracking,
+
+        /** (int) Show semantic hints (lines between commands, lighter input):
+         * 0 for Never, 1 when showing URL hints, 2 for always
+         */
+        SemanticHints,
+        /** (bool) If true, convert Up/Down arrows when in input mode to Left/Right
+         * key presses that emulate the same cursor movement
+         */
+        SemanticUpDown,
+        /** (bool) If true, move cursor with Left/Right keys when mouse clicks in input area
+         */
+        SemanticInputClick,
     };
 
     Q_ENUM(Property)
@@ -375,10 +389,10 @@ public:
 
     /**
      * A profile which contains a number of default settings for various
-     * properties.  This can be used as a parent for other profiles or a
+     * properties.  This can be used as a parent for other profiles or as a
      * fallback in case a profile cannot be loaded from disk.
      */
-    void useFallback();
+    void useBuiltin();
 
     /**
      * Changes the parent profile.  When calling the property() method,
@@ -422,16 +436,15 @@ public:
     bool isEmpty() const;
 
     /**
-     * Returns true if this profile is the fallback profile, i.e. the
-     * profile path is "FALLBACK/".
+     * Returns true if this profile is the built-in profile.
      */
-    bool isFallback() const;
+    bool isBuiltin() const;
 
     /**
      * Returns true if this is a 'hidden' profile which should not be
      * displayed in menus or saved to disk.
      *
-     * This is used for the fallback profile, in case there are no profiles on
+     * This is true for the built-in profile, in case there are no profiles on
      * disk which can be loaded, or for overlay profiles created to handle
      * command-line arguments which change profile properties.
      */
@@ -739,10 +752,25 @@ public:
         return QKeySequence::fromString(property<QString>(Profile::PeekPrimaryKeySequence));
     }
 
+    int semanticHints() const
+    {
+        return property<int>(Profile::SemanticHints);
+    }
+
+    bool semanticUpDown() const
+    {
+        return property<bool>(Profile::SemanticUpDown);
+    }
+
+    bool semanticInputClick() const
+    {
+        return property<bool>(Profile::SemanticInputClick);
+    }
+
     /** Return a list of all properties names and their type
      *  (for use with -p option).
      */
-    const QStringList propertiesInfoList() const;
+    static const std::vector<std::string> &propertiesInfoList();
 
     /**
      * Returns the element from the Property enum associated with the
@@ -773,7 +801,6 @@ private:
     bool _hidden;
 
     static QHash<QString, PropertyInfo> PropertyInfoByName;
-    static QHash<Property, PropertyInfo> PropertyInfoByProperty;
 
     // Describes a property.  Each property has a name and group
     // which is used when saving/loading the profile.
@@ -781,9 +808,9 @@ private:
         Property property;
         const char *name;
         const char *group;
-        QVariant::Type type;
+        QVariant defaultValue;
     };
-    static const PropertyInfo DefaultPropertyNames[];
+    static const std::vector<PropertyInfo> DefaultProperties;
 };
 
 inline bool Profile::canInheritProperty(Property p)
@@ -810,6 +837,9 @@ inline QVariant Profile::property(Property p) const
 }
 
 }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_METATYPE(Konsole::Profile::Ptr)
+#endif
 
 #endif // PROFILE_H

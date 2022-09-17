@@ -17,6 +17,7 @@
 // Konsole
 #include "Emulation.h"
 #include "Screen.h"
+#include "keyboardtranslator/KeyboardTranslator.h"
 
 class QTimer;
 class QKeyEvent;
@@ -73,7 +74,7 @@ public:
 
     // reimplemented from Emulation
     void clearEntireScreen() override;
-    void reset(bool softReset = false) override;
+    void reset(bool softReset = false, bool preservePrompt = false) override;
     char eraseChar() const override;
 
 public Q_SLOTS:
@@ -83,6 +84,7 @@ public Q_SLOTS:
     void sendKeyEvent(QKeyEvent *) override;
     void sendMouseEvent(int buttons, int column, int line, int eventType) override;
     void focusChanged(bool focused) override;
+    void clearHistory() override;
 
 protected:
     // reimplemented from Emulation
@@ -123,13 +125,78 @@ private:
 #define MAX_TOKEN_LENGTH 256 // Max length of tokens (e.g. window title)
     void addToCurrentToken(uint cc);
     int tokenBufferPos;
+
+protected:
     uint tokenBuffer[MAX_TOKEN_LENGTH]; // FIXME: overflow?
-#define MAXARGS 15
+
+private:
+#define MAXARGS 16
     void addDigit(int dig);
     void addArgument();
-    int argv[MAXARGS];
-    int argc;
+    void addSub();
+
+    struct subParam {
+        int value[MAXARGS]; // value[0] unused, it would correspond to the containing param value
+        int count;
+    };
+
+    struct {
+        int value[MAXARGS];
+        struct subParam sub[MAXARGS];
+        int count;
+        bool hasSubParams;
+    } params = {};
+
     void initTokenizer();
+
+    enum ParserStates {
+        Ground,
+        Escape,
+        EscapeIntermediate,
+        CsiEntry,
+        CsiParam,
+        CsiIntermediate,
+        CsiIgnore,
+        DcsEntry,
+        DcsParam,
+        DcsIntermediate,
+        DcsPassthrough,
+        DcsIgnore,
+        OscString,
+        SosPmApcString,
+
+        Vt52Escape,
+        Vt52CupRow,
+        Vt52CupColumn,
+    };
+
+    enum {
+        Sos,
+        Pm,
+        Apc,
+    } _sosPmApc;
+
+    ParserStates _state = Ground;
+    bool _ignore = false;
+    int _nIntermediate = 0;
+    unsigned char _intermediate[1];
+
+    void switchState(const ParserStates newState, const uint cc);
+    void esc_dispatch(const uint cc);
+    void clear();
+    void collect(const uint cc);
+    void param(const uint cc);
+    void csi_dispatch(const uint cc);
+    void osc_start();
+    void osc_put(const uint cc);
+    void osc_end(const uint cc);
+    void hook(const uint cc);
+    void unhook();
+    void put(const uint cc);
+    void apc_start(const uint cc);
+    void apc_put(const uint cc);
+    void apc_end();
+
     // State machine for escape sequences containing large amount of data
     int tokenState;
     const char *tokenStateChange;
@@ -145,11 +212,14 @@ private:
     quint32 imageId;
     QMap<char, qint64> savedKeys;
 
-    void reportDecodingError();
+protected:
+    virtual void reportDecodingError(int token);
 
-    void processToken(int code, int p, int q);
-    void processSessionAttributeRequest(int tokenSize);
-    void processChecksumRequest(int argc, int argv[]);
+    virtual void processToken(int code, int p, int q);
+    virtual void processSessionAttributeRequest(const int tokenSize, const uint terminator);
+    virtual void processChecksumRequest(int argc, int argv[]);
+
+private:
     void processGraphicsToken(int tokenSize);
 
     void sendGraphicsReply(const QString &params, const QString &error);
@@ -162,9 +232,12 @@ private:
     void reportCursorPosition();
     void reportPixelSize();
     void reportCellSize();
+    void iTermReportCellSize();
     void reportSize();
     void reportColor(int c, QColor color);
     void reportTerminalParms(int p);
+
+    void emulateUpDown(bool up, KeyboardTranslator::Entry entry, QByteArray &textToSend, int toCol = -1);
 
     // clears the screen and resizes it to the specified
     // number of columns
@@ -209,6 +282,7 @@ private:
     void SixelColorChangeRGB(const int index, int red, int green, int blue);
     void SixelColorChangeHSL(const int index, int hue, int saturation, int value);
     void SixelCharacterAdd(uint8_t character, int repeat = 1);
+    bool m_SixelPictureDefinition = false;
     bool m_SixelStarted = false;
     QImage m_currentImage;
     int m_currentX = 0;
@@ -222,7 +296,7 @@ private:
     QSize m_actualSize; // For efficiency reasons, we keep the image in memory larger than what the end result is
 
     // Kitty
-    std::map<int, QImage *> _graphicsImages;
+    QHash<int, QPixmap> _graphicsImages;
     // For kitty graphics protocol - image cache
     int getFreeGraphicsImageId();
 };

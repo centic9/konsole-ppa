@@ -58,6 +58,10 @@ void HistoryScrollNone::addCells(const Character[], int)
 {
 }
 
+void HistoryScrollNone::addCellsMove(Character[], int)
+{
+}
+
 void HistoryScrollNone::addLine(LineProperty)
 {
 }
@@ -66,7 +70,7 @@ void HistoryScrollNone::removeCells()
 {
 }
 
-int HistoryScrollNone::reflowLines(int)
+int Konsole::HistoryScrollNone::reflowLines(const int, std::map<int, int> *)
 {
     return 0;
 }

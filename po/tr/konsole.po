@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: applications-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-04-06 02:12+0000\n"
-"PO-Revision-Date: 2022-05-06 12:33+0300\n"
+"POT-Creation-Date: 2022-07-20 02:12+0000\n"
+"PO-Revision-Date: 2022-08-29 18:54+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 22.04.0\n"
+"X-Generator: Lokalize 22.08.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -48,10 +48,11 @@ msgstr "Dosya"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnEdit)
 #. i18n: ectx: Menu (edit)
-#: ../desktop/konsoleui.rc:16 plugins/SSHManager/sshwidget.ui:265
+#: ../desktop/konsoleui.rc:16 plugins/QuickCommands/quickcommandswidget.cpp:269
+#: plugins/SSHManager/sshwidget.ui:262
 #, kde-format
 msgid "Edit"
-msgstr "Düzenle"
+msgstr "Düzen"
 
 #. i18n: ectx: Menu (view)
 #: ../desktop/konsoleui.rc:19
@@ -66,25 +67,25 @@ msgid "Split View"
 msgstr "Görünümü Böl"
 
 #. i18n: ectx: Menu (settings)
-#: ../desktop/konsoleui.rc:38
+#: ../desktop/konsoleui.rc:39
 #, kde-format
 msgid "Settings"
 msgstr "Ayarlar"
 
 #. i18n: ectx: Menu (plugins)
-#: ../desktop/konsoleui.rc:51
+#: ../desktop/konsoleui.rc:52
 #, kde-format
 msgid "Plugins"
 msgstr "Eklentiler"
 
 #. i18n: ectx: Menu (help)
-#: ../desktop/konsoleui.rc:54
+#: ../desktop/konsoleui.rc:55
 #, kde-format
 msgid "Help"
 msgstr "Yardım"
 
 #. i18n: ectx: ToolBar (mainToolBar)
-#: ../desktop/konsoleui.rc:58
+#: ../desktop/konsoleui.rc:59
 #, kde-format
 msgid "Main Toolbar"
 msgstr "Ana Araç Çubuğu"
@@ -96,48 +97,48 @@ msgid "S&crollback"
 msgstr "&Geçmiş"
 
 #. i18n: ectx: ToolBar (sessionToolbar)
-#: ../desktop/sessionui.rc:67
+#: ../desktop/sessionui.rc:70
 #, kde-format
 msgid "Session Toolbar"
 msgstr "Oturum Araç Çubuğu"
 
-#: AppColorSchemeChooser.cpp:36
+#: AppColorSchemeChooser.cpp:38
 #, kde-format
 msgid "&Window Color Scheme"
 msgstr "Yeni Renk Şeması"
 
-#: Application.cpp:53
+#: Application.cpp:52
 #, kde-format
 msgctxt "@info:shell"
 msgid "Name of profile to use for new Konsole instance"
 msgstr "Yeni Konsole sürecinin kullanacağı profil adı"
 
-#: Application.cpp:54
+#: Application.cpp:53
 #, kde-format
 msgctxt "@info:shell"
 msgid "json layoutfile to be loaded to use for new Konsole instance"
 msgstr "json layoutfile, yeni Konsole örneği için kullanılmak üzere yüklenecek"
 
-#: Application.cpp:55
+#: Application.cpp:54
 #, kde-format
 msgctxt "@info:shell"
-msgid "Use the internal FALLBACK profile"
-msgstr "Dahili İKİNCİL profili kullan"
+msgid "Use the built-in profile instead of the default profile"
+msgstr "Öntanımlı profil yerine gömülü gelen profili kullanın"
 
-#: Application.cpp:56
+#: Application.cpp:55
 #, kde-format
 msgctxt "@info:shell"
 msgid "Set the initial working directory of the new tab or window to 'dir'"
 msgstr ""
 "Yeni sekme veya pencereler için başlangıç çalışma dizinini 'dizin' ayarla"
 
-#: Application.cpp:57
+#: Application.cpp:56
 #, kde-format
 msgctxt "@info:shell"
 msgid "Do not close the initial session automatically when it ends."
 msgstr "Başlatılan oturumu bittiğinde otomatik olarak kapatma."
 
-#: Application.cpp:59
+#: Application.cpp:60
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -147,84 +148,84 @@ msgstr ""
 "Yeni bir pencere oluşturma yerine geçerli pencerede yeni bir sekme oluştur "
 "('Tüm Konsole pencerelerini tek süreçte çalıştır' etkin olmalıdır)"
 
-#: Application.cpp:60
+#: Application.cpp:61
 #, kde-format
 msgctxt "@info:shell"
 msgid "Create tabs as specified in given tabs configuration file"
 msgstr "Sekmeleri, yapılandırma dosyasında belirtildiği gibi oluştur"
 
-#: Application.cpp:62
+#: Application.cpp:63
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
 "Start Konsole in the background and bring to the front when Ctrl+Shift+F12 "
 "(by default) is pressed"
 msgstr ""
-"Konsole uygulamasını arkaplanda başlat ve Ctrl+Shift+F12 (öntanımlı) "
-"tuşlarına basılınca önplana getir"
+"Konsole uygulamasını arka planda başlat ve Ctrl+Shift+F12 (öntanımlı) "
+"düğmelerine basılınca ön plana getir"
 
-#: Application.cpp:63
+#: Application.cpp:64
 #, kde-format
 msgctxt "@info:shell"
 msgid "Run in a separate process"
-msgstr "Ayrı bir işlem olarak çalıştır"
+msgstr "Ayrı bir süreç olarak çalıştır"
 
-#: Application.cpp:64
+#: Application.cpp:65
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show the menubar, overriding the default setting"
 msgstr "Menü çubuğunu göster, öntanımlı ayarların üzerine yazılır"
 
-#: Application.cpp:65
+#: Application.cpp:66
 #, kde-format
 msgctxt "@info:shell"
 msgid "Hide the menubar, overriding the default setting"
 msgstr "Menü çubuğunu gizle, öntanımlı ayarların üzerine yazılır"
 
-#: Application.cpp:66
+#: Application.cpp:67
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show the tabbar, overriding the default setting"
 msgstr "Sekme çubuğunu göster, öntanımlı ayarların üzerine yazılır"
 
-#: Application.cpp:67
+#: Application.cpp:68
 #, kde-format
 msgctxt "@info:shell"
 msgid "Hide the tabbar, overriding the default setting"
 msgstr "Sekme çubuğunu gizle, öntanımlı ayarların üzerine yazılır"
 
-#: Application.cpp:68
+#: Application.cpp:69
 #, kde-format
 msgctxt "@info:shell"
 msgid "Start Konsole in fullscreen mode"
 msgstr "Konsole'u tam ekran kipinde başlat"
 
-#: Application.cpp:69
+#: Application.cpp:70
 #, kde-format
 msgctxt "@info:shell"
 msgid "Disable transparent backgrounds, even if the system supports them."
-msgstr "Sistem desteklese bile saydam arkaplanları devre dışı bırak."
+msgstr "Sistem desteklese bile saydam arka planları devre dışı bırak."
 
-#: Application.cpp:70
+#: Application.cpp:71
 #, kde-format
 msgctxt "@info:shell"
 msgid "List the available profiles"
 msgstr "Kullanılabilir profilleri listele"
 
-#: Application.cpp:71
+#: Application.cpp:72
 #, kde-format
 msgctxt "@info:shell"
 msgid "List all the profile properties names and their type (for use with -p)"
 msgstr ""
 "Tüm profile özelliklerinin adlarını ve tiplerini listele (-p kullanarak)"
 
-#: Application.cpp:72
+#: Application.cpp:73
 #, kde-format
 msgctxt "@info:shell"
 msgid "Change the value of a profile property."
 msgstr "Bir profil özelliğine ait değeri değiştir."
 
-#: Application.cpp:74
+#: Application.cpp:75
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -234,7 +235,7 @@ msgstr ""
 "Çalıştırılacak komut. Bu seçenek tüm takip eden argümanları yakalar bu "
 "nedenle son seçenek olarak kullanın."
 
-#: Application.cpp:76
+#: Application.cpp:78
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -244,25 +245,25 @@ msgstr ""
 "İşlevselliği bozsa bile var olan oturumu yeniden kullanmayı zorla; örn. --"
 "new-tab. Çoğunlukla hata ayıklama için kullanılır."
 
-#: Application.cpp:83
+#: Application.cpp:85
 #, kde-format
 msgctxt "@info:shell"
 msgid "Arguments passed to command"
 msgstr "Komuta verilen argümanlar"
 
-#: Application.cpp:517
+#: Application.cpp:518
 #, kde-format
 msgctxt "@item"
 msgid "Toggle Background Window"
 msgstr "Arka Plan Penceresini Aç/Kapat"
 
-#: BookmarkHandler.cpp:109
+#: BookmarkHandler.cpp:108
 #, kde-format
 msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
 msgid "%1 on %2"
 msgstr "%2 üzerine %1"
 
-#: BookmarkHandler.cpp:111
+#: BookmarkHandler.cpp:110
 #, kde-format
 msgctxt "@item:inmenu The host the user is connected to via ssh"
 msgid "%1"
@@ -278,7 +279,7 @@ msgstr "Önplan"
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background"
-msgstr "Arkaplan"
+msgstr "Arka Plan"
 
 #: colorscheme/ColorScheme.cpp:134
 #, kde-format
@@ -332,13 +333,13 @@ msgstr "Renk 8"
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground (Intense)"
-msgstr "Önplan (Yoğun)"
+msgstr "Ön plan (Yoğun)"
 
 #: colorscheme/ColorScheme.cpp:143
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background (Intense)"
-msgstr "Arkaplan (Yoğun)"
+msgstr "Arka plan (Yoğun)"
 
 #: colorscheme/ColorScheme.cpp:144
 #, kde-format
@@ -392,13 +393,13 @@ msgstr "Renk 8 (Yoğun)"
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground (Faint)"
-msgstr "Önplan (Soluk)"
+msgstr "Ön plan (Soluk)"
 
 #: colorscheme/ColorScheme.cpp:153
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background (Faint)"
-msgstr "Arkaplan (Soluk)"
+msgstr "Arka plan (Soluk)"
 
 #: colorscheme/ColorScheme.cpp:154
 #, kde-format
@@ -448,83 +449,83 @@ msgctxt "@item:intable palette"
 msgid "Color 8 (Faint)"
 msgstr "Renk 8 (Soluk)"
 
-#: colorscheme/ColorScheme.cpp:463
+#: colorscheme/ColorScheme.cpp:464
 #, kde-format
 msgctxt "@item"
 msgid "Un-named Color Scheme"
-msgstr "İsimlendirilmemiş Renk Şeması"
+msgstr "Adlandırılmamış Renk Şeması"
 
-#: colorscheme/ColorSchemeEditor.cpp:106
+#: colorscheme/ColorSchemeEditor.cpp:107
 #, kde-format
 msgctxt "@label:listbox Column header text for color names"
 msgid "Name"
-msgstr "İsim"
+msgstr "Ad"
 
-#: colorscheme/ColorSchemeEditor.cpp:106
+#: colorscheme/ColorSchemeEditor.cpp:107
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual colors"
 msgid "Color"
 msgstr "Renk"
 
-#: colorscheme/ColorSchemeEditor.cpp:107
+#: colorscheme/ColorSchemeEditor.cpp:108
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual intense colors"
 msgid "Intense color"
 msgstr "Yoğun renk"
 
-#: colorscheme/ColorSchemeEditor.cpp:108
+#: colorscheme/ColorSchemeEditor.cpp:109
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual faint colors"
 msgid "Faint color"
 msgstr "Soluk renk"
 
-#: colorscheme/ColorSchemeEditor.cpp:133
+#: colorscheme/ColorSchemeEditor.cpp:134
 #, kde-format
 msgctxt "@info:status"
 msgid ""
 "The background transparency setting will not be used because your desktop "
 "does not appear to support transparent windows."
 msgstr ""
-"Bilgisayarınız şeffaf pencereleri desteklemediğinden arkaplan şeffaflığı "
+"Bilgisayarınız saydam pencereleri desteklemediğinden arka plan saydamlığı "
 "ayarları kullanılamayacak."
 
-#: colorscheme/ColorSchemeEditor.cpp:184
+#: colorscheme/ColorSchemeEditor.cpp:185
 #, kde-format
 msgctxt "@title:window"
 msgid "Select wallpaper image file"
-msgstr "Duvar kağıdı resim dosyası seç"
+msgstr "Duvar kağıdı görseli dosyası seç"
 
-#: colorscheme/ColorSchemeEditor.cpp:186
+#: colorscheme/ColorSchemeEditor.cpp:187
 #, kde-format
 msgctxt "@label:textbox Filter in file open dialog"
 msgid "Supported Images"
-msgstr "Desteklenen Resimler"
+msgstr "Desteklenen Görseller"
 
-#: colorscheme/ColorSchemeEditor.cpp:293
+#: colorscheme/ColorSchemeEditor.cpp:295
 #, kde-format
 msgctxt "@title:window"
 msgid "New Color Scheme"
 msgstr "Yeni Renk Şeması"
 
-#: colorscheme/ColorSchemeEditor.cpp:296
+#: colorscheme/ColorSchemeEditor.cpp:298
 #, kde-format
 msgctxt "@title:window"
 msgid "Edit Color Scheme"
 msgstr "Renk Şemasını Düzenle"
 
-#: colorscheme/ColorSchemeEditor.cpp:341
+#: colorscheme/ColorSchemeEditor.cpp:343
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose color"
 msgstr "Rengi seçmek için tıklayın"
 
-#: colorscheme/ColorSchemeEditor.cpp:346
+#: colorscheme/ColorSchemeEditor.cpp:348
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose intense color"
 msgstr "Yoğun rengi seçmek için tıklayın"
 
-#: colorscheme/ColorSchemeEditor.cpp:351
+#: colorscheme/ColorSchemeEditor.cpp:353
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose Faint color"
@@ -587,25 +588,25 @@ msgstr "Duvar kağıdı saydamlığı:"
 #: colorscheme/ColorSchemeEditor.ui:137
 #, kde-format
 msgid "Background image:"
-msgstr "Arkaplan resmi:"
+msgstr "Arka plan resmi:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, wallpaperPath)
 #: colorscheme/ColorSchemeEditor.ui:144
 #, kde-format
 msgid "Edit the path of the background image"
-msgstr "Arkaplan resminin yolunu düzenle"
+msgstr "Arka plan resminin yolunu düzenle"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, wallpaperSelectButton)
 #: colorscheme/ColorSchemeEditor.ui:151
 #, kde-format
 msgid "Choose the background image"
-msgstr "Arkaplan resmini seç"
+msgstr "Arka plan resmini seç"
 
 #. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, btnFindSshKey)
-#: colorscheme/ColorSchemeEditor.ui:154 plugins/SSHManager/sshwidget.ui:130
-#: widgets/EditProfileGeneralPage.ui:179
+#: colorscheme/ColorSchemeEditor.ui:154 plugins/SSHManager/sshwidget.ui:127
+#: widgets/EditProfileGeneralPage.ui:183
 #, kde-format
 msgid "..."
 msgstr "..."
@@ -685,7 +686,7 @@ msgstr "Girdiyi Kopyala"
 #: CopyInputDialog.ui:19 KeyBindingEditor.ui:41
 #, kde-format
 msgid "Filter:"
-msgstr "Filtrele:"
+msgstr "Süz:"
 
 #. i18n: ectx: property (text), widget (QPushButton, selectAllButton)
 #: CopyInputDialog.ui:46
@@ -705,7 +706,7 @@ msgid ""
 "Could not open file with the text editor specified in the profile settings;\n"
 "it will be opened with the system default editor."
 msgstr ""
-"Profil ayarlarında belirtilen metin düzenleyiciyle dosya açılamadı; \n"
+"Profil ayarlarında belirtilen metin düzenleyiciyle dosya açılamadı;\n"
 "sistem varsayılan düzenleyicisiyle açılacak."
 
 #: filterHotSpots/FileFilterHotspot.cpp:174
@@ -721,7 +722,7 @@ msgstr "bununla aç"
 #: filterHotSpots/FileFilterHotspot.cpp:299
 #, kde-format
 msgid "Generating Thumbnail"
-msgstr "Küçük Resim Oluşturuluyor"
+msgstr "Küçük Görsel Oluşturuluyor"
 
 #: filterHotSpots/UrlFilterHotspot.cpp:91
 #, kde-format
@@ -747,13 +748,13 @@ msgstr "E-posta Adresini Kopyala"
 #, kde-format
 msgctxt "@title:window"
 msgid "Select font"
-msgstr "Yazı tipi seç"
+msgstr "Yazıtipi seç"
 
 #: FontDialog.cpp:34
 #, kde-format
 msgctxt "@action:button"
 msgid "Show all fonts"
-msgstr "Tüm yazı tiplerini göster"
+msgstr "Tüm yazıtiplerini göster"
 
 #: FontDialog.cpp:52
 #, kde-format
@@ -763,10 +764,9 @@ msgid ""
 "equal width (monospace). Any non monospaced font may cause display issues. "
 "This should not be necessary except in rare cases."
 msgstr ""
-"Doğası gereği, bir uçbirim programı eşit genişlikte (tek aralıklı) yazı tipi "
-"karakterleri gerektirir. Tek aralıklı olmayan herhangi bir yazı tipi, "
-"görüntüleme sorunlarına neden olabilir. Nadir durumlar dışında bu gerekli "
-"olmamalıdır."
+"Doğası gereği, bir uçbirim programı eş aralıklı yazıtipi karakterleri "
+"gerektirir. Tek aralıklı olmayan herhangi bir yazıtipi, görüntüleme "
+"sorunlarına neden olabilir. Nadir durumlar dışında bu gerekli olmamalıdır."
 
 #: HistorySizeDialog.cpp:26
 #, kde-format
@@ -789,7 +789,7 @@ msgstr "Açıklayıcı etiket girin"
 #: KeyBindingEditor.cpp:63
 #, kde-format
 msgid "Key Combination"
-msgstr "Tuş Kombinasyonu"
+msgstr "Düğme Kombinasyonu"
 
 #: KeyBindingEditor.cpp:63
 #, kde-format
@@ -813,8 +813,8 @@ msgstr "Bir anahtar bağlama şeması boş bir açıklama ile kaydedilemez."
 
 #. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
 #. i18n: ectx: property (text), widget (QPushButton, btnAdd)
-#: KeyBindingEditor.ui:65 plugins/QuickCommands/qcwidget.ui:107
-#: plugins/SSHManager/sshwidget.ui:275
+#: KeyBindingEditor.ui:65 plugins/QuickCommands/qcwidget.ui:240
+#: plugins/SSHManager/sshwidget.ui:272
 #, kde-format
 msgid "Add"
 msgstr "Ekle"
@@ -833,7 +833,7 @@ msgstr "Kaldır"
 #, kde-format
 msgctxt "Title of the area where you test your keys are properly configured"
 msgid "Test Area"
-msgstr "Test Alanı"
+msgstr "Sınama Alanı"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: KeyBindingEditor.ui:115
@@ -847,226 +847,226 @@ msgstr "Girdi:"
 msgid "Output:"
 msgstr "Çıktı:"
 
-#: main.cpp:147
+#: main.cpp:155
 #, kde-format
 msgctxt "@title"
 msgid "Konsole"
 msgstr "Konsole"
 
-#: main.cpp:149
+#: main.cpp:157
 #, kde-format
 msgctxt "@title"
 msgid "Terminal emulator"
 msgstr "Uçbirim öykünücü"
 
-#: main.cpp:151
+#: main.cpp:159
 #, kde-format
 msgctxt "@info:credit"
 msgid "(c) 1997-2022, The Konsole Developers"
 msgstr "(c) 1997-2022, Konsole Geliştiricileri"
 
-#: main.cpp:325
+#: main.cpp:333
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kurt Hindenburg"
 msgstr "Kurt Hindenburg"
 
-#: main.cpp:327
+#: main.cpp:335
 #, kde-format
 msgctxt "@info:credit"
 msgid "General maintainer, bug fixes and general improvements"
 msgstr ""
 "Projeyi yürüten ana geliştirici, hata düzeltmeleri ve genel geliştirmeler"
 
-#: main.cpp:330
+#: main.cpp:338
 #, kde-format
 msgctxt "@info:credit"
 msgid "Robert Knight"
 msgstr "Robert Knight"
 
-#: main.cpp:331
+#: main.cpp:339
 #, kde-format
 msgctxt "@info:credit"
 msgid "Previous maintainer, ported to KDE4"
 msgstr "Projeyi yürüten önceki geliştirici, KDE4 geçişi"
 
-#: main.cpp:333
+#: main.cpp:341
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Doelle"
 msgstr "Lars Doelle"
 
-#: main.cpp:333
+#: main.cpp:341
 #, kde-format
 msgctxt "@info:credit"
 msgid "Original author"
 msgstr "Asıl yazar"
 
-#: main.cpp:334
+#: main.cpp:342
 #, kde-format
 msgctxt "@info:credit"
 msgid "Ahmad Samir"
 msgstr "Ahmad Samir"
 
-#: main.cpp:335 main.cpp:338 main.cpp:341 main.cpp:344
+#: main.cpp:343 main.cpp:346 main.cpp:349 main.cpp:352
 #, kde-format
 msgctxt "@info:credit"
 msgid "Major refactoring, bug fixes and major improvements"
 msgstr "Büyük yeniden düzenleme, hata düzeltmeleri ve büyük iyileştirmeler"
 
-#: main.cpp:337
+#: main.cpp:345
 #, kde-format
 msgctxt "@info:credit"
 msgid "Carlos Alves"
 msgstr "Carlos Alves"
 
-#: main.cpp:340
+#: main.cpp:348
 #, kde-format
 msgctxt "@info:credit"
 msgid "Tomaz Canabrava"
 msgstr "Tomaz Canabrava"
 
-#: main.cpp:343
+#: main.cpp:351
 #, kde-format
 msgctxt "@info:credit"
 msgid "Gustavo Carneiro"
 msgstr "Gustavo Carneiro"
 
-#: main.cpp:346
+#: main.cpp:354
 #, kde-format
 msgctxt "@info:credit"
 msgid "Edwin Pujols"
 msgstr "Edwin Pujols"
 
-#: main.cpp:347 main.cpp:350 main.cpp:352 main.cpp:357 main.cpp:359
-#: main.cpp:360 main.cpp:361
+#: main.cpp:355 main.cpp:358 main.cpp:360 main.cpp:365 main.cpp:367
+#: main.cpp:368 main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and general improvements"
 msgstr "Hata düzeltmeleri ve genel geliştirmeler"
 
-#: main.cpp:349
+#: main.cpp:357
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin T. H. Sandsmark"
 msgstr "Martin T. H. Sandsmark"
 
-#: main.cpp:352
+#: main.cpp:360
 #, kde-format
 msgctxt "@info:credit"
 msgid "Nate Graham"
 msgstr "Nate Graham"
 
-#: main.cpp:353
+#: main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Mariusz Glebocki"
 msgstr "Mariusz Glebocki"
 
-#: main.cpp:354
+#: main.cpp:362
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and major improvements"
 msgstr "Hata düzeltmeleri ve önemli iyileştirmeler"
 
-#: main.cpp:356
+#: main.cpp:364
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Surrel"
 msgstr "Thomas Surrel"
 
-#: main.cpp:359
+#: main.cpp:367
 #, kde-format
 msgctxt "@info:credit"
 msgid "Jekyll Wu"
 msgstr "Jekyll Wu"
 
-#: main.cpp:360
+#: main.cpp:368
 #, kde-format
 msgctxt "@info:credit"
 msgid "Waldo Bastian"
 msgstr "Waldo Bastian"
 
-#: main.cpp:361
+#: main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Binner"
 msgstr "Stephan Binner"
 
-#: main.cpp:362
+#: main.cpp:370
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Dreibholz"
 msgstr "Thomas Dreibholz"
 
-#: main.cpp:362
+#: main.cpp:370
 #, kde-format
 msgctxt "@info:credit"
 msgid "General improvements"
 msgstr "Genel geliştirmeler"
 
-#: main.cpp:363
+#: main.cpp:371
 #, kde-format
 msgctxt "@info:credit"
 msgid "Chris Machemer"
 msgstr "Chris Machemer"
 
-#: main.cpp:363 main.cpp:364 main.cpp:391 main.cpp:392 main.cpp:393
-#: main.cpp:394
+#: main.cpp:371 main.cpp:372 main.cpp:399 main.cpp:400 main.cpp:401
+#: main.cpp:402
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes"
 msgstr "Hata düzeltmeleri"
 
-#: main.cpp:364
+#: main.cpp:372
 #, kde-format
 msgctxt "@info:credit"
 msgid "Francesco Cecconi"
 msgstr "Francesco Cecconi"
 
-#: main.cpp:365
+#: main.cpp:373
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Kulow"
 msgstr "Stephan Kulow"
 
-#: main.cpp:365
+#: main.cpp:373
 #, kde-format
 msgctxt "@info:credit"
 msgid "Solaris support and history"
 msgstr "Solaris desteği ve geçmiş özelliği"
 
-#: main.cpp:366
+#: main.cpp:374
 #, kde-format
 msgctxt "@info:credit"
 msgid "Alexander Neundorf"
 msgstr "Alexander Neundorf"
 
-#: main.cpp:367
+#: main.cpp:375
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and improved startup performance"
 msgstr "Hata düzeltmeleri ve başlangıç performansı"
 
-#: main.cpp:369
+#: main.cpp:377
 #, kde-format
 msgctxt "@info:credit"
 msgid "Peter Silva"
 msgstr "Peter Silva"
 
-#: main.cpp:369
+#: main.cpp:377
 #, kde-format
 msgctxt "@info:credit"
 msgid "Marking improvements"
 msgstr "İşaretleme geliştirmeleri"
 
-#: main.cpp:370
+#: main.cpp:378
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lotzi Boloni"
 msgstr "Lotzi Boloni"
 
-#: main.cpp:372
+#: main.cpp:380
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1074,15 +1074,15 @@ msgid ""
 "Toolbar and session names"
 msgstr ""
 "Gömülü Konsole\n"
-"Araç çubuğu ve oturum isimleri"
+"Araç çubuğu ve oturum adları"
 
-#: main.cpp:375
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid "David Faure"
 msgstr "David Faure"
 
-#: main.cpp:377
+#: main.cpp:385
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1092,25 +1092,25 @@ msgstr ""
 "Gömülü Konsole\n"
 "Genel geliştirmeler"
 
-#: main.cpp:380
+#: main.cpp:388
 #, kde-format
 msgctxt "@info:credit"
 msgid "Antonio Larrosa"
 msgstr "Antonio Larrosa"
 
-#: main.cpp:380
+#: main.cpp:388
 #, kde-format
 msgctxt "@info:credit"
 msgid "Visual effects"
 msgstr "Görsel efektler"
 
-#: main.cpp:381
+#: main.cpp:389
 #, kde-format
 msgctxt "@info:credit"
 msgid "Matthias Ettrich"
 msgstr "Matthias Ettrich"
 
-#: main.cpp:383
+#: main.cpp:391
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -1120,190 +1120,190 @@ msgstr ""
 "Kvt projesinden kodlar\n"
 "Genel iyileştirmeler"
 
-#: main.cpp:386
+#: main.cpp:394
 #, kde-format
 msgctxt "@info:credit"
 msgid "Warwick Allison"
 msgstr "Warwick Allison"
 
-#: main.cpp:387
+#: main.cpp:395
 #, kde-format
 msgctxt "@info:credit"
 msgid "Schema and text selection improvements"
 msgstr "Şema ve metin seçme geliştirmeleri"
 
-#: main.cpp:389
+#: main.cpp:397
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dan Pilone"
 msgstr "Dan Pilone"
 
-#: main.cpp:389
+#: main.cpp:397
 #, kde-format
 msgctxt "@info:credit"
 msgid "SGI port"
 msgstr "SGI ortamına aktarma"
 
-#: main.cpp:390
+#: main.cpp:398
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kevin Street"
 msgstr "Kevin Street"
 
-#: main.cpp:390
+#: main.cpp:398
 #, kde-format
 msgctxt "@info:credit"
 msgid "FreeBSD port"
 msgstr "FreeBSD'ye Aktarma"
 
-#: main.cpp:391
+#: main.cpp:399
 #, kde-format
 msgctxt "@info:credit"
 msgid "Sven Fischer"
 msgstr "Sven Fischer"
 
-#: main.cpp:392
+#: main.cpp:400
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dale M. Flaven"
 msgstr "Dale M. Flaven"
 
-#: main.cpp:393
+#: main.cpp:401
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin Jones"
 msgstr "Martin Jones"
 
-#: main.cpp:394
+#: main.cpp:402
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Knoll"
 msgstr "Lars Knoll"
 
-#: main.cpp:395
+#: main.cpp:403
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thanks to many others.\n"
 msgstr "Diğer kişilere teşekkürler.\n"
 
-#: MainWindow.cpp:307
+#: MainWindow.cpp:314
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&New Tab"
 msgstr "&Yeni Sekme"
 
-#: MainWindow.cpp:317
+#: MainWindow.cpp:324
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Clone Tab"
 msgstr "&Sekmeyi Çoğalt"
 
-#: MainWindow.cpp:324
+#: MainWindow.cpp:331
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "New &Window"
 msgstr "&Yeni Pencere"
 
-#: MainWindow.cpp:331
+#: MainWindow.cpp:338
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Window"
 msgstr "Pencereyi Kapat"
 
-#: MainWindow.cpp:336
+#: MainWindow.cpp:343
 #, kde-format
 msgctxt "@title:menu"
 msgid "&Bookmarks"
-msgstr "&Yer İmleri"
+msgstr "Y&er İmleri"
 
-#: MainWindow.cpp:357
+#: MainWindow.cpp:364
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
 msgstr "Profilleri Yönet..."
 
-#: MainWindow.cpp:363
+#: MainWindow.cpp:370
 #, kde-format
 msgctxt "@item"
 msgid "Activate Menu"
 msgstr "Menüyü Etkinleştir"
 
-#: MainWindow.cpp:369
+#: MainWindow.cpp:376
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Save tab layout to file"
 msgstr "Dosyaya Sekme Düzeni Kaydet"
 
-#: MainWindow.cpp:378
+#: MainWindow.cpp:385
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Load tab layout from file"
 msgstr "Dosyadan Sekme Düzeni Yükle"
 
-#: MainWindow.cpp:611 MainWindow.cpp:628
+#: MainWindow.cpp:618 MainWindow.cpp:635
 #, kde-format
 msgctxt "@info"
 msgid "There is a process running in this window. Do you still want to quit?"
 msgid_plural ""
 "There are %1 processes running in this window. Do you still want to quit?"
 msgstr[0] ""
-"Bu pencerede bir işlem çalışıyor. Çıkmak istediğinizden emin misiniz?"
+"Bu pencerede çalışan bir süreç var. Çıkmak istediğinize emin misiniz?"
 msgstr[1] ""
-"Bu pencerede %1 işlem çalışıyor. Çıkmak istediğinizden emin misiniz?"
+"Bu pencerede çalışan %1 süreç var. Çıkmak istediğinize emin misiniz?"
 
-#: MainWindow.cpp:617 MainWindow.cpp:634 MainWindow.cpp:648
+#: MainWindow.cpp:624 MainWindow.cpp:641 MainWindow.cpp:655
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Close"
 msgstr "Kapatmayı Doğrula"
 
-#: MainWindow.cpp:618 MainWindow.cpp:635 MainWindow.cpp:649
+#: MainWindow.cpp:625 MainWindow.cpp:642 MainWindow.cpp:656
 #, kde-format
 msgctxt "@action:button"
 msgid "Close &Window"
 msgstr "&Pencereyi Kapat"
 
-#: MainWindow.cpp:636 MainWindow.cpp:650
+#: MainWindow.cpp:643 MainWindow.cpp:657
 #, kde-format
 msgctxt "@action:button"
 msgid "Close Current &Tab"
 msgstr "G&eçerli Sekmeyi Kapat"
 
-#: MainWindow.cpp:645
+#: MainWindow.cpp:652
 #, kde-format
 msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "Bu pencerede %1 açık uçbirim var. Çıkmak istediğinizden emin misiniz?"
 
-#: MainWindow.cpp:752 Part.cpp:297
+#: MainWindow.cpp:759 Part.cpp:297
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profiller"
 
-#: MainWindow.cpp:769
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "Genel"
 
-#: MainWindow.cpp:780
+#: MainWindow.cpp:787
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr "Sekme Çubuğu / Ayırıcılar"
 
-#: MainWindow.cpp:785
+#: MainWindow.cpp:792
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "Geçici Dosyalar"
 
-#: MainWindow.cpp:790
+#: MainWindow.cpp:797
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
-msgstr "Küçük Resimler"
+msgstr "Küçük Görseller"
 
 #: Part.cpp:300
 #, kde-format
@@ -1312,59 +1312,78 @@ msgid "Part Info"
 msgstr "Bölüm Bilgisi"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, QuickCommandsWidget)
-#. i18n: ectx: property (windowTitle), widget (QWidget, SSHTreeWidget)
-#: plugins/QuickCommands/qcwidget.ui:14 plugins/SSHManager/sshwidget.ui:14
+#: plugins/QuickCommands/qcwidget.ui:14
 #, kde-format
 msgid "Form"
 msgstr "Form"
 
-#. i18n: ectx: property (text), item, widget (QComboBox, group)
-#. i18n: ectx: property (currentText), widget (QComboBox, folder)
-#: plugins/QuickCommands/qcwidget.ui:40
-#: plugins/SSHManager/sshmanagermodel.cpp:50
-#: plugins/SSHManager/sshwidget.ui:189
+#. i18n: ectx: property (text), widget (QCheckBox, invertFilter)
+#. i18n: ectx: property (text), widget (QCheckBox, btnInvertFilter)
+#: plugins/QuickCommands/qcwidget.ui:53 plugins/SSHManager/sshwidget.ui:32
 #, kde-format
-msgid "Default"
-msgstr "Öntanımlı"
-
-#. i18n: ectx: property (text), widget (QLabel, labelGroup)
-#: plugins/QuickCommands/qcwidget.ui:48
-#, kde-format
-msgid "Group"
-msgstr "Grup"
-
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: plugins/QuickCommands/qcwidget.ui:55
-#, kde-format
-msgid "Command"
-msgstr "Komut"
+msgid "Invert"
+msgstr "Tersine çevir"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: plugins/QuickCommands/qcwidget.ui:72
+#: plugins/QuickCommands/qcwidget.ui:91
 #, kde-format
 msgid "Title"
 msgstr "Başlık"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: plugins/QuickCommands/qcwidget.ui:79
+#: plugins/QuickCommands/qcwidget.ui:101
 #, kde-format
 msgid "Tooltip"
 msgstr "Araç İpucu"
 
+#. i18n: ectx: property (text), widget (QLabel, labelGroup)
+#: plugins/QuickCommands/qcwidget.ui:111
+#, kde-format
+msgid "Group"
+msgstr "Grup"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, group)
+#. i18n: ectx: property (currentText), widget (QComboBox, folder)
+#: plugins/QuickCommands/qcwidget.ui:122
+#: plugins/SSHManager/sshmanagermodel.cpp:50
+#: plugins/SSHManager/sshwidget.ui:186
+#, kde-format
+msgid "Default"
+msgstr "Öntanımlı"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab)
+#: plugins/QuickCommands/qcwidget.ui:137
+#, kde-format
+msgid "Command"
+msgstr "Komut"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab_2)
+#: plugins/QuickCommands/qcwidget.ui:187
+#: plugins/QuickCommands/quickcommandswidget.cpp:306
+#, kde-format
+msgid "Warnings"
+msgstr "Uyarılar"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnRun)
+#: plugins/QuickCommands/qcwidget.ui:230
+#, kde-format
+msgid "Run"
+msgstr "Çalıştır"
+
 #. i18n: ectx: property (text), widget (QPushButton, btnSave)
-#: plugins/QuickCommands/qcwidget.ui:114
+#: plugins/QuickCommands/qcwidget.ui:250
 #, kde-format
 msgid "Save"
 msgstr "Kaydet"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnUpdate)
-#: plugins/QuickCommands/qcwidget.ui:121
+#: plugins/QuickCommands/qcwidget.ui:260
 #, kde-format
 msgid "Update"
 msgstr "Güncelle"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnCancel)
-#: plugins/QuickCommands/qcwidget.ui:128 plugins/SSHManager/sshwidget.ui:285
+#: plugins/QuickCommands/qcwidget.ui:270 plugins/SSHManager/sshwidget.ui:282
 #, kde-format
 msgid "Cancel"
 msgstr "İptal et"
@@ -1379,49 +1398,85 @@ msgstr "Hızlı Komutlar"
 msgid "Show Quick Commands"
 msgstr "Hızlı Komutları Göster"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:116
-#: plugins/QuickCommands/quickcommandswidget.cpp:127
+#: plugins/QuickCommands/quickcommandswidget.cpp:147
+#: plugins/QuickCommands/quickcommandswidget.cpp:158
 #, kde-format
 msgid "A duplicate item exists"
-msgstr "Aynı ögenin yinelenmişi mevcut"
+msgstr "Aynı ögenin yinelenmişi var"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:170
+#: plugins/QuickCommands/quickcommandswidget.cpp:164
+#, kde-format
+msgid "Please fix all the warnings before trying to run this script"
+msgstr "Bu betiği çalıştırmayı denemeden önce lütfen tüm uyarıları düzeltin"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:188
+#, kde-format
+msgid "There are some errors on the script, do you really want to run it?"
+msgstr "Bu betikte hatalar var, gerçekten çalıştırmak istiyor musunuz?"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:189
+#, kde-format
+msgid "Shell Errors"
+msgstr "Kabuk Hataları"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:190
+#, kde-format
+msgctxt "@action:button"
+msgid "Run"
+msgstr "Çalıştır"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:215
 #, kde-format
 msgid ""
-"You are about to remove the group %1,\n"
+"You are about to delete the group %1,\n"
 " with multiple configurations, are you sure?"
 msgstr ""
-"Çoklu yapılandırmalı %1 grubunu kaldırmak\n"
+"Çoklu yapılandırmalı %1 grubunu silmek\n"
 "üzeresiniz, emin misiniz?"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:171
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:194
+#: plugins/QuickCommands/quickcommandswidget.cpp:216
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:196
 #, kde-format
-msgid "You are about to remove %1, are you sure?"
-msgstr "%1 ögesini kaldırmak üzeresiniz, emin misiniz?"
+msgid "You are about to delete %1, are you sure?"
+msgstr "%1 ögesini silmek üzeresiniz, emin misiniz?"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:176
+#: plugins/QuickCommands/quickcommandswidget.cpp:219
 #, kde-format
-msgid "Remove Quick Commands Configurations"
-msgstr "Hızlı Komutlar Yapılandırmalarını Kaldır"
+msgid "Delete Quick Commands Configurations"
+msgstr "Hızlı Komutlar Yapılandırmalarını Sil"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:209
+#: plugins/QuickCommands/quickcommandswidget.cpp:249
 #, kde-format
 msgid "Title can not be empty or blank"
 msgstr "Başlık boş bırakılamaz"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:213
+#: plugins/QuickCommands/quickcommandswidget.cpp:253
 #, kde-format
 msgid "Command can not be empty"
 msgstr "Komut boş bırakılamaz"
 
+#: plugins/QuickCommands/quickcommandswidget.cpp:273
+#, kde-format
+msgid "Rename"
+msgstr "Yeniden Adlandır"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:277
+#, kde-format
+msgid "Delete"
+msgstr "Sil"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:308
+#, kde-format
+msgid "Warnings (*)"
+msgstr "Uyarılar (*)"
+
 #: plugins/SSHManager/sshmanagermodel.cpp:47
 #: plugins/SSHManager/sshmanagermodel.cpp:80
-#: plugins/SSHManager/sshmanagermodel.cpp:304
-#: plugins/SSHManager/sshmanagermodel.cpp:372
-#: plugins/SSHManager/sshmanagermodel.cpp:405
+#: plugins/SSHManager/sshmanagermodel.cpp:303
+#: plugins/SSHManager/sshmanagermodel.cpp:371
+#: plugins/SSHManager/sshmanagermodel.cpp:404
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:99
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:395
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:396
 #, kde-format
 msgid "SSH Config"
 msgstr "SSH Yapılandırması"
@@ -1448,24 +1503,31 @@ msgstr "SSH Yöneticisini Göster"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:76
-#: plugins/SSHManager/sshwidget.ui:108
+#: plugins/SSHManager/sshwidget.ui:105
 #, kde-format
 msgid "SSH Key"
 msgstr "SSH Anahtarı"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:193
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:114
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Delete"
+msgstr "Sil"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:195
 #, kde-format
 msgid ""
-"You are about to remove the folder %1,\n"
+"You are about to delete the folder %1,\n"
 " with multiple SSH Configurations, are you sure?"
 msgstr ""
 "Çoklu SSH Yapılandırması olan\n"
-"%1 klasörünü kaldırmak üzeresiniz, emin misiniz?"
+"%1 klasörünü silmek üzeresiniz, emin misiniz?"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:202
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:203
 #, kde-format
-msgid "Remove SSH Configurations"
-msgstr "SSH Yapılandırmalarını Kaldır"
+msgctxt "@title:window"
+msgid "Delete SSH Configurations"
+msgstr "SSH Yapılandırmalarını Sil"
 
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:346
 #, kde-format
@@ -1477,170 +1539,163 @@ msgstr "Eksik Ana Bilgisayar Adı"
 msgid "Missing Name"
 msgstr "Eksik Ad"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:357
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:358
 #, kde-format
 msgid "If Use Ssh Config is set, do not specify sshkey or username."
 msgstr ""
-"Ssh Yapılandırması Kullan ayarlanmışsa, sshkey veya kullanıcı adı "
-"belirtmeyin."
+"Ssh Yapılandırması Kullan ayarlanmışsa sshkey veya kullanıcı adı belirtmeyin."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:362
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:363
 #, kde-format
 msgid "At least Username or SSHKey must be set"
 msgstr "En azından Kullanıcı Adı veya SSHKey ayarlanmalıdır"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:368
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:369
 #, kde-format
 msgid "Missing Folder"
 msgstr "Eksik Klasör"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:373
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:374
 #, kde-format
 msgid "An SSH session must have a profile"
 msgstr "Bir SSH oturumunun bir profili olmalı"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:397
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:398
 #, kde-format
-msgid "Cannot remove this folder"
-msgstr "Bu klasör kaldırılamıyor"
+msgid "Cannot delete this folder"
+msgstr "Bu klasör silinemiyor"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:400
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:401
 #, kde-format
-msgid "Remove folder and all of its contents"
-msgstr "Klasörü ve tüm ögelerini kaldır"
+msgid "Delete folder and all of its contents"
+msgstr "Klasörü ve tüm içeriğini sil"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:404
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:405
 #, kde-format
 msgid "Double click to change the folder name."
 msgstr "Klasör adını değiştirmek için çift tıklayın."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:412
 #, kde-format
-msgid "You can't remove an automatically added entry."
-msgstr "Otomatik olarak eklenmiş bir girdiyi kaldıramazsınız."
+msgid "You can't delete an automatically added entry."
+msgstr "Otomatik olarak eklenmiş bir girdiyi silemezsiniz."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:412
 #, kde-format
-msgid "Remove selected entry"
-msgstr "Seçili girdiyi kaldır"
+msgid "Delete selected entry"
+msgstr "Seçili girdiyi sil"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:447
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:448
 #, kde-format
 msgid ""
 "Could not get the process name, assume that we can't request a connection"
 msgstr "Süreç adı alınamadı, bir bağlantı isteği yapamayacağımızı varsayın"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:448
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:467
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:449
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:468
 #, kde-format
 msgid "Error issuing SSH Command"
 msgstr "SSH Komutu verilirken hata"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:466
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:467
 #, kde-format
 msgid ""
 "Can't issue SSH command outside the shell application (eg, bash, zsh, sh)"
 msgstr "Kabuk uygulaması dışında SSH komutu verilemez (örn. bash, zsh, sh)"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, filterText)
-#: plugins/SSHManager/sshwidget.ui:22
+#: plugins/SSHManager/sshwidget.ui:19
 #, kde-format
 msgid "Filter..."
-msgstr "Filtrele..."
+msgstr "Süz..."
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, btnInvertFilter)
-#: plugins/SSHManager/sshwidget.ui:32
+#: plugins/SSHManager/sshwidget.ui:29
 #, kde-format
 msgid "Show entries that don't match the filter"
 msgstr "Süzgeçle eşleşmeyen girdileri göster"
 
-#. i18n: ectx: property (text), widget (QCheckBox, btnInvertFilter)
-#: plugins/SSHManager/sshwidget.ui:35
-#, kde-format
-msgid "Invert"
-msgstr "Tersine çevir"
-
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: plugins/SSHManager/sshwidget.ui:57
+#: plugins/SSHManager/sshwidget.ui:54
 #, kde-format
 msgid "Identifier"
 msgstr "Tanımlayıcı"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, name)
-#: plugins/SSHManager/sshwidget.ui:64
+#: plugins/SSHManager/sshwidget.ui:61
 #, kde-format
 msgid "A name for this ssh entry"
 msgstr "Bu ssh girdisi için ad"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, name)
-#: plugins/SSHManager/sshwidget.ui:67
+#: plugins/SSHManager/sshwidget.ui:64
 #, kde-format
 msgid "The name of this entry on the list"
 msgstr "Listedeki bu girdinin adı"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: plugins/SSHManager/sshwidget.ui:74
+#: plugins/SSHManager/sshwidget.ui:71
 #, kde-format
 msgid "SSH Hostname"
 msgstr "SSH Ana Bilgisayar Adı"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, hostname)
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, hostname)
-#: plugins/SSHManager/sshwidget.ui:81 plugins/SSHManager/sshwidget.ui:84
+#: plugins/SSHManager/sshwidget.ui:78 plugins/SSHManager/sshwidget.ui:81
 #, kde-format
 msgid "The hostname of the server"
 msgstr "Sunucunun ana bilgisayar adı"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: plugins/SSHManager/sshwidget.ui:91
+#: plugins/SSHManager/sshwidget.ui:88
 #, kde-format
 msgid "Port"
 msgstr "Bağlantı noktası"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, port)
-#: plugins/SSHManager/sshwidget.ui:98
+#: plugins/SSHManager/sshwidget.ui:95
 #, kde-format
 msgid "The port of the server, 22 is the default for ssh connections"
 msgstr "Sunucunun kapısı, ssh bağlantıları için 22 öntanımlı kapıdır"
 
 #. i18n: ectx: property (text), widget (QLineEdit, port)
-#: plugins/SSHManager/sshwidget.ui:101
+#: plugins/SSHManager/sshwidget.ui:98
 #, kde-format
 msgid "22"
 msgstr "22"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, sshkey)
-#: plugins/SSHManager/sshwidget.ui:117
+#: plugins/SSHManager/sshwidget.ui:114
 #, kde-format
 msgid "The private key to be used for this connection"
 msgstr "Bu bağlantı için kullanılacak özel anahtar"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, sshkey)
-#: plugins/SSHManager/sshwidget.ui:123
+#: plugins/SSHManager/sshwidget.ui:120
 #, kde-format
 msgid "The private key"
 msgstr "Özel anahtar"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: plugins/SSHManager/sshwidget.ui:143
+#: plugins/SSHManager/sshwidget.ui:140
 #, kde-format
 msgid "Username"
 msgstr "Kullanıcı adı"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, username)
-#: plugins/SSHManager/sshwidget.ui:150
+#: plugins/SSHManager/sshwidget.ui:147
 #, kde-format
 msgid "The username for the connection"
 msgstr "Bağlantı için kullanıcı adı"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, username)
-#: plugins/SSHManager/sshwidget.ui:153
+#: plugins/SSHManager/sshwidget.ui:150
 #, kde-format
 msgid "Your username"
 msgstr "Kullanıcı adınız"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useSshConfig)
-#: plugins/SSHManager/sshwidget.ui:160
+#: plugins/SSHManager/sshwidget.ui:157
 #, kde-format
 msgid ""
 "If this is set, we don't rely on the SSH key set above, but on the "
@@ -1650,66 +1705,66 @@ msgstr ""
 "içindeki yapılandırmaya güvenilir"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useSshConfig)
-#: plugins/SSHManager/sshwidget.ui:163
+#: plugins/SSHManager/sshwidget.ui:160
 #, kde-format
 msgid "Use ~/.ssh/config for key"
 msgstr "Anahtar için ~/.ssh/config kullan"
 
 #. i18n: ectx: property (text), widget (QLabel, folderLabel)
-#: plugins/SSHManager/sshwidget.ui:170
+#: plugins/SSHManager/sshwidget.ui:167
 #, kde-format
 msgid "Folder"
 msgstr "Klasör"
 
 #. i18n: ectx: property (toolTip), widget (QComboBox, folder)
-#: plugins/SSHManager/sshwidget.ui:183
+#: plugins/SSHManager/sshwidget.ui:180
 #, kde-format
 msgid "For organizational purposes, this entry will be inside of this folder."
 msgstr "Organizasyon için bu girdi klasörün içinde olacaktır."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: plugins/SSHManager/sshwidget.ui:196
+#: plugins/SSHManager/sshwidget.ui:193
 #, kde-format
 msgid "Profile"
 msgstr "Profiller"
 
 #. i18n: ectx: property (toolTip), widget (QComboBox, profile)
-#: plugins/SSHManager/sshwidget.ui:209
+#: plugins/SSHManager/sshwidget.ui:206
 #, kde-format
 msgid "The profile to be active when the ssh session starts"
 msgstr "ssh oturumu başlatıldığında etkin olacak profil"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, newSSHConfig)
-#: plugins/SSHManager/sshwidget.ui:234
+#: plugins/SSHManager/sshwidget.ui:231
 #, kde-format
 msgid "Add a new SSH Entry"
 msgstr "Yeni bir SSH girdisi ekle"
 
-#. i18n: ectx: property (toolTip), widget (QPushButton, btnRemove)
-#: plugins/SSHManager/sshwidget.ui:248
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnDelete)
+#: plugins/SSHManager/sshwidget.ui:245
 #, kde-format
-msgid "Remove selected SSH entry"
-msgstr "Seçili SSH girdisini kaldır"
+msgid "Delete selected SSH entry"
+msgstr "Seçili SSH girdisini sil"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnEdit)
-#: plugins/SSHManager/sshwidget.ui:262
+#: plugins/SSHManager/sshwidget.ui:259
 #, kde-format
 msgid "Edit selected entry"
 msgstr "Seçili girdiyi düzenle"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnAdd)
-#: plugins/SSHManager/sshwidget.ui:272
+#: plugins/SSHManager/sshwidget.ui:269
 #, kde-format
 msgid "Add new SSH Configuration"
 msgstr "Yeni SSH yapılandırması ekle"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnCancel)
-#: plugins/SSHManager/sshwidget.ui:282
+#: plugins/SSHManager/sshwidget.ui:279
 #, kde-format
 msgid "Cancel Add or Edit"
 msgstr "Eklemeyi İptal Et veya Düzenle"
 
-#: pluginsystem/PluginManager.cpp:66
+#: pluginsystem/PluginManager.cpp:83
 #, kde-format
 msgid "No plugins available"
 msgstr "Kullanılabilir eklenti yok"
@@ -1726,7 +1781,7 @@ msgstr "Çıktı Seçenekleri"
 #: PrintOptions.ui:39 settings/konsole.kcfg:165
 #, kde-format
 msgid "Printer &friendly mode (black text, no background)"
-msgstr "Yazıcı &dostu kipi (siyah metin, arkaplan yok)"
+msgstr "Yazıcı &dostu kipi (siyah metin, arka plan yok)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, scaleOutput)
 #. i18n: ectx: label, entry (ScaleOutput), group (PrintOptions)
@@ -1735,36 +1790,21 @@ msgstr "Yazıcı &dostu kipi (siyah metin, arkaplan yok)"
 msgid "&Scale output"
 msgstr "Çıkı&şı Ölçeklendir"
 
-#: profile/Profile.cpp:166
-#, kde-format
-msgctxt "Name of the default/builtin profile"
-msgid "Default"
-msgstr "Öntanımlı"
-
-#: profile/ProfileList.cpp:37 widgets/EditProfileDialog.cpp:487
+#: profile/ProfileList.cpp:37 widgets/EditProfileDialog.cpp:475
 #, kde-format
 msgid "Default profile"
 msgstr "Öntanımlı profil"
 
-#: profile/ProfileManager.cpp:265
+#: profile/ProfileManager.cpp:264
 #, kde-format
 msgid "Konsole does not have permission to save this profile to %1"
 msgstr "Konsole için %1 profiline kayıt yapma yetkisi yok"
-
-#: profile/ProfileManager.cpp:302
-#, kde-format
-msgid ""
-"The name \"Default\" is reserved for the built-in fallback profile;\n"
-"the profile is going to be saved as \"%1\""
-msgstr ""
-"\"Öntanımlı\" adı, yerleşik yedek profil için ayrılmıştır; \n"
-"profil, \"%1\" olarak kaydedilecek"
 
 #: profile/ProfileModel.cpp:56
 #, kde-format
 msgctxt "@title:column Profile name"
 msgid "Name"
-msgstr "İsim"
+msgstr "Ad"
 
 #: profile/ProfileModel.cpp:58
 #, kde-format
@@ -1775,16 +1815,22 @@ msgstr "Kısayol"
 #: profile/ProfileModel.cpp:81
 #, kde-format
 msgctxt ""
-"@label:textbox added to the name of the Default/fallback profile, to point "
-"out it's read-only/hardcoded"
+"@label:textbox added to the name of the built-in profile, to point out it's "
+"read-only"
 msgid " [Read-only]"
-msgstr "[Salt okunur]"
+msgstr " [Saltokunur]"
 
 #: profile/ProfileModel.cpp:85
 #, kde-format
 msgctxt "@label:textbox added to the name of the current default profile"
-msgid " (default)"
-msgstr "(öntanımlı)"
+msgid " [Default]"
+msgstr " [Öntanımlı]"
+
+#: profile/ProfileModel.cpp:100
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Built-in profile is always available"
+msgstr "Gömülü gelen profil her zaman kullanılabilir"
 
 #: profile/ProfileModel.cpp:112
 #, kde-format
@@ -1896,47 +1942,53 @@ msgstr "macOS"
 msgid "Solaris console"
 msgstr "Solaris konsolu"
 
-#: session/Session.cpp:121
+#: session/Session.cpp:88
 #, kde-format
 msgid "Bell in '%1' (Session '%2')"
 msgstr "'%1' içinde Zil (Oturum '%2')"
 
-#: session/Session.cpp:406
+#: session/Session.cpp:373
 #, kde-format
 msgid "Could not find binary: "
 msgstr "İkilik dosya bulunamadı: "
 
-#: session/Session.cpp:415
+#: session/Session.cpp:382
 #, kde-format
 msgctxt "@info:shell Alert the user with red color text"
 msgid "Warning: "
 msgstr "Uyarı: "
 
-#: session/Session.cpp:477
+#: session/Session.cpp:457
 #, kde-format
 msgid "Could not find an interactive shell to start."
 msgstr "Başlatılacak etkileşimli kabuk bulunamadı."
 
-#: session/Session.cpp:483 session/Session.cpp:485
+#: session/Session.cpp:463 session/Session.cpp:465
 #, kde-format
 msgid ""
 "Could not find '%1', starting '%2' instead.  Please check your profile "
 "settings."
 msgstr ""
 "'%1' bulunamadı, onun yerine '%2' başlatılıyor.  Lütfen profil ayarlarınızı "
-"kontrol edin."
+"denetleyin."
 
-#: session/Session.cpp:520
+#: session/Session.cpp:516
 #, kde-format
 msgid "Could not start program '%1' with arguments '%2'."
 msgstr "'%1' uygulaması '%2' argümanıyla başlatılamadı."
 
-#: session/Session.cpp:665
+#: session/Session.cpp:661
 #, kde-format
 msgid "Silence in '%1' (Session '%2')"
 msgstr "'%1' içinde Sessizlik (Oturum '%2')"
 
-#: session/Session.cpp:917
+#: session/Session.cpp:665 session/Session.cpp:1771
+#: session/SessionController.cpp:360 terminalDisplay/TerminalBell.cpp:43
+#, kde-format
+msgid "Show session"
+msgstr "Oturumu göster"
+
+#: session/Session.cpp:929
 #, kde-format
 msgid ""
 "The D-Bus methods sendText/runCommand were just used.  There are security "
@@ -1945,33 +1997,33 @@ msgid ""
 "warning will only show once for this Konsole instance.</p>"
 msgstr ""
 "D-Bus yöntemleri olan sendText/runCommand kullanıldı. Bu yöntemlerin public "
-"olması konusunda güvenlik endişeleri bulunmaktadır. Dilerseniz, Konsole "
-"tekrar derlenerek bu yöntemler sadece dahili kullanılmak üzere "
-"değiştirilebilir.<p>Bu uyarı sadece bu Konsole örneği için bir kez "
+"olması konusunda güvenlik endişeleri bulunmaktadır. Dilerseniz Konsole "
+"tekrar derlenerek bu yöntemler yalnızca dahili kullanılmak üzere "
+"değiştirilebilir.<p>Bu uyarı yalnızca bu Konsole örneği için bir kez "
 "gösterilecek.</p>"
 
-#: session/Session.cpp:953
+#: session/Session.cpp:965
 #, kde-format
 msgctxt "@info:shell This session is done"
 msgid "Finished"
 msgstr "Tamamlandı"
 
-#: session/Session.cpp:967 session/Session.cpp:978
+#: session/Session.cpp:979 session/Session.cpp:990
 #, kde-format
 msgid "Program '%1' crashed."
 msgstr "'%1' uygulaması çöktü."
 
-#: session/Session.cpp:969
+#: session/Session.cpp:981
 #, kde-format
 msgid "Program '%1' exited with status %2."
 msgstr "'%1' uygulamasından %2 durumu ile çıkıldı."
 
-#: session/Session.cpp:1423
+#: session/Session.cpp:1435
 #, kde-format
 msgid "ZModem Progress"
 msgstr "ZModem İşlemi"
 
-#: session/Session.cpp:1755
+#: session/Session.cpp:1767
 #, kde-format
 msgid "Activity in '%1' (Session '%2')"
 msgstr "'%1' içinde Etkinlik (Oturum '%2')"
@@ -1981,232 +2033,247 @@ msgstr "'%1' içinde Etkinlik (Oturum '%2')"
 msgid "Konsole"
 msgstr "Konsole"
 
-#: session/SessionController.cpp:359
+#: session/SessionController.cpp:356
 #, kde-format
 msgid "The process '%1' has finished running in session '%2'"
-msgstr "'%1' işlemi '%2' oturumundaki çalışmayı bitirdi"
+msgstr "'%1' süreci, '%2' oturumundaki çalışmayı bitirdi"
 
-#: session/SessionController.cpp:437
+#: session/SessionController.cpp:438
 #, kde-format
 msgid "Konsole does not know how to open the bookmark: "
 msgstr "Konsol belirtilen yer iminin nasıl açılacağını bilmiyor: "
 
-#: session/SessionController.cpp:508
+#: session/SessionController.cpp:517
 #, kde-format
 msgid "Search for '%1' with"
 msgstr "'%1' ifadesini şununla ara"
 
-#: session/SessionController.cpp:522
+#: session/SessionController.cpp:533
 #, kde-format
 msgid "Configure Web Shortcuts..."
 msgstr "Web Kısayollarını Yapılandır..."
 
-#: session/SessionController.cpp:633
+#: session/SessionController.cpp:643
 #, kde-format
 msgid "&Close Session"
 msgstr "&Oturumu Kapat"
 
-#: session/SessionController.cpp:640
+#: session/SessionController.cpp:650
 #, kde-format
 msgid "Open File Manager"
 msgstr "Dosya Yöneticisini Aç"
 
-#: session/SessionController.cpp:658
+#: session/SessionController.cpp:662
 #, kde-format
 msgid "Copy"
 msgstr "Kopyala"
 
-#: session/SessionController.cpp:675
+#: session/SessionController.cpp:668
+#, kde-format
+msgid "Copy except prompts"
+msgstr "İstemler dışındakileri kopyala"
+
+#: session/SessionController.cpp:674
+#, kde-format
+msgid "Copy user input"
+msgstr "Kullanıcı girdisini kopyala"
+
+#: session/SessionController.cpp:680
+#, kde-format
+msgid "Copy command output"
+msgstr "Komut çıktısını kopyala"
+
+#: session/SessionController.cpp:695
 #, kde-format
 msgid "Paste Selection"
 msgstr "Seçimi Yapıştır"
 
-#: session/SessionController.cpp:682
+#: session/SessionController.cpp:702
 #, kde-format
 msgid "Web Search"
 msgstr "Web Araması"
 
-#: session/SessionController.cpp:688
+#: session/SessionController.cpp:708
 #, kde-format
 msgid "&Select All"
 msgstr "&Tümünü Seç"
 
-#: session/SessionController.cpp:692
+#: session/SessionController.cpp:712
 #, kde-format
 msgid "Select &Line"
 msgstr "Satır &Seç"
 
-#: session/SessionController.cpp:695
+#: session/SessionController.cpp:715
 #, kde-format
 msgid "Save Output &As..."
 msgstr "Çıktıyı &Farklı Kaydet..."
 
-#: session/SessionController.cpp:701
+#: session/SessionController.cpp:721
 #, kde-format
 msgid "&Print Screen..."
 msgstr "&Ekranı Yazdır..."
 
-#: session/SessionController.cpp:705
+#: session/SessionController.cpp:725
 #, kde-format
 msgid "Adjust Scrollback..."
 msgstr "Geçmişi Yapılandır..."
 
-#: session/SessionController.cpp:709
+#: session/SessionController.cpp:729
 #, kde-format
 msgid "Clear Scrollback"
 msgstr "Geçmişi Temizle"
 
-#: session/SessionController.cpp:713
+#: session/SessionController.cpp:733
 #, kde-format
 msgid "Clear Scrollback and Reset"
 msgstr "Geçmişi Temizle ve Sıfırla"
 
-#: session/SessionController.cpp:722
+#: session/SessionController.cpp:742
 #, kde-format
 msgid "Switch Profile"
-msgstr "Proje Değiştir"
+msgstr "Profil Değiştir"
 
-#: session/SessionController.cpp:751
+#: session/SessionController.cpp:771
 #, kde-format
 msgid "Set &Encoding"
 msgstr "&Kodlamayı Ayarla"
 
-#: session/SessionController.cpp:768
+#: session/SessionController.cpp:791
 #, kde-format
 msgctxt "@item:inmenu Allows terminal applications to request mouse tracking"
 msgid "Allow mouse tracking"
 msgstr "Fare Takibine İzin Ver"
 
-#: session/SessionController.cpp:773
+#: session/SessionController.cpp:799
 #, kde-format
 msgctxt "@item:inmenu A read only (locked) session"
 msgid "Read-only"
-msgstr "Salt okunur"
+msgstr "Saltokunur"
 
-#: session/SessionController.cpp:784
+#: session/SessionController.cpp:810
 #, kde-format
 msgid "&Configure or Rename Tab..."
 msgstr "&Sekmeyi Yapılandır veya Yeniden Adlandır..."
 
-#: session/SessionController.cpp:790
+#: session/SessionController.cpp:816
 #, kde-format
 msgid "&All Tabs in Current Window"
 msgstr "Geçerli Penceredeki &Tüm Sekmeler"
 
-#: session/SessionController.cpp:797
+#: session/SessionController.cpp:823
 #, kde-format
 msgid "&Select Tabs..."
 msgstr "Sekmeleri &Seç..."
 
-#: session/SessionController.cpp:803
+#: session/SessionController.cpp:829
 #, kde-format
 msgctxt "@action:inmenu Do not select any tabs"
 msgid "&None"
 msgstr "&Hiçbiri"
 
-#: session/SessionController.cpp:811
+#: session/SessionController.cpp:837
 #, kde-format
 msgid "Copy Input To"
 msgstr "Girdiyi Buraya Kopyala"
 
-#: session/SessionController.cpp:818
+#: session/SessionController.cpp:844
 #, kde-format
 msgid "&ZModem Upload..."
 msgstr "&ZModem Dosya Gönderimi..."
 
-#: session/SessionController.cpp:823
+#: session/SessionController.cpp:849
 #, kde-format
 msgid "Monitor for &Activity"
 msgstr "Etkinlikleri İ&zle"
 
-#: session/SessionController.cpp:829
+#: session/SessionController.cpp:855
 #, kde-format
 msgid "Monitor for &Silence"
 msgstr "Sessiz&likleri İzle"
 
-#: session/SessionController.cpp:835
+#: session/SessionController.cpp:861
 #, kde-format
 msgid "Monitor for Process Finishing"
 msgstr "Süreç Sonlandırma için İzleyici"
 
-#: session/SessionController.cpp:842
+#: session/SessionController.cpp:868
 #, kde-format
 msgid "Enlarge Font"
-msgstr "Yazı Tipini Büyüt"
+msgstr "Yazıtipini Büyüt"
 
-#: session/SessionController.cpp:850
+#: session/SessionController.cpp:876
 #, kde-format
 msgid "Shrink Font"
-msgstr "Yazı Tipini Küçült"
+msgstr "Yazıtipini Küçült"
 
-#: session/SessionController.cpp:855
+#: session/SessionController.cpp:881
 #, kde-format
 msgid "Reset Font Size"
-msgstr "Yazı Tipi Boyutunu Sıfırla"
+msgstr "Yazıtipi Boyutunu Sıfırla"
 
-#: session/SessionController.cpp:860
+#: session/SessionController.cpp:886
 #, kde-format
 msgid "Send Signal"
 msgstr "Sinyal Gönder"
 
-#: session/SessionController.cpp:864
+#: session/SessionController.cpp:890
 #, kde-format
 msgid "&Suspend Task"
 msgstr "&Görevi Askıya Al"
 
-#: session/SessionController.cpp:869
+#: session/SessionController.cpp:895
 #, kde-format
 msgid "&Continue Task"
-msgstr "&Göreve Devam Et"
+msgstr "&Görevi Sürdür"
 
-#: session/SessionController.cpp:874
+#: session/SessionController.cpp:900
 #, kde-format
 msgid "&Hangup"
 msgstr "&Engelle"
 
-#: session/SessionController.cpp:879
+#: session/SessionController.cpp:905
 #, kde-format
 msgid "&Interrupt Task"
 msgstr "&Görevi Kes"
 
-#: session/SessionController.cpp:884
+#: session/SessionController.cpp:910
 #, kde-format
 msgid "&Terminate Task"
 msgstr "Görevi &Sonlandır"
 
-#: session/SessionController.cpp:889
+#: session/SessionController.cpp:915
 #, kde-format
 msgid "&Kill Task"
 msgstr "G&örevi Öldür"
 
-#: session/SessionController.cpp:894
+#: session/SessionController.cpp:920
 #, kde-format
 msgid "User Signal &1"
 msgstr "Kullanıcı Sinyali &1"
 
-#: session/SessionController.cpp:899
+#: session/SessionController.cpp:925
 #, kde-format
 msgid "User Signal &2"
 msgstr "Kullanıcı Sinyali &2"
 
-#: session/SessionController.cpp:916
+#: session/SessionController.cpp:942
 #, kde-format
 msgid "Create New Profile..."
 msgstr "Yeni Profil Oluştur..."
 
-#: session/SessionController.cpp:918
+#: session/SessionController.cpp:944
 #, kde-format
 msgid "Edit Current Profile..."
 msgstr "Geçerli Profili Düzenle..."
 
-#: session/SessionController.cpp:1035
+#: session/SessionController.cpp:1061
 #, kde-format
 msgid ""
 "A program is currently running in this session.  Are you sure you want to "
 "close it?"
 msgstr "Bu oturumda bir uygulama açık.  Kapatmak istediğinizden emin misiniz?"
 
-#: session/SessionController.cpp:1039
+#: session/SessionController.cpp:1065
 #, kde-format
 msgid ""
 "The program '%1' is currently running in this session.  Are you sure you "
@@ -2214,19 +2281,25 @@ msgid ""
 msgstr ""
 "'%1' uygulaması bu oturumda çalışıyor. Kapatmak istediğinizden emin misiniz?"
 
-#: session/SessionController.cpp:1046 session/SessionController.cpp:1079
+#: session/SessionController.cpp:1072 session/SessionController.cpp:1107
 #, kde-format
 msgid "Confirm Close"
 msgstr "Kapatmayı Doğrula"
 
-#: session/SessionController.cpp:1070
+#: session/SessionController.cpp:1073
+#, kde-format
+msgctxt "@action:button"
+msgid "Close Program"
+msgstr "Programı Kapat"
+
+#: session/SessionController.cpp:1096
 #, kde-format
 msgid ""
 "A program in this session would not die.  Are you sure you want to kill it "
 "by force?"
 msgstr "Bu oturumda bir uygulama kapatılamadı.  Zorla kapatmak ister misiniz?"
 
-#: session/SessionController.cpp:1074
+#: session/SessionController.cpp:1100
 #, kde-format
 msgid ""
 "The program '%1' is in this session would not die.  Are you sure you want to "
@@ -2235,17 +2308,23 @@ msgstr ""
 "'%1' uygulaması bu oturumda sonlandırılamadı.  Zorla kapatmak istediğinizden "
 "emin misiniz?"
 
-#: session/SessionController.cpp:1888
+#: session/SessionController.cpp:1108
+#, kde-format
+msgctxt "@action:button"
+msgid "Kill Program"
+msgstr "Programı Öldür"
+
+#: session/SessionController.cpp:1929
 #, kde-format
 msgid "Open Current Folder With"
 msgstr "Geçerli Klasörü Şununla Aç"
 
-#: session/SessionController.cpp:1958
+#: session/SessionController.cpp:1999
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "ZModem Dosyasını kaydet..."
 
-#: session/SessionController.cpp:1968
+#: session/SessionController.cpp:2009
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -2255,14 +2334,14 @@ msgstr ""
 "<p>Bir ZModem dosya aktarım isteği algılandı ancak uygun ZModem yazılımı "
 "bulunamadı.</p><p>'rzsz' veya 'lrzsz' paketini kurmak isteyebilirsiniz.</p>"
 
-#: session/SessionController.cpp:1978
+#: session/SessionController.cpp:2019
 #, kde-format
 msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr ""
-"<p>Mevcut oturum zaten devam eden bir ZModem dosya transferine sahip.</p>"
+"<p>Geçerli oturumda, halihazırda süren bir ZModem dosya aktarımı var.</p>"
 
-#: session/SessionController.cpp:1988
+#: session/SessionController.cpp:2029
 #, kde-format
 msgid ""
 "<p>No suitable ZModem software was found on this system.</p><p>You may wish "
@@ -2271,18 +2350,18 @@ msgstr ""
 "<p>Uygun ZModem yazılımı bulunamadı.</p><p>'rzsz' veya 'lrzsz' paketini "
 "kurmak isteyebilirsiniz.</p>"
 
-#: session/SessionController.cpp:1993
+#: session/SessionController.cpp:2034
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "ZModem üzerinden gönderilecek dosyaları seçin"
 
-#: session/SessionListModel.cpp:90
+#: session/SessionListModel.cpp:89
 #, kde-format
 msgctxt "@item:intable The session index"
 msgid "Number"
 msgstr "Numara"
 
-#: session/SessionListModel.cpp:92
+#: session/SessionListModel.cpp:91
 #, kde-format
 msgctxt "@item:intable The session title"
 msgid "Title"
@@ -2312,7 +2391,7 @@ msgstr "Menü hızlandırıcılarını etkinleştir"
 #: settings/GeneralSettings.ui:81
 #, kde-format
 msgid "If enabled, profile settings will be ignored"
-msgstr "Etkin ise, profil ayarları yoksayılır"
+msgstr "Etkin ise profil ayarları yok sayılır"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_RememberWindowSize)
 #: settings/GeneralSettings.ui:84
@@ -2346,7 +2425,7 @@ msgstr "Düzenli ifade kullanarak eşle"
 #: settings/GeneralSettings.ui:130 settings/konsole.kcfg:33
 #, kde-format
 msgid "When launching Konsole re-use existing process if possible"
-msgstr "Mümkünse, Konsole çalıştırılırken mevcut süreci yeniden kullan"
+msgstr "Olanaklıysa Konsole çalıştırılırken var olan süreci yeniden kullan"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseSingleInstance)
 #. i18n: ectx: label, entry (UseSingleInstance), group (KonsoleWindow)
@@ -2385,7 +2464,7 @@ msgstr "Pencere başlık çubuğunu ve çerçeveyi kaldır"
 #: settings/GeneralSettings.ui:208
 #, kde-format
 msgid "Process and window:"
-msgstr "İşlem ve pencere:"
+msgstr "Süreç ve pencere:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settings/GeneralSettings.ui:218
@@ -2429,7 +2508,7 @@ msgstr "Başlık çubuğunda kaçış ile belirlenen pencere başlık setini gö
 #: settings/konsole.kcfg:23
 #, kde-format
 msgid "Allow users to access top menu through Alt+Key combination"
-msgstr "Kullanıcıların Alt+Tuş bileşeni ile üst menüye erişmelerine izin ver"
+msgstr "Kullanıcıların Alt+Düğme bileşeni ile üst menüye erişmelerine izin ver"
 
 #. i18n: ectx: label, entry (RememberWindowSize), group (KonsoleWindow)
 #: settings/konsole.kcfg:27
@@ -2447,7 +2526,7 @@ msgstr "Konsole'dan çıkarken pencere boyutu kaydedilecek"
 #: settings/konsole.kcfg:42
 #, kde-format
 msgid "Thumbnail Width"
-msgstr "Küçük Resim Genişliği"
+msgstr "Küçük Görsel Genişliği"
 
 #. i18n: ectx: tooltip, entry (ThumbnailSize), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:43
@@ -2460,21 +2539,21 @@ msgstr "Küçük resmin genişliğini ayarlar"
 #: settings/konsole.kcfg:47 settings/konsole.kcfg:48
 #, kde-format
 msgid "Use Shift to display a thumbnail"
-msgstr "Bir küçük resim görüntülemek için Shift tuşunu kullan"
+msgstr "Bir küçük görsel görüntülemek için Shift kullan"
 
 #. i18n: ectx: label, entry (ThumbnailAlt), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailAlt), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:52 settings/konsole.kcfg:53
 #, kde-format
 msgid "Use Alt to display a thumbnail"
-msgstr "Bir küçük resim görüntülemek için Alt kullan"
+msgstr "Bir küçük görsel görüntülemek için Alt kullan"
 
 #. i18n: ectx: label, entry (ThumbnailCtrl), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailCtrl), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:57 settings/konsole.kcfg:58
 #, kde-format
 msgid "Use Ctrl to display a thumbnail"
-msgstr "Bir küçük resim görüntülemek için Ctrl tuşunu kullan"
+msgstr "Bir küçük görsel görüntülemek için Ctrl kullan"
 
 #. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
 #: settings/konsole.kcfg:64
@@ -2547,7 +2626,7 @@ msgstr "Sekme çubuğunda 'Yeni Sekme' düğmesinin görünürlüğünü denetle
 #: settings/konsole.kcfg:142
 #, kde-format
 msgid "Control where the \"Close tab\" button will be displayed"
-msgstr "\"Sekmeyi kapat\" düğmesinin nerede görüntüleneceğini kontrol et"
+msgstr "\"Sekmeyi kapat\" düğmesinin nerede görüntüleneceğini denetle"
 
 #. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
 #: settings/konsole.kcfg:151
@@ -2628,7 +2707,7 @@ msgstr ""
 #: settings/ProfileSettings.ui:55
 #, kde-format
 msgid "&Edit..."
-msgstr "&Düzenle..."
+msgstr "Dü&zenle..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, deleteProfileButton)
 #: settings/ProfileSettings.ui:65
@@ -2671,7 +2750,7 @@ msgstr "Göster:"
 #: settings/TabBarSettings.ui:60
 #, kde-format
 msgid "When needed"
-msgstr "İhtiyaç duyulduğunda"
+msgstr "Gerektiğinde"
 
 #. i18n: ectx: property (text), widget (QRadioButton, AlwaysShowTabBar)
 #: settings/TabBarSettings.ui:70
@@ -2859,7 +2938,7 @@ msgctxt "@option:radio Always show the split header"
 msgid "Always"
 msgstr "Her zaman"
 
-#: settings/TemporaryFilesSettings.cpp:33
+#: settings/TemporaryFilesSettings.cpp:31
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2867,7 +2946,7 @@ msgctxt ""
 msgid "System temporary directory (%1)"
 msgstr "Sistem geçici dizini (%1)"
 
-#: settings/TemporaryFilesSettings.cpp:35
+#: settings/TemporaryFilesSettings.cpp:33
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2898,7 +2977,7 @@ msgstr "Boyut:"
 #: settings/ThumbnailsSettings.ui:24
 #, kde-format
 msgid "px"
-msgstr "px"
+msgstr "pks"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #: settings/ThumbnailsSettings.ui:37
@@ -2923,7 +3002,7 @@ msgstr "Etkinleştirme:"
 #: settings/ThumbnailsSettings.ui:63
 #, kde-format
 msgid "Mouse hover plus"
-msgstr "Fare üzerine gelme +"
+msgstr "Fare ile üzerine gelindiğinde +"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailShift)
 #: settings/ThumbnailsSettings.ui:70
@@ -2947,105 +3026,105 @@ msgstr "Ctrl"
 #: settings/ThumbnailsSettings.ui:93
 #, kde-format
 msgid "Enable thumbnails generation"
-msgstr "Küçük resim oluşturmayı etkinleştir"
+msgstr "Küçük görsel oluşturmayı etkinleştir"
 
-#: terminalDisplay/TerminalDisplay.cpp:702
-#: terminalDisplay/TerminalDisplay.cpp:703
+#: terminalDisplay/TerminalDisplay.cpp:639
+#: terminalDisplay/TerminalDisplay.cpp:640
 #, kde-format
 msgid "Size: XXX x XXX"
 msgstr "Boyut: XXX x XXX"
 
-#: terminalDisplay/TerminalDisplay.cpp:714
+#: terminalDisplay/TerminalDisplay.cpp:651
 #, kde-format
 msgid "Size: %1 x %2"
 msgstr "Boyut: %1 x %2"
 
-#: terminalDisplay/TerminalDisplay.cpp:2201
+#: terminalDisplay/TerminalDisplay.cpp:2133
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
 msgstr[0] "%1 karakter yapıştırmak istediğinizden emin misiniz?"
 msgstr[1] "%1 karakter yapıştırmak istediğinizden emin misiniz?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2202
+#: terminalDisplay/TerminalDisplay.cpp:2134
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Yapıştırmayı Doğrula"
 
-#: terminalDisplay/TerminalDisplay.cpp:2235
+#: terminalDisplay/TerminalDisplay.cpp:2167
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
-msgstr "Metnin Sonu/Kesinti: mevcut işlemden çıkabilir"
+msgstr "Metnin Sonu/Kesinti: Geçerli süreçten çıkabilir"
 
-#: terminalDisplay/TerminalDisplay.cpp:2236
+#: terminalDisplay/TerminalDisplay.cpp:2168
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
-msgstr "İletimin Sonu: mevcut işlemden çıkabilir"
+msgstr "İletimin Sonu: Geçerli süreçten çıkılabilir"
 
-#: terminalDisplay/TerminalDisplay.cpp:2237
+#: terminalDisplay/TerminalDisplay.cpp:2169
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "Zil: sesli bir uyarı vermeye çalışacak"
 
-#: terminalDisplay/TerminalDisplay.cpp:2238
+#: terminalDisplay/TerminalDisplay.cpp:2170
 #, kde-format
 msgid "Backspace"
 msgstr "Geri silme"
 
-#: terminalDisplay/TerminalDisplay.cpp:2239
+#: terminalDisplay/TerminalDisplay.cpp:2171
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
-msgstr "Aygıt Kontrolü Üç/XOFF: çıkışı askıya alır"
+msgstr "Aygıt Denetimi Üç/XOFF: Çıktıyı askıya alır"
 
-#: terminalDisplay/TerminalDisplay.cpp:2240
+#: terminalDisplay/TerminalDisplay.cpp:2172
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
-msgstr "İkame/Askıya Alma: mevcut süreci askıya alabilir"
+msgstr "Yerine Koy/Askıya Al: Geçerli süreci askıya alabilir"
 
-#: terminalDisplay/TerminalDisplay.cpp:2241
+#: terminalDisplay/TerminalDisplay.cpp:2173
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr "Escape: terminal durumunu değiştirmek için kullanılır"
 
-#: terminalDisplay/TerminalDisplay.cpp:2242
+#: terminalDisplay/TerminalDisplay.cpp:2174
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
-msgstr "Dosya Ayırıcı/Çık: mevcut işlemi iptal edebilir"
+msgstr "Dosya Ayırıcı/Çık: Geçerli süreci iptal edebilir"
 
-#: terminalDisplay/TerminalDisplay.cpp:2265
+#: terminalDisplay/TerminalDisplay.cpp:2197
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
 "want to filter them out?"
 msgstr ""
-"Yapıştırmaya çalıştığınız metin gizli kontrol karakterleri içeriyor, bunları "
-"filtrelemek ister misiniz?"
+"Yapıştırmaya çalıştığınız metin gizli denetim karakterleri içeriyor, bunları "
+"süzmek ister misiniz?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2268
+#: terminalDisplay/TerminalDisplay.cpp:2200
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Yapıştırmayı Doğrula"
 
-#: terminalDisplay/TerminalDisplay.cpp:2269
+#: terminalDisplay/TerminalDisplay.cpp:2201
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "Denetim karakterleri olmadan &yapıştır"
 
-#: terminalDisplay/TerminalDisplay.cpp:2270
+#: terminalDisplay/TerminalDisplay.cpp:2202
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "&Her şeyi yapıştır"
 
-#: terminalDisplay/TerminalDisplay.cpp:2271
+#: terminalDisplay/TerminalDisplay.cpp:2203
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
-msgstr "&İptal et"
+msgstr "İ&ptal et"
 
-#: terminalDisplay/TerminalDisplay.cpp:2500
+#: terminalDisplay/TerminalDisplay.cpp:2432
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3056,17 +3135,17 @@ msgstr ""
 "Software_flow_control\">askıya alındı</a>. Sürdürmek için <b>Ctrl+Q</b>'ya "
 "basın.</qt>"
 
-#: terminalDisplay/TerminalDisplay.cpp:2538
+#: terminalDisplay/TerminalDisplay.cpp:2470
 #, kde-format
 msgid "This terminal is read-only."
-msgstr "Bu terminal salt okunurdur."
+msgstr "Bu uçbirim saltokunurdur."
 
-#: terminalDisplay/TerminalDisplay.cpp:2769
+#: terminalDisplay/TerminalDisplay.cpp:2709
 #, kde-format
 msgid "Change &Directory To"
 msgstr "&Dizini Bu Adresle Değiştir"
 
-#: terminalDisplay/TerminalDisplay.cpp:2802
+#: terminalDisplay/TerminalDisplay.cpp:2742
 #, kde-format
 msgid "&Paste Location"
 msgstr "&Konumu Yapıştır"
@@ -3159,13 +3238,13 @@ msgstr "Aşağıdaki Uçbirime Odaklan"
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Left Terminal"
-msgstr "Sol Terminale Odaklan"
+msgstr "Sol Uçbirime Odaklan"
 
 #: ViewManager.cpp:228
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Right Terminal"
-msgstr "Sağ Terminale Odaklan"
+msgstr "Sağ Uçbirime Odaklan"
 
 #: ViewManager.cpp:234
 #, kde-format
@@ -3195,13 +3274,13 @@ msgstr "Son Kullanılan Sekmeler (Ters)"
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Toggle maximize current view"
-msgstr "Mevcut görünümü büyütmeyi aç/kapat"
+msgstr "Geçerli Görünümü Büyütmeyi Aç/Kapat"
 
 #: ViewManager.cpp:255
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Toggle maximize current view"
-msgstr "Mevcut görünümü büyütmeyi aç/kapat"
+msgstr "Geçerli Görünümü Büyütmeyi Aç/Kapat"
 
 #: ViewManager.cpp:263
 #, kde-format
@@ -3215,23 +3294,35 @@ msgctxt "@action Shortcut entry"
 msgid "Move tab to the left"
 msgstr "Sekmeyi sola taşı"
 
-#: ViewManager.cpp:280
+#: ViewManager.cpp:277
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Setup semantic integration (bash)"
+msgstr "Anlamsal tümleşimi ayarla (bash)"
+
+#: ViewManager.cpp:284
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Equal size to all views"
+msgstr "Tüm Görünümlere Eşit Boyut"
+
+#: ViewManager.cpp:294
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Switch to Tab %1"
 msgstr "%1 Sekmesine Seç"
 
-#: ViewManager.cpp:950
+#: ViewManager.cpp:1009
 #, kde-format
 msgid "Save File"
 msgstr "Dosyayı Kaydet"
 
-#: ViewManager.cpp:950 ViewManager.cpp:1019
+#: ViewManager.cpp:1009 ViewManager.cpp:1078
 #, kde-format
 msgid "Konsole View Layout (*.json)"
 msgstr "Konsole Görünüm Düzeni (*.json)"
 
-#: ViewManager.cpp:953
+#: ViewManager.cpp:1012
 #, kde-format
 msgid ""
 "A problem occurred when saving the Layout.\n"
@@ -3240,7 +3331,7 @@ msgstr ""
 "Yerleşim kaydedilirken bir sorun oluştu.\n"
 "%1"
 
-#: ViewManager.cpp:1009
+#: ViewManager.cpp:1068
 #, kde-format
 msgid ""
 "A problem occurred when loading the Layout.\n"
@@ -3249,25 +3340,25 @@ msgstr ""
 "Yerleşim yüklenirken bir sorun oluştu.\n"
 "%1"
 
-#: ViewManager.cpp:1019
+#: ViewManager.cpp:1078
 #, kde-format
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: Vt102Emulation.cpp:1899
+#: Vt102Emulation.cpp:2298
 #, kde-format
 msgid ""
 "No keyboard translator available.  The information needed to convert key "
 "presses into characters to send to the terminal is missing."
 msgstr ""
-"Hiç klavye çevirmeni yok.  Uç birime gönderilecek olan tuş basmalarını "
+"Hiç klavye çevirmeni yok.  Uç birime gönderilecek olan düğme basımlarını "
 "karakterlere dönüştürecek bilgi yok."
 
 #. i18n: ectx: property (text), widget (QLabel, urlHintsLabel)
 #: widgets/EditProfileAdvancedPage.ui:37
 #, kde-format
 msgid "Key combination to show URL hints:"
-msgstr "URL ipuçlarını göstermek için tuş kombinasyonu:"
+msgstr "URL ipuçlarını göstermek için düğme kombinasyonu:"
 
 #. i18n: ectx: property (text), widget (QToolButton, urlHintsModifierShift)
 #: widgets/EditProfileAdvancedPage.ui:69
@@ -3332,7 +3423,7 @@ msgstr "Yanıp sönen metinlere izin ver"
 #: widgets/EditProfileAdvancedPage.ui:214
 #, kde-format
 msgid "Allow the output to be suspended by pressing Ctrl+S"
-msgstr "Ctrl+S tuşlarına basıldığında çıktıyı askıya almaya izin ver"
+msgstr "Ctrl+S düğmelerine basıldığında çıktıyı askıya almaya izin ver"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableFlowControlButton)
 #: widgets/EditProfileAdvancedPage.ui:217
@@ -3398,7 +3489,7 @@ msgstr "Seçilen renk şemasını düzenle"
 #. i18n: ectx: property (text), widget (QPushButton, textEditorCustomBtn)
 #. i18n: ectx: property (text), widget (QPushButton, editColorSchemeButton)
 #: widgets/EditProfileAppearancePage.ui:79
-#: widgets/EditProfileGeneralPage.ui:220 widgets/EditProfileKeyboardPage.ui:85
+#: widgets/EditProfileGeneralPage.ui:224 widgets/EditProfileKeyboardPage.ui:85
 #: widgets/EditProfileMousePage.ui:310
 #, kde-format
 msgid "Edit..."
@@ -3424,174 +3515,168 @@ msgstr "Seçili renk şeması ayarlarını öntanımlı değerlere sıfırla"
 msgid "Defaults"
 msgstr "Öntanımlılar"
 
-#. i18n: ectx: property (text), widget (KNS3::Button, downloadColorSchemeButton)
-#: widgets/EditProfileAppearancePage.ui:106
-#, kde-format
-msgid "Get New..."
-msgstr "Yeni Al..."
-
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: widgets/EditProfileAppearancePage.ui:139
+#: widgets/EditProfileAppearancePage.ui:132
 #, kde-format
 msgid "Font:"
 msgstr "Yazıtipi:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseFontButton)
-#: widgets/EditProfileAppearancePage.ui:171
+#: widgets/EditProfileAppearancePage.ui:164
 #, kde-format
 msgctxt "@action:button open a dialog with list of fonts"
 msgid "Choose..."
 msgstr "Seç..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
-#: widgets/EditProfileAppearancePage.ui:178
+#: widgets/EditProfileAppearancePage.ui:171
 #, kde-format
 msgid "Smooth fonts"
-msgstr "Düz yazı tipleri"
+msgstr "Düz yazıtipleri"
 
 #. i18n: ectx: property (text), widget (QCheckBox, boldIntenseButton)
-#: widgets/EditProfileAppearancePage.ui:185
+#: widgets/EditProfileAppearancePage.ui:178
 #, kde-format
 msgid "Draw intense colors in bold font"
-msgstr "Keskin renkleri koyu yazı tipiyle çiz"
+msgstr "Keskin renkleri koyu yazıtipiyle çiz"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:192
+#: widgets/EditProfileAppearancePage.ui:185
 #, kde-format
 msgid "Use the selected font for line characters instead of the builtin code"
-msgstr "Dahili kod yerine satır karakterleri için seçili yazı tipini kullan"
+msgstr "Dahili kod yerine satır karakterleri için seçili yazıtipini kullan"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:195
+#: widgets/EditProfileAppearancePage.ui:188
 #, kde-format
 msgid "Use line characters contained in font"
-msgstr "Yazı tipindeki satır karakterlerini kullan"
+msgstr "Yazıtipindeki satır karakterlerini kullan"
 
 #. i18n: ectx: attribute (title), widget (QWidget, cursorTab)
-#: widgets/EditProfileAppearancePage.ui:203
+#: widgets/EditProfileAppearancePage.ui:196
 #, kde-format
 msgid "Cursor"
 msgstr "İmleç"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
-#: widgets/EditProfileAppearancePage.ui:223
+#: widgets/EditProfileAppearancePage.ui:216
 #, kde-format
 msgid "Shape:"
 msgstr "Şekil:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeBlock)
-#: widgets/EditProfileAppearancePage.ui:233
+#: widgets/EditProfileAppearancePage.ui:226
 #, kde-format
 msgctxt "A solid rectangular"
 msgid "Block"
 msgstr "Blok"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeIBeam)
-#: widgets/EditProfileAppearancePage.ui:243
+#: widgets/EditProfileAppearancePage.ui:236
 #, kde-format
 msgctxt "A vertical line on the left edge"
 msgid "I-Beam"
 msgstr "I-Beam"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeUnderline)
-#: widgets/EditProfileAppearancePage.ui:253
+#: widgets/EditProfileAppearancePage.ui:246
 #, kde-format
 msgctxt "A hortizonal line on the bottom edge"
 msgid "Underline"
 msgstr "Altı çizili"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: widgets/EditProfileAppearancePage.ui:285
+#: widgets/EditProfileAppearancePage.ui:278
 #, kde-format
 msgctxt "Cursor color options"
 msgid "Color:"
 msgstr "Renk:"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:301
+#: widgets/EditProfileAppearancePage.ui:294
 #, kde-format
 msgid "Set the cursor to match the color of the character underneath it."
 msgstr ""
 "Fare işaretçisini altındaki karakterin rengi ile eşleşmesi için ayarlayın."
 
 #. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:304
+#: widgets/EditProfileAppearancePage.ui:297
 #, kde-format
 msgid "Match current character"
 msgstr "Geçerli karakterle eşleş"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:320
+#: widgets/EditProfileAppearancePage.ui:313
 #, kde-format
 msgid "Use a custom, fixed color for the cursor"
 msgstr "İmleç için özel, sabit bir renk kullan"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:323
+#: widgets/EditProfileAppearancePage.ui:316
 #, kde-format
 msgid "Custom cursor color"
 msgstr "Özel imleç rengi"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorColorLabel)
-#: widgets/EditProfileAppearancePage.ui:354
+#: widgets/EditProfileAppearancePage.ui:347
 #, kde-format
 msgid "Cursor:"
 msgstr "İmleç:"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:367
+#: widgets/EditProfileAppearancePage.ui:360
 #, kde-format
 msgid "Select the color used to draw the cursor"
 msgstr "İmleç için kullanılacak rengi seçin"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorTextColorLabel)
-#: widgets/EditProfileAppearancePage.ui:387
+#: widgets/EditProfileAppearancePage.ui:380
 #, kde-format
 msgid "Text:"
 msgstr "Metin:"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customTextColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:400
+#: widgets/EditProfileAppearancePage.ui:393
 #, kde-format
 msgid "Select the color used to draw the character underneath the cursor"
 msgstr "İmleç altındaki karakteri çizmek için kullanılacak rengi seçin"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: widgets/EditProfileAppearancePage.ui:425
+#: widgets/EditProfileAppearancePage.ui:418
 #, kde-format
 msgid "Blinking:"
 msgstr "Yanıp-sönen:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
-#: widgets/EditProfileAppearancePage.ui:441
+#: widgets/EditProfileAppearancePage.ui:434
 #, kde-format
 msgid "Make the cursor blink regularly"
 msgstr "İmleci düzenli olarak yanıp-sönen olarak ayarla"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
 #. i18n: ectx: property (text), widget (QCheckBox, alignToCenterButton)
-#: widgets/EditProfileAppearancePage.ui:444
-#: widgets/EditProfileAppearancePage.ui:671
+#: widgets/EditProfileAppearancePage.ui:437
+#: widgets/EditProfileAppearancePage.ui:664
 #, kde-format
 msgid "Enabled"
 msgstr "Etkin"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #. i18n: ectx: attribute (title), widget (QWidget, miscTab)
-#: widgets/EditProfileAppearancePage.ui:467 widgets/EditProfileMousePage.ui:249
+#: widgets/EditProfileAppearancePage.ui:460 widgets/EditProfileMousePage.ui:249
 #, kde-format
 msgctxt "Items that do not fit in other categories"
 msgid "Miscellaneous"
 msgstr "Diğer"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: widgets/EditProfileAppearancePage.ui:478
+#: widgets/EditProfileAppearancePage.ui:471
 #, kde-format
 msgid "Window:"
 msgstr "Pencere:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
-#: widgets/EditProfileAppearancePage.ui:485
+#: widgets/EditProfileAppearancePage.ui:478
 #, kde-format
 msgid ""
 "Show terminal size in columns and lines in the center of window after "
@@ -3601,135 +3686,135 @@ msgstr ""
 "sütun ve satır olarak göster"
 
 #. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
-#: widgets/EditProfileAppearancePage.ui:488
+#: widgets/EditProfileAppearancePage.ui:481
 #, kde-format
 msgid "Show hint for terminal size after resizing"
 msgstr "Yeniden boyutlandırıldıktan sonra uçbirim boyutu ipucunu göster"
 
 #. i18n: ectx: property (text), widget (QCheckBox, invertSelectionColorsCheckbox)
-#: widgets/EditProfileAppearancePage.ui:495
+#: widgets/EditProfileAppearancePage.ui:488
 #, kde-format
 msgid "Always invert the colors of selected text"
 msgstr "Her zaman seçili metnin renklerini ters çevir"
 
 #. i18n: ectx: property (text), widget (QLabel, dimLabel)
-#: widgets/EditProfileAppearancePage.ui:504
+#: widgets/EditProfileAppearancePage.ui:497
 #, kde-format
 msgid "Darkening strength:"
 msgstr "Karartma gücü:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_10)
-#: widgets/EditProfileAppearancePage.ui:529
+#: widgets/EditProfileAppearancePage.ui:522
 #, kde-format
 msgid "Inactive Terminals:"
 msgstr "Etkin Olmayan Uçbirimler:"
 
 #. i18n: ectx: property (title), widget (QGroupBox, contentsGroup)
-#: widgets/EditProfileAppearancePage.ui:539
+#: widgets/EditProfileAppearancePage.ui:532
 #, kde-format
 msgctxt "@title:group"
 msgid "Terminal contents"
 msgstr "Uçbirim içeriği"
 
 #. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
-#: widgets/EditProfileAppearancePage.ui:551
+#: widgets/EditProfileAppearancePage.ui:544
 #, kde-format
 msgid "Line spacing:"
 msgstr "Satır aralıklandırması:"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
-#: widgets/EditProfileAppearancePage.ui:569
+#: widgets/EditProfileAppearancePage.ui:562
 #, kde-format
 msgid "The number of pixels between two lines"
 msgstr "İki satır arasındaki piksel sayısı"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, lineSpacingSpinner)
 #. i18n: ectx: property (suffix), widget (QSpinBox, marginsSpinner)
-#: widgets/EditProfileAppearancePage.ui:572
-#: widgets/EditProfileAppearancePage.ui:624
+#: widgets/EditProfileAppearancePage.ui:565
+#: widgets/EditProfileAppearancePage.ui:617
 #, kde-format
 msgctxt "(pixels) visual size unit"
 msgid " px"
-msgstr " px"
+msgstr " pks"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileAppearancePage.ui:606
+#: widgets/EditProfileAppearancePage.ui:599
 #, kde-format
 msgid "Margins:"
 msgstr "Boşluklar:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileAppearancePage.ui:658
+#: widgets/EditProfileAppearancePage.ui:651
 #, kde-format
 msgid "Align to center:"
 msgstr "Merkeze hizala:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:681
+#: widgets/EditProfileAppearancePage.ui:674
 #, kde-format
 msgid "Indicate whether the window is active by dimming the colors"
 msgstr "Renkleri karartarak pencerenin etkin olup olmadığını belirt"
 
 #. i18n: ectx: property (text), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:684
+#: widgets/EditProfileAppearancePage.ui:677
 #, kde-format
 msgid "Darken"
 msgstr "Karart"
 
 #. i18n: ectx: property (text), widget (QCheckBox, displayVerticalLine)
-#: widgets/EditProfileAppearancePage.ui:726
+#: widgets/EditProfileAppearancePage.ui:719
 #, kde-format
 msgid "Display Vertical line at column:"
 msgstr "Dikey çizgiyi sütunda görüntüle:"
 
-#: widgets/EditProfileDialog.cpp:75
+#: widgets/EditProfileDialog.cpp:63
 #, kde-format
 msgid "Edit Profile"
 msgstr "Profili Düzenle"
 
-#: widgets/EditProfileDialog.cpp:104
+#: widgets/EditProfileDialog.cpp:92
 #, kde-format
 msgctxt "@title:tab Generic, common options"
 msgid "General"
 msgstr "Genel"
 
-#: widgets/EditProfileDialog.cpp:115
+#: widgets/EditProfileDialog.cpp:103
 #, kde-format
 msgid "Tabs"
 msgstr "Sekmeler"
 
-#: widgets/EditProfileDialog.cpp:132
+#: widgets/EditProfileDialog.cpp:120
 #, kde-format
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: widgets/EditProfileDialog.cpp:148
+#: widgets/EditProfileDialog.cpp:136
 #, kde-format
 msgid "Scrolling"
 msgstr "Kaydırma"
 
-#: widgets/EditProfileDialog.cpp:162
+#: widgets/EditProfileDialog.cpp:150
 #, kde-format
 msgid "Keyboard"
 msgstr "Klavye"
 
-#: widgets/EditProfileDialog.cpp:163
+#: widgets/EditProfileDialog.cpp:151
 #, kde-format
 msgid "Key bindings"
 msgstr "Düğme bağıntıları"
 
-#: widgets/EditProfileDialog.cpp:174
+#: widgets/EditProfileDialog.cpp:162
 #, kde-format
 msgid "Mouse"
 msgstr "Fare"
 
-#: widgets/EditProfileDialog.cpp:190
+#: widgets/EditProfileDialog.cpp:178
 #, kde-format
 msgctxt "@title:tab Complex options"
 msgid "Advanced"
 msgstr "Gelişmiş"
 
-#: widgets/EditProfileDialog.cpp:302
+#: widgets/EditProfileDialog.cpp:290
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -3741,37 +3826,37 @@ msgstr ""
 "dosyanın izinlerini değiştirin ya da ayarları yeni bir profile kaydetmek "
 "için yeni bir ad girin."
 
-#: widgets/EditProfileDialog.cpp:319
+#: widgets/EditProfileDialog.cpp:307
 #, kde-format
 msgctxt "@info"
 msgid "Profile Name was empty; please set a name to be able to save settings."
 msgstr ""
 "Profil Adı boştu; ayarları kaydedebilmek için lütfen bir ad belirleyin."
 
-#: widgets/EditProfileDialog.cpp:327
+#: widgets/EditProfileDialog.cpp:315
 #, kde-format
 msgctxt "@info"
 msgid "A profile with the name \"%1\" already exists."
-msgstr "\"%1\" adında bir profil halihazırda mevcut."
+msgstr "\"%1\" adında bir profil halihazırda var."
 
-#: widgets/EditProfileDialog.cpp:362
+#: widgets/EditProfileDialog.cpp:350
 #, kde-format
 msgid "Editing profile: %2"
 msgid_plural "Editing %1 profiles: %2"
 msgstr[0] "Profil düzenleniyor: %2"
 msgstr[1] "%1 profil düzenleniyor: %2"
 
-#: widgets/EditProfileDialog.cpp:365
+#: widgets/EditProfileDialog.cpp:353
 #, kde-format
 msgid "Create New Profile"
 msgstr "Yeni Profil Oluştur"
 
-#: widgets/EditProfileDialog.cpp:367
+#: widgets/EditProfileDialog.cpp:355
 #, kde-format
 msgid "Edit Profile \"%1\""
 msgstr "\"%1\" Profilini Düzenle"
 
-#: widgets/EditProfileDialog.cpp:464
+#: widgets/EditProfileDialog.cpp:452
 #, kde-format
 msgctxt ""
 "Suffix of the number of columns (N columns). The leading space is needed to "
@@ -3781,7 +3866,7 @@ msgid_plural " columns"
 msgstr[0] " sütun"
 msgstr[1] " sütun"
 
-#: widgets/EditProfileDialog.cpp:466
+#: widgets/EditProfileDialog.cpp:454
 #, kde-format
 msgctxt ""
 "Suffix of the number of rows (N rows). The leading space is needed to "
@@ -3791,42 +3876,42 @@ msgid_plural " rows"
 msgstr[0] " sıra"
 msgstr[1] " sıra"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "System Bell"
 msgstr "Sistem Zili"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "System Notifications"
 msgstr "Sistem Bildirimleri"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "Visual Bell"
 msgstr "Görsel Zil"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "Ignore Bell Events"
-msgstr "Zil Olaylarını Yoksay"
+msgstr "Zil Olaylarını Yok Say"
 
-#: widgets/EditProfileDialog.cpp:485
+#: widgets/EditProfileDialog.cpp:473
 #, kde-format
 msgid "Default profile for new terminal sessions in %1"
 msgstr "%1 içindeki yeni uçbirim oturumları için öntanımlı profil"
 
-#: widgets/EditProfileDialog.cpp:526
+#: widgets/EditProfileDialog.cpp:530
 #, kde-format
 msgid "Edit Environment"
 msgstr "Çevreyi Düzenle"
 
-#: widgets/EditProfileDialog.cpp:527
+#: widgets/EditProfileDialog.cpp:531
 #, kde-format
 msgid "One environment variable per line"
 msgstr "Her satıra bir ortam değişkeni"
 
-#: widgets/EditProfileDialog.cpp:558
+#: widgets/EditProfileDialog.cpp:562
 #, kde-format
 msgctxt "Unit of time"
 msgid " second"
@@ -3834,36 +3919,36 @@ msgid_plural " seconds"
 msgstr[0] " saniye"
 msgstr[1] " saniye"
 
-#: widgets/EditProfileDialog.cpp:647
+#: widgets/EditProfileDialog.cpp:661
 #, kde-format
 msgid "Select Initial Directory"
 msgstr "Başlangıç Dizinini Seç"
 
-#: widgets/EditProfileDialog.cpp:1166
+#: widgets/EditProfileDialog.cpp:1190
 #, kde-kuit-format
 msgctxt "@info"
 msgid "Scheme <resource>%1</resource> failed to load."
 msgstr "<resource>%1</resource> şeması yüklenemedi."
 
-#: widgets/EditProfileDialog.cpp:1345
+#: widgets/EditProfileDialog.cpp:1369
 #, kde-format
 msgid ""
 "This color scheme uses a transparent background which does not appear to be "
 "supported on your desktop"
 msgstr ""
-"Bu renk şeması masaüstünüz tarafından desteklenmiyor görünen saydam arkaplan "
-"kullanıyor"
+"Bu renk şeması masaüstünüz tarafından desteklenmiyor; görünen saydam arka "
+"plan kullanıyor"
 
-#: widgets/EditProfileDialog.cpp:1351
+#: widgets/EditProfileDialog.cpp:1375
 #, kde-format
 msgid ""
 "Konsole was started before desktop effects were enabled. You need to restart "
 "Konsole to see transparent background."
 msgstr ""
-"Konsole masaüstü efektleri etkinleştirilmeden önce başlatıldı. Şeffaf "
-"arkaplanı görebilmek için Konsole uygulamasını yeniden başlatmalısınız."
+"Konsole masaüstü efektleri etkinleştirilmeden önce başlatıldı. Saydam arka "
+"planı görebilmek için Konsole uygulamasını yeniden başlatmalısınız."
 
-#: widgets/EditProfileDialog.cpp:1744
+#: widgets/EditProfileDialog.cpp:1768
 #, kde-format
 msgid ""
 "The format is e.g. 'editorExec PATH:LINE:COLUMN'\n"
@@ -3889,48 +3974,54 @@ msgstr ""
 "sözdizimiyle değiştirin; ör.:\n"
 "gedit +SATIR:SÜTUN YOL\n"
 "\n"
-"Komutta YOL veya SATIR yoksa, bu ayar\n"
+"Komutta YOL veya SATIR yoksa bu ayar\n"
 "yok sayılır ve dosya varsayılan metin\n"
 "düzenleyici tarafından açılır."
 
-#: widgets/EditProfileDialog.cpp:1757
+#: widgets/EditProfileDialog.cpp:1781
 #, kde-format
 msgid "Text Editor Custom Command"
 msgstr "Metin Düzenleyici Özel Komutu"
 
+#. i18n: ectx: attribute (title), widget (QWidget, general)
+#: widgets/EditProfileGeneralPage.ui:39
+#, kde-format
+msgid "General Settings"
+msgstr "Genel Ayarlar"
+
 #. i18n: ectx: property (toolTip), widget (QPushButton, iconSelectButton)
-#: widgets/EditProfileGeneralPage.ui:59
+#: widgets/EditProfileGeneralPage.ui:63
 #, kde-format
 msgid "Select the icon displayed on tabs using this profile"
 msgstr "Bu profilde sekmeler üzerinde gösterilecek simgeyi seç"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:77
+#: widgets/EditProfileGeneralPage.ui:81
 #, kde-format
 msgid "A descriptive name for the profile"
-msgstr "Profil için tanımlayıcı bir isim"
+msgstr "Profil için tanımlayıcı bir ad"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:80
+#: widgets/EditProfileGeneralPage.ui:84
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Profile name"
 msgstr "Profil adı"
 
 #. i18n: ectx: property (text), widget (QCheckBox, setAsDefaultButton)
-#: widgets/EditProfileGeneralPage.ui:87
+#: widgets/EditProfileGeneralPage.ui:91
 #, kde-format
 msgid "Default Profile"
 msgstr "Öntanımlı Profil"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: widgets/EditProfileGeneralPage.ui:118
+#: widgets/EditProfileGeneralPage.ui:122
 #, kde-format
 msgid "Command:"
 msgstr "Komut:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:131
+#: widgets/EditProfileGeneralPage.ui:135
 #, kde-format
 msgid ""
 "The command to execute when new terminal sessions are created using this "
@@ -3940,19 +4031,19 @@ msgstr ""
 "çalıştırılacak komut"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:137
+#: widgets/EditProfileGeneralPage.ui:141
 #, kde-format
 msgid "/bin/sh"
 msgstr "/bin/sh"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
-#: widgets/EditProfileGeneralPage.ui:150
+#: widgets/EditProfileGeneralPage.ui:154
 #, kde-format
 msgid "Initial directory:"
 msgstr "Başlangıç dizini:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:163
+#: widgets/EditProfileGeneralPage.ui:167
 #, kde-format
 msgid ""
 "The initial working directory for new terminal sessions using this profile"
@@ -3961,43 +4052,43 @@ msgstr ""
 "başlangıç çalışma dizini"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:169
+#: widgets/EditProfileGeneralPage.ui:173
 #, kde-format
 msgid "/home/username"
 msgstr "/home/kullanıcıadı"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
-#: widgets/EditProfileGeneralPage.ui:176
+#: widgets/EditProfileGeneralPage.ui:180
 #, kde-format
 msgid "Choose the initial directory"
 msgstr "Başlangıç dizinini seç"
 
 #. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
-#: widgets/EditProfileGeneralPage.ui:186
+#: widgets/EditProfileGeneralPage.ui:190
 #, kde-format
 msgid "Start in same directory as current session"
 msgstr "Geçerli oturum ile aynı dizinde başlat"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileGeneralPage.ui:199
+#: widgets/EditProfileGeneralPage.ui:203
 #, kde-format
 msgid "Environment:"
 msgstr "Çevre:"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, environmentEditButton)
-#: widgets/EditProfileGeneralPage.ui:217
+#: widgets/EditProfileGeneralPage.ui:221
 #, kde-format
 msgid "Edit the list of environment variables and associated values"
 msgstr "Çevresel değişkenler ve ilgili değerler listesini düzenle"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileGeneralPage.ui:264
+#: widgets/EditProfileGeneralPage.ui:268
 #, kde-format
 msgid "Initial terminal size:"
 msgstr "Başlangıç uçbirim boyutu:"
 
 #. i18n: ectx: property (text), widget (QLabel, useCurrentWindowSizeNote)
-#: widgets/EditProfileGeneralPage.ui:339
+#: widgets/EditProfileGeneralPage.ui:343
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -4010,10 +4101,55 @@ msgstr ""
 "span> devre dışı bırakılmış olmalıdır.</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, terminalBellLabel)
-#: widgets/EditProfileGeneralPage.ui:352
+#: widgets/EditProfileGeneralPage.ui:356
 #, kde-format
 msgid "Terminal bell mode:"
 msgstr "Uçbirim zil kipi:"
+
+#. i18n: ectx: attribute (title), widget (QWidget, semantic)
+#: widgets/EditProfileGeneralPage.ui:374
+#, kde-format
+msgid "Semantic Integration"
+msgstr "Anlamsal Tümleşim"
+
+#. i18n: ectx: property (text), widget (QCheckBox, semanticUpDown)
+#: widgets/EditProfileGeneralPage.ui:380
+#, kde-format
+msgid "Up/Down Arrows emulation"
+msgstr "Yukarı/Aşağı okları öykünmesi"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsURL)
+#: widgets/EditProfileGeneralPage.ui:387
+#, kde-format
+msgctxt "When showing URL hints"
+msgid "When URL hints show"
+msgstr "URL ipuçları gösterildiğinde"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsNever)
+#: widgets/EditProfileGeneralPage.ui:397
+#, kde-format
+msgctxt "Never"
+msgid "Never"
+msgstr "Asla"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsAlways)
+#: widgets/EditProfileGeneralPage.ui:407
+#, kde-format
+msgctxt "Always"
+msgid "Always"
+msgstr "Her zaman"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: widgets/EditProfileGeneralPage.ui:423
+#, kde-format
+msgid "Semantic hints:"
+msgstr "Anlamsal ipuçları:"
+
+#. i18n: ectx: property (text), widget (QCheckBox, semanticInputClick)
+#: widgets/EditProfileGeneralPage.ui:433
+#, kde-format
+msgid "Mouse click in input line moves cursor"
+msgstr "Girdi satırında fare tıklaması imleci taşır"
 
 #. i18n: ectx: property (text), widget (QLabel, note)
 #: widgets/EditProfileKeyboardPage.ui:29
@@ -4083,7 +4219,7 @@ msgstr ""
 #: widgets/EditProfileMousePage.ui:50
 #, kde-format
 msgid "Word characters:"
-msgstr "Kelime karakterleri:"
+msgstr "Sözcük karakterleri:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_17)
 #: widgets/EditProfileMousePage.ui:91
@@ -4144,7 +4280,7 @@ msgstr "Seçince kopyala"
 #, kde-format
 msgid "Copy text as HTML (including formatting, font faces, colors... etc)"
 msgstr ""
-"Metni HTML olarak kopyala (biçimlendirme, yazı tipleri, renkler vb. dahil)"
+"Metni HTML olarak kopyala (biçimlendirme, yazıtipleri, renkler vb. dahil)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, copyTextAsHTMLButton)
 #: widgets/EditProfileMousePage.ui:206
@@ -4273,7 +4409,7 @@ msgstr "Olası bağlantıların biçimleri, http://, https:// ve file:// gibi"
 #: widgets/EditProfileMousePage.ui:389
 #, kde-format
 msgid "Selected text will require control key plus click to drag."
-msgstr "Seçilen metin, sürüklenmek için Ctrl tuşu ve tıklama gerektirecek."
+msgstr "Seçilen metin, sürüklenmek için Ctrl düğmesi ve tıklama gerektirecek."
 
 #. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
 #: widgets/EditProfileMousePage.ui:392
@@ -4289,7 +4425,7 @@ msgid ""
 "Alternate Screen buffer (e.g. less)"
 msgstr ""
 "Fare kaydırma tekerleği, Alternatif Ekran arabelleğini (ör. less) kullanan "
-"programlarda yukarı/aşağı tuş basışlarını taklit eder"
+"programlarda yukarı/aşağı düğme basımlarını taklit eder"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableAlternateScrollingButton)
 #: widgets/EditProfileMousePage.ui:402
@@ -4333,13 +4469,13 @@ msgid ""
 "a frame next to the mouse pointer"
 msgstr ""
 "Fareyi onaltılık bir rengin üzerine getirdiğinizde, renk, fare işaretçisinin "
-"yanında bir çerçeve içinde görüntülenecektir."
+"yanında bir çerçeve içinde görüntülenecektir"
 
 #. i18n: ectx: property (text), widget (QCheckBox, allowColorFilters)
 #: widgets/EditProfileMousePage.ui:432
 #, kde-format
-msgid "Allow Color Filters"
-msgstr "Renk Filtrelerine İzin Ver"
+msgid "Preview Colors on hover"
+msgstr "Üzerine gelindiğinde renkleri önizle"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, allowMouseTrackingButton)
 #: widgets/EditProfileMousePage.ui:452
@@ -4454,7 +4590,7 @@ msgstr "Satırları Yenile:"
 #: widgets/EditProfileScrollingPage.ui:250
 #, kde-format
 msgid "Reflow lines when terminal resizes"
-msgstr "Terminal yeniden boyutlandırıldığında satırları yenile"
+msgstr "Uçbirim yeniden boyutlandırıldığında satırları yenile"
 
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
 #: widgets/EditProfileTabsPage.ui:43
@@ -4497,24 +4633,24 @@ msgid ""
 "issues with your system."
 msgstr ""
 "Bu seçeneği kullanırken, geri kaydırma verileri RAM'e kaydedilecektir. Çok "
-"büyük bir değer seçerseniz, sisteminizde boş RAM kalmayabilir ve "
-"sisteminizde ciddi sorunlara neden olabilir."
+"büyük bir değer seçerseniz sisteminizde boş RAM kalmayabilir ve ciddi "
+"sorunlara neden olabilir."
 
-#: widgets/HistorySizeWidget.cpp:68
+#: widgets/HistorySizeWidget.cpp:69
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
 "When using this option, the scrollback data will be written unencrypted to "
 "temporary files. Those temporary files will be deleted automatically when "
 "Konsole is closed in a normal manner.<nl/>Use <emphasis>Settings → Configure "
-"Konsole → File Location</emphasis> to select the location of the temporary "
+"Konsole → Temporary Files</emphasis> to select the location of the temporary "
 "files."
 msgstr ""
 "Bu seçenek kullanılırken geçmiş verileri geçici dosyalara şifrelenmemiş "
 "olarak yazılır. Bu geçici dosyalar Konsol normal olarak kapatıldığında "
 "otomatik olarak silinir.<nl/>Geçici dosyaların konumunu seçmek için "
-"<emphasis>Ayarlar → Konsolu Yapılandır → Dosya Konumu</emphasis> "
-"bağlantısını takip edin."
+"<emphasis>Ayarlar → Konsol Uygulamasını Yapılandır → Geçici Dosyalar</"
+"emphasis> bağlantısını izleyin."
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, fixedSizeHistoryButton)
 #: widgets/HistorySizeWidget.ui:60
@@ -4560,103 +4696,103 @@ msgctxt "Do not save any lines to the scrollback history"
 msgid "None"
 msgstr "Hiç"
 
-#: widgets/IncrementalSearchBar.cpp:47
+#: widgets/IncrementalSearchBar.cpp:54
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Find..."
 msgstr "Bul..."
 
-#: widgets/IncrementalSearchBar.cpp:49
+#: widgets/IncrementalSearchBar.cpp:56
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Enter the text to search for here"
 msgstr "Aranacak metni buraya girin"
 
-#: widgets/IncrementalSearchBar.cpp:73
+#: widgets/IncrementalSearchBar.cpp:80
 #, kde-format
 msgctxt "@action:button Go to the next phrase"
 msgid "Next"
 msgstr "Sonraki"
 
-#: widgets/IncrementalSearchBar.cpp:76
+#: widgets/IncrementalSearchBar.cpp:83
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the next match for the current search phrase"
 msgstr "Geçerli arama ifadesi ile eşleşen sonraki sonucu bul"
 
-#: widgets/IncrementalSearchBar.cpp:83
+#: widgets/IncrementalSearchBar.cpp:90
 #, kde-format
 msgctxt "@action:button Go to the previous phrase"
 msgid "Previous"
 msgstr "Önceki"
 
-#: widgets/IncrementalSearchBar.cpp:85
+#: widgets/IncrementalSearchBar.cpp:92
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the previous match for the current search phrase"
 msgstr "Geçerli arama ifadesi ile eşleşen önceki sonucu bul"
 
-#: widgets/IncrementalSearchBar.cpp:100
+#: widgets/IncrementalSearchBar.cpp:107
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Display the options menu"
 msgstr "Seçenekler menüsünü göster"
 
-#: widgets/IncrementalSearchBar.cpp:107
+#: widgets/IncrementalSearchBar.cpp:114
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close the search bar"
 msgstr "Arama çubuğunu kapat"
 
-#: widgets/IncrementalSearchBar.cpp:117
+#: widgets/IncrementalSearchBar.cpp:124
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Case sensitive"
 msgstr "Büyük/küçük harf duyarlı"
 
-#: widgets/IncrementalSearchBar.cpp:119
+#: widgets/IncrementalSearchBar.cpp:126
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether the search is case sensitive"
 msgstr "Aramanın büyük küçük harf duyarlı olup olmayacağını ayarlar"
 
-#: widgets/IncrementalSearchBar.cpp:122
+#: widgets/IncrementalSearchBar.cpp:129
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Match regular expression"
 msgstr "Düzenli ifade eşle"
 
-#: widgets/IncrementalSearchBar.cpp:126
+#: widgets/IncrementalSearchBar.cpp:133
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Highlight all matches"
 msgstr "Tüm eşleşenleri vurgula"
 
-#: widgets/IncrementalSearchBar.cpp:128
+#: widgets/IncrementalSearchBar.cpp:135
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether matching text should be highlighted"
 msgstr "Eşleşen metnin vurgulanıp vurgulanmayacağını ayarlar"
 
-#: widgets/IncrementalSearchBar.cpp:131
+#: widgets/IncrementalSearchBar.cpp:138
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Search backwards"
 msgstr "Geriye doğru ara"
 
-#: widgets/IncrementalSearchBar.cpp:133
+#: widgets/IncrementalSearchBar.cpp:140
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether search should start from the bottom"
 msgstr "Aramanın sondan başlayıp başlamayacağını ayarlar"
 
-#: widgets/IncrementalSearchBar.cpp:163
+#: widgets/IncrementalSearchBar.cpp:170
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the bottom"
 msgstr "Geçerli arama ifadesini alttan başlayarak ara"
 
-#: widgets/IncrementalSearchBar.cpp:168
+#: widgets/IncrementalSearchBar.cpp:175
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the top"
@@ -4707,78 +4843,81 @@ msgstr "Normal sekme başlığı biçimi"
 msgid "Tab Color:"
 msgstr "Sekme Rengi:"
 
-#: widgets/TabTitleFormatButton.cpp:20
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:22 widgets/TabTitleFormatButton.cpp:31
+#, c-format, kde-format
 msgid "Program Name: %n"
 msgstr "Uygulama Adı: %n"
 
-#: widgets/TabTitleFormatButton.cpp:21
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:23 widgets/TabTitleFormatButton.cpp:32
+#, c-format, kde-format
 msgid "Current Directory (Short): %d"
 msgstr "Geçerli Dizin (Kısa): %d"
 
-#: widgets/TabTitleFormatButton.cpp:22
+#: widgets/TabTitleFormatButton.cpp:24 widgets/TabTitleFormatButton.cpp:33
 #, kde-format
 msgid "Current Directory (Long): %D"
 msgstr "Geçerli Dizin (Uzun): %D"
 
-#: widgets/TabTitleFormatButton.cpp:23 widgets/TabTitleFormatButton.cpp:40
+#: widgets/TabTitleFormatButton.cpp:25 widgets/TabTitleFormatButton.cpp:34
+#: widgets/TabTitleFormatButton.cpp:51 widgets/TabTitleFormatButton.cpp:59
 #, kde-format
 msgid "Window Title Set by Shell: %w"
 msgstr "Kabuk Tarafından Ayarlanmış Pencere Başlığı: %w"
 
-#: widgets/TabTitleFormatButton.cpp:24 widgets/TabTitleFormatButton.cpp:41
+#: widgets/TabTitleFormatButton.cpp:26 widgets/TabTitleFormatButton.cpp:35
+#: widgets/TabTitleFormatButton.cpp:52 widgets/TabTitleFormatButton.cpp:60
 #, kde-format
 msgid "Session Number: %#"
 msgstr "Oturum Numarası: %#"
 
-#: widgets/TabTitleFormatButton.cpp:25 widgets/TabTitleFormatButton.cpp:35
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:27 widgets/TabTitleFormatButton.cpp:36
+#: widgets/TabTitleFormatButton.cpp:46 widgets/TabTitleFormatButton.cpp:54
+#, c-format, kde-format
 msgid "User Name: %u"
 msgstr "Kullanıcı Adı: %u"
 
-#: widgets/TabTitleFormatButton.cpp:26
+#: widgets/TabTitleFormatButton.cpp:28 widgets/TabTitleFormatButton.cpp:37
 #, kde-format
 msgid "Local Host: %h"
 msgstr "Yerel Makine: %h"
 
-#: widgets/TabTitleFormatButton.cpp:29
+#: widgets/TabTitleFormatButton.cpp:29 widgets/TabTitleFormatButton.cpp:38
 #, kde-format
 msgid "User's Bourne prompt sigil: %B"
 msgstr "Kullanıcının Bourne istemi mührü: %B"
 
-#: widgets/TabTitleFormatButton.cpp:36
+#: widgets/TabTitleFormatButton.cpp:47 widgets/TabTitleFormatButton.cpp:55
 #, kde-format
 msgid "User Name@ (if given): %U"
 msgstr "Kullanıcı Adı@ (belirtilmişse): %U"
 
-#: widgets/TabTitleFormatButton.cpp:37
+#: widgets/TabTitleFormatButton.cpp:48 widgets/TabTitleFormatButton.cpp:56
 #, kde-format
 msgid "Remote Host (Short): %h"
 msgstr "Uzak Makine (Kısa): %h"
 
-#: widgets/TabTitleFormatButton.cpp:38
+#: widgets/TabTitleFormatButton.cpp:49 widgets/TabTitleFormatButton.cpp:57
 #, kde-format
 msgid "Remote Host (Long): %H"
 msgstr "Uzak Makine (Uzun): %H"
 
-#: widgets/TabTitleFormatButton.cpp:39
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:50 widgets/TabTitleFormatButton.cpp:58
+#, c-format, kde-format
 msgid "Command and arguments: %c"
 msgstr "Komut ve argümanlar: %c"
 
-#: widgets/TabTitleFormatButton.cpp:49
+#: widgets/TabTitleFormatButton.cpp:69
 #, kde-format
 msgid "Insert"
 msgstr "Ekle"
 
-#: widgets/TabTitleFormatButton.cpp:74
+#: widgets/TabTitleFormatButton.cpp:94
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert title format"
 msgstr "Başlık biçimi ekle"
 
-#: widgets/TabTitleFormatButton.cpp:78
+#: widgets/TabTitleFormatButton.cpp:98
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert remote title format"
@@ -4838,336 +4977,27 @@ msgctxt "@action:inmenu"
 msgid "Close Tab"
 msgstr "Sekmeyi Kapat"
 
-#~ msgid "Import"
-#~ msgstr "İçe aktar"
-
-#~ msgid "Missing Port"
-#~ msgstr "Eksik Bağlantı Noktası"
-
-#~ msgid "Show menubar"
-#~ msgstr "Menü çubuğunu göster"
-
-#~ msgid "Show menubar by default"
-#~ msgstr "Menü çubuğunu öntanımlı olarak göster"
-
-#~ msgid "Show menubar by default in each Konsole window"
-#~ msgstr "Her Konsole penceresinde menü çubuğunu öntanımlı olarak göster"
-
-#, fuzzy
-#~| msgid "Open File Manager"
-#~ msgid "Hide SSH Manager"
-#~ msgstr "Dosya Yöneticisini Aç"
-
-#~ msgid ""
-#~ "<p>Each profile must have a name before it can be saved into disk.</p>"
-#~ msgstr ""
-#~ "<p>Bir profil diske kaydedilmeden önce o profile bir isim verilmelidir.</"
-#~ "p>"
-
-#, fuzzy
-#~| msgctxt "Name of the default/builtin profile"
-#~| msgid "Default"
-#~ msgctxt "@label:textbox Name of the current default profile"
-#~ msgid " (Default)"
-#~ msgstr "Öntanımlı"
-
-#, fuzzy
-#~| msgctxt "@title:window"
-#~| msgid "New Color Scheme"
-#~ msgid "Color from theme"
-#~ msgstr "Yeni Renk Şeması"
-
-#~ msgctxt "The default name of a profile"
-#~ msgid "Profile #%1"
-#~ msgstr "Profil #%1"
-
-#, fuzzy
-#~| msgid "Default Search Settings"
-#~ msgid "Current Tab Settings"
-#~ msgstr "Öntanımlı Arama Ayarları"
-
-#, fuzzy
-#~| msgctxt "@title:column Display profile in file menu"
-#~| msgid "Show in Menu"
-#~ msgctxt ""
-#~ "@info:tooltip List item's checkbox for making item (profile) visible in a "
-#~ "menu"
-#~ msgid "Show profile in menu"
-#~ msgstr "Menüde Göster"
-
-#~ msgid "Rename Tab"
-#~ msgstr "Sekmeyi Yeniden Adlandır"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "&Rename Tab..."
-#~ msgstr "Sekmeyi &Yeniden Adlandır..."
-
-#, fuzzy
-#~| msgid "Confirm Paste"
-#~ msgctxt "@action:button"
-#~ msgid "Confirm &paste"
-#~ msgstr "Yapıştırmayı Doğrula"
-
-#~ msgid "Vary the background color for each tab"
-#~ msgstr "Her sekme için arkaplan rengini değiştir"
-
-#~ msgctxt "@title Preferences page name"
-#~ msgid "TabBar"
-#~ msgstr "Sekme Çubuğu"
-
-#~ msgctxt "@title Preferences page name"
-#~ msgid "File Location"
-#~ msgstr "Dosya Konumu"
-
-#~ msgid ""
-#~ "<b>Scrollback File Location</b><p>Use this groupbox to determine where "
-#~ "Konsole will store the scrollback files.</p>"
-#~ msgstr ""
-#~ "<b>Geri Kaydırma Dosya Konumu</b><p>Konsol'un geçmiş verileri nerede "
-#~ "saklayacağını belirlemek için kullanın.</p>"
-
-#~ msgid ""
-#~ "These settings only apply when Profile->Scrolling->Unlimited scrollback "
-#~ "is selected."
-#~ msgstr ""
-#~ "Bu ayar sadece Profil->Geri Kaydırma->Sınırsız seçildiğinde uygulanır."
-
-#~ msgid "Use system &location"
-#~ msgstr "Sistem konumunu ku&llan"
-
-#~ msgid "Use user specific location"
-#~ msgstr "Kullanıcı tanımlı konumu kullan"
-
-#~ msgid "Use specified loca&tion"
-#~ msgstr "Belirtilen kon&umu kullan"
-
-#~ msgid ""
-#~ "For the 'Use user specific location', any application using KonsolePart "
-#~ "will have the app name instead of konsole."
-#~ msgstr ""
-#~ "'Kullanıcıya özel konum' için, KonsolePart kullanan herhangi bir "
-#~ "uygulama, konsole yerine uygulama adına sahip olacaktır."
-
-#~ msgid "For any changes to take effect, quit Konsole and restart."
-#~ msgstr ""
-#~ "Değişikliklerin etkin olması için Konsol'dan çıkıp yeniden başlatın."
-
-#~ msgid "Konsole Window"
-#~ msgstr "Konsole Penceresi"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Click to toggle status"
-#~ msgstr "Durumu değiştirmek için tıklayın"
-
-#~ msgctxt "@title:column Profile label"
-#~ msgid "Name"
-#~ msgstr "İsim"
-
-#~ msgid "&New Profile..."
-#~ msgstr "&Yeni Profil..."
-
-#~ msgid "&Edit Profile..."
-#~ msgstr "&Profili Düzenle..."
-
-#~ msgid "&Delete Profile"
-#~ msgstr "&Profili Sil"
-
-#~ msgid "Tab bar position:"
-#~ msgstr "Sekme çubuğu konumu:"
-
-#~ msgid "Always Show Tab Bar"
-#~ msgstr "Sekme Çubuğunu Her Zaman Göster"
-
-#~ msgid "Show Tab Bar When Needed"
-#~ msgstr "Sekme Çubuğunu Gerektiğinde Göster"
-
-#~ msgid "Always Hide Tab Bar"
-#~ msgstr "Sekme Çubuğunu Her Zaman Gizle"
-
-#~ msgid "Tab bar visibility:"
-#~ msgstr "Sekme çubuğu görünümü:"
-
-#~ msgid "New tab behavior:"
-#~ msgstr "Yeni sekme davranışı:"
-
-#~ msgid "Put New Tab At The End"
-#~ msgstr "Yeni Sekmeyi En Sona Koy"
-
-#~ msgctxt "@action Shortcut entry"
-#~ msgid "Next View Container"
-#~ msgstr "Sonraki Görünüm İçerici"
-
-#~ msgid "&Close Tab"
-#~ msgstr "Sekmeyi &Kapat"
-
-#~ msgctxt "@action:inmenu Close Active View"
-#~ msgid "Close Active"
-#~ msgstr "Etkin Olanı Kapat"
-
-#~ msgctxt "@action:inmenu Close Other Views"
-#~ msgid "Close Others"
-#~ msgstr "Diğerlerini Kapat"
-
-#~ msgid "%1"
-#~ msgstr "%1"
-
-#~ msgid "Select Any Font"
-#~ msgstr "Herhangi Bir Yazı Tipi Seçin"
-
-#~ msgid "Select Fixed Width Font"
-#~ msgstr "Sabit Genişlikli Yazı Tipini Seç"
-
-#~ msgctxt "@title:group Generic, common options"
-#~ msgid "General"
-#~ msgstr "Genel"
-
-#~ msgid "Rows"
-#~ msgstr "Satırlar"
-
-#~ msgid "This will not alter any open windows."
-#~ msgstr "Bu açık pencereleri değiştirmeyecektir."
-
-#~ msgid "Preview:"
-#~ msgstr "Önizleme:"
-
-#~ msgid "Select the font used in this profile"
-#~ msgstr "Bu profilde kullanılacak yazı tipini seç"
-
-#~ msgid "Show all fonts instead of the monospaced fonts"
-#~ msgstr "Sabit aralıklı yazı tipleri yerine tüm yazı tiplerini göster"
-
-#~ msgid "Scroll Bar"
-#~ msgstr "Kaydırma Çubuğu "
-
-#~ msgid "Hide the scroll bar"
-#~ msgstr "Kaydırma çubuğunu gizle"
-
-#~ msgctxt "@option:radio Hide the scroll bar"
-#~ msgid "Hide"
-#~ msgstr "Gizle"
-
-#~ msgid "Show on left side"
-#~ msgstr "Sol tarafta göster"
-
-#~ msgid "Select Text"
-#~ msgstr "Metni Seç"
-
-#~ msgid "Characters considered part of a word when double clicking:"
-#~ msgstr ""
-#~ "Çift tıklarken sözcüğün dikkate alınacak parçası olacak karakterler:"
-
-#~ msgid "Which part of current line should be selected with triple click ."
-#~ msgstr ""
-#~ "Üç tıklama ile geçerli satırın hangi bölümünün seçileceğini belirler."
-
-#~ msgid "Copy && Paste"
-#~ msgstr "Kopyala ve Yapıştır"
-
-#~ msgid "Mouse middle button:"
-#~ msgstr "Farenin orta düğmesi:"
-
-#~ msgid "Show URL hints when these keys are pressed:"
-#~ msgstr "Bu tuşlara basıldığında URL ipuçlarını göster:"
-
-#~ msgid "Enable flow control using Ctrl+S, Ctrl+Q"
-#~ msgstr "Ctrl+S kullanarak akım kontrolünü etkinleştir, Ctrl+Q"
-
-#~ msgid "Cursor shape:"
-#~ msgstr "İmleç biçimi:"
-
-#~ msgid "Encoding"
-#~ msgstr "Kodlama"
-
-#~ msgctxt "@action:button Pick an encoding"
-#~ msgid "Select"
-#~ msgstr "Seç"
-
-#~ msgid "No scrollback"
-#~ msgstr "Geçmişi kullanma"
-
-#~ msgid "Show application name on the titlebar"
-#~ msgstr "Başlık çubuğunda uygulama adını göster"
-
-#~ msgid "Show \"- Konsole\" on the titlebar"
-#~ msgstr "Başlık çubuğunda \" - Konsole\" metnini göster"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "&Close Tab"
-#~ msgstr "Sekmeyi &Kapat"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid "Create a new tab. Press and hold to select profile from menu"
-#~ msgstr "Yeni bir sekme oluştur. Menüden profil seçmek için basılı tutun"
-
-#~ msgctxt "@info:whatsthis"
-#~ msgid ""
-#~ "<title>Tab Bar</title><para>The tab bar allows you to switch and move "
-#~ "tabs. You can double-click a tab to change its name.</para>"
-#~ msgstr ""
-#~ "<title>Sekme Çubuğu</title><para>Sekme çubuğu sekmeler arasında geçiş "
-#~ "yapmanızı sağlar. Bir sekmenin adını değiştirmek için sekmeye çift "
-#~ "tıklayın.</para>"
-
-#~ msgctxt "@action:button Display options menu"
-#~ msgid "Options"
-#~ msgstr "Seçenekler"
-
-#~ msgctxt "@action:button Search from bottom"
-#~ msgid "From bottom"
-#~ msgstr "Aşağıdan"
-
-#~ msgctxt "@action:button Search from top"
-#~ msgid "From top"
-#~ msgstr "Yukarıdan"
-
-#~ msgid "Profile name is empty."
-#~ msgstr "Profil adı boş."
-
-#~ msgid "&Stop"
-#~ msgstr "&Dur"
-
-#~ msgid "Icon:"
-#~ msgstr "Simge:"
-
-#~ msgctxt "@info:tooltip"
-#~ msgid "Click to rename profile"
-#~ msgstr "Profili yeniden adlandırmak için tıklayın"
-
-#, fuzzy
-#~| msgctxt "@title"
-#~| msgid "Konsole"
-#~ msgctxt "@title"
-#~ msgid "Demo KonsolePart"
-#~ msgstr "Konsol"
-
-#, fuzzy
-#~| msgctxt "@info:credit"
-#~| msgid "(c) 1997-2017, The Konsole Developers"
-#~ msgctxt "@info:credit"
-#~ msgid "(c) 2017, The Konsole Developers"
-#~ msgstr "(c) 1997-2017, Konsole Geliştiricileri"
-
-#~ msgid "DEC VT420 Terminal"
-#~ msgstr "DEC VT420 Uçbirimi"
+#~ msgid "Get New..."
+#~ msgstr "Yeni Al..."
 
 #~ msgctxt "@info:shell"
-#~ msgid "Use --nofork to run in the foreground (helpful with the -e option)."
+#~ msgid "Use the internal FALLBACK profile"
+#~ msgstr "Dahili İKİNCİL profili kullan"
+
+#~ msgctxt "Name of the default/builtin profile"
+#~ msgid "Default"
+#~ msgstr "Öntanımlı"
+
+#~ msgid ""
+#~ "The name \"Default\" is reserved for the built-in fallback profile;\n"
+#~ "the profile is going to be saved as \"%1\""
 #~ msgstr ""
-#~ "Önplanda çalıştırmak için --nofork kullanın (-e seçeneği ile faydalıdır)"
+#~ "\"Öntanımlı\" adı, yerleşik yedek profil için ayrılmıştır; \n"
+#~ "profil, \"%1\" olarak kaydedilecek"
 
-#~ msgctxt "@title:window"
-#~ msgid "Manage Profiles"
-#~ msgstr "Profilleri Yönet"
+#~ msgctxt "@label:textbox added to the name of the current default profile"
+#~ msgid " (default)"
+#~ msgstr " (öntanımlı)"
 
-#~ msgid "Manage Profiles..."
-#~ msgstr "Profilleri Yönet..."
-
-#~ msgctxt "@title"
-#~ msgid "<application>Konsole</application>"
-#~ msgstr "<application>Konsol</application>"
-
-#~ msgid "Shell"
-#~ msgstr "Kabuk"
-
-#~ msgid "--- Type anything in this box ---"
-#~ msgstr "--- Bu kutucuğa istediğinizi yazın ---"
+#~ msgid "Allow Color Filters"
+#~ msgstr "Renk Süzgeçlerine İzin Ver"

@@ -695,6 +695,14 @@ Any output on one view is duplicated in the other view.
 </para></listitem>
 </varlistentry>
 
+<varlistentry>
+<term><menuchoice>
+<shortcut><keycombo action="simul">&Ctrl;&Shift;<keycap>\</keycap></keycombo></shortcut>
+<guimenu>View</guimenu><guisubmenu>Split View</guisubmenu><guimenuitem>Equal size to all views</guimenuitem></menuchoice>
+</term>
+<listitem><para><action>Sets the same size for all views</action>
+</para></listitem>
+</varlistentry>
 
 <varlistentry>
 <term><menuchoice>
@@ -1222,8 +1230,8 @@ instead of the default profile.</para></listitem>
 </varlistentry>
 
 <varlistentry>
-<term><option>--fallback-profile</option></term>
-<listitem><para>Use the internal FALLBACK profile. This option is a shortcut for <option>--profile</option> <parameter>FALLBACK/</parameter>.<!--FIXME what is the internal Fallback profile--></para></listitem>
+<term><option>--builtin-profile</option></term>
+<listitem><para>Use the built-in profile instead of the current default profile.</para></listitem>
 </varlistentry>
 
 <varlistentry>

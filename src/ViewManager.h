@@ -234,6 +234,8 @@ Q_SIGNALS:
     /** Requests creation of a new view, with the selected profile. */
     void newViewWithProfileRequest(const QExplicitlySharedDataPointer<Profile> &profile);
 
+    void activationRequest(const QString &xdgActivationToken);
+
 public Q_SLOTS:
     /** DBus slot that returns the number of sessions in the current view. */
     Q_SCRIPTABLE int sessionCount();
@@ -318,6 +320,7 @@ private Q_SLOTS:
     void splitTopBottom();
     void expandActiveContainer();
     void shrinkActiveContainer();
+    void equalSizeAllContainers();
 
     // called when the "Detach View" menu item is selected
     void detachActiveView();
@@ -325,7 +328,7 @@ private Q_SLOTS:
 
     // called when a session terminates - the view manager will delete any
     // views associated with the session
-    void sessionFinished();
+    void sessionFinished(Session *session);
     // called when one view has been destroyed
     void viewDestroyed(QWidget *view);
 
@@ -387,14 +390,16 @@ private Q_SLOTS:
     void controllerChanged(SessionController *controller);
 
     /**
-     * Disconnect this ViewManager and MainWindow from SessionController
-     * sender() and its associated view/session pair such as after a
-     * split-view has been drag-and-dropped to a new window.
+     * Disconnect this ViewManager and MainWindow from @p controller
+     * and its associated view/session pair such as after a split-view
+     * has been drag-and-dropped to a new window.
      */
-    void forgetController();
+    void forgetController(SessionController *controller);
 
     /* Detaches the tab at index tabIdx */
     void detachTab(int tabIdx);
+
+    void semanticSetupBash();
 
 private:
     Q_DISABLE_COPY(ViewManager)

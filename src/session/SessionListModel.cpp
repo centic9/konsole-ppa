@@ -22,7 +22,6 @@ using Konsole::SessionListModel;
 
 SessionListModel::SessionListModel(QObject *parent)
     : QAbstractListModel(parent)
-    , _sessions(QList<Session *>())
 {
 }
 
@@ -110,9 +109,8 @@ QModelIndex SessionListModel::parent(const QModelIndex &) const
     return {};
 }
 
-void SessionListModel::sessionFinished()
+void SessionListModel::sessionFinished(Session *session)
 {
-    auto *session = qobject_cast<Session *>(sender());
     int row = _sessions.indexOf(session);
 
     if (row != -1) {

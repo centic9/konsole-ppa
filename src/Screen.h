@@ -31,6 +31,11 @@
 #define MODE_AppScreen 6
 #define MODES_SCREEN 7
 
+#define REPL_None 0
+#define REPL_PROMPT 1
+#define REPL_INPUT 2
+#define REPL_OUTPUT 3
+
 struct TerminalGraphicsPlacement_t {
     QPixmap pixmap;
     qint64 id;
@@ -89,6 +94,9 @@ public:
         PreserveLineBreaks = 0x2,
         TrimLeadingWhitespace = 0x4,
         TrimTrailingWhitespace = 0x8,
+        ExcludePrompt = 0x10,
+        ExcludeInput = 0x20,
+        ExcludeOutput = 0x40,
     };
     Q_DECLARE_FLAGS(DecodingOptions, DecodingOption)
 
@@ -357,10 +365,13 @@ public:
      * <li>New line mode is disabled.  TODO Document me</li>
      * </ul>
      *
-     * If @p clearScreen is true then the screen contents are erased entirely,
-     * otherwise they are unaltered.
+     * If @p softReset is true then perform a DECSTR,
+     * otherwise perform RIS (Reset to Initial State).
+     *
+     * If @p preservePrompt is true, then attempt to preserve the
+     * line with the command prompt even on a RIS.
      */
-    void reset(bool softReset = false);
+    void reset(bool softReset = false, bool preservePrompt = false);
 
     /**
      * Displays a new character at the current cursor position.
@@ -449,8 +460,14 @@ public:
      *
      * @param x The column index of the last character in the selection.
      * @param y The line index of the last character in the selection.
+     * @param trimTrailingWhitespace True if trailing whitespace is trimmed from the selection
      */
-    void setSelectionEnd(const int x, const int y);
+    void setSelectionEnd(const int x, const int y, const bool trimTrailingWhitespace);
+
+    /**
+     * Selects a range of characters with the same REPL mode as the character at (@p x, @p y)
+     */
+    void selectReplContigious(const int x, const int y);
 
     /**
      * Retrieves the start of the selection or the cursor position if there
@@ -533,6 +550,37 @@ public:
     void setLineProperty(LineProperty property, bool enable);
 
     /**
+     * Set REPL mode (shell integration)
+     *
+     * @param mode is the REPL mode
+     * Possible modes are:
+     * REPL_None
+     * REPL_PROMPT
+     * REPL_INPUT
+     * REPL_OUTPUT
+     */
+    void setReplMode(int mode);
+    /** Return true if semantic shell integration is in use. */
+    bool hasRepl() const
+    {
+        return _hasRepl;
+    }
+    /** Return current REPL mode */
+    int replMode() const
+    {
+        return _replMode;
+    }
+    /** Return location of current REPL mode start. */
+    std::pair<int, int> replModeStart() const
+    {
+        return _replModeStart;
+    }
+    std::pair<int, int> replModeEnd() const
+    {
+        return _replModeEnd;
+    }
+
+    /**
      * Returns the number of lines that the image has been scrolled up or down by,
      * since the last call to resetScrolledLines().
      *
@@ -602,6 +650,8 @@ public:
         return result;
     }
 
+    void setEnableUrlExtractor(const bool enable);
+
     static const Character DefaultChar;
 
     // Return the total number of lines before resize (fix scroll glitch)
@@ -627,7 +677,6 @@ public:
                       int X = 0,
                       int Y = 0);
     TerminalGraphicsPlacement_t *getGraphicsPlacement(unsigned int i);
-    void scrollUpVisiblePlacements(int n);
     void delPlacements(int = 'a', qint64 = 0, qint64 = -1, int = 0, int = 0, int = 0);
 
     bool hasGraphics() const
@@ -699,6 +748,8 @@ private:
     // starting from 'startLine', where 0 is the first line in the history
     void copyFromHistory(Character *dest, int startLine, int count) const;
 
+    Character getCharacter(int col, int row) const;
+
     // returns a buffer that can hold at most 'count' characters,
     // where the number of reallocations and object reinitializations
     // should be as minimal as possible
@@ -758,6 +809,12 @@ private:
     // states ----------------
     int _currentModes[MODES_SCREEN];
     int _savedModes[MODES_SCREEN];
+    int _replMode;
+    bool _hasRepl;
+    std::pair<int, int> _replModeStart;
+    std::pair<int, int> _replModeEnd;
+    std::pair<int, int> _replLastOutputStart;
+    std::pair<int, int> _replLastOutputEnd;
 
     // ----------------------------
 
@@ -810,6 +867,7 @@ private:
     /* Graphics */
     void addPlacement(std::unique_ptr<TerminalGraphicsPlacement_t> &u);
     std::vector<std::unique_ptr<TerminalGraphicsPlacement_t>> _graphicsPlacements;
+    void scrollPlacements(int n, qint64 below = INT64_MAX, qint64 above = INT64_MAX);
     bool _hasGraphics;
 };
 

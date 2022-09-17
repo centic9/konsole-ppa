@@ -20,8 +20,8 @@
 // KDE
 #include <KMainWindow>
 #include <KPluginFactory>
-#include <qtest.h>
 #include <kservice_version.h>
+#include <qtest.h>
 
 #if KSERVICE_VERSION < QT_VERSION_CHECK(5, 86, 0)
 #include <KPluginLoader>
@@ -51,7 +51,7 @@ void PartManualTest::testShortcutOverride()
     auto mainWindow = new KMainWindow();
     QMenu *fileMenu = mainWindow->menuBar()->addMenu(QStringLiteral("File"));
     QAction *testAction = fileMenu->addAction(QStringLiteral("Test"));
-    testAction->setShortcut(QKeySequence(Konsole::ACCEL | Qt::Key_S));
+    testAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     connect(testAction, &QAction::triggered, this, &Konsole::PartManualTest::shortcutTriggered);
 
     // Create terminal part and embed in into the main window

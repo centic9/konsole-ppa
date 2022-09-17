@@ -15,8 +15,8 @@
 #include <KWindowEffects>
 #include <KWindowSystem>
 
-#include <kwindowsystem_version.h>
 #include <kservice_version.h>
+#include <kwindowsystem_version.h>
 
 #if KSERVICE_VERSION < QT_VERSION_CHECK(5, 86, 0)
 #include <KPluginLoader>
@@ -33,6 +33,11 @@ demo_konsolepart::demo_konsolepart()
     , _terminal(nullptr)
 {
     const bool useTranslucency = KWindowSystem::compositingActive();
+
+    // Set the WA_NativeWindow attribute to force the creation of the QWindow.
+    // Without this QWidget::windowHandle() returns 0.
+    // See https://phabricator.kde.org/D23108
+    setAttribute(Qt::WA_NativeWindow);
 
     setAttribute(Qt::WA_TranslucentBackground, useTranslucency);
     setAttribute(Qt::WA_NoSystemBackground, false);

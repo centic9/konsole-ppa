@@ -140,9 +140,9 @@ void ScreenWindow::setSelectionStart(int column, int line, bool columnMode)
     Q_EMIT selectionChanged();
 }
 
-void ScreenWindow::setSelectionEnd(int column, int line)
+void ScreenWindow::setSelectionEnd(int column, int line, bool trimTrailingWhitespace)
 {
-    _screen->setSelectionEnd(column, line + currentLine());
+    _screen->setSelectionEnd(column, line + currentLine(), trimTrailingWhitespace);
 
     _bufferNeedsUpdate = true;
     Q_EMIT selectionChanged();
@@ -153,7 +153,7 @@ void ScreenWindow::setSelectionByLineRange(int start, int end)
     clearSelection();
 
     _screen->setSelectionStart(0, start, false);
-    _screen->setSelectionEnd(windowColumns(), end);
+    _screen->setSelectionEnd(windowColumns(), end, false);
 
     _bufferNeedsUpdate = true;
     Q_EMIT selectionChanged();
@@ -231,12 +231,36 @@ void ScreenWindow::scrollBy(RelativeScrollMode mode, int amount, bool fullPage)
 {
     if (mode == ScrollLines) {
         scrollTo(currentLine() + amount);
-    } else if (mode == ScrollPages) {
+    } else if (mode == ScrollPages || (mode == ScrollPrompts && !_screen->hasRepl())) {
         if (fullPage) {
             scrollTo(currentLine() + amount * (windowLines()));
         } else {
             scrollTo(currentLine() + amount * (windowLines() / 2));
         }
+    } else if (mode == ScrollPrompts) {
+        int i = currentLine();
+        if (amount < 0) {
+            QVector<LineProperty> properties = _screen->getLineProperties(0, currentLine());
+            while (i > 0 && amount < 0) {
+                i--;
+                if ((properties[i] & LINE_PROMPT_START) != 0) {
+                    if (++amount == 0) {
+                        break;
+                    }
+                }
+            }
+        } else if (amount > 0) {
+            QVector<LineProperty> properties = _screen->getLineProperties(currentLine(), _screen->getHistLines());
+            while (i < _screen->getHistLines() && amount > 0) {
+                i++;
+                if ((properties[i - currentLine()] & LINE_PROMPT_START) != 0) {
+                    if (--amount == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        scrollTo(i);
     }
 }
 

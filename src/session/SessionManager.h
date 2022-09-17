@@ -101,7 +101,7 @@ protected Q_SLOTS:
     void sessionTerminated(Session *session);
 
 private Q_SLOTS:
-    void sessionProfileCommandReceived(const QString &text);
+    void sessionProfileCommandReceived(Session *session, const QString &text);
 
     void profileChanged(const QExplicitlySharedDataPointer<Profile> &profile);
 
@@ -125,7 +125,7 @@ private:
     QHash<Session *, QExplicitlySharedDataPointer<Profile>> _sessionProfiles;
     QHash<Session *, QExplicitlySharedDataPointer<Profile>> _sessionRuntimeProfiles;
     QHash<Session *, int> _restoreMapping;
-    bool _isClosingAllSessions;
+    bool _isClosingAllSessions = false;
 };
 
 }

@@ -8,8 +8,8 @@
 #include "ProfileList.h"
 
 // Qt
-#include <QAction>
 #include <QActionGroup>
+#include <QWidget>
 
 // KDE
 #include <KLocalizedString>

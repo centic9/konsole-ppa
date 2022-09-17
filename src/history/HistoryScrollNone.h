@@ -32,11 +32,12 @@ public:
     LineProperty getLineProperty(const int lineno) const override;
 
     void addCells(const Character a[], const int count) override;
+    void addCellsMove(Character a[], const int count) override;
     void addLine(const LineProperty lineProperty = 0) override;
 
     // Modify history (do nothing here)
     void removeCells() override;
-    int reflowLines(const int) override;
+    int reflowLines(const int, std::map<int, int> * = nullptr) override;
 };
 
 }

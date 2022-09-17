@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-04-06 02:12+0000\n"
-"PO-Revision-Date: 2022-04-12 21:43+0530\n"
+"POT-Creation-Date: 2022-07-20 02:12+0000\n"
+"PO-Revision-Date: 2022-09-01 21:39+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
 "Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -17,17 +17,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 22.03.90\n"
+"X-Generator: Lokalize 22.08.0\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "ழா கணினி"
+msgstr "ழா கணினி, கோ. கிஷோர்"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "ALLENCHRISTOPHER_2002@REDIFFMAIL.COM"
+msgstr "ALLENCHRISTOPHER_2002@REDIFFMAIL.COM, Kde-l10n-ta@kde.org"
 
 #. i18n: ectx: Menu (file)
 #: ../desktop/konsoleui.rc:6
@@ -37,7 +37,8 @@ msgstr "கோப்பு"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnEdit)
 #. i18n: ectx: Menu (edit)
-#: ../desktop/konsoleui.rc:16 plugins/SSHManager/sshwidget.ui:265
+#: ../desktop/konsoleui.rc:16 plugins/QuickCommands/quickcommandswidget.cpp:269
+#: plugins/SSHManager/sshwidget.ui:262
 #, kde-format
 msgid "Edit"
 msgstr "திருத்து"
@@ -55,25 +56,25 @@ msgid "Split View"
 msgstr "பிரிந்த காட்சிமுறை"
 
 #. i18n: ectx: Menu (settings)
-#: ../desktop/konsoleui.rc:38
+#: ../desktop/konsoleui.rc:39
 #, kde-format
 msgid "Settings"
 msgstr "அமைப்புகள்"
 
 #. i18n: ectx: Menu (plugins)
-#: ../desktop/konsoleui.rc:51
+#: ../desktop/konsoleui.rc:52
 #, kde-format
 msgid "Plugins"
 msgstr "செருகுநிரல்கள்"
 
 #. i18n: ectx: Menu (help)
-#: ../desktop/konsoleui.rc:54
+#: ../desktop/konsoleui.rc:55
 #, kde-format
 msgid "Help"
 msgstr "உதவி"
 
 #. i18n: ectx: ToolBar (mainToolBar)
-#: ../desktop/konsoleui.rc:58
+#: ../desktop/konsoleui.rc:59
 #, kde-format
 msgid "Main Toolbar"
 msgstr "பிரதான கருவிப்பட்டை"
@@ -85,149 +86,145 @@ msgid "S&crollback"
 msgstr "&முந்தைய உரையை காட்டுவது"
 
 #. i18n: ectx: ToolBar (sessionToolbar)
-#: ../desktop/sessionui.rc:67
+#: ../desktop/sessionui.rc:70
 #, kde-format
 msgid "Session Toolbar"
 msgstr "அமர்வு கருவிப்பட்டை"
 
-#: AppColorSchemeChooser.cpp:36
+#: AppColorSchemeChooser.cpp:38
 #, kde-format
 msgid "&Window Color Scheme"
 msgstr "&சாளரத்தின் நிறத்திட்டம்"
 
-#: Application.cpp:53
-#, fuzzy, kde-format
-#| msgid "Name of profile to use for new Konsole instance"
+#: Application.cpp:52
+#, kde-format
 msgctxt "@info:shell"
 msgid "Name of profile to use for new Konsole instance"
-msgstr "புதிய கன்சோல் ஆயத்தத்திற்கு பயன்படுத்த வேண்டிய பெயர்"
+msgstr "புதிய கான்சோல் அமர்வுக்கு பயன்படுத்த வேண்டிய பயன்முறையின் பெயர்"
 
-#: Application.cpp:54
-#, fuzzy, kde-format
-#| msgid "Name of profile to use for new Konsole instance"
+#: Application.cpp:53
+#, kde-format
 msgctxt "@info:shell"
 msgid "json layoutfile to be loaded to use for new Konsole instance"
-msgstr "புதிய கன்சோல் ஆயத்தத்திற்கு பயன்படுத்த வேண்டிய பெயர்"
+msgstr "புதிய கான்சோல் சாளரத்துக்கு ஏற்ற வேண்டிய json தளவமைப்புக்கோப்பு (layoutfile)"
+
+#: Application.cpp:54
+#, kde-format
+msgctxt "@info:shell"
+msgid "Use the built-in profile instead of the default profile"
+msgstr "இயல்பிருப்பு பயன்முறைக்கு பதிலாக உள்ளமை பயன்முறையை பயன்படுத்து"
 
 #: Application.cpp:55
 #, kde-format
 msgctxt "@info:shell"
-msgid "Use the internal FALLBACK profile"
-msgstr ""
+msgid "Set the initial working directory of the new tab or window to 'dir'"
+msgstr "புதிய கீற்றின் அல்லது சாளரத்தின் துவக்க அடைவை 'dir' என்பதாக அமைக்கும்"
 
 #: Application.cpp:56
-#, fuzzy, kde-format
-#| msgid "Set the initial working directory of the new tab or window to 'dir'"
-msgctxt "@info:shell"
-msgid "Set the initial working directory of the new tab or window to 'dir'"
-msgstr "புதிய தத்து அ சாளரத்திற்கான இயல்பிருப்பு பணி அடைவாக 'dir' தனைக் கொள்ளவும்"
-
-#: Application.cpp:57
-#, fuzzy, kde-format
-#| msgid "Do not close the initial session automatically when it ends."
+#, kde-format
 msgctxt "@info:shell"
 msgid "Do not close the initial session automatically when it ends."
-msgstr "துவக்க அமர்வு நிறைவடையும் போது அதனை தானாக மூட வேண்டா"
-
-#: Application.cpp:59
-#, fuzzy, kde-format
-#| msgid ""
-#| "Create a new tab in an existing window rather than creating a new window"
-msgctxt "@info:shell"
-msgid ""
-"Create a new tab in an existing window rather than creating a new window "
-"('Run all Konsole windows in a single process' must be enabled)"
-msgstr "புதிய சாளரத்தை துவக்குவதற்கு பதில் தற்போதைய சாளரத்தில் புதிய தத்தை துவக்கவும் "
+msgstr "முதல் அமர்வு முடிவடையும்போது அதை தானாக மூடாதே."
 
 #: Application.cpp:60
 #, kde-format
 msgctxt "@info:shell"
-msgid "Create tabs as specified in given tabs configuration file"
-msgstr ""
-
-#: Application.cpp:62
-#, fuzzy, kde-format
-#| msgid ""
-#| "Start Konsole in the background and bring to the front when the F12 key "
-#| "is pressed"
-msgctxt "@info:shell"
 msgid ""
-"Start Konsole in the background and bring to the front when Ctrl+Shift+F12 "
-"(by default) is pressed"
-msgstr "கன்சோலை பின்னணியில் துவக்கி F12 அழுத்தும் போது முன்னே கொண்டு வா"
+"Create a new tab in an existing window rather than creating a new window "
+"('Run all Konsole windows in a single process' must be enabled)"
+msgstr ""
+"புதிய கீற்றை புதிய சாளரத்தில் உருவாக்காமல் ஏற்கனவேயுள்ள சாளரத்தில் உருவாக்கும் ('அனைத்து "
+"கான்சோல் சாளரங்களும் ஒரே பணியில் இருக்கட்டும்' எனும் தேர்வு இயக்கப்பட்டிருக்க வேண்டும்)"
+
+#: Application.cpp:61
+#, kde-format
+msgctxt "@info:shell"
+msgid "Create tabs as specified in given tabs configuration file"
+msgstr "கீற்றமைப்பு கோப்பில் குறிப்பிட்டுள்ளபடி கீற்றுகளை உருவாக்கும்"
 
 #: Application.cpp:63
 #, kde-format
 msgctxt "@info:shell"
-msgid "Run in a separate process"
+msgid ""
+"Start Konsole in the background and bring to the front when Ctrl+Shift+F12 "
+"(by default) is pressed"
 msgstr ""
+"கான்சோலை பின்னணியில் துவக்கி Ctrl+Shift+F12 (இயல்பிருப்பாக) அழுத்தப்படும்போது முன்னே "
+"கொண்டு வா"
 
 #: Application.cpp:64
 #, kde-format
 msgctxt "@info:shell"
-msgid "Show the menubar, overriding the default setting"
-msgstr ""
+msgid "Run in a separate process"
+msgstr "தனிப்பட்ட பணியாக இயக்கு"
 
 #: Application.cpp:65
 #, kde-format
 msgctxt "@info:shell"
-msgid "Hide the menubar, overriding the default setting"
-msgstr ""
+msgid "Show the menubar, overriding the default setting"
+msgstr "இயல்பிருப்பு அமைப்பை பொருட்படுத்தாமல் பட்டிப்பட்டையை காட்டும்"
 
 #: Application.cpp:66
 #, kde-format
 msgctxt "@info:shell"
-msgid "Show the tabbar, overriding the default setting"
-msgstr ""
+msgid "Hide the menubar, overriding the default setting"
+msgstr "இயல்பிருப்பு அமைப்பை பொருட்படுத்தாமல் பட்டிப்பட்டையை மறைக்கும்"
 
 #: Application.cpp:67
 #, kde-format
 msgctxt "@info:shell"
-msgid "Hide the tabbar, overriding the default setting"
-msgstr ""
+msgid "Show the tabbar, overriding the default setting"
+msgstr "இயல்பிருப்பு அமைப்பை பொருட்படுத்தாமல் கீற்றுப்பட்டையை காட்டும்"
 
 #: Application.cpp:68
 #, kde-format
 msgctxt "@info:shell"
-msgid "Start Konsole in fullscreen mode"
-msgstr ""
+msgid "Hide the tabbar, overriding the default setting"
+msgstr "இயல்பிருப்பு அமைப்பை பொருட்படுத்தாமல் கீற்றுப்பட்டையை மறைக்கும்"
 
 #: Application.cpp:69
-#, fuzzy, kde-format
-#| msgid "Disable transparent backgrounds, even if the system supports them."
+#, kde-format
 msgctxt "@info:shell"
-msgid "Disable transparent backgrounds, even if the system supports them."
-msgstr "கணினி ஆதரிக்குமாயினும், ஊடான பின்னணிகளை முடக்கவும்."
+msgid "Start Konsole in fullscreen mode"
+msgstr "கான்சோலை முழுத்திரை பயன்முறையில் துவக்கும்"
 
 #: Application.cpp:70
-#, fuzzy, kde-format
-#| msgid "List the available profiles"
+#, kde-format
 msgctxt "@info:shell"
-msgid "List the available profiles"
-msgstr "கிடைக்கக் கடிய பண்புகளைக் காட்டுக"
+msgid "Disable transparent backgrounds, even if the system supports them."
+msgstr "ஒளிபுகும் பின்புலங்களை கணினி ஆதரிக்குமாயினும், அவற்றை முடக்கும்."
 
 #: Application.cpp:71
 #, kde-format
 msgctxt "@info:shell"
-msgid "List all the profile properties names and their type (for use with -p)"
-msgstr ""
+msgid "List the available profiles"
+msgstr "உள்ள அனைத்து பயன்முறைகளையும் காட்டும்"
 
 #: Application.cpp:72
-#, fuzzy, kde-format
-#| msgid "Change the value of a profile property."
+#, kde-format
+msgctxt "@info:shell"
+msgid "List all the profile properties names and their type (for use with -p)"
+msgstr ""
+"உள்ள அனைத்து பயன்முறைகளையும் அவற்றின் வகைகளையும் காட்டும் (-p என்ற விருப்பத்துடன் "
+"பயன்படுத்தக்கூடியது)"
+
+#: Application.cpp:73
+#, kde-format
 msgctxt "@info:shell"
 msgid "Change the value of a profile property."
-msgstr "பண்பின் குண மதிப்பினை மாற்றுக."
+msgstr "பயன்முறையின் ஓர் பண்பின் மதிப்பை மாற்றும்."
 
-#: Application.cpp:74
+#: Application.cpp:75
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
 "Command to execute. This option will catch all following arguments, so use "
 "it as the last option."
 msgstr ""
+"இயக்க வேண்டிய கட்டளை. இதற்கு பின் வரும் அனைத்து தருமதிப்புகளையும் இக்கட்டளையே பெறும். "
+"ஆதலால், இதுவே கான்சோலுக்கு நீங்கள் தரும் கடைசி தருமதிப்பாக இருக்க வேண்டும்."
 
-#: Application.cpp:76
+#: Application.cpp:78
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -235,27 +232,25 @@ msgid ""
 "--new-tab. Mostly for debugging."
 msgstr ""
 
-#: Application.cpp:83
-#, fuzzy, kde-format
-#| msgid "Arguments passed to command"
+#: Application.cpp:85
+#, kde-format
 msgctxt "@info:shell"
 msgid "Arguments passed to command"
-msgstr "ஆணைக்கு இடப்பட்ட துப்புகள்"
+msgstr "கட்டளை பெற வேண்டிய தருமதிப்புகள்"
 
-#: Application.cpp:517
-#, fuzzy, kde-format
-#| msgid "Background (Intense)"
+#: Application.cpp:518
+#, kde-format
 msgctxt "@item"
 msgid "Toggle Background Window"
-msgstr "பின்தோற்றம் (அடர்த்தியாக)"
+msgstr "பின்புல சாளரத்தை நிலைமாற்று"
 
-#: BookmarkHandler.cpp:109
+#: BookmarkHandler.cpp:108
 #, kde-format
 msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
 msgid "%1 on %2"
 msgstr "%2-இல் %1"
 
-#: BookmarkHandler.cpp:111
+#: BookmarkHandler.cpp:110
 #, kde-format
 msgctxt "@item:inmenu The host the user is connected to via ssh"
 msgid "%1"
@@ -441,37 +436,37 @@ msgctxt "@item:intable palette"
 msgid "Color 8 (Faint)"
 msgstr "நிறம் 8 (மங்கலானது)"
 
-#: colorscheme/ColorScheme.cpp:463
+#: colorscheme/ColorScheme.cpp:464
 #, kde-format
 msgctxt "@item"
 msgid "Un-named Color Scheme"
 msgstr "பெயரில்லா நிறத்திட்டம்"
 
-#: colorscheme/ColorSchemeEditor.cpp:106
+#: colorscheme/ColorSchemeEditor.cpp:107
 #, kde-format
 msgctxt "@label:listbox Column header text for color names"
 msgid "Name"
 msgstr "பெயர்"
 
-#: colorscheme/ColorSchemeEditor.cpp:106
+#: colorscheme/ColorSchemeEditor.cpp:107
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual colors"
 msgid "Color"
 msgstr "நிறம்"
 
-#: colorscheme/ColorSchemeEditor.cpp:107
+#: colorscheme/ColorSchemeEditor.cpp:108
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual intense colors"
 msgid "Intense color"
 msgstr "பகட்டான நிறங்கள்"
 
-#: colorscheme/ColorSchemeEditor.cpp:108
+#: colorscheme/ColorSchemeEditor.cpp:109
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual faint colors"
 msgid "Faint color"
 msgstr "மங்கலான நிறங்கள்"
 
-#: colorscheme/ColorSchemeEditor.cpp:133
+#: colorscheme/ColorSchemeEditor.cpp:134
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -481,43 +476,43 @@ msgstr ""
 "ஒளிபுகும் சாளரங்களை உங்கள் பணிமேடை ஆதரிப்பதுபோல் தெரியாத‍தால், பின்புலத்தின் "
 "ஒளிபுகுமைக்கான விருப்பத்தேர்வு பொருட்படுத்தப்படாது."
 
-#: colorscheme/ColorSchemeEditor.cpp:184
+#: colorscheme/ColorSchemeEditor.cpp:185
 #, kde-format
 msgctxt "@title:window"
 msgid "Select wallpaper image file"
 msgstr "பின்புல படத்தை தேர்ந்தெடுத்தல்"
 
-#: colorscheme/ColorSchemeEditor.cpp:186
+#: colorscheme/ColorSchemeEditor.cpp:187
 #, kde-format
 msgctxt "@label:textbox Filter in file open dialog"
 msgid "Supported Images"
 msgstr "ஆதரிக்கப்படும் படங்கள்"
 
-#: colorscheme/ColorSchemeEditor.cpp:293
+#: colorscheme/ColorSchemeEditor.cpp:295
 #, kde-format
 msgctxt "@title:window"
 msgid "New Color Scheme"
 msgstr "புதிய நிறத்திட்டம்"
 
-#: colorscheme/ColorSchemeEditor.cpp:296
+#: colorscheme/ColorSchemeEditor.cpp:298
 #, kde-format
 msgctxt "@title:window"
 msgid "Edit Color Scheme"
 msgstr "நிறத்திட்டத்தை திருத்துவது"
 
-#: colorscheme/ColorSchemeEditor.cpp:341
+#: colorscheme/ColorSchemeEditor.cpp:343
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose color"
 msgstr "நிறத்தை தேர்ந்தெடுக்க கிளிக் செய்யுங்கள்"
 
-#: colorscheme/ColorSchemeEditor.cpp:346
+#: colorscheme/ColorSchemeEditor.cpp:348
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose intense color"
 msgstr "பகட்டான நிறத்தை தேர்ந்தெடுக்க கிளிக் செய்யுங்கள்"
 
-#: colorscheme/ColorSchemeEditor.cpp:351
+#: colorscheme/ColorSchemeEditor.cpp:353
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose Faint color"
@@ -592,8 +587,8 @@ msgstr "பின்புல படத்தை தேர்ந்தெடு�
 #. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, btnFindSshKey)
-#: colorscheme/ColorSchemeEditor.ui:154 plugins/SSHManager/sshwidget.ui:130
-#: widgets/EditProfileGeneralPage.ui:179
+#: colorscheme/ColorSchemeEditor.ui:154 plugins/SSHManager/sshwidget.ui:127
+#: widgets/EditProfileGeneralPage.ui:183
 #, kde-format
 msgid "..."
 msgstr "..."
@@ -624,7 +619,7 @@ msgstr "வெட்டு"
 
 #. i18n: ectx: property (text), item, widget (QComboBox, wallpaperScalingType)
 #: colorscheme/ColorSchemeEditor.ui:188
-#, fuzzy, kde-format
+#, kde-format
 msgid "Adapt"
 msgstr "பொருத்து"
 
@@ -751,6 +746,9 @@ msgid ""
 "equal width (monospace). Any non monospaced font may cause display issues. "
 "This should not be necessary except in rare cases."
 msgstr ""
+"முனையச்செயலி செயல்படும் வித‍த்தால், அதற்கு சம‍அகல (monospace) எழுத்துருக்கள் தேவை. "
+"அவ்வாறில்லாத எழுத்துருக்கள், உரை காட்டப்படும் வித‍த்தில் குறைகளை ஏற்படுத்தலாம். சாதாரணமாக, "
+"முனையத்தில் சம‍அகல எழுத்துருக்களே பயன்படுத்தப்பட வேண்டும்."
 
 #: HistorySizeDialog.cpp:26
 #, kde-format
@@ -797,8 +795,8 @@ msgstr "விவரணம் இல்லாமல் ஓர் விசை �
 
 #. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
 #. i18n: ectx: property (text), widget (QPushButton, btnAdd)
-#: KeyBindingEditor.ui:65 plugins/QuickCommands/qcwidget.ui:107
-#: plugins/SSHManager/sshwidget.ui:275
+#: KeyBindingEditor.ui:65 plugins/QuickCommands/qcwidget.ui:240
+#: plugins/SSHManager/sshwidget.ui:272
 #, kde-format
 msgid "Add"
 msgstr "சேர்"
@@ -831,296 +829,271 @@ msgstr "உள்ளீடு:"
 msgid "Output:"
 msgstr "வெளியீடு:"
 
-#: main.cpp:147
+#: main.cpp:155
 #, kde-format
 msgctxt "@title"
 msgid "Konsole"
 msgstr "கான்சோல்"
 
-#: main.cpp:149
+#: main.cpp:157
 #, kde-format
 msgctxt "@title"
 msgid "Terminal emulator"
 msgstr "முனைய செயலி"
 
-#: main.cpp:151
+#: main.cpp:159
 #, kde-format
 msgctxt "@info:credit"
 msgid "(c) 1997-2022, The Konsole Developers"
 msgstr "(c) 1997-2022, கான்சோல் நிரலாளர்கள்"
 
-#: main.cpp:325
+#: main.cpp:333
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kurt Hindenburg"
 msgstr "குர்ட் ஹின்டன்பர்க்"
 
-#: main.cpp:327
-#, fuzzy, kde-format
-#| msgid "Bug fixes and general improvements"
+#: main.cpp:335
+#, kde-format
 msgctxt "@info:credit"
 msgid "General maintainer, bug fixes and general improvements"
-msgstr "வழு களைதல்களும் பொதுவான முன்னேற்றங்களும்"
+msgstr "பொதுவான பராமரிப்பாளர், பிழைநீக்கல், மற்றும் பொதுவான முன்னேற்றங்கள்"
 
-#: main.cpp:330
-#, fuzzy, kde-format
-#| msgid "Robert Knight"
+#: main.cpp:338
+#, kde-format
 msgctxt "@info:credit"
 msgid "Robert Knight"
 msgstr "ராபர்ட் நைட்"
 
-#: main.cpp:331
+#: main.cpp:339
 #, kde-format
 msgctxt "@info:credit"
 msgid "Previous maintainer, ported to KDE4"
 msgstr ""
 
-#: main.cpp:333
-#, fuzzy, kde-format
-#| msgid "Lars Doelle"
+#: main.cpp:341
+#, kde-format
 msgctxt "@info:credit"
 msgid "Lars Doelle"
 msgstr "லாரஸ் டொயல்லெ"
 
-#: main.cpp:333
+#: main.cpp:341
 #, kde-format
 msgctxt "@info:credit"
 msgid "Original author"
 msgstr "முதிலில் இயற்றியவர்"
 
-#: main.cpp:334
+#: main.cpp:342
 #, kde-format
 msgctxt "@info:credit"
 msgid "Ahmad Samir"
 msgstr "அஹமது சமீர்"
 
-#: main.cpp:335 main.cpp:338 main.cpp:341 main.cpp:344
+#: main.cpp:343 main.cpp:346 main.cpp:349 main.cpp:352
 #, fuzzy, kde-format
 #| msgid "Bug fixes and general improvements"
 msgctxt "@info:credit"
 msgid "Major refactoring, bug fixes and major improvements"
 msgstr "வழு களைதல்களும் பொதுவான முன்னேற்றங்களும்"
 
-#: main.cpp:337
+#: main.cpp:345
 #, kde-format
 msgctxt "@info:credit"
 msgid "Carlos Alves"
-msgstr ""
+msgstr "கார்லோஸ் ஆல்வெஸ்"
 
-#: main.cpp:340
+#: main.cpp:348
 #, kde-format
 msgctxt "@info:credit"
 msgid "Tomaz Canabrava"
-msgstr ""
+msgstr "தாமசு கானாபிராவா"
 
-#: main.cpp:343
+#: main.cpp:351
 #, kde-format
 msgctxt "@info:credit"
 msgid "Gustavo Carneiro"
-msgstr ""
+msgstr "குஸ்தாவோ கார்னெயிரோ"
 
-#: main.cpp:346
+#: main.cpp:354
 #, kde-format
 msgctxt "@info:credit"
 msgid "Edwin Pujols"
-msgstr ""
+msgstr "எடுவின் புயோல்ஸ்"
 
-#: main.cpp:347 main.cpp:350 main.cpp:352 main.cpp:357 main.cpp:359
-#: main.cpp:360 main.cpp:361
-#, fuzzy, kde-format
-#| msgid "Bug fixes and general improvements"
+#: main.cpp:355 main.cpp:358 main.cpp:360 main.cpp:365 main.cpp:367
+#: main.cpp:368 main.cpp:369
+#, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and general improvements"
-msgstr "வழு களைதல்களும் பொதுவான முன்னேற்றங்களும்"
+msgstr "பிழைதிருத்தங்களும் பொதுவான மேம்பாடுகளும்"
 
-#: main.cpp:349
+#: main.cpp:357
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin T. H. Sandsmark"
-msgstr ""
+msgstr "மார்ட்டின் டி. ஹ. சான்டுஸ்மார்க்"
 
-#: main.cpp:352
+#: main.cpp:360
 #, kde-format
 msgctxt "@info:credit"
 msgid "Nate Graham"
 msgstr "நேட் கிரஹாம்"
 
-#: main.cpp:353
+#: main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Mariusz Glebocki"
-msgstr ""
+msgstr "மாரியஸ் குலெபொக்கி"
 
-#: main.cpp:354
-#, fuzzy, kde-format
-#| msgid "Bug fixes and general improvements"
+#: main.cpp:362
+#, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and major improvements"
-msgstr "வழு களைதல்களும் பொதுவான முன்னேற்றங்களும்"
-
-#: main.cpp:356
-#, kde-format
-msgctxt "@info:credit"
-msgid "Thomas Surrel"
-msgstr ""
-
-#: main.cpp:359
-#, kde-format
-msgctxt "@info:credit"
-msgid "Jekyll Wu"
-msgstr ""
-
-#: main.cpp:360
-#, fuzzy, kde-format
-#| msgid "Waldo Bastian"
-msgctxt "@info:credit"
-msgid "Waldo Bastian"
-msgstr "வால்டோ பாஸ்டியான்"
-
-#: main.cpp:361
-#, fuzzy, kde-format
-#| msgid "Stephan Binner"
-msgctxt "@info:credit"
-msgid "Stephan Binner"
-msgstr "ஸ்டீபன் பின்னர்"
-
-#: main.cpp:362
-#, kde-format
-msgctxt "@info:credit"
-msgid "Thomas Dreibholz"
-msgstr ""
-
-#: main.cpp:362
-#, fuzzy, kde-format
-#| msgid "Bug fixes and general improvements"
-msgctxt "@info:credit"
-msgid "General improvements"
-msgstr "வழு களைதல்களும் பொதுவான முன்னேற்றங்களும்"
-
-#: main.cpp:363
-#, fuzzy, kde-format
-#| msgid "Chris Machemer"
-msgctxt "@info:credit"
-msgid "Chris Machemer"
-msgstr "கிரிஸ் மேகெமர்"
-
-#: main.cpp:363 main.cpp:364 main.cpp:391 main.cpp:392 main.cpp:393
-#: main.cpp:394
-#, fuzzy, kde-format
-#| msgid "Bug fixes"
-msgctxt "@info:credit"
-msgid "Bug fixes"
-msgstr "வழு களைதல்"
+msgstr "பிழைதிருத்தங்களும் முக்கிய மேம்பாடுகளும்"
 
 #: main.cpp:364
 #, kde-format
 msgctxt "@info:credit"
-msgid "Francesco Cecconi"
-msgstr ""
+msgid "Thomas Surrel"
+msgstr "தாமஸ் சர்ரெல்"
 
-#: main.cpp:365
-#, fuzzy, kde-format
-#| msgid "Stephan Kulow"
+#: main.cpp:367
+#, kde-format
+msgctxt "@info:credit"
+msgid "Jekyll Wu"
+msgstr "ஜெக்கில் வூ"
+
+#: main.cpp:368
+#, kde-format
+msgctxt "@info:credit"
+msgid "Waldo Bastian"
+msgstr "வாலுடோ பாஸ்டியான்"
+
+#: main.cpp:369
+#, kde-format
+msgctxt "@info:credit"
+msgid "Stephan Binner"
+msgstr "ஸ்டீபன் பின்னர்"
+
+#: main.cpp:370
+#, kde-format
+msgctxt "@info:credit"
+msgid "Thomas Dreibholz"
+msgstr "தாமஸ் டுரைபுஹோல்சு"
+
+#: main.cpp:370
+#, kde-format
+msgctxt "@info:credit"
+msgid "General improvements"
+msgstr "பொதுவான மேம்பாடுகள்"
+
+#: main.cpp:371
+#, kde-format
+msgctxt "@info:credit"
+msgid "Chris Machemer"
+msgstr "கிரிஸ் மேகெமர்"
+
+#: main.cpp:371 main.cpp:372 main.cpp:399 main.cpp:400 main.cpp:401
+#: main.cpp:402
+#, kde-format
+msgctxt "@info:credit"
+msgid "Bug fixes"
+msgstr "பிழைதிருத்தங்கள்"
+
+#: main.cpp:372
+#, kde-format
+msgctxt "@info:credit"
+msgid "Francesco Cecconi"
+msgstr "ஃபரான்செஸ்க்கோ செக்கோனி"
+
+#: main.cpp:373
+#, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Kulow"
 msgstr "ஸ்டீபன் குளோ"
 
-#: main.cpp:365
-#, fuzzy, kde-format
-#| msgid "Solaris support and history"
+#: main.cpp:373
+#, kde-format
 msgctxt "@info:credit"
 msgid "Solaris support and history"
 msgstr "சோலாரிஸ் ஆதரவும் வரலாறும்"
 
-#: main.cpp:366
-#, fuzzy, kde-format
-#| msgid "Alexander Neundorf"
+#: main.cpp:374
+#, kde-format
 msgctxt "@info:credit"
 msgid "Alexander Neundorf"
 msgstr "அலெக்ஸாண்டர் நியுன்டார்ப்"
 
-#: main.cpp:367
+#: main.cpp:375
 #, fuzzy, kde-format
 #| msgid "Bug fixes and improved startup performance"
 msgctxt "@info:credit"
 msgid "Bug fixes and improved startup performance"
 msgstr "வழுத் தீர்வுகளும் மேம்படுத்தப்பட்ட துவக்கத் திறன் வெளிப்பாடும்"
 
-#: main.cpp:369
-#, fuzzy, kde-format
-#| msgid "Peter Silva"
+#: main.cpp:377
+#, kde-format
 msgctxt "@info:credit"
 msgid "Peter Silva"
 msgstr "பீட்டர் சில்வா"
 
-#: main.cpp:369
-#, fuzzy, kde-format
-#| msgid "Marking improvements"
+#: main.cpp:377
+#, kde-format
 msgctxt "@info:credit"
 msgid "Marking improvements"
-msgstr "குறி முன்னேற்றங்கள்"
+msgstr "குறிகளில் முன்னேற்றங்கள்"
 
-#: main.cpp:370
-#, fuzzy, kde-format
-#| msgid "Lotzi Boloni"
+#: main.cpp:378
+#, kde-format
 msgctxt "@info:credit"
 msgid "Lotzi Boloni"
 msgstr "லாட்சி பொலோனி"
 
-#: main.cpp:372
-#, fuzzy, kde-format
-#| msgid ""
-#| "Embedded Konsole\n"
-#| "Toolbar and session names"
+#: main.cpp:380
+#, kde-format
 msgctxt "@info:credit"
 msgid ""
 "Embedded Konsole\n"
 "Toolbar and session names"
 msgstr ""
-"பொதியப் பெற்ற கன்சோல்\n"
-"கருவிப்பட்டிகளும் அமர்வு பெயர்களும்"
+"உட்பொதிந்த கான்சோல்\n"
+"கருவிப்பட்டையும் அமர்வுப் பெயர்களும்"
 
-#: main.cpp:375
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid "David Faure"
 msgstr "டேவிட் ஃபவுர்"
 
-#: main.cpp:377
-#, fuzzy, kde-format
-#| msgid ""
-#| "Embedded Konsole\n"
-#| "General improvements"
+#: main.cpp:385
+#, kde-format
 msgctxt "@info:credit"
 msgid ""
 "Embedded Konsole\n"
 "General improvements"
 msgstr ""
-"பொதியப் பெற்ற கன்சோல்\n"
+"உட்பொதிந்த கான்சோல்\n"
 "பொதுவான முன்னேற்றங்கள்"
 
-#: main.cpp:380
-#, fuzzy, kde-format
-#| msgid "Antonio Larrosa"
+#: main.cpp:388
+#, kde-format
 msgctxt "@info:credit"
 msgid "Antonio Larrosa"
 msgstr "அன்டோனியோ லாராஸோ"
 
-#: main.cpp:380
-#, fuzzy, kde-format
-#| msgid "Visual effects"
+#: main.cpp:388
+#, kde-format
 msgctxt "@info:credit"
 msgid "Visual effects"
-msgstr "காட்சி விருந்துகள்"
+msgstr "காட்சிமுறை அசைவூட்டங்கள்"
 
-#: main.cpp:381
-#, fuzzy, kde-format
-#| msgid "Matthias Ettrich"
+#: main.cpp:389
+#, kde-format
 msgctxt "@info:credit"
 msgid "Matthias Ettrich"
 msgstr "மத்தையாஸ் எட்ரிச்"
 
-#: main.cpp:383
+#: main.cpp:391
 #, fuzzy, kde-format
 #| msgid ""
 #| "Code from the kvt project\n"
@@ -1133,137 +1106,130 @@ msgstr ""
 "kvt திட்டத்தினின்று நிரல்\n"
 "பொதுவான முன்னேற்றங்கள்"
 
-#: main.cpp:386
-#, fuzzy, kde-format
-#| msgid "Warwick Allison"
+#: main.cpp:394
+#, kde-format
 msgctxt "@info:credit"
 msgid "Warwick Allison"
 msgstr "வார்விக் அலிசன்"
 
-#: main.cpp:387
+#: main.cpp:395
 #, fuzzy, kde-format
 #| msgid "Schema and text selection improvements"
 msgctxt "@info:credit"
 msgid "Schema and text selection improvements"
 msgstr "ஸ்கீமா மற்றும் உரை தேர்வு முன்னேற்றங்கள்"
 
-#: main.cpp:389
-#, fuzzy, kde-format
-#| msgid "Dan Pilone"
+#: main.cpp:397
+#, kde-format
 msgctxt "@info:credit"
 msgid "Dan Pilone"
-msgstr "டான் பைலோன்"
+msgstr "டான் பிலோன்"
 
-#: main.cpp:389
+#: main.cpp:397
 #, fuzzy, kde-format
 #| msgid "SGI port"
 msgctxt "@info:credit"
 msgid "SGI port"
 msgstr "SGI துறை"
 
-#: main.cpp:390
-#, fuzzy, kde-format
-#| msgid "Kevin Street"
+#: main.cpp:398
+#, kde-format
 msgctxt "@info:credit"
 msgid "Kevin Street"
-msgstr "கெவின் தெரு"
+msgstr "கெவின் ஸ்டிரீட்"
 
-#: main.cpp:390
+#: main.cpp:398
 #, fuzzy, kde-format
 #| msgid "FreeBSD port"
 msgctxt "@info:credit"
 msgid "FreeBSD port"
 msgstr "FreeBSD துறை"
 
-#: main.cpp:391
-#, fuzzy, kde-format
-#| msgid "Sven Fischer"
+#: main.cpp:399
+#, kde-format
 msgctxt "@info:credit"
 msgid "Sven Fischer"
-msgstr "செவன் பிஸ்சர்"
+msgstr "செவன் ஃபிஸ்சர்"
 
-#: main.cpp:392
-#, fuzzy, kde-format
-#| msgid "Dale M. Flaven"
+#: main.cpp:400
+#, kde-format
 msgctxt "@info:credit"
 msgid "Dale M. Flaven"
 msgstr "டேல் எம். ப்ளேவன்"
 
-#: main.cpp:393
-#, fuzzy, kde-format
-#| msgid "Martin Jones"
+#: main.cpp:401
+#, kde-format
 msgctxt "@info:credit"
 msgid "Martin Jones"
 msgstr "மார்ட்டின் ஜோன்ஸ்"
 
-#: main.cpp:394
-#, fuzzy, kde-format
-#| msgid "Lars Knoll"
+#: main.cpp:402
+#, kde-format
 msgctxt "@info:credit"
 msgid "Lars Knoll"
-msgstr "லார்ஸ் நோல்"
+msgstr "லர்ஸ் க்னோல்"
 
-#: main.cpp:395
+#: main.cpp:403
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thanks to many others.\n"
 msgstr "மேலும் பலருக்கும் நன்றி.\n"
 
-#: MainWindow.cpp:307
+#: MainWindow.cpp:314
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&New Tab"
 msgstr "&புதிய கீற்று"
 
-#: MainWindow.cpp:317
+#: MainWindow.cpp:324
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Clone Tab"
 msgstr "&கீற்றை நகலெடு"
 
-#: MainWindow.cpp:324
+#: MainWindow.cpp:331
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "New &Window"
 msgstr "புதிய &சாளரம்"
 
-#: MainWindow.cpp:331
+#: MainWindow.cpp:338
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Window"
 msgstr "சாளரத்தை மூடு"
 
-#: MainWindow.cpp:336
+#: MainWindow.cpp:343
 #, kde-format
 msgctxt "@title:menu"
 msgid "&Bookmarks"
 msgstr "&நினைவுக்குறிகள்"
 
-#: MainWindow.cpp:357
+#: MainWindow.cpp:364
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
 msgstr "பயன்முறைகளை நிர்வகி..."
 
-#: MainWindow.cpp:363
+#: MainWindow.cpp:370
 #, kde-format
 msgctxt "@item"
 msgid "Activate Menu"
 msgstr "பட்டியை செயல்படுத்து"
 
-#: MainWindow.cpp:369
+#: MainWindow.cpp:376
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Save tab layout to file"
 msgstr "கீற்றுகளின் தளவமைப்பை கோப்புக்கு சேமி"
 
-#: MainWindow.cpp:378
+#: MainWindow.cpp:385
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Load tab layout from file"
 msgstr "கீற்றுகளின் தளவமைப்பை கோப்பிலிருந்து ஏற்று"
 
-#: MainWindow.cpp:611 MainWindow.cpp:628
+#: MainWindow.cpp:618 MainWindow.cpp:635
 #, kde-format
 msgctxt "@info"
 msgid "There is a process running in this window. Do you still want to quit?"
@@ -1272,55 +1238,55 @@ msgid_plural ""
 msgstr[0] "இச்சாளரத்தில் ஓர் நிரல் இயங்கிக்கொண்டிருக்கிறது. உறுதியாக வெளியேற வேண்டுமா?"
 msgstr[1] "இச்சாளரத்தில் %1 நிரல்கள் இயங்கிக்கொண்டிருக்கின்றன. உறுதியாக வெளியேற வேண்டுமா?"
 
-#: MainWindow.cpp:617 MainWindow.cpp:634 MainWindow.cpp:648
+#: MainWindow.cpp:624 MainWindow.cpp:641 MainWindow.cpp:655
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Close"
 msgstr "வெளியேறுவதை உறுதிப்படுத்தல்"
 
-#: MainWindow.cpp:618 MainWindow.cpp:635 MainWindow.cpp:649
+#: MainWindow.cpp:625 MainWindow.cpp:642 MainWindow.cpp:656
 #, kde-format
 msgctxt "@action:button"
 msgid "Close &Window"
 msgstr "&சாளரத்தை மூடு"
 
-#: MainWindow.cpp:636 MainWindow.cpp:650
+#: MainWindow.cpp:643 MainWindow.cpp:657
 #, kde-format
 msgctxt "@action:button"
 msgid "Close Current &Tab"
 msgstr "&தற்போதைய கீற்றை மூடு"
 
-#: MainWindow.cpp:645
+#: MainWindow.cpp:652
 #, kde-format
 msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "இச்சாளரத்தில் %1 முனையங்கள் திறந்துள்ளன. உறுதியாக வேளியேற வேண்டுமா?"
 
-#: MainWindow.cpp:752 Part.cpp:297
+#: MainWindow.cpp:759 Part.cpp:297
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "பயன்முறைகள்"
 
-#: MainWindow.cpp:769
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "General"
 msgstr "பொது"
 
-#: MainWindow.cpp:780
+#: MainWindow.cpp:787
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr "கீற்றுப்பட்டை / பிரிப்பான்கள்"
 
-#: MainWindow.cpp:785
+#: MainWindow.cpp:792
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr "தற்காலிக கோப்புகள்"
 
-#: MainWindow.cpp:790
+#: MainWindow.cpp:797
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
@@ -1330,62 +1296,81 @@ msgstr "சிறுபடங்கள்"
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Part Info"
-msgstr ""
+msgstr "கூறின் விவரங்கள்"
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, QuickCommandsWidget)
-#. i18n: ectx: property (windowTitle), widget (QWidget, SSHTreeWidget)
-#: plugins/QuickCommands/qcwidget.ui:14 plugins/SSHManager/sshwidget.ui:14
+#: plugins/QuickCommands/qcwidget.ui:14
 #, kde-format
 msgid "Form"
-msgstr ""
+msgstr "படிவம்"
 
-#. i18n: ectx: property (text), item, widget (QComboBox, group)
-#. i18n: ectx: property (currentText), widget (QComboBox, folder)
-#: plugins/QuickCommands/qcwidget.ui:40
-#: plugins/SSHManager/sshmanagermodel.cpp:50
-#: plugins/SSHManager/sshwidget.ui:189
-#, fuzzy, kde-format
-msgid "Default"
-msgstr "முன்னிருப்பு முனையம்"
-
-#. i18n: ectx: property (text), widget (QLabel, labelGroup)
-#: plugins/QuickCommands/qcwidget.ui:48
+#. i18n: ectx: property (text), widget (QCheckBox, invertFilter)
+#. i18n: ectx: property (text), widget (QCheckBox, btnInvertFilter)
+#: plugins/QuickCommands/qcwidget.ui:53 plugins/SSHManager/sshwidget.ui:32
 #, kde-format
-msgid "Group"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: plugins/QuickCommands/qcwidget.ui:55
-#, kde-format
-msgid "Command"
-msgstr "கட்டளை"
+msgid "Invert"
+msgstr "புரட்டு"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: plugins/QuickCommands/qcwidget.ui:72
+#: plugins/QuickCommands/qcwidget.ui:91
 #, kde-format
 msgid "Title"
 msgstr "தலைப்பு"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: plugins/QuickCommands/qcwidget.ui:79
+#: plugins/QuickCommands/qcwidget.ui:101
 #, kde-format
 msgid "Tooltip"
 msgstr "கருவித்துப்பு"
 
+#. i18n: ectx: property (text), widget (QLabel, labelGroup)
+#: plugins/QuickCommands/qcwidget.ui:111
+#, kde-format
+msgid "Group"
+msgstr "குழு"
+
+#. i18n: ectx: property (text), item, widget (QComboBox, group)
+#. i18n: ectx: property (currentText), widget (QComboBox, folder)
+#: plugins/QuickCommands/qcwidget.ui:122
+#: plugins/SSHManager/sshmanagermodel.cpp:50
+#: plugins/SSHManager/sshwidget.ui:186
+#, kde-format
+msgid "Default"
+msgstr "இயல்பிருப்பு"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab)
+#: plugins/QuickCommands/qcwidget.ui:137
+#, kde-format
+msgid "Command"
+msgstr "கட்டளை"
+
+#. i18n: ectx: attribute (title), widget (QWidget, tab_2)
+#: plugins/QuickCommands/qcwidget.ui:187
+#: plugins/QuickCommands/quickcommandswidget.cpp:306
+#, kde-format
+msgid "Warnings"
+msgstr "எச்சரிக்கைகள்"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnRun)
+#: plugins/QuickCommands/qcwidget.ui:230
+#, kde-format
+msgid "Run"
+msgstr "இயக்கு"
+
 #. i18n: ectx: property (text), widget (QPushButton, btnSave)
-#: plugins/QuickCommands/qcwidget.ui:114
+#: plugins/QuickCommands/qcwidget.ui:250
 #, kde-format
 msgid "Save"
 msgstr "சேமி"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnUpdate)
-#: plugins/QuickCommands/qcwidget.ui:121
+#: plugins/QuickCommands/qcwidget.ui:260
 #, kde-format
 msgid "Update"
 msgstr "புதுப்பி"
 
 #. i18n: ectx: property (text), widget (QPushButton, btnCancel)
-#: plugins/QuickCommands/qcwidget.ui:128 plugins/SSHManager/sshwidget.ui:285
+#: plugins/QuickCommands/qcwidget.ui:270 plugins/SSHManager/sshwidget.ui:282
 #, kde-format
 msgid "Cancel"
 msgstr "ரத்து செய்"
@@ -1400,49 +1385,85 @@ msgstr "விரை கட்டளைகள்"
 msgid "Show Quick Commands"
 msgstr "விரை கட்டளைகளை காட்டு"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:116
-#: plugins/QuickCommands/quickcommandswidget.cpp:127
+#: plugins/QuickCommands/quickcommandswidget.cpp:147
+#: plugins/QuickCommands/quickcommandswidget.cpp:158
 #, kde-format
 msgid "A duplicate item exists"
 msgstr "இதேபோல ஏற்கனவே ஒன்று உள்ளது"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:170
+#: plugins/QuickCommands/quickcommandswidget.cpp:164
+#, kde-format
+msgid "Please fix all the warnings before trying to run this script"
+msgstr "இச்சிறுநிரலை இயக்குமுன் அனைத்து எச்சரிக்கைகளையும் சரிசெய்யுங்கள்"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:188
+#, kde-format
+msgid "There are some errors on the script, do you really want to run it?"
+msgstr "இச்சிறுநிரலில் சிக்கல்கள் உள்ளன. உறுதியாக இதை இயக்க வேண்டுமா?"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:189
+#, kde-format
+msgid "Shell Errors"
+msgstr "முனைய சிக்கல்கள்"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:190
+#, kde-format
+msgctxt "@action:button"
+msgid "Run"
+msgstr "இயக்கு"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:215
 #, kde-format
 msgid ""
-"You are about to remove the group %1,\n"
+"You are about to delete the group %1,\n"
 " with multiple configurations, are you sure?"
 msgstr ""
 "பல அமைப்புகளை கொண்ட %1\n"
-"என்ற குழுவை நீக்க போகிறீர்கள். உறுதியாக செய்யலாமா?"
+"என்ற குழுவை நீக்கப் போகிறீர்கள். உறுதியாக செய்யலாமா?"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:171
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:194
+#: plugins/QuickCommands/quickcommandswidget.cpp:216
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:196
 #, kde-format
-msgid "You are about to remove %1, are you sure?"
-msgstr "%1 என்பதை நீக்க போகிறீர்கள். உறுதியாக செய்யலாமா?"
+msgid "You are about to delete %1, are you sure?"
+msgstr "%1 என்பதை நீக்கப் போகிறீர்கள். உறுதியாக செய்யலாமா?"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:176
+#: plugins/QuickCommands/quickcommandswidget.cpp:219
 #, kde-format
-msgid "Remove Quick Commands Configurations"
+msgid "Delete Quick Commands Configurations"
 msgstr "விரை கட்டளைகளை நீக்குவது"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:209
+#: plugins/QuickCommands/quickcommandswidget.cpp:249
 #, kde-format
 msgid "Title can not be empty or blank"
 msgstr "தலைப்பு காலியாக இருக்கக்கூடாது"
 
-#: plugins/QuickCommands/quickcommandswidget.cpp:213
+#: plugins/QuickCommands/quickcommandswidget.cpp:253
 #, kde-format
 msgid "Command can not be empty"
 msgstr "கட்டளை காலியாக இருக்கக்கூடாது"
 
+#: plugins/QuickCommands/quickcommandswidget.cpp:273
+#, kde-format
+msgid "Rename"
+msgstr "மறுபெயரிடு"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:277
+#, kde-format
+msgid "Delete"
+msgstr "நீக்கு"
+
+#: plugins/QuickCommands/quickcommandswidget.cpp:308
+#, kde-format
+msgid "Warnings (*)"
+msgstr "எச்சரிக்கைகள் (*)"
+
 #: plugins/SSHManager/sshmanagermodel.cpp:47
 #: plugins/SSHManager/sshmanagermodel.cpp:80
-#: plugins/SSHManager/sshmanagermodel.cpp:304
-#: plugins/SSHManager/sshmanagermodel.cpp:372
-#: plugins/SSHManager/sshmanagermodel.cpp:405
+#: plugins/SSHManager/sshmanagermodel.cpp:303
+#: plugins/SSHManager/sshmanagermodel.cpp:371
+#: plugins/SSHManager/sshmanagermodel.cpp:404
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:99
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:395
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:396
 #, kde-format
 msgid "SSH Config"
 msgstr "SSH அமைப்பு"
@@ -1469,24 +1490,31 @@ msgstr "SSH மேலாளியை காட்டு"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:76
-#: plugins/SSHManager/sshwidget.ui:108
+#: plugins/SSHManager/sshwidget.ui:105
 #, kde-format
 msgid "SSH Key"
 msgstr "SSH சாவி"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:193
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:114
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Delete"
+msgstr "நீக்கு"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:195
 #, kde-format
 msgid ""
-"You are about to remove the folder %1,\n"
+"You are about to delete the folder %1,\n"
 " with multiple SSH Configurations, are you sure?"
 msgstr ""
 "பல்வேறு SSH அமைப்புகளை கொண்ட %1\n"
 "என்ற அடைவை நீக்கவிருக்கிறீர்கள். உறுதியாக நீக்கலாமா?"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:202
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:203
 #, kde-format
-msgid "Remove SSH Configurations"
-msgstr "SSH அமைப்புகளை நீக்கு"
+msgctxt "@title:window"
+msgid "Delete SSH Configurations"
+msgstr "SSH அமைப்புகளை நீக்குவது"
 
 #: plugins/SSHManager/sshmanagerpluginwidget.cpp:346
 #, kde-format
@@ -1498,52 +1526,54 @@ msgstr "புரவன் பெயரை காணவில்லை"
 msgid "Missing Name"
 msgstr "பெயரை காணவில்லை"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:357
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:358
 #, kde-format
 msgid "If Use Ssh Config is set, do not specify sshkey or username."
 msgstr ""
+"'SSH அமைப்புகளிலிருந்து' என்பது தேர்ந்தெடுக்கப்பட்டிருந்தால், SSH சாவியையோ பயனர்பெயரையோ "
+"குறிப்பிட வேண்டாம்."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:362
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:363
 #, kde-format
 msgid "At least Username or SSHKey must be set"
-msgstr ""
+msgstr "பயனர் பெயரோ SSH சாவியோ அமைக்கப்பட்டிருக்க வேண்டும்"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:368
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:369
 #, kde-format
 msgid "Missing Folder"
 msgstr "அடைவை காணவில்லை"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:373
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:374
 #, kde-format
 msgid "An SSH session must have a profile"
-msgstr ""
+msgstr "SSH அமர்வுக்கான பயன்முறை அமைக்கப்பட்டிருக்க வேண்டும்"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:397
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:398
 #, kde-format
-msgid "Cannot remove this folder"
+msgid "Cannot delete this folder"
 msgstr "இவ்வடைவை நீக்க முடியாது"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:400
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:401
 #, kde-format
-msgid "Remove folder and all of its contents"
-msgstr "அடைவையும் அதிலுள்ளவற்றையும் நீக்கு"
+msgid "Delete folder and all of its contents"
+msgstr "அடைவையும் அதிலுள்ளவற்றையும் நீக்கும்"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:404
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:405
 #, kde-format
 msgid "Double click to change the folder name."
 msgstr "அடைவின் பெயரை மாற்ற இரட்டை கிளிக் செய்யவும்."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:412
 #, kde-format
-msgid "You can't remove an automatically added entry."
+msgid "You can't delete an automatically added entry."
 msgstr "தானாக சேர்க்கப்பட்ட பதிவை நீக்க முடியாது."
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:411
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:412
 #, kde-format
-msgid "Remove selected entry"
+msgid "Delete selected entry"
 msgstr "தேர்ந்தெடுத்துள்ள பதிவை நீக்கு"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:447
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:448
 #, kde-format
 msgid ""
 "Could not get the process name, assume that we can't request a connection"
@@ -1551,186 +1581,180 @@ msgstr ""
 "நிரலின் பெயரை கண்டுபிடிக்க முடியாத‍தால், இணைப்பை உருவாக்க முடியவில்லை என்று "
 "கருதப்படுகிறது"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:448
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:467
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:449
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:468
 #, kde-format
 msgid "Error issuing SSH Command"
 msgstr "SSH கட்டளையை இயக்குவதில் சிக்கல்"
 
-#: plugins/SSHManager/sshmanagerpluginwidget.cpp:466
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:467
 #, kde-format
 msgid ""
 "Can't issue SSH command outside the shell application (eg, bash, zsh, sh)"
 msgstr "முனைய நிரலுக்கு (எ.கா. bash, zsh, sh) வெளியே SSH கட்டளையை இயக்க முடியாது"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, filterText)
-#: plugins/SSHManager/sshwidget.ui:22
+#: plugins/SSHManager/sshwidget.ui:19
 #, kde-format
 msgid "Filter..."
 msgstr "வடிகட்டு..."
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, btnInvertFilter)
-#: plugins/SSHManager/sshwidget.ui:32
+#: plugins/SSHManager/sshwidget.ui:29
 #, kde-format
 msgid "Show entries that don't match the filter"
 msgstr "வடிகட்டிக்கு பொருந்தாத உருப்படிகளை காட்டு"
 
-#. i18n: ectx: property (text), widget (QCheckBox, btnInvertFilter)
-#: plugins/SSHManager/sshwidget.ui:35
-#, kde-format
-msgid "Invert"
-msgstr "புரட்டு"
-
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: plugins/SSHManager/sshwidget.ui:57
+#: plugins/SSHManager/sshwidget.ui:54
 #, kde-format
 msgid "Identifier"
 msgstr "பெயர்"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, name)
-#: plugins/SSHManager/sshwidget.ui:64
+#: plugins/SSHManager/sshwidget.ui:61
 #, kde-format
 msgid "A name for this ssh entry"
-msgstr ""
+msgstr "இந்த ssh பதிவுக்கான பெயர்"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, name)
-#: plugins/SSHManager/sshwidget.ui:67
+#: plugins/SSHManager/sshwidget.ui:64
 #, kde-format
 msgid "The name of this entry on the list"
-msgstr ""
+msgstr "பட்டியலில் காட்டப்படும் இப்பதிவின் பெயர்"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: plugins/SSHManager/sshwidget.ui:74
+#: plugins/SSHManager/sshwidget.ui:71
 #, kde-format
 msgid "SSH Hostname"
 msgstr "SSH புரவன் பெயர்"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, hostname)
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, hostname)
-#: plugins/SSHManager/sshwidget.ui:81 plugins/SSHManager/sshwidget.ui:84
+#: plugins/SSHManager/sshwidget.ui:78 plugins/SSHManager/sshwidget.ui:81
 #, kde-format
 msgid "The hostname of the server"
 msgstr "சேவையகத்தின் புரவன் பெயர்"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: plugins/SSHManager/sshwidget.ui:91
+#: plugins/SSHManager/sshwidget.ui:88
 #, kde-format
 msgid "Port"
 msgstr "புறை"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, port)
-#: plugins/SSHManager/sshwidget.ui:98
+#: plugins/SSHManager/sshwidget.ui:95
 #, kde-format
 msgid "The port of the server, 22 is the default for ssh connections"
-msgstr ""
+msgstr "சேவையகத்தின் புறை. ssh இணைப்புகளுக்கான இயல்பிருப்பு 22 ஆகும்"
 
 #. i18n: ectx: property (text), widget (QLineEdit, port)
-#: plugins/SSHManager/sshwidget.ui:101
+#: plugins/SSHManager/sshwidget.ui:98
 #, kde-format
 msgid "22"
 msgstr "22"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, sshkey)
-#: plugins/SSHManager/sshwidget.ui:117
+#: plugins/SSHManager/sshwidget.ui:114
 #, kde-format
 msgid "The private key to be used for this connection"
-msgstr ""
+msgstr "இந்த இணைப்புக்கு பயன்படுத்த வேண்டிய கமுக்க சாவி"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, sshkey)
-#: plugins/SSHManager/sshwidget.ui:123
-#, fuzzy, kde-format
-#| msgid "Terminal Features"
+#: plugins/SSHManager/sshwidget.ui:120
+#, kde-format
 msgid "The private key"
-msgstr "முனைய வசதிகள்"
+msgstr "கமுக்க சாவி"
 
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: plugins/SSHManager/sshwidget.ui:143
+#: plugins/SSHManager/sshwidget.ui:140
 #, kde-format
 msgid "Username"
 msgstr "பயனர் பெயர்"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, username)
-#: plugins/SSHManager/sshwidget.ui:150
-#, fuzzy, kde-format
-#| msgid "New Remote Connection"
+#: plugins/SSHManager/sshwidget.ui:147
+#, kde-format
 msgid "The username for the connection"
-msgstr "புதிய புற இணைப்பு"
+msgstr "இணைப்புக்கான பயனர்பெயர்"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, username)
-#: plugins/SSHManager/sshwidget.ui:153
+#: plugins/SSHManager/sshwidget.ui:150
 #, kde-format
 msgid "Your username"
 msgstr "உங்கள் பயனர்ப்பெயர்"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useSshConfig)
-#: plugins/SSHManager/sshwidget.ui:160
+#: plugins/SSHManager/sshwidget.ui:157
 #, kde-format
 msgid ""
 "If this is set, we don't rely on the SSH key set above, but on the "
 "configuration on ~/.ssh/config"
 msgstr ""
+"இது அமைக்கப்பட்டிருந்தால், மேலுள்ள SSH சாவிக்கு பதிலாக, ~/.ssh/config என்பதில் "
+"அமைக்கப்பட்டுள்ளது பயன்படுத்தப்படும்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, useSshConfig)
-#: plugins/SSHManager/sshwidget.ui:163
+#: plugins/SSHManager/sshwidget.ui:160
 #, kde-format
 msgid "Use ~/.ssh/config for key"
-msgstr ""
+msgstr "சாவிக்கு ~/.ssh/config-ஐ பயன்படுத்து"
 
 #. i18n: ectx: property (text), widget (QLabel, folderLabel)
-#: plugins/SSHManager/sshwidget.ui:170
+#: plugins/SSHManager/sshwidget.ui:167
 #, kde-format
 msgid "Folder"
 msgstr "அடைவு"
 
 #. i18n: ectx: property (toolTip), widget (QComboBox, folder)
-#: plugins/SSHManager/sshwidget.ui:183
+#: plugins/SSHManager/sshwidget.ui:180
 #, kde-format
 msgid "For organizational purposes, this entry will be inside of this folder."
-msgstr ""
+msgstr "இப்பதிவு இவ்வடைவிற்குள் சேமிக்கப்படும்."
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: plugins/SSHManager/sshwidget.ui:196
+#: plugins/SSHManager/sshwidget.ui:193
 #, kde-format
 msgid "Profile"
 msgstr "பயன்முறை"
 
 #. i18n: ectx: property (toolTip), widget (QComboBox, profile)
-#: plugins/SSHManager/sshwidget.ui:209
+#: plugins/SSHManager/sshwidget.ui:206
 #, kde-format
 msgid "The profile to be active when the ssh session starts"
 msgstr "SSH அமர்வு துவங்கும்போது இயக்க வேண்டிய பயன்முறை"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, newSSHConfig)
-#: plugins/SSHManager/sshwidget.ui:234
+#: plugins/SSHManager/sshwidget.ui:231
 #, kde-format
 msgid "Add a new SSH Entry"
 msgstr "புதிய SSH பதிவை சேர்"
 
-#. i18n: ectx: property (toolTip), widget (QPushButton, btnRemove)
-#: plugins/SSHManager/sshwidget.ui:248
+#. i18n: ectx: property (toolTip), widget (QPushButton, btnDelete)
+#: plugins/SSHManager/sshwidget.ui:245
 #, kde-format
-msgid "Remove selected SSH entry"
+msgid "Delete selected SSH entry"
 msgstr "தேர்ந்தெடுத்துள்ள SSH பதிவை நீக்கு"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnEdit)
-#: plugins/SSHManager/sshwidget.ui:262
+#: plugins/SSHManager/sshwidget.ui:259
 #, kde-format
 msgid "Edit selected entry"
 msgstr "தேர்ந்தெடுத்துள்ள பதிவை திருத்து"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnAdd)
-#: plugins/SSHManager/sshwidget.ui:272
+#: plugins/SSHManager/sshwidget.ui:269
 #, kde-format
 msgid "Add new SSH Configuration"
 msgstr "புதிய SSH அமைப்பை சேர்"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, btnCancel)
-#: plugins/SSHManager/sshwidget.ui:282
+#: plugins/SSHManager/sshwidget.ui:279
 #, kde-format
 msgid "Cancel Add or Edit"
 msgstr "சேர்ப்பதையோ திருத்துவதையோ ரத்து செய்"
 
-#: pluginsystem/PluginManager.cpp:66
+#: pluginsystem/PluginManager.cpp:83
 #, kde-format
 msgid "No plugins available"
 msgstr "செருகுநிரல்கள் இல்லை"
@@ -1756,30 +1780,15 @@ msgstr "&அச்சடிப்பதற்குரிய பயன்மு�
 msgid "&Scale output"
 msgstr "&வெளியீட்டின் அளவை மாற்று"
 
-#: profile/Profile.cpp:166
-#, kde-format
-msgctxt "Name of the default/builtin profile"
-msgid "Default"
-msgstr "இயல்பிருப்பு"
-
-#: profile/ProfileList.cpp:37 widgets/EditProfileDialog.cpp:487
+#: profile/ProfileList.cpp:37 widgets/EditProfileDialog.cpp:475
 #, kde-format
 msgid "Default profile"
 msgstr "இயல்பிருப்பு பயன்முறை"
 
-#: profile/ProfileManager.cpp:265
+#: profile/ProfileManager.cpp:264
 #, kde-format
 msgid "Konsole does not have permission to save this profile to %1"
 msgstr "%1 என்ற இடத்திற்கு இப்பயன்முறையை சேமிக்க கான்சோலுக்கு அனுமதி இல்லை"
-
-#: profile/ProfileManager.cpp:302
-#, kde-format
-msgid ""
-"The name \"Default\" is reserved for the built-in fallback profile;\n"
-"the profile is going to be saved as \"%1\""
-msgstr ""
-"\"இயல்பிருப்பு\" எனும் பெயர், கான்சோலின் முன்னிருப்பு பயன்முறைக்கு ஒதுக்கப்பட்டது;\n"
-"இப்பயன்முறை, \"%1\" என்று சேமிக்கப்படும்"
 
 #: profile/ProfileModel.cpp:56
 #, kde-format
@@ -1796,16 +1805,22 @@ msgstr "சுருக்குவழி"
 #: profile/ProfileModel.cpp:81
 #, kde-format
 msgctxt ""
-"@label:textbox added to the name of the Default/fallback profile, to point "
-"out it's read-only/hardcoded"
+"@label:textbox added to the name of the built-in profile, to point out it's "
+"read-only"
 msgid " [Read-only]"
 msgstr " [படித்தல் மட்டும்]"
 
 #: profile/ProfileModel.cpp:85
 #, kde-format
 msgctxt "@label:textbox added to the name of the current default profile"
-msgid " (default)"
-msgstr " (இயல்பிருப்பு)"
+msgid " [Default]"
+msgstr " [இயல்பிருப்பு]"
+
+#: profile/ProfileModel.cpp:100
+#, kde-format
+msgctxt "@info:tooltip"
+msgid "Built-in profile is always available"
+msgstr "உள்ளமை பயன்முறையை எப்போது வேண்டுமானாலும் பயன்படுத்தலாம்"
 
 #: profile/ProfileModel.cpp:112
 #, kde-format
@@ -1860,7 +1875,7 @@ msgstr "கருப்பின் மீது நீலம்"
 #: schemas.cpp:5
 #, kde-format
 msgid "Breeze"
-msgstr ""
+msgstr "பிரீஸ்"
 
 #: schemas.cpp:6
 #, kde-format
@@ -1917,29 +1932,29 @@ msgstr ""
 msgid "Solaris console"
 msgstr "சோலரிஸ் முனையம்"
 
-#: session/Session.cpp:121
+#: session/Session.cpp:88
 #, kde-format
 msgid "Bell in '%1' (Session '%2')"
 msgstr "'%1' என்பதில் மணியடிக்கிறது (அமர்வு '%2')"
 
-#: session/Session.cpp:406
+#: session/Session.cpp:373
 #, kde-format
 msgid "Could not find binary: "
 msgstr "இருமத்தை கண்டுபிடிக்க முடியவில்லை: "
 
-#: session/Session.cpp:415
+#: session/Session.cpp:382
 #, kde-format
 msgctxt "@info:shell Alert the user with red color text"
 msgid "Warning: "
 msgstr "எச்சரிக்கை: "
 
-#: session/Session.cpp:477
+#: session/Session.cpp:457
 #, kde-format
 msgid "Could not find an interactive shell to start."
 msgstr ""
 "துவக்க வேண்டிய மனிதப்பயன்பாட்டிற்கான (interactive) முனையத்தை கண்டுபிடிக்க முடியவில்லை."
 
-#: session/Session.cpp:483 session/Session.cpp:485
+#: session/Session.cpp:463 session/Session.cpp:465
 #, kde-format
 msgid ""
 "Could not find '%1', starting '%2' instead.  Please check your profile "
@@ -1948,17 +1963,23 @@ msgstr ""
 "'%1' கண்டுபிடிக்கப்படவில்லை; மாற்றாக '%2' துவக்கப்படுகிறது.  உங்கள் பயனர் கணக்கின் "
 "அமைப்புகளை சரிபாருங்கள்."
 
-#: session/Session.cpp:520
+#: session/Session.cpp:516
 #, kde-format
 msgid "Could not start program '%1' with arguments '%2'."
 msgstr "'%1' நிரலை '%2' என்ற தருமதிப்புகளுடன் துவக்க முடியவில்லை."
 
-#: session/Session.cpp:665
+#: session/Session.cpp:661
 #, kde-format
 msgid "Silence in '%1' (Session '%2')"
 msgstr "'%1' என்பதில் அமைதி (அமர்வு '%2')"
 
-#: session/Session.cpp:917
+#: session/Session.cpp:665 session/Session.cpp:1771
+#: session/SessionController.cpp:360 terminalDisplay/TerminalBell.cpp:43
+#, kde-format
+msgid "Show session"
+msgstr "அமர்வைக் காட்டு"
+
+#: session/Session.cpp:929
 #, kde-format
 msgid ""
 "The D-Bus methods sendText/runCommand were just used.  There are security "
@@ -1967,28 +1988,28 @@ msgid ""
 "warning will only show once for this Konsole instance.</p>"
 msgstr ""
 
-#: session/Session.cpp:953
+#: session/Session.cpp:965
 #, kde-format
 msgctxt "@info:shell This session is done"
 msgid "Finished"
 msgstr "நிறைவடைந்தது"
 
-#: session/Session.cpp:967 session/Session.cpp:978
+#: session/Session.cpp:979 session/Session.cpp:990
 #, kde-format
 msgid "Program '%1' crashed."
 msgstr "'%1' நிரல் முறிவடைந்தது."
 
-#: session/Session.cpp:969
+#: session/Session.cpp:981
 #, kde-format
 msgid "Program '%1' exited with status %2."
 msgstr "'%1' நிரல், %2 என்ற நிலையுடன் வெளிவந்தது."
 
-#: session/Session.cpp:1423
+#: session/Session.cpp:1435
 #, kde-format
 msgid "ZModem Progress"
 msgstr "ZModem முன்னேற்றம்"
 
-#: session/Session.cpp:1755
+#: session/Session.cpp:1767
 #, kde-format
 msgid "Activity in '%1' (Session '%2')"
 msgstr "'%1' என்பதில் செயல்பாடு (அமர்வு '%2')"
@@ -1998,225 +2019,240 @@ msgstr "'%1' என்பதில் செயல்பாடு (அமர்�
 msgid "Konsole"
 msgstr "கான்சோல்"
 
-#: session/SessionController.cpp:359
+#: session/SessionController.cpp:356
 #, kde-format
 msgid "The process '%1' has finished running in session '%2'"
 msgstr "'%2' என்ற அமர்வில் '%1' என்ற பணி முடிவடைந்துள்ளது"
 
-#: session/SessionController.cpp:437
+#: session/SessionController.cpp:438
 #, kde-format
 msgid "Konsole does not know how to open the bookmark: "
 msgstr "இந்நினைவுக்குறியை எப்படி திறப்பதென கான்சோலுக்கு தெரியவில்லை: "
 
-#: session/SessionController.cpp:508
+#: session/SessionController.cpp:517
 #, kde-format
 msgid "Search for '%1' with"
 msgstr "'%1' என்பதை இதைக்கொண்டு தேடு"
 
-#: session/SessionController.cpp:522
+#: session/SessionController.cpp:533
 #, kde-format
 msgid "Configure Web Shortcuts..."
 msgstr "இணைய சுருக்குவழிகளை அமை..."
 
-#: session/SessionController.cpp:633
+#: session/SessionController.cpp:643
 #, kde-format
 msgid "&Close Session"
 msgstr "&அமர்வை மூடு"
 
-#: session/SessionController.cpp:640
+#: session/SessionController.cpp:650
 #, kde-format
 msgid "Open File Manager"
 msgstr "கோப்பு உலாவியை திற"
 
-#: session/SessionController.cpp:658
+#: session/SessionController.cpp:662
 #, kde-format
 msgid "Copy"
 msgstr "நகலெடு"
 
-#: session/SessionController.cpp:675
+#: session/SessionController.cpp:668
+#, kde-format
+msgid "Copy except prompts"
+msgstr "prompt-ஐத் தவிர அனைத்தையும் நகலெடு"
+
+#: session/SessionController.cpp:674
+#, kde-format
+msgid "Copy user input"
+msgstr "பயனரின் உள்ளீட்டை நகலெடு"
+
+#: session/SessionController.cpp:680
+#, kde-format
+msgid "Copy command output"
+msgstr "கட்டளையின் வெளியீட்டை நகலெடு"
+
+#: session/SessionController.cpp:695
 #, kde-format
 msgid "Paste Selection"
 msgstr "தேர்வை ஒட்டு"
 
-#: session/SessionController.cpp:682
+#: session/SessionController.cpp:702
 #, kde-format
 msgid "Web Search"
 msgstr "இணையத்தேடல்"
 
-#: session/SessionController.cpp:688
+#: session/SessionController.cpp:708
 #, kde-format
 msgid "&Select All"
 msgstr "&அனைத்தையும் தேர்ந்தெடு"
 
-#: session/SessionController.cpp:692
+#: session/SessionController.cpp:712
 #, kde-format
 msgid "Select &Line"
 msgstr "&வரியை தேர்ந்தெடு"
 
-#: session/SessionController.cpp:695
+#: session/SessionController.cpp:715
 #, kde-format
 msgid "Save Output &As..."
 msgstr "வெளியீட்டை &இவ்வாறு சேமி…"
 
-#: session/SessionController.cpp:701
+#: session/SessionController.cpp:721
 #, kde-format
 msgid "&Print Screen..."
 msgstr "&திரையை அச்சிடு…"
 
-#: session/SessionController.cpp:705
+#: session/SessionController.cpp:725
 #, kde-format
 msgid "Adjust Scrollback..."
 msgstr "முந்தைய உரை காட்டப்படுவதை மாற்று..."
 
-#: session/SessionController.cpp:709
+#: session/SessionController.cpp:729
 #, kde-format
 msgid "Clear Scrollback"
 msgstr "முந்தைய உரையை நீக்கு"
 
-#: session/SessionController.cpp:713
+#: session/SessionController.cpp:733
 #, kde-format
 msgid "Clear Scrollback and Reset"
 msgstr "முந்தைய உரையை நீக்கி முனையத்தை மீட்டமை"
 
-#: session/SessionController.cpp:722
+#: session/SessionController.cpp:742
 #, kde-format
 msgid "Switch Profile"
 msgstr "பயன்முறையை மாற்று"
 
-#: session/SessionController.cpp:751
+#: session/SessionController.cpp:771
 #, kde-format
 msgid "Set &Encoding"
 msgstr "எழுத்துருவாக்கத்தை &அமை"
 
-#: session/SessionController.cpp:768
+#: session/SessionController.cpp:791
 #, kde-format
 msgctxt "@item:inmenu Allows terminal applications to request mouse tracking"
 msgid "Allow mouse tracking"
 msgstr "சுட்டியின் இருப்பிடத்தை நிரல்கள் அறியவிடு"
 
-#: session/SessionController.cpp:773
+#: session/SessionController.cpp:799
 #, kde-format
 msgctxt "@item:inmenu A read only (locked) session"
 msgid "Read-only"
 msgstr "படித்தல் மட்டும்"
 
-#: session/SessionController.cpp:784
+#: session/SessionController.cpp:810
 #, kde-format
 msgid "&Configure or Rename Tab..."
 msgstr "&கீற்றை அமை அல்லது அதற்கு மறுபெயரிடு…"
 
-#: session/SessionController.cpp:790
+#: session/SessionController.cpp:816
 #, kde-format
 msgid "&All Tabs in Current Window"
 msgstr "&தற்போதைய சாளரத்திலுள்ள அனைத்து கீற்றுகளும்"
 
-#: session/SessionController.cpp:797
+#: session/SessionController.cpp:823
 #, kde-format
 msgid "&Select Tabs..."
 msgstr "&கீற்றுகளை தேர்ந்தெடு…"
 
-#: session/SessionController.cpp:803
+#: session/SessionController.cpp:829
 #, kde-format
 msgctxt "@action:inmenu Do not select any tabs"
 msgid "&None"
 msgstr "&ஏதுமில்லை"
 
-#: session/SessionController.cpp:811
+#: session/SessionController.cpp:837
 #, kde-format
 msgid "Copy Input To"
 msgstr "உள்ளீட்டை நகலெடுக்க வேண்டிய இடம்"
 
-#: session/SessionController.cpp:818
+#: session/SessionController.cpp:844
 #, kde-format
 msgid "&ZModem Upload..."
 msgstr "&ZModem பதிவேற்றம்..."
 
-#: session/SessionController.cpp:823
+#: session/SessionController.cpp:849
 #, kde-format
 msgid "Monitor for &Activity"
 msgstr "&செயல்பாட்டிற்காக கண்காணி"
 
-#: session/SessionController.cpp:829
+#: session/SessionController.cpp:855
 #, kde-format
 msgid "Monitor for &Silence"
 msgstr "&அமைதிக்காக கண்காணி"
 
-#: session/SessionController.cpp:835
+#: session/SessionController.cpp:861
 #, kde-format
 msgid "Monitor for Process Finishing"
 msgstr "&பணி முடிவடைவதற்காக கண்காணி"
 
-#: session/SessionController.cpp:842
+#: session/SessionController.cpp:868
 #, kde-format
 msgid "Enlarge Font"
 msgstr "எழுத்துருவை பெரிதாக்கு"
 
-#: session/SessionController.cpp:850
+#: session/SessionController.cpp:876
 #, kde-format
 msgid "Shrink Font"
 msgstr "எழுத்துருவை சிறிதாக்கு"
 
-#: session/SessionController.cpp:855
+#: session/SessionController.cpp:881
 #, kde-format
 msgid "Reset Font Size"
 msgstr "எழுத்துருவின் அளவை மீட்டமை"
 
-#: session/SessionController.cpp:860
+#: session/SessionController.cpp:886
 #, kde-format
 msgid "Send Signal"
 msgstr "சமிக்ஞை அனுப்பு"
 
-#: session/SessionController.cpp:864
+#: session/SessionController.cpp:890
 #, kde-format
 msgid "&Suspend Task"
 msgstr "&பணியை இடைநிறுத்து"
 
-#: session/SessionController.cpp:869
+#: session/SessionController.cpp:895
 #, kde-format
 msgid "&Continue Task"
 msgstr "&பணியைத் தொடர்"
 
-#: session/SessionController.cpp:874
+#: session/SessionController.cpp:900
 #, kde-format
 msgid "&Hangup"
 msgstr "&தொடர்பைத் துண்டி"
 
-#: session/SessionController.cpp:879
+#: session/SessionController.cpp:905
 #, kde-format
 msgid "&Interrupt Task"
 msgstr "&பணியில் குறுக்கிடு"
 
-#: session/SessionController.cpp:884
+#: session/SessionController.cpp:910
 #, kde-format
 msgid "&Terminate Task"
 msgstr "&பணியை முடி"
 
-#: session/SessionController.cpp:889
+#: session/SessionController.cpp:915
 #, kde-format
 msgid "&Kill Task"
 msgstr "&பணியை கட்டாயமாக முடி"
 
-#: session/SessionController.cpp:894
+#: session/SessionController.cpp:920
 #, kde-format
 msgid "User Signal &1"
 msgstr "பயனர் சமிக்ஞை &1"
 
-#: session/SessionController.cpp:899
+#: session/SessionController.cpp:925
 #, kde-format
 msgid "User Signal &2"
 msgstr "பயனர் சமிக்ஞை &2"
 
-#: session/SessionController.cpp:916
+#: session/SessionController.cpp:942
 #, kde-format
 msgid "Create New Profile..."
 msgstr "புதிய பயன்முறையை உருவாக்கு…"
 
-#: session/SessionController.cpp:918
+#: session/SessionController.cpp:944
 #, kde-format
 msgid "Edit Current Profile..."
 msgstr "தற்போதைய பயன்முறையை திருத்து…"
 
-#: session/SessionController.cpp:1035
+#: session/SessionController.cpp:1061
 #, kde-format
 msgid ""
 "A program is currently running in this session.  Are you sure you want to "
@@ -2224,7 +2260,7 @@ msgid ""
 msgstr ""
 "இவ்வமர்வில் ஓர் நிரல் இயங்கிக் கொண்டிருக்கிறது. உறுதியாக அதை மூட விரும்புகிறீர்களா?"
 
-#: session/SessionController.cpp:1039
+#: session/SessionController.cpp:1065
 #, kde-format
 msgid ""
 "The program '%1' is currently running in this session.  Are you sure you "
@@ -2232,12 +2268,18 @@ msgid ""
 msgstr ""
 "இவ்வமர்வில் '%1' என்ற நிரல் இயங்கிக் கொண்டிருக்கிறது. உறுதியாக அதை மூட விரும்புகிறீர்களா?"
 
-#: session/SessionController.cpp:1046 session/SessionController.cpp:1079
+#: session/SessionController.cpp:1072 session/SessionController.cpp:1107
 #, kde-format
 msgid "Confirm Close"
 msgstr "மூடுவதை உறுதிசெய்யுங்கள்"
 
-#: session/SessionController.cpp:1070
+#: session/SessionController.cpp:1073
+#, kde-format
+msgctxt "@action:button"
+msgid "Close Program"
+msgstr "நிரலை மூடு"
+
+#: session/SessionController.cpp:1096
 #, kde-format
 msgid ""
 "A program in this session would not die.  Are you sure you want to kill it "
@@ -2245,7 +2287,7 @@ msgid ""
 msgstr ""
 "இவ்வமர்விலுள்ள ஓர் நிரல் வெளியேற மறுக்கிறது. அதை கட்டாயப்படுத்தி முடிவடைய வைக்கலாமா?"
 
-#: session/SessionController.cpp:1074
+#: session/SessionController.cpp:1100
 #, kde-format
 msgid ""
 "The program '%1' is in this session would not die.  Are you sure you want to "
@@ -2254,17 +2296,23 @@ msgstr ""
 "இவ்வமர்விலுள்ள '%1' என்ற நிரல் வெளியேற மறுக்கிறது. அதை கட்டாயப்படுத்தி முடிவடைய "
 "வைக்கலாமா?"
 
-#: session/SessionController.cpp:1888
+#: session/SessionController.cpp:1108
+#, kde-format
+msgctxt "@action:button"
+msgid "Kill Program"
+msgstr "நிரலை கட்டாயப்படுத்தி மூடு"
+
+#: session/SessionController.cpp:1929
 #, kde-format
 msgid "Open Current Folder With"
 msgstr "தற்போதைய அடைவை இதனால் திற"
 
-#: session/SessionController.cpp:1958
+#: session/SessionController.cpp:1999
 #, kde-format
 msgid "Save ZModem Download to..."
 msgstr "&ZModem பதிவிறக்கத்தை இங்கு சேமி…"
 
-#: session/SessionController.cpp:1968
+#: session/SessionController.cpp:2009
 #, fuzzy, kde-format
 #| msgid ""
 #| "<p>A ZModem file transfer attempt has been detected, but no suitable "
@@ -2279,7 +2327,7 @@ msgstr ""
 "மென்பொருள் அமைப்பில் இல்லை.\n"
 "<p> 'rzsz' அல்லது 'lrzsz' தொகுப்பை வேண்டுமானால் நிறுவலாம்.\n"
 
-#: session/SessionController.cpp:1978
+#: session/SessionController.cpp:2019
 #, fuzzy, kde-format
 #| msgid ""
 #| "<p>The current session already has a ZModem file transfer in progress."
@@ -2287,7 +2335,7 @@ msgid ""
 "<p>The current session already has a ZModem file transfer in progress.</p>"
 msgstr "<பி>நடப்பு அமர்வில் ஏற்கனவே உள்ள Z மோடம் கோப்பு இடமாற்றம் நடைமுறையில் உள்ளது."
 
-#: session/SessionController.cpp:1988
+#: session/SessionController.cpp:2029
 #, fuzzy, kde-format
 #| msgid ""
 #| "<p>No suitable ZModem software was found on the system.\n"
@@ -2299,19 +2347,19 @@ msgstr ""
 "<p>பொருத்தமான Z மோடம் மென்பொருள் அமைப்பு கிடைக்கவில்லை.\n"
 " <p>'rzsz' அல்லது 'lrzsz '  தொகுப்பு வேண்டுமானால் நிறுவலாம்.\n"
 
-#: session/SessionController.cpp:1993
+#: session/SessionController.cpp:2034
 #, fuzzy, kde-format
 #| msgid "Select Files to Upload"
 msgid "Select Files for ZModem Upload"
 msgstr "பதிவேற்றத்திற்கான கோப்புகளை தேர்ந்தெடு"
 
-#: session/SessionListModel.cpp:90
+#: session/SessionListModel.cpp:89
 #, kde-format
 msgctxt "@item:intable The session index"
 msgid "Number"
 msgstr "எண்"
 
-#: session/SessionListModel.cpp:92
+#: session/SessionListModel.cpp:91
 #, kde-format
 msgctxt "@item:intable The session title"
 msgid "Title"
@@ -2453,171 +2501,167 @@ msgstr "பின்னோக்கித் தேடு"
 #: settings/konsole.kcfg:18
 #, kde-format
 msgid "Show window title set by escape sequence on the titlebar"
-msgstr ""
+msgstr "விடுபடுக்குறியீட்டால் அமைக்கபடும் சாளரத்தலைப்பை தலைப்புப்பட்டையில் காட்டு"
 
 #. i18n: ectx: tooltip, entry (AllowMenuAccelerators), group (KonsoleWindow)
 #: settings/konsole.kcfg:23
 #, kde-format
 msgid "Allow users to access top menu through Alt+Key combination"
-msgstr ""
+msgstr "Alt+விசை போன்ற விசைக்கூட்டால் பிரதான பட்டியை அணுகவிடு"
 
 #. i18n: ectx: label, entry (RememberWindowSize), group (KonsoleWindow)
 #: settings/konsole.kcfg:27
 #, kde-format
 msgid "Use current window size on next startup"
-msgstr ""
+msgstr "அடுத்த துவக்கத்தில் தற்போதைய சாளர அளவையே பயன்படுத்து"
 
 #. i18n: ectx: tooltip, entry (RememberWindowSize), group (KonsoleWindow)
 #: settings/konsole.kcfg:28
 #, kde-format
 msgid "The window size will be saved upon exiting Konsole"
-msgstr ""
+msgstr "கான்சோலிலிருந்து வெளியேறும்போது சாளரத்தின் அளவு செமிக்கப்படும்"
 
 #. i18n: ectx: label, entry (ThumbnailSize), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:42
 #, kde-format
 msgid "Thumbnail Width"
-msgstr ""
+msgstr "சிறுபடத்தின் அகலம்"
 
 #. i18n: ectx: tooltip, entry (ThumbnailSize), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:43
 #, kde-format
 msgid "Sets the width of the thumbnail"
-msgstr ""
+msgstr "சிறுபடத்தின் அகலத்தை அமைக்கும்"
 
 #. i18n: ectx: label, entry (ThumbnailShift), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailShift), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:47 settings/konsole.kcfg:48
 #, kde-format
 msgid "Use Shift to display a thumbnail"
-msgstr ""
+msgstr "சிறுபடத்தை காட்ட shift-ஐப் பயன்படுத்து"
 
 #. i18n: ectx: label, entry (ThumbnailAlt), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailAlt), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:52 settings/konsole.kcfg:53
 #, kde-format
 msgid "Use Alt to display a thumbnail"
-msgstr ""
+msgstr "சிறுபடத்தை காட்ட alt-ஐப் பயன்படுத்து"
 
 #. i18n: ectx: label, entry (ThumbnailCtrl), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailCtrl), group (ThumbnailsSettings)
 #: settings/konsole.kcfg:57 settings/konsole.kcfg:58
 #, kde-format
 msgid "Use Ctrl to display a thumbnail"
-msgstr ""
+msgstr "சிறுபடத்தை காட்ட ctrl-ஐப் பயன்படுத்து"
 
 #. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
 #: settings/konsole.kcfg:64
-#, fuzzy, kde-format
-#| msgid "Sets whether the search is case sensitive"
+#, kde-format
 msgid "Search is case sensitive"
-msgstr "தேடுதல் கேஸ் சார்ந்து இருக்கிறதா என்பதை அமைக்கும்"
+msgstr "பெரிய/சிறிய எழுத்துவகையை தேடல் வேறுபடுத்தும்"
 
 #. i18n: ectx: label, entry (SearchHighlightMatches), group (SearchSettings)
 #: settings/konsole.kcfg:73
-#, fuzzy, kde-format
-#| msgid "Highlight all"
+#, kde-format
 msgid "Highlight all search matches"
-msgstr "அனைத்தையும் பளிச்சிடு"
+msgstr "பொருந்தும் அனைத்தை முன்னிலைப்படுத்து"
 
 #. i18n: ectx: tooltip, entry (SearchHighlightMatches), group (SearchSettings)
 #: settings/konsole.kcfg:74
-#, fuzzy, kde-format
-#| msgid "Sets whether matching text should be highlighted"
+#, kde-format
 msgid "Sets whether matching text should be highlighted"
-msgstr "பொருந்தும் பதம் பளிச்சிடப்பட வேண்டுமா எனத் தீர்மானிக்கும்"
+msgstr "பொருந்தும் உரை முன்னிலைப்படுத்தப்பட வேண்டுமா என்பதை அமைக்கும்"
 
 #. i18n: ectx: label, entry (SplitViewVisibility), group (SplitView)
 #. i18n: ectx: label, entry (TabBarVisibility), group (TabBar)
 #: settings/konsole.kcfg:85 settings/konsole.kcfg:105
 #, kde-format
 msgid "Control the visibility of the whole tab bar"
-msgstr ""
+msgstr "கீற்றுப்பட்டை காட்டப்படுவதை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (SplitDragHandleSize), group (SplitView)
 #: settings/konsole.kcfg:94
 #, kde-format
 msgid "Control the size of the handle between panels"
-msgstr ""
+msgstr "பலகைகளுக்கிடையேயான பிடிப்பியின் அளவை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
 #: settings/konsole.kcfg:114
 #, kde-format
 msgid "Control the position of the tab bar"
-msgstr ""
+msgstr "கீற்றுப்பட்டையின் இருப்பிடத்தை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (TabBarStyleSheet), group (TabBar)
 #: settings/konsole.kcfg:122
 #, kde-format
 msgid "Control the visual style of the tab bar"
-msgstr ""
+msgstr "கீற்றுப்பட்டையின் தோற்றத்தை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (TabBarUseUserStyleSheet), group (TabBar)
 #: settings/konsole.kcfg:126
-#, fuzzy, kde-format
-#| msgid "Use a custom, fixed color for the cursor"
+#, kde-format
 msgid "Use a user-defined .css file for the tab bar"
-msgstr "தனிப்பட்ட, நிலையான நிறமொன்றை இடஞ்சுட்டிக்காக பயன்படுத்துக"
+msgstr "பயனர் குறிப்பிடும் .css கோப்பைக் கீற்றுப்பட்டைக்குப் பயன்படுத்து"
 
 #. i18n: ectx: label, entry (TabBarUserStyleSheetFile), group (TabBar)
 #: settings/konsole.kcfg:130
 #, kde-format
 msgid "The .css file to use for the tab bar style"
-msgstr ""
+msgstr "கீற்றுப்பட்டையின் தோற்றத்திட்டத்திற்கு பயன்படுத்த வேண்டிய .css கோப்பு"
 
 #. i18n: ectx: label, entry (CloseTabOnMiddleMouseButton), group (TabBar)
 #: settings/konsole.kcfg:134
 #, kde-format
 msgid "Allow middle-clicking on open tabs to close them"
-msgstr ""
+msgstr "கீற்றுகளின் மீது நடு-கிளிக் செய்தால் அவற்றை மூடு"
 
 #. i18n: ectx: label, entry (NewTabButton), group (TabBar)
 #: settings/konsole.kcfg:138
 #, kde-format
 msgid "Control the visibility of 'New Tab' button on the tab bar"
-msgstr ""
+msgstr "கீற்றுப்பட்டையில் 'புதிய கீற்று' பட்டன் காட்டப்படுவதை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (CloseTabButton), group (TabBar)
 #: settings/konsole.kcfg:142
 #, kde-format
 msgid "Control where the \"Close tab\" button will be displayed"
-msgstr ""
+msgstr "கீற்றுகளை மூடும் பட்டன் காட்டப்படும் இடத்தை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
 #: settings/konsole.kcfg:151
 #, kde-format
 msgid "Control where to put the new tab"
-msgstr ""
+msgstr "புதிய கீற்றுகள் சேர்க்கப்படும் இடத்தை கட்டுப்படுத்தும்"
 
 #. i18n: ectx: label, entry (ExpandTabWidth), group (TabBar)
 #: settings/konsole.kcfg:159
 #, kde-format
 msgid "Expand the tab widths"
-msgstr ""
+msgstr "கீற்றுகளை அகலப்படுத்து"
 
 #. i18n: ectx: label, entry (scrollbackUseSystemLocation), group (FileLocation)
 #: settings/konsole.kcfg:175
 #, kde-format
 msgid "For scrollback files, use system-wide folder location"
-msgstr ""
+msgstr "முந்தைய உரையை சேமிப்பதற்கு, கணினி முழுவதற்குமான இடத்தை பயன்படுத்து"
 
 #. i18n: ectx: label, entry (scrollbackUseCacheLocation), group (FileLocation)
 #: settings/konsole.kcfg:179
 #, kde-format
 msgid "For scrollback files, use user's specific folder location"
-msgstr ""
+msgstr "முந்தைய உரையை சேமிப்பதற்கு, இப்பயனருக்கான தனிப்பட்ட இடத்தை பயன்படுத்து"
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocation), group (FileLocation)
 #: settings/konsole.kcfg:183
 #, kde-format
 msgid "For scrollback files, use specified folder location"
-msgstr ""
+msgstr "முந்தைய உரையை சேமிப்பதற்கு, வேறு இடத்தை பயன்படுத்து"
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocationDirectory), group (FileLocation)
 #: settings/konsole.kcfg:187
 #, kde-format
 msgid "For scrollback files, use this folder"
-msgstr ""
+msgstr "முந்தைய உரையை சேமிப்பதற்கு, இந்த அடைவை பயன்படுத்து"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
 #: settings/PartInfo.ui:29
@@ -2785,10 +2829,9 @@ msgstr "கீற்றுகளை சாளரத்தின் முழு 
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_TabBarUseUserStyleSheet)
 #: settings/TabBarSettings.ui:232
-#, fuzzy, kde-format
-#| msgid "Use a custom, fixed color for the cursor"
+#, kde-format
 msgid "Use user-defined stylesheet:"
-msgstr "தனிப்பட்ட, நிலையான நிறமொன்றை இடஞ்சுட்டிக்காக பயன்படுத்துக"
+msgstr "பயனர்-வரையறுக்கும் stylesheet-ஐப் பயன்படுத்து:"
 
 #. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_scrollbackUseSpecifiedLocationDirectory)
 #. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
@@ -2895,7 +2938,7 @@ msgctxt "@option:radio Always show the split header"
 msgid "Always"
 msgstr "எப்போதும்"
 
-#: settings/TemporaryFilesSettings.cpp:33
+#: settings/TemporaryFilesSettings.cpp:31
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2903,7 +2946,7 @@ msgctxt ""
 msgid "System temporary directory (%1)"
 msgstr "கணினி முழுவதற்குமான தற்காலிக அடைவு (%1)"
 
-#: settings/TemporaryFilesSettings.cpp:35
+#: settings/TemporaryFilesSettings.cpp:33
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2984,70 +3027,70 @@ msgstr ""
 msgid "Enable thumbnails generation"
 msgstr "சிறுபட உருவாக்கத்தை இயக்கு"
 
-#: terminalDisplay/TerminalDisplay.cpp:702
-#: terminalDisplay/TerminalDisplay.cpp:703
+#: terminalDisplay/TerminalDisplay.cpp:639
+#: terminalDisplay/TerminalDisplay.cpp:640
 #, kde-format
 msgid "Size: XXX x XXX"
 msgstr "அளவு: XXX x XXX"
 
-#: terminalDisplay/TerminalDisplay.cpp:714
+#: terminalDisplay/TerminalDisplay.cpp:651
 #, kde-format
 msgid "Size: %1 x %2"
 msgstr "அளவு: %1 x %2"
 
-#: terminalDisplay/TerminalDisplay.cpp:2201
+#: terminalDisplay/TerminalDisplay.cpp:2133
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
 msgstr[0] "%1 எழுத்தை உறுதியாக ஒட்ட வேண்டுமா?"
 msgstr[1] "%1 எழுத்துகளை உறுதியாக ஒட்ட வேண்டுமா?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2202
+#: terminalDisplay/TerminalDisplay.cpp:2134
 #, kde-format
 msgid "Confirm Paste"
 msgstr "ஒட்டுவதை உறுதிசெய்யுங்கள்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2235
+#: terminalDisplay/TerminalDisplay.cpp:2167
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr "End Of Text/Interrupt: தற்போதைய பணியை வெளியேற செய்யலாம்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2236
+#: terminalDisplay/TerminalDisplay.cpp:2168
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr "End Of Transmission: தற்போதைய பணியை வெளியேற செய்யலாம்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2237
+#: terminalDisplay/TerminalDisplay.cpp:2169
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr "மணி: கேட்க‍க்கூடிய எச்சரிக்கையை எழுப்ப முயற்சிக்கும்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2238
+#: terminalDisplay/TerminalDisplay.cpp:2170
 #, kde-format
 msgid "Backspace"
 msgstr "Backspace"
 
-#: terminalDisplay/TerminalDisplay.cpp:2239
+#: terminalDisplay/TerminalDisplay.cpp:2171
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr "Device Control Three/XOFF: வெளியீட்டை முடக்கும்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2240
+#: terminalDisplay/TerminalDisplay.cpp:2172
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr "Substitute/Suspend: தற்போதைய பணியை இடைநிறுத்தலாம்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2241
+#: terminalDisplay/TerminalDisplay.cpp:2173
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr "Escape: முனையத்தின் நிலையை மாற்றியமைக்கும்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2242
+#: terminalDisplay/TerminalDisplay.cpp:2174
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr "File Separator/Quit: தற்போதைய பணியை ரத்து செய்யலாம்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2265
+#: terminalDisplay/TerminalDisplay.cpp:2197
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
@@ -3055,31 +3098,31 @@ msgid ""
 msgstr ""
 "நீங்கள் ஒட்ட முயற்சிக்கும் உரை, மறைந்த கட்டுப்பாடு குறிகளைக் கொண்டது. அவற்றை நீக்க வேண்டுமா?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2268
+#: terminalDisplay/TerminalDisplay.cpp:2200
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "ஒட்டுவதை உறுதிசெய்யுங்கள்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2269
+#: terminalDisplay/TerminalDisplay.cpp:2201
 #, kde-format
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "&கட்டுப்பாடு குறிகளை நீக்கி ஒட்டு"
 
-#: terminalDisplay/TerminalDisplay.cpp:2270
+#: terminalDisplay/TerminalDisplay.cpp:2202
 #, kde-format
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "&அப்படியே ஒட்டு"
 
-#: terminalDisplay/TerminalDisplay.cpp:2271
+#: terminalDisplay/TerminalDisplay.cpp:2203
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr "&ரத்து செய்"
 
-#: terminalDisplay/TerminalDisplay.cpp:2500
+#: terminalDisplay/TerminalDisplay.cpp:2432
 #, kde-format
 msgid ""
 "<qt>Output has been <a href=\"https://en.wikipedia.org/wiki/"
@@ -3090,17 +3133,17 @@ msgstr ""
 "wiki/Software_flow_control\">இடைநிறுத்தப்பட்டுள்ளது</a>. வெளியீடு தொடர <b>Ctrl+Q</"
 "b> என்பதை அழுத்துங்கள்.</qt>"
 
-#: terminalDisplay/TerminalDisplay.cpp:2538
+#: terminalDisplay/TerminalDisplay.cpp:2470
 #, kde-format
 msgid "This terminal is read-only."
 msgstr "இம்முனையம் படிக்க மட்டும் கூடியது."
 
-#: terminalDisplay/TerminalDisplay.cpp:2769
+#: terminalDisplay/TerminalDisplay.cpp:2709
 #, kde-format
 msgid "Change &Directory To"
 msgstr "&இந்த அடைவிற்கு மாறு"
 
-#: terminalDisplay/TerminalDisplay.cpp:2802
+#: terminalDisplay/TerminalDisplay.cpp:2742
 #, kde-format
 msgid "&Paste Location"
 msgstr "&இருப்பிடத்தை ஒட்டு"
@@ -3249,23 +3292,35 @@ msgctxt "@action Shortcut entry"
 msgid "Move tab to the left"
 msgstr "கீற்றை இடது பக்கமாக நகர்த்து"
 
-#: ViewManager.cpp:280
+#: ViewManager.cpp:277
+#, kde-format
+msgctxt "@action Shortcut entry"
+msgid "Setup semantic integration (bash)"
+msgstr "பொருளறி அம்சங்களை அமை (bash)"
+
+#: ViewManager.cpp:284
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Equal size to all views"
+msgstr "அனைத்து காட்சிப்பகுதிகளையும் ஒரே அளவாக்கு"
+
+#: ViewManager.cpp:294
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Switch to Tab %1"
 msgstr "%1-ஆம் கீற்றுக்கு தாவு"
 
-#: ViewManager.cpp:950
+#: ViewManager.cpp:1009
 #, kde-format
 msgid "Save File"
 msgstr "கோப்பை சேமி"
 
-#: ViewManager.cpp:950 ViewManager.cpp:1019
+#: ViewManager.cpp:1009 ViewManager.cpp:1078
 #, kde-format
 msgid "Konsole View Layout (*.json)"
 msgstr "கான்சோல் காட்சிப்பகுதி தளவமைப்பு (*.json)"
 
-#: ViewManager.cpp:953
+#: ViewManager.cpp:1012
 #, kde-format
 msgid ""
 "A problem occurred when saving the Layout.\n"
@@ -3274,7 +3329,7 @@ msgstr ""
 "தளவமைப்பை சேமிப்பதில் சிக்கல் ஏற்பட்டது.\n"
 "%1"
 
-#: ViewManager.cpp:1009
+#: ViewManager.cpp:1068
 #, kde-format
 msgid ""
 "A problem occurred when loading the Layout.\n"
@@ -3283,12 +3338,12 @@ msgstr ""
 "தளவமைப்பை ஏற்றுவதில் சிக்கல் ஏற்பட்டது.\n"
 "%1"
 
-#: ViewManager.cpp:1019
+#: ViewManager.cpp:1078
 #, kde-format
 msgid "Open File"
 msgstr "கோப்பை திற"
 
-#: Vt102Emulation.cpp:1899
+#: Vt102Emulation.cpp:2298
 #, kde-format
 msgid ""
 "No keyboard translator available.  The information needed to convert key "
@@ -3374,6 +3429,7 @@ msgstr "Ctrl+S என்பதை அழுத்தும்போது வெ
 msgid "Flow control"
 msgstr "வெளியீட்டுக் கட்டுப்பாடு"
 
+# Current English string is misleading. See https://invent.kde.org/utilities/konsole/-/merge_requests/544
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBidiRenderingButton)
 #: widgets/EditProfileAdvancedPage.ui:230
 #, kde-format
@@ -3432,7 +3488,7 @@ msgstr "தேர்ந்தெடுக்கப்பட்டுள்ள �
 #. i18n: ectx: property (text), widget (QPushButton, textEditorCustomBtn)
 #. i18n: ectx: property (text), widget (QPushButton, editColorSchemeButton)
 #: widgets/EditProfileAppearancePage.ui:79
-#: widgets/EditProfileGeneralPage.ui:220 widgets/EditProfileKeyboardPage.ui:85
+#: widgets/EditProfileGeneralPage.ui:224 widgets/EditProfileKeyboardPage.ui:85
 #: widgets/EditProfileMousePage.ui:310
 #, kde-format
 msgid "Edit..."
@@ -3458,173 +3514,167 @@ msgstr "தேர்ந்தெடுக்கப்பட்டுள்ள �
 msgid "Defaults"
 msgstr "இயல்பிருப்புகள்"
 
-#. i18n: ectx: property (text), widget (KNS3::Button, downloadColorSchemeButton)
-#: widgets/EditProfileAppearancePage.ui:106
-#, kde-format
-msgid "Get New..."
-msgstr "புதியவற்றை பெறு…"
-
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: widgets/EditProfileAppearancePage.ui:139
+#: widgets/EditProfileAppearancePage.ui:132
 #, kde-format
 msgid "Font:"
 msgstr "எழுத்துரு:"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseFontButton)
-#: widgets/EditProfileAppearancePage.ui:171
+#: widgets/EditProfileAppearancePage.ui:164
 #, kde-format
 msgctxt "@action:button open a dialog with list of fonts"
 msgid "Choose..."
 msgstr "தேர்ந்தெடு..."
 
 #. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
-#: widgets/EditProfileAppearancePage.ui:178
+#: widgets/EditProfileAppearancePage.ui:171
 #, kde-format
 msgid "Smooth fonts"
 msgstr "எழுத்துருக்களை சீராக்கு"
 
 #. i18n: ectx: property (text), widget (QCheckBox, boldIntenseButton)
-#: widgets/EditProfileAppearancePage.ui:185
+#: widgets/EditProfileAppearancePage.ui:178
 #, kde-format
 msgid "Draw intense colors in bold font"
 msgstr "பகட்டான நிறங்களை தடித்த எழுத்துக்களால் காட்டு"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:192
+#: widgets/EditProfileAppearancePage.ui:185
 #, kde-format
 msgid "Use the selected font for line characters instead of the builtin code"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:195
+#: widgets/EditProfileAppearancePage.ui:188
 #, kde-format
 msgid "Use line characters contained in font"
 msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, cursorTab)
-#: widgets/EditProfileAppearancePage.ui:203
+#: widgets/EditProfileAppearancePage.ui:196
 #, kde-format
 msgid "Cursor"
 msgstr "இடஞ்சுட்டி"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
-#: widgets/EditProfileAppearancePage.ui:223
+#: widgets/EditProfileAppearancePage.ui:216
 #, kde-format
 msgid "Shape:"
 msgstr "வடிவம்:"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeBlock)
-#: widgets/EditProfileAppearancePage.ui:233
+#: widgets/EditProfileAppearancePage.ui:226
 #, kde-format
 msgctxt "A solid rectangular"
 msgid "Block"
 msgstr "கட்டம்"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeIBeam)
-#: widgets/EditProfileAppearancePage.ui:243
+#: widgets/EditProfileAppearancePage.ui:236
 #, kde-format
 msgctxt "A vertical line on the left edge"
 msgid "I-Beam"
 msgstr "I பொன்றது"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeUnderline)
-#: widgets/EditProfileAppearancePage.ui:253
+#: widgets/EditProfileAppearancePage.ui:246
 #, kde-format
 msgctxt "A hortizonal line on the bottom edge"
 msgid "Underline"
 msgstr "அடிக்கோடு"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: widgets/EditProfileAppearancePage.ui:285
+#: widgets/EditProfileAppearancePage.ui:278
 #, kde-format
 msgctxt "Cursor color options"
 msgid "Color:"
 msgstr "நிறம்:"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:301
+#: widgets/EditProfileAppearancePage.ui:294
 #, kde-format
 msgid "Set the cursor to match the color of the character underneath it."
 msgstr "இடஞ்சுட்டியின் நிறத்தை, அதற்கு கீழுள்ள எழுத்தின் நிறத்தை பொறுத்து அமை"
 
 #. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:304
+#: widgets/EditProfileAppearancePage.ui:297
 #, kde-format
 msgid "Match current character"
 msgstr "தற்போதைய எழுத்தை பொறுத்து"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:320
+#: widgets/EditProfileAppearancePage.ui:313
 #, kde-format
 msgid "Use a custom, fixed color for the cursor"
 msgstr "இடஞ்சுட்டிக்கு ஒரே (மாற்றியமைக்கக்கூடிய) நிறத்தை பயன்படுத்து"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:323
+#: widgets/EditProfileAppearancePage.ui:316
 #, kde-format
 msgid "Custom cursor color"
 msgstr "இடஞ்சுட்டிக்கான தனிப்பட்ட நிறம்"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorColorLabel)
-#: widgets/EditProfileAppearancePage.ui:354
+#: widgets/EditProfileAppearancePage.ui:347
 #, kde-format
 msgid "Cursor:"
 msgstr "இடஞ்சுட்டி:"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:367
+#: widgets/EditProfileAppearancePage.ui:360
 #, kde-format
 msgid "Select the color used to draw the cursor"
 msgstr "இடஞ்சுட்டியை வரைய பயன்படுத்த வேண்டிய நிறத்தை தேர்ந்தெடுங்கள்"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorTextColorLabel)
-#: widgets/EditProfileAppearancePage.ui:387
+#: widgets/EditProfileAppearancePage.ui:380
 #, kde-format
 msgid "Text:"
 msgstr "உரை:"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customTextColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:400
+#: widgets/EditProfileAppearancePage.ui:393
 #, kde-format
 msgid "Select the color used to draw the character underneath the cursor"
 msgstr "இடஞ்சுட்டிக்கு அடியிலுள்ள எழுத்தை வரைய பயன்படுத்த வேண்டிய நிறத்தை தேர்ந்தெடுங்கள்"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: widgets/EditProfileAppearancePage.ui:425
+#: widgets/EditProfileAppearancePage.ui:418
 #, kde-format
 msgid "Blinking:"
 msgstr "சிமிட்டுவது:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
-#: widgets/EditProfileAppearancePage.ui:441
+#: widgets/EditProfileAppearancePage.ui:434
 #, kde-format
 msgid "Make the cursor blink regularly"
 msgstr "இடஞ்சுட்டி தொடர்ச்சியாக மினுக்கச் செய்யும்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
 #. i18n: ectx: property (text), widget (QCheckBox, alignToCenterButton)
-#: widgets/EditProfileAppearancePage.ui:444
-#: widgets/EditProfileAppearancePage.ui:671
+#: widgets/EditProfileAppearancePage.ui:437
+#: widgets/EditProfileAppearancePage.ui:664
 #, kde-format
 msgid "Enabled"
 msgstr "இயக்கு"
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #. i18n: ectx: attribute (title), widget (QWidget, miscTab)
-#: widgets/EditProfileAppearancePage.ui:467 widgets/EditProfileMousePage.ui:249
+#: widgets/EditProfileAppearancePage.ui:460 widgets/EditProfileMousePage.ui:249
 #, kde-format
 msgctxt "Items that do not fit in other categories"
 msgid "Miscellaneous"
 msgstr "மற்றவை"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: widgets/EditProfileAppearancePage.ui:478
+#: widgets/EditProfileAppearancePage.ui:471
 #, kde-format
 msgid "Window:"
 msgstr "சாளரம்:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
-#: widgets/EditProfileAppearancePage.ui:485
+#: widgets/EditProfileAppearancePage.ui:478
 #, kde-format
 msgid ""
 "Show terminal size in columns and lines in the center of window after "
@@ -3634,135 +3684,135 @@ msgstr ""
 "காட்டும்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
-#: widgets/EditProfileAppearancePage.ui:488
+#: widgets/EditProfileAppearancePage.ui:481
 #, kde-format
 msgid "Show hint for terminal size after resizing"
 msgstr "முனையத்தின் அளவை மாற்றியபின் துப்பைக் காட்டு"
 
 #. i18n: ectx: property (text), widget (QCheckBox, invertSelectionColorsCheckbox)
-#: widgets/EditProfileAppearancePage.ui:495
+#: widgets/EditProfileAppearancePage.ui:488
 #, kde-format
 msgid "Always invert the colors of selected text"
 msgstr "தேர்ந்தெடுக்கப்பட்டுள்ள உரையின் நிறத்தை எப்போதும் புரட்டு"
 
 #. i18n: ectx: property (text), widget (QLabel, dimLabel)
-#: widgets/EditProfileAppearancePage.ui:504
+#: widgets/EditProfileAppearancePage.ui:497
 #, kde-format
 msgid "Darkening strength:"
 msgstr "கருமையாக்கும் அளவு:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_10)
-#: widgets/EditProfileAppearancePage.ui:529
+#: widgets/EditProfileAppearancePage.ui:522
 #, kde-format
 msgid "Inactive Terminals:"
 msgstr "செயலிலில்லாத முனையங்கள்"
 
 #. i18n: ectx: property (title), widget (QGroupBox, contentsGroup)
-#: widgets/EditProfileAppearancePage.ui:539
+#: widgets/EditProfileAppearancePage.ui:532
 #, kde-format
 msgctxt "@title:group"
 msgid "Terminal contents"
 msgstr "முனையத்தின் உள்ளடக்கம்"
 
 #. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
-#: widgets/EditProfileAppearancePage.ui:551
+#: widgets/EditProfileAppearancePage.ui:544
 #, kde-format
 msgid "Line spacing:"
 msgstr "வரி இடைவெளி:"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
-#: widgets/EditProfileAppearancePage.ui:569
+#: widgets/EditProfileAppearancePage.ui:562
 #, kde-format
 msgid "The number of pixels between two lines"
 msgstr "இரண்டு வரிகளுக்கிடையே உள்ள இடைவெளி, பிக்செல்களில்"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, lineSpacingSpinner)
 #. i18n: ectx: property (suffix), widget (QSpinBox, marginsSpinner)
-#: widgets/EditProfileAppearancePage.ui:572
-#: widgets/EditProfileAppearancePage.ui:624
+#: widgets/EditProfileAppearancePage.ui:565
+#: widgets/EditProfileAppearancePage.ui:617
 #, kde-format
 msgctxt "(pixels) visual size unit"
 msgid " px"
 msgstr " px"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileAppearancePage.ui:606
+#: widgets/EditProfileAppearancePage.ui:599
 #, kde-format
 msgid "Margins:"
 msgstr "விளிம்புகள்:"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileAppearancePage.ui:658
+#: widgets/EditProfileAppearancePage.ui:651
 #, kde-format
 msgid "Align to center:"
 msgstr "நடுப்பகுதிக்கு சீரமை:"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:681
+#: widgets/EditProfileAppearancePage.ui:674
 #, kde-format
 msgid "Indicate whether the window is active by dimming the colors"
 msgstr "நிறங்களை கருமையாக்கி, சாளரம் செயலிலுள்ளதா என்பதை குறிக்கும்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:684
+#: widgets/EditProfileAppearancePage.ui:677
 #, kde-format
 msgid "Darken"
 msgstr "கருமையாக்கு"
 
 #. i18n: ectx: property (text), widget (QCheckBox, displayVerticalLine)
-#: widgets/EditProfileAppearancePage.ui:726
+#: widgets/EditProfileAppearancePage.ui:719
 #, kde-format
 msgid "Display Vertical line at column:"
 msgstr "இந்நெடுவரிசையில் செங்குத்தான கோட்டை காட்டு:"
 
-#: widgets/EditProfileDialog.cpp:75
+#: widgets/EditProfileDialog.cpp:63
 #, kde-format
 msgid "Edit Profile"
 msgstr "பயன்முறையை திருத்துவது"
 
-#: widgets/EditProfileDialog.cpp:104
+#: widgets/EditProfileDialog.cpp:92
 #, kde-format
 msgctxt "@title:tab Generic, common options"
 msgid "General"
 msgstr "பொதுவானவை"
 
-#: widgets/EditProfileDialog.cpp:115
+#: widgets/EditProfileDialog.cpp:103
 #, kde-format
 msgid "Tabs"
 msgstr "கீற்றுகள்"
 
-#: widgets/EditProfileDialog.cpp:132
+#: widgets/EditProfileDialog.cpp:120
 #, kde-format
 msgid "Appearance"
 msgstr "தோற்றம்"
 
-#: widgets/EditProfileDialog.cpp:148
+#: widgets/EditProfileDialog.cpp:136
 #, kde-format
 msgid "Scrolling"
 msgstr "உருளல்"
 
-#: widgets/EditProfileDialog.cpp:162
+#: widgets/EditProfileDialog.cpp:150
 #, kde-format
 msgid "Keyboard"
 msgstr "விசைப்பலகை"
 
-#: widgets/EditProfileDialog.cpp:163
+#: widgets/EditProfileDialog.cpp:151
 #, kde-format
 msgid "Key bindings"
 msgstr "விசைப்பிணைப்புகள்"
 
-#: widgets/EditProfileDialog.cpp:174
+#: widgets/EditProfileDialog.cpp:162
 #, kde-format
 msgid "Mouse"
 msgstr "சுட்டி"
 
-#: widgets/EditProfileDialog.cpp:190
+#: widgets/EditProfileDialog.cpp:178
 #, kde-format
 msgctxt "@title:tab Complex options"
 msgid "Advanced"
 msgstr "மேம்பட்டவை"
 
-#: widgets/EditProfileDialog.cpp:302
+#: widgets/EditProfileDialog.cpp:290
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -3774,7 +3824,7 @@ msgstr ""
 "<nl/>அக்கோப்பின் அனுமதிகளை மாற்றுங்கள், அல்லது வேறு பெயரை உள்ளிட்டு உங்கள் விருப்பங்களை "
 "புதிய பயன்முறையாக சேமியுங்கள்."
 
-#: widgets/EditProfileDialog.cpp:319
+#: widgets/EditProfileDialog.cpp:307
 #, kde-format
 msgctxt "@info"
 msgid "Profile Name was empty; please set a name to be able to save settings."
@@ -3782,30 +3832,30 @@ msgstr ""
 "பயன்முறைக்கு எந்த பெயரும் இடப்படவில்லை; உங்கள் அமைப்புகளை சேமிக்க ஏதாவதொரு பெயரை "
 "உள்ளிடுங்கள்."
 
-#: widgets/EditProfileDialog.cpp:327
+#: widgets/EditProfileDialog.cpp:315
 #, kde-format
 msgctxt "@info"
 msgid "A profile with the name \"%1\" already exists."
 msgstr "\"%1\" என்ற பெயரில் ஏற்கனவேயொரு பயன்முறை உள்ளது."
 
-#: widgets/EditProfileDialog.cpp:362
+#: widgets/EditProfileDialog.cpp:350
 #, kde-format
 msgid "Editing profile: %2"
 msgid_plural "Editing %1 profiles: %2"
 msgstr[0] "திருத்தப்படும் பயன்முறை: %2"
 msgstr[1] "திருத்தப்படும் %1 பயன்முறைகள்: %2"
 
-#: widgets/EditProfileDialog.cpp:365
+#: widgets/EditProfileDialog.cpp:353
 #, kde-format
 msgid "Create New Profile"
 msgstr "புதிய பயன்முறையை உருவாக்குவது"
 
-#: widgets/EditProfileDialog.cpp:367
+#: widgets/EditProfileDialog.cpp:355
 #, kde-format
 msgid "Edit Profile \"%1\""
 msgstr "\"%1\" என்ற பயன்முறையை திருத்துவது"
 
-#: widgets/EditProfileDialog.cpp:464
+#: widgets/EditProfileDialog.cpp:452
 #, kde-format
 msgctxt ""
 "Suffix of the number of columns (N columns). The leading space is needed to "
@@ -3815,7 +3865,7 @@ msgid_plural " columns"
 msgstr[0] " நெடுவரிசை"
 msgstr[1] " நெடுவரிசைகள்"
 
-#: widgets/EditProfileDialog.cpp:466
+#: widgets/EditProfileDialog.cpp:454
 #, kde-format
 msgctxt ""
 "Suffix of the number of rows (N rows). The leading space is needed to "
@@ -3825,42 +3875,42 @@ msgid_plural " rows"
 msgstr[0] " வரி"
 msgstr[1] " வரிகள்"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "System Bell"
 msgstr "கணினி மணி"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "System Notifications"
 msgstr "கணினி அறிவிப்புகள்"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "Visual Bell"
 msgstr "காட்சிவழி மணி"
 
-#: widgets/EditProfileDialog.cpp:476
+#: widgets/EditProfileDialog.cpp:464
 #, kde-format
 msgid "Ignore Bell Events"
 msgstr "மணியெழுப்பப்படுவதை பொருட்படுத்தாதே"
 
-#: widgets/EditProfileDialog.cpp:485
+#: widgets/EditProfileDialog.cpp:473
 #, kde-format
 msgid "Default profile for new terminal sessions in %1"
 msgstr "%1 என்பதிலுள்ள புதிய முனைய அமர்வுகளுக்கான இயல்பிருப்பு பயன்முறை"
 
-#: widgets/EditProfileDialog.cpp:526
+#: widgets/EditProfileDialog.cpp:530
 #, kde-format
 msgid "Edit Environment"
 msgstr "சூழலை திருத்துவது"
 
-#: widgets/EditProfileDialog.cpp:527
+#: widgets/EditProfileDialog.cpp:531
 #, kde-format
 msgid "One environment variable per line"
 msgstr "வரிக்கு ஒரு சூழல் மாறியை உள்ளிடுங்கள்"
 
-#: widgets/EditProfileDialog.cpp:558
+#: widgets/EditProfileDialog.cpp:562
 #, kde-format
 msgctxt "Unit of time"
 msgid " second"
@@ -3868,18 +3918,18 @@ msgid_plural " seconds"
 msgstr[0] " நொடி"
 msgstr[1] " நொடிகள்"
 
-#: widgets/EditProfileDialog.cpp:647
+#: widgets/EditProfileDialog.cpp:661
 #, kde-format
 msgid "Select Initial Directory"
 msgstr "முதலடைவை தேர்வு செய்வது"
 
-#: widgets/EditProfileDialog.cpp:1166
+#: widgets/EditProfileDialog.cpp:1190
 #, kde-kuit-format
 msgctxt "@info"
 msgid "Scheme <resource>%1</resource> failed to load."
 msgstr "<resource>%1</resource> என்ற திட்டத்தை ஏற்ற முடியவில்லை."
 
-#: widgets/EditProfileDialog.cpp:1345
+#: widgets/EditProfileDialog.cpp:1369
 #, kde-format
 msgid ""
 "This color scheme uses a transparent background which does not appear to be "
@@ -3888,7 +3938,7 @@ msgstr ""
 "இந்நிறத்திட்டம் ஒளிபுகும் பின்பலத்தை பயன்படுத்துகிறது. அதை உங்கள் பணிமேடை ஆதரிப்பதுபோல் "
 "தெரியவில்லை."
 
-#: widgets/EditProfileDialog.cpp:1351
+#: widgets/EditProfileDialog.cpp:1375
 #, kde-format
 msgid ""
 "Konsole was started before desktop effects were enabled. You need to restart "
@@ -3897,7 +3947,7 @@ msgstr ""
 "பணிமேடை அசைவூட்டங்கள் இயக்கப்படுமுன் கான்சோல் துவக்கப்பட்டது. ஒளிபுகும் பின்புலத்தைப் பார்க்க "
 "நீங்கள் கான்சோலை மீள்துவக்க வேண்டும்."
 
-#: widgets/EditProfileDialog.cpp:1744
+#: widgets/EditProfileDialog.cpp:1768
 #, kde-format
 msgid ""
 "The format is e.g. 'editorExec PATH:LINE:COLUMN'\n"
@@ -3924,44 +3974,50 @@ msgstr ""
 "PATH அல்லது LINE இக்கட்டளையில் இல்லாத பட்சத்தில், இத்தேர்வு பொருட்படுத்தப்படாது; "
 "இயல்பிருப்பு உரைத்திருத்தியிலேயே உரைக்கோப்பு திறக்கப்படும்."
 
-#: widgets/EditProfileDialog.cpp:1757
+#: widgets/EditProfileDialog.cpp:1781
 #, kde-format
 msgid "Text Editor Custom Command"
 msgstr "உரைத்திருத்திக்கான தனிப்பயன் கட்டளை"
 
+#. i18n: ectx: attribute (title), widget (QWidget, general)
+#: widgets/EditProfileGeneralPage.ui:39
+#, kde-format
+msgid "General Settings"
+msgstr "பொதுவான அமைப்புகள்"
+
 #. i18n: ectx: property (toolTip), widget (QPushButton, iconSelectButton)
-#: widgets/EditProfileGeneralPage.ui:59
+#: widgets/EditProfileGeneralPage.ui:63
 #, kde-format
 msgid "Select the icon displayed on tabs using this profile"
 msgstr "இப்பயன்முறையிலுள்ள கீற்றுகள் பயன்படுத்தும் சின்னத்தை தேர்ந்தெடுக்க விடும்"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:77
+#: widgets/EditProfileGeneralPage.ui:81
 #, kde-format
 msgid "A descriptive name for the profile"
 msgstr "பண்பிற்கு உரிய விவரமான பெயர்"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:80
+#: widgets/EditProfileGeneralPage.ui:84
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Profile name"
 msgstr "பயன்முறையின் பெயர்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, setAsDefaultButton)
-#: widgets/EditProfileGeneralPage.ui:87
+#: widgets/EditProfileGeneralPage.ui:91
 #, kde-format
 msgid "Default Profile"
 msgstr "இயல்பிருப்பு பயன்முறை"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: widgets/EditProfileGeneralPage.ui:118
+#: widgets/EditProfileGeneralPage.ui:122
 #, kde-format
 msgid "Command:"
 msgstr "கட்டளை:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:131
+#: widgets/EditProfileGeneralPage.ui:135
 #, kde-format
 msgid ""
 "The command to execute when new terminal sessions are created using this "
@@ -3969,62 +4025,62 @@ msgid ""
 msgstr "இப்பயன்முறையில் புதிய முனைய அமர்வுகளை திறக்கும்போது இயக்கவேண்டிய கட்டளை"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:137
+#: widgets/EditProfileGeneralPage.ui:141
 #, kde-format
 msgid "/bin/sh"
 msgstr "/bin/sh"
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
-#: widgets/EditProfileGeneralPage.ui:150
+#: widgets/EditProfileGeneralPage.ui:154
 #, kde-format
 msgid "Initial directory:"
 msgstr "இயல்பிருப்பு அடைவு:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:163
+#: widgets/EditProfileGeneralPage.ui:167
 #, kde-format
 msgid ""
 "The initial working directory for new terminal sessions using this profile"
 msgstr "இப்பயன்முறையில் புதிய முனைய அமர்வுகள் திறக்கப்படும்போது அவை இருக்க வேண்டிய அடைவு"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:169
+#: widgets/EditProfileGeneralPage.ui:173
 #, kde-format
 msgid "/home/username"
 msgstr "/home/username"
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
-#: widgets/EditProfileGeneralPage.ui:176
+#: widgets/EditProfileGeneralPage.ui:180
 #, kde-format
 msgid "Choose the initial directory"
 msgstr "இயல்பிருப்பு அடைவை தேர்ந்தெடுக்க விடும்"
 
 #. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
-#: widgets/EditProfileGeneralPage.ui:186
+#: widgets/EditProfileGeneralPage.ui:190
 #, kde-format
 msgid "Start in same directory as current session"
 msgstr "தற்போதைய அமர்வுள்ள அடைவிலேயே துவக்கு"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileGeneralPage.ui:199
+#: widgets/EditProfileGeneralPage.ui:203
 #, kde-format
 msgid "Environment:"
 msgstr "சூழல்:"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, environmentEditButton)
-#: widgets/EditProfileGeneralPage.ui:217
+#: widgets/EditProfileGeneralPage.ui:221
 #, kde-format
 msgid "Edit the list of environment variables and associated values"
 msgstr "சூழல் மாறிகளின் மற்றும் தொடர்புடைய மதிப்புகளின் பட்டியலை திருத்தவிடும்"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileGeneralPage.ui:264
+#: widgets/EditProfileGeneralPage.ui:268
 #, kde-format
 msgid "Initial terminal size:"
 msgstr "முனையத்தின் இயல்பிருப்பு அளவு:"
 
 #. i18n: ectx: property (text), widget (QLabel, useCurrentWindowSizeNote)
-#: widgets/EditProfileGeneralPage.ui:339
+#: widgets/EditProfileGeneralPage.ui:343
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -4037,10 +4093,55 @@ msgstr ""
 "தேர்வு முடக்கப்பட்டிருக்க வேண்டும்</p></body></html>"
 
 #. i18n: ectx: property (text), widget (QLabel, terminalBellLabel)
-#: widgets/EditProfileGeneralPage.ui:352
+#: widgets/EditProfileGeneralPage.ui:356
 #, kde-format
 msgid "Terminal bell mode:"
 msgstr "முனைய மணியின் பயன்முறை:"
+
+#. i18n: ectx: attribute (title), widget (QWidget, semantic)
+#: widgets/EditProfileGeneralPage.ui:374
+#, kde-format
+msgid "Semantic Integration"
+msgstr "பொருளறி அம்சங்கள்"
+
+#. i18n: ectx: property (text), widget (QCheckBox, semanticUpDown)
+#: widgets/EditProfileGeneralPage.ui:380
+#, kde-format
+msgid "Up/Down Arrows emulation"
+msgstr "மேல்/கீழ் விசை கையாளல்"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsURL)
+#: widgets/EditProfileGeneralPage.ui:387
+#, kde-format
+msgctxt "When showing URL hints"
+msgid "When URL hints show"
+msgstr "முகவரித்துப்புகள் காட்டப்படும்போது"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsNever)
+#: widgets/EditProfileGeneralPage.ui:397
+#, kde-format
+msgctxt "Never"
+msgid "Never"
+msgstr "ஒருபோதும் வேண்டாம்"
+
+#. i18n: ectx: property (text), widget (QRadioButton, semanticHintsAlways)
+#: widgets/EditProfileGeneralPage.ui:407
+#, kde-format
+msgctxt "Always"
+msgid "Always"
+msgstr "எப்போதும்"
+
+#. i18n: ectx: property (text), widget (QLabel, label_8)
+#: widgets/EditProfileGeneralPage.ui:423
+#, kde-format
+msgid "Semantic hints:"
+msgstr "பொருளறித் துப்புகள்"
+
+#. i18n: ectx: property (text), widget (QCheckBox, semanticInputClick)
+#: widgets/EditProfileGeneralPage.ui:433
+#, kde-format
+msgid "Mouse click in input line moves cursor"
+msgstr "உள்ளீட்டு வரியில் கிளிக் செய்தல் இடஞ்சுட்டியை நகர்த்தும்"
 
 #. i18n: ectx: property (text), widget (QLabel, note)
 #: widgets/EditProfileKeyboardPage.ui:29
@@ -4366,8 +4467,8 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QCheckBox, allowColorFilters)
 #: widgets/EditProfileMousePage.ui:432
 #, kde-format
-msgid "Allow Color Filters"
-msgstr "நிற முன்னோட்டத்தை காட்டு"
+msgid "Preview Colors on hover"
+msgstr "சுட்டிக்குறியை மேல்வைக்கும்போது நிறங்களின் முன்னோட்டத்தை காட்டு"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, allowMouseTrackingButton)
 #: widgets/EditProfileMousePage.ui:452
@@ -4528,14 +4629,14 @@ msgstr ""
 "மிகப்பெரிய அளவை தேர்ந்தெடுத்தால், உங்கள் கணினியின் நினைவகத்தை தீரவைத்து பல சிக்கல்களை "
 "உருவாக்கலாம்."
 
-#: widgets/HistorySizeWidget.cpp:68
+#: widgets/HistorySizeWidget.cpp:69
 #, kde-kuit-format
 msgctxt "@info:tooltip"
 msgid ""
 "When using this option, the scrollback data will be written unencrypted to "
 "temporary files. Those temporary files will be deleted automatically when "
 "Konsole is closed in a normal manner.<nl/>Use <emphasis>Settings → Configure "
-"Konsole → File Location</emphasis> to select the location of the temporary "
+"Konsole → Temporary Files</emphasis> to select the location of the temporary "
 "files."
 msgstr ""
 "இத்தேர்வை பயன்படுத்தும்போது, முந்தைய உரை மறையாக்கப்படாத தற்காலிக கோப்புகளில் "
@@ -4587,103 +4688,103 @@ msgctxt "Do not save any lines to the scrollback history"
 msgid "None"
 msgstr "ஏதுமில்லை"
 
-#: widgets/IncrementalSearchBar.cpp:47
+#: widgets/IncrementalSearchBar.cpp:54
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Find..."
 msgstr "தேடு..."
 
-#: widgets/IncrementalSearchBar.cpp:49
+#: widgets/IncrementalSearchBar.cpp:56
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Enter the text to search for here"
 msgstr "கண்டுபிடிக்க வேண்டிய உரையை இங்கு உள்ளிடுங்கள்"
 
-#: widgets/IncrementalSearchBar.cpp:73
+#: widgets/IncrementalSearchBar.cpp:80
 #, kde-format
 msgctxt "@action:button Go to the next phrase"
 msgid "Next"
 msgstr "அடுத்தது"
 
-#: widgets/IncrementalSearchBar.cpp:76
+#: widgets/IncrementalSearchBar.cpp:83
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the next match for the current search phrase"
 msgstr "தற்போதைய வினாவிற்கான அடுத்த பொருத்தத்தை கண்டுபிடிக்கும்"
 
-#: widgets/IncrementalSearchBar.cpp:83
+#: widgets/IncrementalSearchBar.cpp:90
 #, kde-format
 msgctxt "@action:button Go to the previous phrase"
 msgid "Previous"
 msgstr "முந்தையது"
 
-#: widgets/IncrementalSearchBar.cpp:85
+#: widgets/IncrementalSearchBar.cpp:92
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the previous match for the current search phrase"
 msgstr "தற்போதைய வினாவிற்கான முந்தைய பொருத்தத்தை கண்டுபிடிக்கும்"
 
-#: widgets/IncrementalSearchBar.cpp:100
+#: widgets/IncrementalSearchBar.cpp:107
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Display the options menu"
 msgstr "விருப்பங்களுக்கான பட்டியை காட்டு"
 
-#: widgets/IncrementalSearchBar.cpp:107
+#: widgets/IncrementalSearchBar.cpp:114
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close the search bar"
 msgstr "தேடல் பட்டையை மூடும்"
 
-#: widgets/IncrementalSearchBar.cpp:117
+#: widgets/IncrementalSearchBar.cpp:124
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Case sensitive"
 msgstr "எழுத்துவகையை பொருட்படுத்து"
 
-#: widgets/IncrementalSearchBar.cpp:119
+#: widgets/IncrementalSearchBar.cpp:126
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether the search is case sensitive"
 msgstr "பெரிய/சிறிய எழுத்துவகையை தேடல் வேறுபடுத்துமா என்பதை அமைக்கும்"
 
-#: widgets/IncrementalSearchBar.cpp:122
+#: widgets/IncrementalSearchBar.cpp:129
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Match regular expression"
 msgstr "சுருங்குறித் தொடரை பொருத்து"
 
-#: widgets/IncrementalSearchBar.cpp:126
+#: widgets/IncrementalSearchBar.cpp:133
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Highlight all matches"
 msgstr "பொருந்தும் அனைத்தை முன்னிலைப்படுத்து"
 
-#: widgets/IncrementalSearchBar.cpp:128
+#: widgets/IncrementalSearchBar.cpp:135
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether matching text should be highlighted"
 msgstr "பொருந்தும் உரை முன்னிலைப்படுத்தப்பட வேண்டுமா என்பதை அமைக்கும்"
 
-#: widgets/IncrementalSearchBar.cpp:131
+#: widgets/IncrementalSearchBar.cpp:138
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Search backwards"
 msgstr "பின்னோக்கித் தேடு"
 
-#: widgets/IncrementalSearchBar.cpp:133
+#: widgets/IncrementalSearchBar.cpp:140
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether search should start from the bottom"
 msgstr "தேடல் கீழிலிருந்து துவங்க வேண்டுமா என்பதை அமைக்கும்"
 
-#: widgets/IncrementalSearchBar.cpp:163
+#: widgets/IncrementalSearchBar.cpp:170
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the bottom"
 msgstr "தற்போதைய தேடலை கீழிலிருந்து கண்டுபிடி"
 
-#: widgets/IncrementalSearchBar.cpp:168
+#: widgets/IncrementalSearchBar.cpp:175
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the top"
@@ -4734,78 +4835,81 @@ msgstr "சாதாரண கீற்றின் தலைப்பிற்�
 msgid "Tab Color:"
 msgstr "கீற்றின் நிறம்:"
 
-#: widgets/TabTitleFormatButton.cpp:20
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:22 widgets/TabTitleFormatButton.cpp:31
+#, c-format, kde-format
 msgid "Program Name: %n"
 msgstr "நிரலின் பெயர்: %n"
 
-#: widgets/TabTitleFormatButton.cpp:21
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:23 widgets/TabTitleFormatButton.cpp:32
+#, c-format, kde-format
 msgid "Current Directory (Short): %d"
 msgstr "தற்போதைய அடைவு (சுருக்கமாக): %d"
 
-#: widgets/TabTitleFormatButton.cpp:22
+#: widgets/TabTitleFormatButton.cpp:24 widgets/TabTitleFormatButton.cpp:33
 #, kde-format
 msgid "Current Directory (Long): %D"
 msgstr "தற்போதைய அடைவு (விரிவாக): %D"
 
-#: widgets/TabTitleFormatButton.cpp:23 widgets/TabTitleFormatButton.cpp:40
+#: widgets/TabTitleFormatButton.cpp:25 widgets/TabTitleFormatButton.cpp:34
+#: widgets/TabTitleFormatButton.cpp:51 widgets/TabTitleFormatButton.cpp:59
 #, kde-format
 msgid "Window Title Set by Shell: %w"
 msgstr "முனையநிரல் அமைத்துள்ள சாளரத்தலைப்பு: %w"
 
-#: widgets/TabTitleFormatButton.cpp:24 widgets/TabTitleFormatButton.cpp:41
+#: widgets/TabTitleFormatButton.cpp:26 widgets/TabTitleFormatButton.cpp:35
+#: widgets/TabTitleFormatButton.cpp:52 widgets/TabTitleFormatButton.cpp:60
 #, kde-format
 msgid "Session Number: %#"
 msgstr "அமர்வு எண்: %#"
 
-#: widgets/TabTitleFormatButton.cpp:25 widgets/TabTitleFormatButton.cpp:35
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:27 widgets/TabTitleFormatButton.cpp:36
+#: widgets/TabTitleFormatButton.cpp:46 widgets/TabTitleFormatButton.cpp:54
+#, c-format, kde-format
 msgid "User Name: %u"
 msgstr "பயனர் பெயர்: %u"
 
-#: widgets/TabTitleFormatButton.cpp:26
+#: widgets/TabTitleFormatButton.cpp:28 widgets/TabTitleFormatButton.cpp:37
 #, kde-format
 msgid "Local Host: %h"
 msgstr "கணினியின் பெயர்: %h"
 
-#: widgets/TabTitleFormatButton.cpp:29
-#, fuzzy, kde-format
+#: widgets/TabTitleFormatButton.cpp:29 widgets/TabTitleFormatButton.cpp:38
+#, kde-format
 msgid "User's Bourne prompt sigil: %B"
-msgstr "பயனரின் "
+msgstr "பயனரின் bash தூண்டி சின்னம் (prompt): %B"
 
-#: widgets/TabTitleFormatButton.cpp:36
+#: widgets/TabTitleFormatButton.cpp:47 widgets/TabTitleFormatButton.cpp:55
 #, kde-format
 msgid "User Name@ (if given): %U"
 msgstr "பயனர் பெயர்@ (வழங்கப்பட்டிருந்தால்): %U"
 
-#: widgets/TabTitleFormatButton.cpp:37
+#: widgets/TabTitleFormatButton.cpp:48 widgets/TabTitleFormatButton.cpp:56
 #, kde-format
 msgid "Remote Host (Short): %h"
 msgstr "தொலை புரவன் (சுருக்கமாக): %h"
 
-#: widgets/TabTitleFormatButton.cpp:38
+#: widgets/TabTitleFormatButton.cpp:49 widgets/TabTitleFormatButton.cpp:57
 #, kde-format
 msgid "Remote Host (Long): %H"
 msgstr "தொலை புரவன் (விரிவாக): %H"
 
-#: widgets/TabTitleFormatButton.cpp:39
-#, kde-format
+#: widgets/TabTitleFormatButton.cpp:50 widgets/TabTitleFormatButton.cpp:58
+#, c-format, kde-format
 msgid "Command and arguments: %c"
 msgstr "கட்டளையும் தருமதிப்புகளும்: %c"
 
-#: widgets/TabTitleFormatButton.cpp:49
+#: widgets/TabTitleFormatButton.cpp:69
 #, kde-format
 msgid "Insert"
 msgstr "கொள்ளிடத்தை சேர்"
 
-#: widgets/TabTitleFormatButton.cpp:74
+#: widgets/TabTitleFormatButton.cpp:94
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert title format"
 msgstr "தலைப்பில் பயன்படுத்தக்கூடிய கொள்ளிடத்தை நுழைக்கும்"
 
-#: widgets/TabTitleFormatButton.cpp:78
+#: widgets/TabTitleFormatButton.cpp:98
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert remote title format"
@@ -4865,6 +4969,31 @@ msgctxt "@action:inmenu"
 msgid "Close Tab"
 msgstr "கீற்றை மூடு"
 
+#~ msgid "Get New..."
+#~ msgstr "புதியவற்றை பெறு…"
+
+#~ msgctxt "@info:shell"
+#~ msgid "Use the internal FALLBACK profile"
+#~ msgstr "உள்ளமைந்த FALLBACK பயன்முறையை பயன்படுத்து"
+
+#~ msgctxt "Name of the default/builtin profile"
+#~ msgid "Default"
+#~ msgstr "இயல்பிருப்பு"
+
+#~ msgid ""
+#~ "The name \"Default\" is reserved for the built-in fallback profile;\n"
+#~ "the profile is going to be saved as \"%1\""
+#~ msgstr ""
+#~ "\"இயல்பிருப்பு\" எனும் பெயர், கான்சோலின் முன்னிருப்பு பயன்முறைக்கு ஒதுக்கப்பட்டது;\n"
+#~ "இப்பயன்முறை, \"%1\" என்று சேமிக்கப்படும்"
+
+#~ msgctxt "@label:textbox added to the name of the current default profile"
+#~ msgid " (default)"
+#~ msgstr " (இயல்பிருப்பு)"
+
+#~ msgid "Allow Color Filters"
+#~ msgstr "நிற முன்னோட்டத்தை காட்டு"
+
 #, fuzzy
 #~| msgid "SGI port"
 #~ msgid "Import"
@@ -4906,11 +5035,6 @@ msgstr "கீற்றை மூடு"
 #~ msgstr "பண்பை தொகுக்க \"%1\""
 
 #, fuzzy
-#~| msgid "Default character encoding:"
-#~ msgid "Current Tab Settings"
-#~ msgstr "இயல்பிருப்பு எழுத்துவாக்க வகை:"
-
-#, fuzzy
 #~| msgid "Show in Menu"
 #~ msgctxt ""
 #~ "@info:tooltip List item's checkbox for making item (profile) visible in a "
@@ -4923,9 +5047,6 @@ msgstr "கீற்றை மூடு"
 #~ msgctxt "@title Preferences page name"
 #~ msgid "Tab Bar"
 #~ msgstr "தத்து பட்டி"
-
-#~ msgid "Rename Tab"
-#~ msgstr "தத்திற்கு மறுபெயரிடு"
 
 #, fuzzy
 #~| msgid "&Rename Tab..."
@@ -5835,9 +5956,6 @@ msgstr "கீற்றை மூடு"
 
 #~ msgid "Send &Input to All Sessions"
 #~ msgstr "எல்லா அமர்வுகளுக்கும் உள்ளீட்டை அனுப்பு"
-
-#~ msgid "New Session"
-#~ msgstr "புதிய அமர்வு"
 
 #~ msgid "List Sessions"
 #~ msgstr "அமர்வுகளை பட்டியலிடு"

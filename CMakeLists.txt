@@ -2,7 +2,7 @@
 
 # KDE Application Version, managed by release script
 set (RELEASE_SERVICE_VERSION_MAJOR "22")
-set (RELEASE_SERVICE_VERSION_MINOR "04")
+set (RELEASE_SERVICE_VERSION_MINOR "08")
 set (RELEASE_SERVICE_VERSION_MICRO "1")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 
@@ -39,15 +39,32 @@ include(ECMQtDeclareLoggingCategory)
 include(KDEClangFormat)
 # Remove OPTIONAL when we require EMC >= 5.79
 include(KDEGitCommitHooks OPTIONAL)
+include(CheckFunctionExists)
 include(CheckIncludeFiles)
 
 # Allows passing e.g. -DECM_ENABLE_SANITIZERS='address;undefined' to cmake.
 include(ECMEnableSanitizers)
 
+if(ECM_GLOBAL_FIND_VERSION VERSION_LESS "5.82.0")
+    if(NOT QT_MAJOR_VERSION)
+        set(QT_MAJOR_VERSION "5")
+    endif()
+endif()
+
+if(QT_MAJOR_VERSION EQUAL "6")
+    # ECMDeprecationSettings is in ECM since 5.91, this assumes if you're building
+    # with Qt6, you have latest ECM anyway
+    include(ECMDeprecationSettings)
+    ecm_set_disabled_deprecation_versions(
+        QT 5.15.2
+        KF 5.93.0
+    )
+endif()
+
 ecm_setup_version(${RELEASE_SERVICE_VERSION} VARIABLE_PREFIX KONSOLEPRIVATE
     SOVERSION 1
 )
-find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED
+find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} CONFIG REQUIRED
     Core
     DBus
     PrintSupport
@@ -94,7 +111,7 @@ set(HAVE_X11 ${X11_FOUND})
 # Check for function GETPWUID
 check_symbol_exists(getpwuid "pwd.h" HAVE_GETPWUID)
 
-check_include_files(malloc.h      HAVE_MALLOC_H)
+check_function_exists(malloc_trim HAVE_MALLOC_TRIM)
 
 # See above includes for defaults
 add_definitions(
@@ -137,6 +154,11 @@ ecm_qt_install_logging_categories(
     DESTINATION "${KDE_INSTALL_LOGGINGCATEGORIESDIR}"
 )
 
+ki18n_install( po )
+if (KF5DocTools_FOUND)
+    kdoctools_install( po )
+endif()
+
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 # add clang-format target for all our real source files
@@ -144,8 +166,4 @@ file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.c *.cpp *.h *.hpp)
 kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
 if (ECM_VERSION VERSION_GREATER_EQUAL 5.79.0)
     kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
-endif()
-ki18n_install(po)
-if (KF5DocTools_FOUND)
- kdoctools_install(po)
 endif()
