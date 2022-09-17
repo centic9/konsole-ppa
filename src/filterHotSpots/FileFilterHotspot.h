@@ -1,21 +1,8 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2020 by Tomaz Canabrava <tcanabrava@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2020 Tomaz Canabrava <tcanabrava@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef FILE_FILTER_HOTSPOT
@@ -24,11 +11,11 @@
 #include "RegExpFilterHotspot.h"
 
 #include <QList>
-#include <QString>
 #include <QPoint>
+#include <QString>
 
-#include <KFileItemActions>
 #include <KFileItem>
+#include <KFileItemActions>
 #include <KIO/PreviewJob>
 
 class QAction;
@@ -36,30 +23,34 @@ class QPixmap;
 class QKeyEvent;
 class QMouseEvent;
 
-namespace Konsole {
+namespace Konsole
+{
+class Session;
 class TerminalDisplay;
 
 /**
-* Hotspot type created by FileFilter instances.
-*/
+ * Hotspot type created by FileFilter instances.
+ */
 class FileFilterHotSpot : public RegExpFilterHotSpot
 {
 public:
-    FileFilterHotSpot(int startLine, int startColumn, int endLine, int endColumn,
-            const QStringList &capturedTexts, const QString &filePath);
+    FileFilterHotSpot(int startLine, int startColumn, int endLine, int endColumn, const QStringList &capturedTexts, const QString &filePath, Session *session);
     ~FileFilterHotSpot() override;
 
     QList<QAction *> actions() override;
 
     /**
-        * Opens kate for editing the file.
-        */
+     * Opens kate for editing the file.
+     */
     void activate(QObject *object = nullptr) override;
-    void setupMenu(QMenu *menu) override;
+    QList<QAction *> setupMenu(QMenu *menu) override;
 
     KFileItem fileItem() const;
     void requestThumbnail(Qt::KeyboardModifiers modifiers, const QPoint &pos);
     void thumbnailRequested();
+
+    bool hasDragOperation() const override;
+    void startDrag() override;
 
     static void stopThumbnailGeneration();
 
@@ -69,8 +60,12 @@ public:
     void keyPressEvent(TerminalDisplay *td, QKeyEvent *ev) override;
 
 private:
-    void showThumbnail(const KFileItem& item, const QPixmap& preview);
+    void openWithSysDefaultApp(const QString &filePath) const;
+    void openWithEditorFromProfile(const QString &fullCmd, const QString &path) const;
+
+    void showThumbnail(const KFileItem &item, const QPixmap &preview);
     QString _filePath;
+    Session *_session = nullptr;
     KFileItemActions _menuActions;
 
     QPoint _eventPos;
@@ -79,9 +74,9 @@ private:
     bool _thumbnailFinished;
 
     /* This variable stores the pointer of the active HotSpot that
-        * is generating the thumbnail now, so we can bail out early.
-        * it's not used for pointer access.
-        */
+     * is generating the thumbnail now, so we can bail out early.
+     * it's not used for pointer access.
+     */
     static qintptr currentThumbnailHotspot;
     static bool _canGenerateThumbnail;
     static QPointer<KIO::PreviewJob> _previewJob;

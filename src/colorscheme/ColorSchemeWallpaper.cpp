@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -30,21 +17,13 @@
 
 using namespace Konsole;
 
-ColorSchemeWallpaper::Ptr ColorScheme::wallpaper() const
-{
-    return _wallpaper;
-}
-
-ColorSchemeWallpaper::ColorSchemeWallpaper(const QString &path) :
-    _path(path),
-    _picture(nullptr)
+ColorSchemeWallpaper::ColorSchemeWallpaper(const QString &path)
+    : _path(path)
+    , _picture(nullptr)
 {
 }
 
-ColorSchemeWallpaper::~ColorSchemeWallpaper()
-{
-    delete _picture;
-}
+ColorSchemeWallpaper::~ColorSchemeWallpaper() = default;
 
 void ColorSchemeWallpaper::load()
 {
@@ -54,7 +33,7 @@ void ColorSchemeWallpaper::load()
 
     // Create and load original pixmap
     if (_picture == nullptr) {
-        _picture = new QPixmap();
+        _picture = std::make_unique<QPixmap>();
     }
 
     if (_picture->isNull()) {

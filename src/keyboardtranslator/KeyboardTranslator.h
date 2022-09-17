@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef KEYBOARDTRANSLATOR_H
@@ -34,7 +21,8 @@
 class QIODevice;
 class QTextStream;
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * A converter which maps between key sequences pressed by the user and the
  * character strings which should be sent to the terminal and commands
@@ -83,7 +71,7 @@ public:
         /** Indicates that any of the modifier keys is active. */
         AnyModifierState = 16,
         /** Indicates that the numpad is in application mode. */
-        ApplicationKeypadState = 32
+        ApplicationKeypadState = 32,
     };
     Q_DECLARE_FLAGS(States, State)
 
@@ -108,7 +96,7 @@ public:
         /** Scroll the terminal display down to the end of history */
         ScrollDownToBottomCommand = 64,
         /** Echos the operating system specific erase character. */
-        EraseCommand = 256
+        EraseCommand = 256,
     };
     Q_DECLARE_FLAGS(Commands, Command)
 
@@ -148,8 +136,7 @@ public:
          *
          * @param keyboardModifiers The keyboard modifiers being pressed.
          */
-        QByteArray text(bool expandWildCards = false,
-                        Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
+        QByteArray text(bool expandWildCards = false, Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
 
         /** Sets the character sequence associated with this entry */
         void setText(const QByteArray &aText);
@@ -163,8 +150,7 @@ public:
          * @param expandWildCards See text()
          * @param keyboardModifiers The keyboard modifiers being pressed.
          */
-        QByteArray escapedText(bool expandWildCards = false,
-                               Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
+        QByteArray escapedText(bool expandWildCards = false, Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
 
         /** Returns the character code ( from the Qt::Key enum ) associated with this entry */
         int keyCode() const;
@@ -220,8 +206,7 @@ public:
          * @param expandWildCards See text()
          * @param keyboardModifiers The keyboard modifiers being pressed.
          */
-        QString resultToString(bool expandWildCards = false,
-                               Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
+        QString resultToString(bool expandWildCards = false, Qt::KeyboardModifiers keyboardModifiers = Qt::NoModifier) const;
 
         /**
          * Returns true if this entry matches the given key sequence, specified
@@ -359,8 +344,7 @@ inline int oneOrZero(int value)
     return value ? 1 : 0;
 }
 
-inline QByteArray KeyboardTranslator::Entry::text(bool expandWildCards,
-                                                  Qt::KeyboardModifiers keyboardModifiers) const
+inline QByteArray KeyboardTranslator::Entry::text(bool expandWildCards, Qt::KeyboardModifiers keyboardModifiers) const
 {
     QByteArray expandedText = _text;
 

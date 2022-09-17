@@ -1,29 +1,16 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2012 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2012 Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "HistorySizeDialog.h"
 
 // Konsole
-#include "ui_HistorySizeDialog.h"
 #include "Shortcut_p.h"
+#include "ui_HistorySizeDialog.h"
 
 #include <KLocalizedString>
 #include <QDialogButtonBox>
@@ -32,12 +19,12 @@
 
 using namespace Konsole;
 
-HistorySizeDialog::HistorySizeDialog(QWidget *parent) :
-    QDialog(parent),
-    _ui(nullptr)
+HistorySizeDialog::HistorySizeDialog(QWidget *parent)
+    : QDialog(parent)
+    , _ui(nullptr)
 {
     setWindowTitle(i18nc("@title:window", "Adjust Scrollback"));
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel);
+    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     auto mainWidget = new QWidget(this);
     auto mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
@@ -57,8 +44,7 @@ HistorySizeDialog::HistorySizeDialog(QWidget *parent) :
     _ui->tempWarningWidget->setWordWrap(false);
     _ui->tempWarningWidget->setCloseButtonVisible(false);
     _ui->tempWarningWidget->setMessageType(KMessageWidget::Information);
-    _ui->tempWarningWidget->setText(i18nc("@info:status",
-                                          "Any adjustments are only temporary to this session."));
+    _ui->tempWarningWidget->setText(i18nc("@info:status", "Any adjustments are only temporary to this session."));
 }
 
 HistorySizeDialog::~HistorySizeDialog()
@@ -86,7 +72,7 @@ void HistorySizeDialog::setLineCount(int lines)
     _ui->historySizeWidget->setLineCount(lines);
 }
 
-QSize HistorySizeDialog::sizeHint() const {
+QSize HistorySizeDialog::sizeHint() const
+{
     return {_ui->tempWarningWidget->sizeHint().width(), 0};
 }
-

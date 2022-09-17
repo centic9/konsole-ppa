@@ -1,21 +1,7 @@
 /*
-    This file is part of Konsole, an X terminal.
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "HistoryScrollFile.h"
@@ -35,61 +21,149 @@
 
 using namespace Konsole;
 
-HistoryScrollFile::HistoryScrollFile() :
-    HistoryScroll(new HistoryTypeFile())
+HistoryScrollFile::HistoryScrollFile()
+    : HistoryScroll(new HistoryTypeFile())
 {
 }
 
 HistoryScrollFile::~HistoryScrollFile() = default;
 
-int HistoryScrollFile::getLines()
+int HistoryScrollFile::getLines() const
 {
     return _index.len() / sizeof(qint64);
 }
 
-int HistoryScrollFile::getLineLen(int lineno)
+int HistoryScrollFile::getMaxLines() const
+{
+    return getLines();
+}
+
+int HistoryScrollFile::getLineLen(const int lineno) const
 {
     return (startOfLine(lineno + 1) - startOfLine(lineno)) / sizeof(Character);
 }
 
-bool HistoryScrollFile::isWrappedLine(int lineno)
+bool HistoryScrollFile::isWrappedLine(const int lineno) const
 {
-    if (lineno >= 0 && lineno <= getLines()) {
-        unsigned char flag = 0;
-        _lineflags.get(reinterpret_cast<char *>(&flag), sizeof(unsigned char),
-                       (lineno)*sizeof(unsigned char));
-        return flag != 0u;
-    }
-    return false;
+    return (getLineProperty(lineno) & LINE_WRAPPED) > 0;
 }
 
-qint64 HistoryScrollFile::startOfLine(int lineno)
+LineProperty HistoryScrollFile::getLineProperty(const int lineno) const
 {
-    if (lineno <= 0) {
+    if (lineno >= 0 && lineno <= getLines()) {
+        LineProperty flag = 0;
+        _lineflags.get(reinterpret_cast<char *>(&flag), sizeof(unsigned char), (lineno) * sizeof(unsigned char));
+        return flag;
+    }
+    return 0;
+}
+
+qint64 HistoryScrollFile::startOfLine(const int lineno) const
+{
+    Q_ASSERT(lineno >= 0 && lineno <= getLines());
+
+    if (lineno == 0) {
         return 0;
     }
-    if (lineno <= getLines()) {
+    if (lineno < getLines()) {
         qint64 res = 0;
-        _index.get(reinterpret_cast<char*>(&res), sizeof(qint64), (lineno - 1)*sizeof(qint64));
+        _index.get(reinterpret_cast<char *>(&res), sizeof(qint64), (lineno - 1) * sizeof(qint64));
         return res;
     }
     return _cells.len();
 }
 
-void HistoryScrollFile::getCells(int lineno, int colno, int count, Character res[])
+void HistoryScrollFile::getCells(const int lineno, const int colno, const int count, Character res[]) const
 {
-    _cells.get(reinterpret_cast<char*>(res), count * sizeof(Character), startOfLine(lineno) + colno * sizeof(Character));
+    _cells.get(reinterpret_cast<char *>(res), count * sizeof(Character), startOfLine(lineno) + colno * sizeof(Character));
 }
 
-void HistoryScrollFile::addCells(const Character text[], int count)
+void HistoryScrollFile::addCells(const Character text[], const int count)
 {
-    _cells.add(reinterpret_cast<const char*>(text), count * sizeof(Character));
+    _cells.add(reinterpret_cast<const char *>(text), count * sizeof(Character));
 }
 
-void HistoryScrollFile::addLine(bool previousWrapped)
+void HistoryScrollFile::addLine(LineProperty lineProperty)
 {
     qint64 locn = _cells.len();
     _index.add(reinterpret_cast<char *>(&locn), sizeof(qint64));
-    unsigned char flags = previousWrapped ? 0x01 : 0x00;
-    _lineflags.add(reinterpret_cast<char *>(&flags), sizeof(char));
+    _lineflags.add(reinterpret_cast<char *>(&lineProperty), sizeof(char));
+}
+
+void HistoryScrollFile::removeCells()
+{
+    qint64 res = (getLines() - 2) * sizeof(qint64);
+    if (getLines() < 2) {
+        _cells.removeLast(0);
+    } else {
+        _index.get(reinterpret_cast<char *>(&res), sizeof(qint64), res);
+        _cells.removeLast(res);
+    }
+    res = qMax(0, getLines() - 1);
+    _index.removeLast(res * sizeof(qint64));
+    _lineflags.removeLast(res * sizeof(unsigned char));
+}
+
+int HistoryScrollFile::reflowLines(const int columns)
+{
+    auto reflowFile = std::make_unique<HistoryFile>();
+    reflowData newLine;
+
+    auto reflowLineLen = [](qint64 start, qint64 end) {
+        return (int)((end - start) / sizeof(Character));
+    };
+    auto setNewLine = [](reflowData &change, qint64 index, LineProperty lineflag) {
+        change.index = index;
+        change.lineFlag = lineflag;
+    };
+
+    // First all changes are saved on an auxiliary file, no real index is changed
+    int currentPos = 0;
+    if (getLines() > MAX_REFLOW_LINES) {
+        currentPos = getLines() - MAX_REFLOW_LINES;
+    }
+    while (currentPos < getLines()) {
+        qint64 startLine = startOfLine(currentPos);
+        qint64 endLine = startOfLine(currentPos + 1);
+        LineProperty lineProperty = getLineProperty(currentPos);
+
+        // Join the lines if they are wrapped
+        while (currentPos < getLines() - 1 && isWrappedLine(currentPos)) {
+            currentPos++;
+            endLine = startOfLine(currentPos + 1);
+        }
+
+        // Now reflow the lines
+        while (reflowLineLen(startLine, endLine) > columns && !(lineProperty & (LINE_DOUBLEHEIGHT_BOTTOM | LINE_DOUBLEHEIGHT_TOP))) {
+            startLine += (qint64)columns * sizeof(Character);
+            setNewLine(newLine, startLine, lineProperty | LINE_WRAPPED);
+            reflowFile->add(reinterpret_cast<const char *>(&newLine), sizeof(reflowData));
+        }
+        setNewLine(newLine, endLine, lineProperty & ~LINE_WRAPPED);
+        reflowFile->add(reinterpret_cast<const char *>(&newLine), sizeof(reflowData));
+        currentPos++;
+    }
+
+    // Erase data from index and flag data
+    if (getLines() > MAX_REFLOW_LINES) {
+        currentPos = getLines() - MAX_REFLOW_LINES;
+        _index.removeLast(currentPos * sizeof(qint64));
+        _lineflags.removeLast(currentPos * sizeof(char));
+    } else {
+        _index.removeLast(0);
+        _lineflags.removeLast(0);
+    }
+
+    // Now save the new indexes and properties to proper files
+    int totalLines = reflowFile->len() / sizeof(reflowData);
+    currentPos = 0;
+    while (currentPos < totalLines) {
+        reflowFile->get(reinterpret_cast<char *>(&newLine), sizeof(reflowData), currentPos * sizeof(reflowData));
+
+        _lineflags.add(reinterpret_cast<char *>(&newLine.lineFlag), sizeof(char));
+        _index.add(reinterpret_cast<char *>(&newLine.index), sizeof(qint64));
+        currentPos++;
+    }
+
+    return 0;
 }

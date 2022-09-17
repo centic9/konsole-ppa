@@ -48,7 +48,7 @@
 ><affiliation
 ><address
 ><email
->smart2128@baslug.org</email
+>smart2128vr@gmail.com</email
 ></address
 ></affiliation
 ><contrib
@@ -102,7 +102,9 @@
 ><year
 >2018</year
 ><year
->2020</year>
+>2020</year
+><year
+>2021</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -118,9 +120,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->16/9/2020</date>
+>28/10/2021</date>
 <releaseinfo
->Applications 20.12</releaseinfo>
+>Applications 21.12</releaseinfo>
 
 <abstract
 ><para
@@ -292,17 +294,6 @@
 
 </orderedlist>
 </para>
-
-<para
->Tutti i profili con <guilabel
->Mostra nel menu</guilabel
-> segnato saranno elencati per nome menu <menuchoice
-><guimenu
->File</guimenu
-><guisubmenu
->Nuova scheda</guisubmenu
-></menuchoice
->. Non ci sarà nessun sottomenu se c'è da mostrare solo il profilo predefinito. </para>
 
 </sect1>
 
@@ -658,7 +649,7 @@
 >Apre una nuova scheda con il profilo predefinito.</action>
 <note
 ><para
->&konsole; fornisce un profilo predefinito. Ogni nuovo profilo aggiunto dall'utente sarà elencato nel sottomenu. Non ci sarà alcun sottomenu se c'è da mostrare solo il profilo predefinito. </para
+>Il primo profilo nel sottomenu sarà sempre «Predefinito» che è ilprofilo integrato. Tutti gli altri profili saranno elencati di seguito che inordine alfabetico. Il profilo predefinito specificato dall'utente sarà in grassetto. </para
 ></note>
 </para
 ></listitem
@@ -760,13 +751,13 @@
 > <guimenu
 >File</guimenu
 > <guimenuitem
->Chiudi scheda</guimenuitem
+>Chiudi sessione</guimenuitem
 ></menuchoice>
 </term>
 <listitem
 ><para
 ><action
->Chiude la scheda attuale.</action>
+>Chiude la sessione attuale</action>
 </para
 ></listitem>
 </varlistentry>
@@ -793,17 +784,8 @@
 ></para>
 <note
 ><para
->&konsole; mostrerà una finestra di conferma se c'è più di una scheda aperta. Questa finestra può essere disabilitata facendo clic sulla casella <guibutton
+>&konsole; mostrerà una finestra di conferma se c'è più di una sessione aperta o se ci sono programmi in esecuzione in qualsiasi sessione. Queste finestre possono essere disabilitate facendo clic sulla casella <guibutton
 >Non chiedermelo più</guibutton
->. </para>
-<para
->Se si desidera ricevere nuovamente la finestra di conferma, eliminare la voce <screen
->[Notification Messages]
-CloseAllTabs=true</screen
-> in <filename
->$<envar
->XDG_CONFIG_HOME</envar
->/konsolerc</filename
 >. </para>
 </note>
 </listitem>
@@ -962,7 +944,7 @@ CloseAllTabs=true</screen
 <listitem
 ><para
 ><action
->Manda il segnale specificato al processo shell, o altro processo, che è stato lanciato quando è stata avviata la nuova sessione</action
+>Invia il segnale specificato al processo shell, o altro processo, che è stato lanciato quando è stata avviata la nuova sessione</action
 >.</para
 ><para
 >I segnali attualmente disponibili sono:</para>
@@ -1262,56 +1244,6 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->X</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visualizza</guimenu
-><guisubmenu
->Dividi vista</guisubmenu
-><guimenuitem
->Chiudi attiva</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Chiude la vista attuale.</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
->O</keycap
-></keycombo
-></shortcut
-> <guimenu
->Visualizza</guimenu
-><guisubmenu
->Dividi vista</guisubmenu
-><guimenuitem
->Chiudi altre</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Chiude tutte le viste diverse dall'attuale.</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
 >]</keycap
 ></keycombo
 ></shortcut
@@ -1352,6 +1284,31 @@ Various search improvements
 ><para
 ><action
 >Rimpicciolisce la vista attuale.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>E</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Visualizza</guimenu
+><guisubmenu
+>Dividi vista</guisubmenu
+><guimenuitem
+>Massimizza la vista attuale</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Commuta la vista attuale tra la dimensione attuale e la dimensione massima</action>
 </para
 ></listitem>
 </varlistentry>
@@ -1402,6 +1359,46 @@ Various search improvements
 ><action
 >Apre la vista divisa attuale in una finestra separata</action>
 </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Salva disposizione delle schede su file</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Permette di salvare la disposizione delle schede della vista attuale in un file di disposizione di &konsole; specifico che può quindi essere caricato per ripristinare una delle proprie disposizioni preferite.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Carica disposizione delle schede da file</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Consente di caricare una delle disposizioni di visualizzazione preferite dal file delle disposizioni che è stato salvato in precedenza utilizzando la voce di menu <menuchoice
+><guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Salva la disposizione delle schede su file</guimenuitem
+></menuchoice
+>.</action
+> Le disposizioni predefinite (2x2, 2x1 e 1x2) possono essere caricare tramite la barra degli strumenti. </para
 ></listitem>
 </varlistentry>
 
@@ -1640,6 +1637,27 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>F11</keycap
+></shortcut
+> <guimenu
+>Visualizza</guimenu
+><guimenuitem
+>Modalità a schermo intero</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Commuta la visualizzazione di &konsole; su tutto lo schermo.</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1747,6 +1765,16 @@ Various search improvements
 </variablelist>
 </sect2>
 
+<sect2 id="plugins-menu">
+<title
+>Menu delle estensioni</title>
+
+<para
+>Tutti le estensioni installate saranno elencate o «Nessuna estensione disponibile» </para>
+
+</sect2>
+
+
 <sect2 id="settings-menu">
 <title
 >Il menu Impostazioni</title>
@@ -1798,7 +1826,24 @@ Various search improvements
 <listitem
 ><para
 ><action
->Apre un editor per gestire i profili.</action>
+>Apre un editor per gestire i profili</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Schema di colori della finestra</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Cambia la &GUI; di &konsole; con il tema specificato</action>
 </para>
 </listitem>
 </varlistentry>
@@ -1829,20 +1874,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycap
->F11</keycap
-></shortcut
-> <guimenu
+><guimenu
 >Impostazioni</guimenu
 ><guimenuitem
->Modalità a schermo intero</guimenuitem
+>Barre degli strumenti mostrate</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Commuta la visualizzazione di &konsole; su tutto lo schermo.</action
+>Consente di attivare/disattivare la visibilità delle barre degli strumenti dii &konsole;</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Mostra la barra di stato</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Commuta la visibilità della barra di stato.</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1853,7 +1911,24 @@ Various search improvements
 ><guimenu
 >Impostazioni</guimenu
 ><guimenuitem
->Configura le scorciatoie</guimenuitem
+>Configura la lingua...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Apre la finestra per scegliere una traduzione dell'interfaccia di &konsole;.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Configura le scorciatoie da tastiera...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1901,7 +1976,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Sinistra</keysym
 ></keycombo
 ></entry>
@@ -1911,7 +1986,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Destra</keysym
 ></keycombo
 ></entry>
@@ -1928,19 +2003,29 @@ Various search improvements
 <entry
 >Incolla selezione</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Shift;&Tab;</keycombo
-></entry>
-<entry
->Contenitore di viste successivo</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Impostazioni</guimenu
+><guimenuitem
+>Configura le barre degli strumenti...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Apre <ulink url="help:/fundamentals/config.html#toolbars-items"
+>la finestra di configurazione della barra degli strumenti</ulink
+></action
+></para>
 </listitem>
 </varlistentry>
 
@@ -2215,7 +2300,7 @@ Various search improvements
 >Finestra di copia dell'input</title>
 
 <para
->Il testo inserito in una scheda può essere simultaneamente inviato ad altre. Questa finestra permette di selezionare a quali schede mandarlo. La scheda attuale verrà scurita. </para>
+>Il testo inserito in una scheda può essere simultaneamente inviato ad altre. Questa finestra permette di selezionare a quali schede inviarlo. La scheda attuale verrà scurita. </para>
 
 </sect2>
 
@@ -3398,7 +3483,7 @@ CommonDirNames=nome1,nome2,nome3...
 
 <para
 >Traduzione: Vincenzo Reale <email
->smart2128@baslug.org</email
+>smart2128vr@gmail.com</email
 ></para
 ><para
 >Traduzione: Federico Zenith <email

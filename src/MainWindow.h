@@ -1,29 +1,16 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 // Qt
+#include <QExplicitlySharedDataPointer>
 #include <QPointer>
 #include <QUrl>
-#include <QExplicitlySharedDataPointer>
 
 // KDE
 #include <KXmlGuiWindow>
@@ -31,11 +18,16 @@
 // Konsole
 #include "widgets/ViewSplitter.h"
 
+#include "pluginsystem/IKonsolePlugin.h"
+
+#include "konsole_export.h"
+
 class QAction;
 class KActionMenu;
 class KToggleAction;
 
-namespace Konsole {
+namespace Konsole
+{
 class ViewManager;
 class ViewProperties;
 class Session;
@@ -54,7 +46,7 @@ class BookmarkHandler;
  *
  * Do not construct new main windows directly, use Application's newMainWindow() method.
  */
-class MainWindow : public KXmlGuiWindow
+class KONSOLE_EXPORT MainWindow : public KXmlGuiWindow
 {
     Q_OBJECT
 
@@ -86,7 +78,7 @@ public:
      * @param profile The profile to use to create the new session.
      * @param url the URL representing the new SSH connection
      */
-    Session *createSSHSession(QExplicitlySharedDataPointer<Profile> profile , const QUrl &url);
+    Session *createSSHSession(QExplicitlySharedDataPointer<Profile> profile, const QUrl &url);
 
     /**
      * Helper method to make this window get input focus
@@ -96,8 +88,7 @@ public:
     /**
      * Set the initial visibility of the menubar.
      */
-    void setMenuBarInitialVisibility(bool visible);
-
+    void setMenuBarInitialVisibility(bool showMenuBar);
 
     /**
      * @brief Set the frameless state
@@ -105,6 +96,16 @@ public:
      * @param frameless If true, no titlebar or frame is displayed.
      */
     void setRemoveWindowTitleBarAndFrame(bool frameless);
+
+    /**
+     * A reference to a plugin on the system.
+     */
+    void addPlugin(IKonsolePlugin *plugin);
+
+    /**
+     * creates a new tab for the main window
+     */
+    void newTab();
 
 Q_SIGNALS:
 
@@ -123,7 +124,7 @@ Q_SIGNALS:
     /**
      * Emitted when a view for one session is detached from this window
      */
-    void terminalsDetached(ViewSplitter *splitter, QHash<TerminalDisplay*, Session*> sessionsMap);
+    void terminalsDetached(ViewSplitter *splitter, QHash<TerminalDisplay *, Session *> sessionsMap);
 
 protected:
     // Reimplemented for internal reasons.
@@ -141,7 +142,6 @@ protected:
     bool focusNextPrevChild(bool next) override;
 
 private Q_SLOTS:
-    void newTab();
     void cloneTab();
     void newWindow();
     void showManageProfilesDialog();
@@ -172,6 +172,14 @@ public Q_SLOTS:
     void viewFullScreen(bool fullScreen);
 
 private:
+    void applyMainWindowSettings(const KConfigGroup &config) override;
+
+    /**
+     * Returns true if the window geometry was previously saved to the
+     * config file, false otherwise.
+     */
+    bool wasWindowGeometrySaved() const;
+
     void correctStandardShortcuts();
     void rememberMenuAccelerators();
     void removeMenuAccelerators();
@@ -196,10 +204,14 @@ private:
     KActionMenu *_newTabMenuAction;
 
     QPointer<SessionController> _pluggedController;
-
-    bool _menuBarInitialVisibility;
-    bool _menuBarInitialVisibilityApplied;
+    QList<IKonsolePlugin *> _plugins;
     bool _blurEnabled = false;
+    bool _firstShowEvent = true;
+
+    struct {
+        bool enabled = false; // indicates that we got a command line argument for menubar
+        bool showMenuBar = true;
+    } _windowArgsMenuBarVisible;
 };
 }
 

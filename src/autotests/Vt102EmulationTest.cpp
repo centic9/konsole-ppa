@@ -1,20 +1,7 @@
 /*
-    Copyright 2018 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2018 Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -24,18 +11,20 @@
 
 // The below is to verify the old #defines match the new constexprs
 // Just copy/paste for now from Vt102Emulation.cpp
-#define TY_CONSTRUCT(T,A,N) ( ((((int)(N)) & 0xffff) << 16) | ((((int)(A)) & 0xff) << 8) | (((int)(T)) & 0xff) )
-#define TY_CHR(   )     TY_CONSTRUCT(0,0,0)
-#define TY_CTL(A  )     TY_CONSTRUCT(1,A,0)
-#define TY_ESC(A  )     TY_CONSTRUCT(2,A,0)
-#define TY_ESC_CS(A,B)  TY_CONSTRUCT(3,A,B)
-#define TY_ESC_DE(A  )  TY_CONSTRUCT(4,A,0)
-#define TY_CSI_PS(A,N)  TY_CONSTRUCT(5,A,N)
-#define TY_CSI_PN(A  )  TY_CONSTRUCT(6,A,0)
-#define TY_CSI_PR(A,N)  TY_CONSTRUCT(7,A,N)
-#define TY_VT52(A)      TY_CONSTRUCT(8,A,0)
-#define TY_CSI_PG(A)    TY_CONSTRUCT(9,A,0)
-#define TY_CSI_PE(A)    TY_CONSTRUCT(10,A,0)
+/* clang-format off */
+#define TY_CONSTRUCT(T, A, N) (((((int)(N)) & 0xffff) << 16) | ((((int)(A)) & 0xff) << 8) | (((int)(T)) & 0xff))
+#define TY_CHR()        TY_CONSTRUCT(0, 0, 0)
+#define TY_CTL(A)       TY_CONSTRUCT(1, A, 0)
+#define TY_ESC(A)       TY_CONSTRUCT(2, A, 0)
+#define TY_ESC_CS(A, B) TY_CONSTRUCT(3, A, B)
+#define TY_ESC_DE(A)    TY_CONSTRUCT(4, A, 0)
+#define TY_CSI_PS(A, N) TY_CONSTRUCT(5, A, N)
+#define TY_CSI_PN(A)    TY_CONSTRUCT(6, A, 0)
+#define TY_CSI_PR(A, N) TY_CONSTRUCT(7, A, N)
+#define TY_VT52(A)      TY_CONSTRUCT(8, A, 0)
+#define TY_CSI_PG(A)    TY_CONSTRUCT(9, A, 0)
+#define TY_CSI_PE(A)    TY_CONSTRUCT(10, A, 0)
+/* clang-format on */
 
 using namespace Konsole;
 
@@ -88,11 +77,35 @@ constexpr int token_csi_pe(int a)
     return token_construct(10, a, 0);
 }
 
+void Vt102EmulationTest::sendAndCompare(TestEmulation *em, const char *input, size_t inputLen, const QString &expectedPrint, const QByteArray &expectedSent)
+{
+    em->_currentScreen->clearEntireScreen();
+
+    em->receiveData(input, inputLen);
+    QString printed = em->_currentScreen->text(0, em->_currentScreen->getColumns(), Screen::PlainText);
+    printed.chop(2); // Remove trailing space and newline
+    QCOMPARE(printed, expectedPrint);
+    QCOMPARE(em->lastSent, expectedSent);
+}
+
+void Vt102EmulationTest::testParse()
+{
+    TestEmulation em;
+    em.setCodec(TestEmulation::Utf8Codec);
+    Q_ASSERT(em._currentScreen != nullptr);
+
+    sendAndCompare(&em, "a", 1, QStringLiteral("a"), "");
+
+    const char tertiaryDeviceAttributes[] = {0x1b, '[', '=', '0', 'c'};
+    QEXPECT_FAIL("", "Fixed by https://invent.kde.org/utilities/konsole/-/merge_requests/416", Abort);
+    sendAndCompare(&em, tertiaryDeviceAttributes, sizeof tertiaryDeviceAttributes, QStringLiteral(""), "\033P!|00000000\033\\");
+}
+
 void Vt102EmulationTest::testTokenFunctions()
 {
     QCOMPARE(token_construct(0, 0, 0), TY_CONSTRUCT(0, 0, 0));
     QCOMPARE(token_chr(), TY_CHR());
-    QCOMPARE(token_ctl(8+'@'), TY_CTL(8+'@'));
+    QCOMPARE(token_ctl(8 + '@'), TY_CTL(8 + '@'));
     QCOMPARE(token_ctl('G'), TY_CTL('G'));
     QCOMPARE(token_csi_pe('p'), TY_CSI_PE('p'));
     QCOMPARE(token_csi_pg('c'), TY_CSI_PG('c'));

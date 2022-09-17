@@ -1,40 +1,33 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef PROFILEMANAGER_H
 #define PROFILEMANAGER_H
 
 // Qt
-#include <QKeySequence>
 #include <QHash>
+#include <QKeySequence>
 #include <QList>
 #include <QSet>
-#include <QStringList>
-#include <QVariant>
 #include <QStack>
+#include <QStringList>
+#include <QUrl>
+#include <QVariant>
+
+#include <KSharedConfig>
+
+#include <vector>
 
 // Konsole
 #include "Profile.h"
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * Manages profiles which specify various settings for terminal sessions
  * and their displays.
@@ -44,6 +37,8 @@ class KONSOLEPROFILE_EXPORT ProfileManager : public QObject
     Q_OBJECT
 
 public:
+    using Iterator = std::vector<Profile::Ptr>::const_iterator;
+
     /**
      * Constructs a new profile manager and loads information about the available
      * profiles.
@@ -64,7 +59,7 @@ public:
      * Returns a list of all available profiles
      *
      * Initially only the profile currently set as the default is loaded.
-    *
+     *
      * When this method is called, it calls loadAllProfiles() internally to
      * ensure all available profiles are loaded and usable.
      */
@@ -74,13 +69,6 @@ public:
      * Returns a list of already loaded profiles
      */
     QList<Profile::Ptr> loadedProfiles() const;
-
-    /**
-     * Loads all available profiles.  This involves reading each
-     * profile configuration file from disk and parsing it.
-     * Therefore it should only be done when necessary.
-     */
-    void loadAllProfiles();
 
     /**
      * Loads a profile from the specified path and registers
@@ -101,11 +89,8 @@ public:
     /**
      * This creates a profile based on the fallback profile, it's shown
      * as "Default". This is a special profile as it's not saved on disk
-     * but rather created from code in Profile class, based on the default
-     * profile settings. When the user tries to save this profile, a name
-     * (other than "Default") is set for it, e.g. "Profile 1" unless the
-     * user has specified a name; then we init a fallback profile again as
-     * a separate instance.
+     * but rather created from code in the Profile class, based on the default
+     * profile settings.
      */
     void initFallbackProfile();
 
@@ -148,8 +133,7 @@ public:
      * set this to false if you want to preview possible changes to a profile but do not
      * wish to make them permanent.
      */
-    void changeProfile(Profile::Ptr profile, QHash<Profile::Property, QVariant> propertyMap,
-                       bool persistent = true);
+    void changeProfile(Profile::Ptr profile, QHash<Profile::Property, QVariant> propertyMap, bool persistent = true);
 
     /**
      * Sets the @p profile as the default profile for creating new sessions
@@ -169,20 +153,17 @@ public:
     Profile::Ptr fallbackProfile() const;
 
     /**
-     * Sorts the profile list by menuindex; those without an menuindex, sort by name.
-     *  The menuindex list is first and then the non-menuindex list.
-     *
-     * @param list The profile list to sort
-     */
-    void sortProfiles(QList<Profile::Ptr> &list);
-
-    /**
      * Associates a shortcut with a particular profile.
      */
     void setShortcut(Profile::Ptr profile, const QKeySequence &keySequence);
 
     /** Returns the shortcut associated with a particular profile. */
     QKeySequence shortcut(Profile::Ptr profile) const;
+
+    /**
+     * Creates a unique name for a new profile, e.g. "Profile 1", "Profile 2" ...etc.
+     */
+    QString generateUniqueName() const;
 
 Q_SIGNALS:
 
@@ -202,7 +183,7 @@ Q_SIGNALS:
     void shortcutChanged(const Profile::Ptr &profile, const QKeySequence &newShortcut);
 
 public Q_SLOTS:
-    /** Saves settings (shortcuts, default profile etc.) to disk. */
+    /** Saves settings (currently only profile shortcuts) to disk. */
     void saveSettings();
 
 protected Q_SLOTS:
@@ -211,6 +192,13 @@ private Q_SLOTS:
 
 private:
     Q_DISABLE_COPY(ProfileManager)
+
+    /**
+     * Loads all available profiles. This involves reading each
+     * profile configuration file from disk and parsing it.
+     * Therefore it should only be done when necessary.
+     */
+    void loadAllProfiles(const QString &defaultProfileFileName = {});
 
     // loads the mappings between shortcut key sequences and
     // profile paths
@@ -230,24 +218,31 @@ private:
     // otherwise
     QString saveProfile(const Profile::Ptr &profile);
 
-    QSet<Profile::Ptr> _profiles;  // list of all loaded profiles
+    // Sorts _profiles by profile name
+    void sortProfiles();
+
+    // Uses std::find to find "profile" _profiles
+    Iterator findProfile(const Profile::Ptr &profile) const;
+
+    // A list of all loaded profiles, sorted by profile name
+    std::vector<Profile::Ptr> _profiles;
 
     Profile::Ptr _defaultProfile;
     Profile::Ptr _fallbackProfile;
 
-    bool _loadedAllProfiles; // set to true after loadAllProfiles has been called
-
     struct ShortcutData {
         Profile::Ptr profileKey;
-        QString profilePath;
+        QKeySequence keySeq;
     };
-    QMap<QKeySequence, ShortcutData> _shortcuts; // shortcut keys -> profile path
+    std::vector<ShortcutData> _shortcuts;
 
-    // finds out if it's a internal profile or an external one,
-    // fixing the path to point to the correct location for the profile.
-    QString normalizePath(const QString& path) const;
+    // Set to true when setShortcut() is called so that when the ProfileSettings
+    // dialog is accepted the profiles shorcut changes are saved
+    bool _profileShortcutsChanged = false;
+
+    KSharedConfigPtr m_config;
 };
 
 }
 
-#endif //PROFILEMANAGER_H
+#endif // PROFILEMANAGER_H

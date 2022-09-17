@@ -1,21 +1,8 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2018 by Harald Sitter <sitter@kde.org>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2018 Harald Sitter <sitter@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -25,12 +12,12 @@
 #include "ColorScheme.h"
 
 // KDE
-#include <KWindowSystem>
 #include <KLocalizedString>
+#include <KWindowSystem>
 
 // Qt
-#include <QPainter>
 #include <QApplication>
+#include <QPainter>
 
 using namespace Konsole;
 
@@ -55,8 +42,7 @@ void ColorSchemeViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, option.widget);
 
     // Draw name
-    QPalette::ColorRole textColor = ((option.state & QStyle::State_Selected) != 0)
-                                    ? QPalette::HighlightedText : QPalette::Text;
+    QPalette::ColorRole textColor = ((option.state & QStyle::State_Selected) != 0) ? QPalette::HighlightedText : QPalette::Text;
     painter->setPen(option.palette.color(textColor));
     painter->setFont(option.font);
 
@@ -65,9 +51,7 @@ void ColorSchemeViewDelegate::paint(QPainter *painter, const QStyleOptionViewIte
     QFontMetrics profileFontMetrics(profileFont);
     const int sampleTextWidth = profileFontMetrics.boundingRect(sampleText).width();
 
-    painter->drawText(option.rect.adjusted(sampleTextWidth + 15, 0, 0, 0),
-                      Qt::AlignLeft | Qt::AlignVCenter,
-                      index.data(Qt::DisplayRole).toString());
+    painter->drawText(option.rect.adjusted(sampleTextWidth + 15, 0, 0, 0), Qt::AlignLeft | Qt::AlignVCenter, index.data(Qt::DisplayRole).toString());
 
     // Draw the preview
     const int x = option.rect.left();

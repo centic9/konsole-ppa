@@ -1,22 +1,9 @@
 /*
-    Copyright 2020-2020 by Gustavo Carneiro <gcarneiroa@hotmail.com>
-    Copyright 2012-2020 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
-    Copyright 2020-2020 by Tomaz Canabrava <tcanabrava@kde.org>
+    SPDX-FileCopyrightText: 2020-2020 Gustavo Carneiro <gcarneiroa@hotmail.com>
+    SPDX-FileCopyrightText: 2012-2020 Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2020-2020 Tomaz Canabrava <tcanabrava@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -26,14 +13,14 @@
 #include "PrintOptions.h"
 
 // Qt
-#include <QRect>
 #include <QFont>
-#include <QPoint>
-#include <QWidget>
-#include <QPrinter>
 #include <QPainter>
+#include <QPoint>
 #include <QPointer>
 #include <QPrintDialog>
+#include <QPrinter>
+#include <QRect>
+#include <QWidget>
 
 // KDE
 #include <KConfigGroup>
@@ -61,10 +48,7 @@ void KonsolePrintManager::printRequest(pPrintContent pContent, QWidget *parent)
 
     dialog->setOptionTabs({options});
     dialog->setWindowTitle(i18n("Print Shell"));
-    QObject::connect(dialog,
-            QOverload<>::of(&QPrintDialog::accepted),
-            options,
-            &Konsole::PrintOptions::saveSettings);
+    QObject::connect(dialog, QOverload<>::of(&QPrintDialog::accepted), options, &Konsole::PrintOptions::saveSettings);
     if (dialog->exec() != QDialog::Accepted) {
         return;
     }
@@ -75,16 +59,15 @@ void KonsolePrintManager::printRequest(pPrintContent pContent, QWidget *parent)
     KConfigGroup configGroup(KSharedConfig::openConfig(), "PrintOptions");
 
     if (configGroup.readEntry("ScaleOutput", true)) {
-        double scale = qMin(printer.pageRect().width() / static_cast<double>(parent->width()),
-                            printer.pageRect().height() / static_cast<double>(parent->height()));
+        QRect page_rect = printer.pageLayout().paintRectPixels(printer.resolution());
+        double scale = qMin(page_rect.width() / static_cast<double>(parent->width()), page_rect.height() / static_cast<double>(parent->height()));
         painter.scale(scale, scale);
     }
-    
+
     pContent(painter, configGroup.readEntry("PrinterFriendly", true));
 }
 
-void KonsolePrintManager::printContent(QPainter &painter, bool friendly, QPoint columnsLines,
-                                        pVTFontGet vtFontGet, pVTFontSet vtFontSet)
+void KonsolePrintManager::printContent(QPainter &painter, bool friendly, QPoint columnsLines, pVTFontGet vtFontGet, pVTFontSet vtFontSet)
 {
     // Reinitialize the font with the printers paint device so the font
     // measurement calculations will be done correctly

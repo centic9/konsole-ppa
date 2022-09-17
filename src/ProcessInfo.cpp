@@ -1,48 +1,35 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.countm>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.countm>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Config
 #include "config-konsole.h"
 
 // Own
-#include "ProcessInfo.h"
 #include "NullProcessInfo.h"
+#include "ProcessInfo.h"
 #if !defined(Q_OS_WIN)
-    #include "UnixProcessInfo.h"
+#include "UnixProcessInfo.h"
 #endif
 #include "SSHProcessInfo.h"
 
 // Unix
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
-#include <unistd.h>
+#include <cerrno>
+#include <netinet/in.h>
 #include <pwd.h>
 #include <sys/param.h>
-#include <cerrno>
+#include <sys/socket.h>
+#include <unistd.h>
 
 // Qt
 #include <QDir>
 #include <QFileInfo>
-#include <QTextStream>
-#include <QStringList>
 #include <QHostInfo>
+#include <QStringList>
+#include <QTextStream>
 
 // KDE
 #include <KConfigGroup>
@@ -60,36 +47,36 @@
 
 #if defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
 #include <sys/types.h>
-#include <sys/user.h>
+
 #include <sys/syslimits.h>
-#   if defined(Q_OS_FREEBSD)
-#   include <libutil.h>
-#   include <sys/param.h>
-#   include <sys/queue.h>
-#   endif
+#include <sys/user.h>
+#if defined(Q_OS_FREEBSD)
+#include <libutil.h>
+#include <sys/param.h>
+#include <sys/queue.h>
+#endif
 #endif
 
 using namespace Konsole;
 
-ProcessInfo::ProcessInfo(int pid) :
-    _fields(ARGUMENTS)     // arguments
+ProcessInfo::ProcessInfo(int pid)
+    : _fields(ARGUMENTS) // arguments
     // are currently always valid,
     // they just return an empty
     // vector / map respectively
     // if no arguments
     // have been explicitly set
-    ,
-    _pid(pid),
-    _parentPid(0),
-    _foregroundPid(0),
-    _userId(0),
-    _lastError(NoError),
-    _name(QString()),
-    _userName(QString()),
-    _userHomeDir(QString()),
-    _currentDir(QString()),
-    _userNameRequired(true),
-    _arguments(QVector<QString>())
+    , _pid(pid)
+    , _parentPid(0)
+    , _foregroundPid(0)
+    , _userId(0)
+    , _lastError(NoError)
+    , _name(QString())
+    , _userName(QString())
+    , _userHomeDir(QString())
+    , _currentDir(QString())
+    , _userNameRequired(true)
+    , _arguments(QVector<QString>())
 {
 }
 
@@ -127,22 +114,18 @@ QString ProcessInfo::validCurrentDir() const
     return dir;
 }
 
-QSet<QString> ProcessInfo::_commonDirNames;
+QStringList ProcessInfo::_commonDirNames;
 
-QSet<QString> ProcessInfo::commonDirNames()
+QStringList ProcessInfo::commonDirNames()
 {
     static bool forTheFirstTime = true;
 
     if (forTheFirstTime) {
         const KSharedConfigPtr &config = KSharedConfig::openConfig();
         const KConfigGroup &configGroup = config->group("ProcessInfo");
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
         // Need to make a local copy so the begin() and end() point to the same QList
-        const QStringList commonDirsList = configGroup.readEntry("CommonDirNames", QStringList());
-        _commonDirNames = QSet<QString>(commonDirsList.begin(), commonDirsList.end());
-#else
-        _commonDirNames = QSet<QString>::fromList(configGroup.readEntry("CommonDirNames", QStringList()));
-#endif
+        _commonDirNames = configGroup.readEntry("CommonDirNames", QStringList());
+        _commonDirNames.removeDuplicates();
 
         forTheFirstTime = false;
     }
@@ -152,26 +135,22 @@ QSet<QString> ProcessInfo::commonDirNames()
 
 QString ProcessInfo::formatShortDir(const QString &input) const
 {
-    if(input == QStringLiteral("/")) {
+    if (input == QLatin1Char('/')) {
         return QStringLiteral("/");
     }
 
     QString result;
 
-    const QStringList &parts = input.split(QDir::separator());
+    const QStringList parts = input.split(QDir::separator());
 
-    QSet<QString> dirNamesToShorten = commonDirNames();
-
-    QListIterator<QString> iter(parts);
-    iter.toBack();
+    QStringList dirNamesToShorten = commonDirNames();
 
     // go backwards through the list of the path's parts
     // adding abbreviations of common directory names
     // and stopping when we reach a dir name which is not
     // in the commonDirNames set
-    while (iter.hasPrevious()) {
-        const QString &part = iter.previous();
-
+    for (auto it = parts.crbegin(), endIt = parts.crend(); it != endIt; ++it) {
+        const QString &part = *it;
         if (dirNamesToShorten.contains(part)) {
             result.prepend(QDir::separator() + part[0]);
         } else {
@@ -344,8 +323,8 @@ void ProcessInfo::setFileError(QFile::FileError error)
 class LinuxProcessInfo : public UnixProcessInfo
 {
 public:
-    explicit LinuxProcessInfo(int pid) :
-        UnixProcessInfo(pid)
+    explicit LinuxProcessInfo(int pid)
+        : UnixProcessInfo(pid)
     {
     }
 
@@ -397,11 +376,7 @@ private:
                 }
             } while (!statusLine.isNull() && uidLine.isNull());
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
             uidStrings << uidLine.split(QLatin1Char('\t'), Qt::SkipEmptyParts);
-#else
-            uidStrings << uidLine.split(QLatin1Char('\t'), QString::SkipEmptyParts);
-#endif
             // Must be 5 entries: 'Uid: %d %d %d %d' and
             // uid string must be less than 5 chars (uint)
             if (uidStrings.size() == 5) {
@@ -525,8 +500,8 @@ private:
 class FreeBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    explicit FreeBSDProcessInfo(int pid) :
-        UnixProcessInfo(pid)
+    explicit FreeBSDProcessInfo(int pid)
+        : UnixProcessInfo(pid)
     {
     }
 
@@ -591,10 +566,10 @@ private:
             return false;
         }
 
-        kInfoProc = new struct kinfo_proc [mibLength];
+        kInfoProc = new struct kinfo_proc[mibLength];
 
         if (sysctl(managementInfoBase, 4, kInfoProc, &mibLength, NULL, 0) == -1) {
-            delete [] kInfoProc;
+            delete[] kInfoProc;
             return false;
         }
 
@@ -614,7 +589,7 @@ private:
 
         readUserName();
 
-        delete [] kInfoProc;
+        delete[] kInfoProc;
         return true;
     }
 
@@ -650,8 +625,8 @@ private:
 class OpenBSDProcessInfo : public UnixProcessInfo
 {
 public:
-    explicit OpenBSDProcessInfo(int pid) :
-        UnixProcessInfo(pid)
+    explicit OpenBSDProcessInfo(int pid)
+        : UnixProcessInfo(pid)
     {
     }
 
@@ -768,8 +743,8 @@ private:
 class MacProcessInfo : public UnixProcessInfo
 {
 public:
-    explicit MacProcessInfo(int pid) :
-        UnixProcessInfo(pid)
+    explicit MacProcessInfo(int pid)
+        : UnixProcessInfo(pid)
     {
     }
 
@@ -802,15 +777,18 @@ private:
         if (sysctl(managementInfoBase, 4, nullptr, &mibLength, nullptr, 0) == -1) {
             return false;
         } else {
-            kInfoProc = new struct kinfo_proc [mibLength];
+            kInfoProc = new struct kinfo_proc[mibLength];
             if (sysctl(managementInfoBase, 4, kInfoProc, &mibLength, nullptr, 0) == -1) {
-                delete [] kInfoProc;
+                delete[] kInfoProc;
                 return false;
             } else {
                 const QString deviceNumber = QString::fromUtf8(devname(((&kInfoProc->kp_eproc)->e_tdev), S_IFCHR));
-                const QString fullDeviceName = QStringLiteral("/dev/")
-                                               + deviceNumber.rightJustified(3, QLatin1Char('0'));
-                delete [] kInfoProc;
+                const QString fullDeviceName = QStringLiteral("/dev/") + deviceNumber.rightJustified(3, QLatin1Char('0'));
+
+                setParentPid(kInfoProc->kp_eproc.e_ppid);
+                setForegroundPid(kInfoProc->kp_eproc.e_pgid);
+
+                delete[] kInfoProc;
 
                 const QByteArray deviceName = fullDeviceName.toLatin1();
                 const char *ttyName = deviceName.data();
@@ -826,21 +804,19 @@ private:
                 managementInfoBase[3] = statInfo.st_rdev;
 
                 mibLength = 0;
-                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), nullptr,
-                           &mibLength, nullptr, 0) == -1) {
+                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), nullptr, &mibLength, nullptr, 0) == -1) {
                     return false;
                 }
 
-                kInfoProc = new struct kinfo_proc [mibLength];
-                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), kInfoProc,
-                           &mibLength, nullptr, 0) == -1) {
+                kInfoProc = new struct kinfo_proc[mibLength];
+                if (sysctl(managementInfoBase, sizeof(managementInfoBase) / sizeof(int), kInfoProc, &mibLength, nullptr, 0) == -1) {
                     return false;
                 }
 
                 // The foreground program is the first one
                 setName(QString::fromUtf8(kInfoProc->kp_proc.p_comm));
 
-                delete [] kInfoProc;
+                delete[] kInfoProc;
             }
             setPid(pid);
         }
@@ -869,8 +845,8 @@ private:
 class SolarisProcessInfo : public UnixProcessInfo
 {
 public:
-    explicit SolarisProcessInfo(int pid) :
-        UnixProcessInfo(pid)
+    explicit SolarisProcessInfo(int pid)
+        : UnixProcessInfo(pid)
     {
     }
 

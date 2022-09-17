@@ -1,20 +1,7 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef PROCESSINFO_H
@@ -25,7 +12,8 @@
 #include <QString>
 #include <QVector>
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * Takes a snapshot of the state of a process and provides access to
  * information such as the process name, parent process,
@@ -165,7 +153,7 @@ public:
         /** The nature of the error is unknown. */
         UnknownError,
         /** Konsole does not have permission to obtain the process information. */
-        PermissionsError
+        PermissionsError,
     };
 
     /**
@@ -180,7 +168,7 @@ public:
         ARGUMENTS = 8,
         NAME = 16,
         CURRENT_DIR = 32,
-        UID = 64
+        UID = 64,
     };
     Q_DECLARE_FLAGS(Fields, Field)
 
@@ -264,7 +252,6 @@ protected:
     bool userNameRequired() const;
 
 private:
-
     Fields _fields;
 
     int _pid;
@@ -283,11 +270,11 @@ private:
 
     QVector<QString> _arguments;
 
-    static QSet<QString> commonDirNames();
-    static QSet<QString> _commonDirNames;
+    static QStringList commonDirNames();
+    static QStringList _commonDirNames;
 };
 Q_DECLARE_OPERATORS_FOR_FLAGS(ProcessInfo::Fields)
 
 }
 
-#endif //PROCESSINFO_H
+#endif // PROCESSINFO_H

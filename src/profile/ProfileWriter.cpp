@@ -1,22 +1,9 @@
 /*
     This source file is part of Konsole, a terminal emulator.
 
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -34,7 +21,7 @@
 using namespace Konsole;
 
 // FIXME: A dup line from Profile.cpp - redo these
-static const char GENERAL_GROUP[]     = "General";
+static const char GENERAL_GROUP[] = "General";
 
 ProfileWriter::ProfileWriter() = default;
 ProfileWriter::~ProfileWriter() = default;
@@ -48,11 +35,9 @@ QString ProfileWriter::getPath(const Profile::Ptr &profile)
 
     return localDataLocation % QLatin1String("/") % profile->untranslatedName() % QLatin1String(".profile");
 }
-void ProfileWriter::writeProperties(KConfig& config,
-                                        const Profile::Ptr &profile,
-                                        const Profile::PropertyInfo* properties)
+void ProfileWriter::writeProperties(KConfig &config, const Profile::Ptr &profile, const Profile::PropertyInfo *properties)
 {
-    const char* groupName = nullptr;
+    const char *groupName = nullptr;
     KConfigGroup group;
 
     while (properties->name != nullptr) {
@@ -63,15 +48,14 @@ void ProfileWriter::writeProperties(KConfig& config,
             }
 
             if (profile->isPropertySet(properties->property)) {
-                group.writeEntry(QLatin1String(properties->name),
-                                 profile->property<QVariant>(properties->property));
+                group.writeEntry(QLatin1String(properties->name), profile->property<QVariant>(properties->property));
             }
         }
 
         properties++;
     }
 }
-bool ProfileWriter::writeProfile(const QString& path , const Profile::Ptr &profile)
+bool ProfileWriter::writeProfile(const QString &path, const Profile::Ptr &profile)
 {
     KConfig config(path, KConfig::NoGlobals);
 
@@ -87,11 +71,9 @@ bool ProfileWriter::writeProfile(const QString& path , const Profile::Ptr &profi
         general.writeEntry("Parent", profile->parent()->path());
     }
 
-    if (profile->isPropertySet(Profile::Command)
-            || profile->isPropertySet(Profile::Arguments)) {
-        general.writeEntry("Command",
-                           ShellCommand(profile->command(), profile->arguments()).fullCommand());
-     }
+    if (profile->isPropertySet(Profile::Command) || profile->isPropertySet(Profile::Arguments)) {
+        general.writeEntry("Command", ShellCommand(profile->command(), profile->arguments()).fullCommand());
+    }
 
     // Write remaining properties
     writeProperties(config, profile, Profile::DefaultPropertyNames);

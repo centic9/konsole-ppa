@@ -1,20 +1,7 @@
 /*
-    Copyright (C) 2007 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -24,17 +11,17 @@
 
 using namespace Konsole;
 
-ScreenWindow::ScreenWindow(Screen *screen, QObject *parent) :
-    QObject(parent),
-    _screen(nullptr),
-    _windowBuffer(nullptr),
-    _windowBufferSize(0),
-    _bufferNeedsUpdate(true),
-    _windowLines(1),
-    _currentLine(0),
-    _currentResultLine(-1),
-    _trackOutput(true),
-    _scrollCount(0)
+ScreenWindow::ScreenWindow(Screen *screen, QObject *parent)
+    : QObject(parent)
+    , _screen(nullptr)
+    , _windowBuffer(nullptr)
+    , _windowBufferSize(0)
+    , _bufferNeedsUpdate(true)
+    , _windowLines(1)
+    , _currentLine(0)
+    , _currentResultLine(-1)
+    , _trackOutput(true)
+    , _scrollCount(0)
 {
     setScreen(screen);
 }
@@ -52,7 +39,7 @@ void ScreenWindow::setScreen(Screen *screen)
         return;
     }
 
-    emit screenAboutToChange();
+    Q_EMIT screenAboutToChange();
     _screen = screen;
 }
 
@@ -76,8 +63,7 @@ Character *ScreenWindow::getImage()
         return _windowBuffer;
     }
 
-    _screen->getImage(_windowBuffer, size,
-                      currentLine(), endWindowLine());
+    _screen->getImage(_windowBuffer, size, currentLine(), endWindowLine());
 
     // this window may look beyond the end of the screen, in which
     // case there will be an unused area which needs to be filled
@@ -115,8 +101,7 @@ void ScreenWindow::fillUnusedArea()
 //
 int ScreenWindow::endWindowLine() const
 {
-    return qMin(currentLine() + windowLines() - 1,
-                lineCount() - 1);
+    return qMin(currentLine() + windowLines() - 1, lineCount() - 1);
 }
 
 QVector<LineProperty> ScreenWindow::getLineProperties()
@@ -152,7 +137,7 @@ void ScreenWindow::setSelectionStart(int column, int line, bool columnMode)
     _screen->setSelectionStart(column, line + currentLine(), columnMode);
 
     _bufferNeedsUpdate = true;
-    emit selectionChanged();
+    Q_EMIT selectionChanged();
 }
 
 void ScreenWindow::setSelectionEnd(int column, int line)
@@ -160,7 +145,7 @@ void ScreenWindow::setSelectionEnd(int column, int line)
     _screen->setSelectionEnd(column, line + currentLine());
 
     _bufferNeedsUpdate = true;
-    emit selectionChanged();
+    Q_EMIT selectionChanged();
 }
 
 void ScreenWindow::setSelectionByLineRange(int start, int end)
@@ -171,7 +156,7 @@ void ScreenWindow::setSelectionByLineRange(int start, int end)
     _screen->setSelectionEnd(windowColumns(), end);
 
     _bufferNeedsUpdate = true;
-    emit selectionChanged();
+    Q_EMIT selectionChanged();
 }
 
 bool ScreenWindow::isSelected(int column, int line)
@@ -183,7 +168,7 @@ void ScreenWindow::clearSelection()
 {
     _screen->clearSelection();
 
-    emit selectionChanged();
+    Q_EMIT selectionChanged();
 }
 
 void ScreenWindow::setWindowLines(int lines)
@@ -239,7 +224,7 @@ void ScreenWindow::setCurrentResultLine(int line)
     }
 
     _currentResultLine = line;
-    emit currentResultLineChanged();
+    Q_EMIT currentResultLineChanged();
 }
 
 void ScreenWindow::scrollBy(RelativeScrollMode mode, int amount, bool fullPage)
@@ -274,7 +259,7 @@ void ScreenWindow::scrollTo(int line)
 
     _bufferNeedsUpdate = true;
 
-    emit scrolled(_currentLine);
+    Q_EMIT scrolled(_currentLine);
 }
 
 void ScreenWindow::setTrackOutput(bool trackOutput)
@@ -303,8 +288,19 @@ QRect ScreenWindow::scrollRegion() const
 
     if (atEndOfOutput() && equalToScreenSize) {
         return _screen->lastScrolledRegion();
-    } 
+    }
     return {0, 0, windowColumns(), windowLines()};
+}
+
+void ScreenWindow::updateCurrentLine()
+{
+    if (!_screen->isResize()) {
+        return;
+    }
+    if (_currentLine > 0) {
+        _currentLine -= _screen->getOldTotalLines() - lineCount();
+    }
+    _currentLine = qBound(0, _currentLine, lineCount() - windowLines());
 }
 
 void ScreenWindow::notifyOutputChanged()
@@ -320,8 +316,7 @@ void ScreenWindow::notifyOutputChanged()
         // lines of output - in this case the screen
         // window's current line number will need to
         // be adjusted - otherwise the output will scroll
-        _currentLine = qMax(0, _currentLine
-                            -_screen->droppedLines());
+        _currentLine = qMax(0, _currentLine - _screen->droppedLines());
 
         // ensure that the screen window's current position does
         // not go beyond the bottom of the screen
@@ -330,5 +325,5 @@ void ScreenWindow::notifyOutputChanged()
 
     _bufferNeedsUpdate = true;
 
-    emit outputChanged();
+    Q_EMIT outputChanged();
 }

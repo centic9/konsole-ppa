@@ -1,31 +1,18 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2009 by Thomas Dreibholz <dreibh@iem.uni-due.de>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2009 Thomas Dreibholz <dreibh@iem.uni-due.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef SESSIONCONTROLLER_H
 #define SESSIONCONTROLLER_H
 
 // Qt
-#include <QSet>
 #include <QPointer>
-#include <QString>
 #include <QRegularExpression>
+#include <QSet>
+#include <QString>
 
 // KDE
 #include <KXMLGUIClient>
@@ -33,10 +20,10 @@
 #include <memory>
 
 // Konsole
-#include "SessionDisplayConnection.h"
-#include "ViewProperties.h"
 #include "Enumeration.h"
 #include "Session.h"
+#include "SessionDisplayConnection.h"
+#include "ViewProperties.h"
 
 class QAction;
 class QTextCodec;
@@ -48,7 +35,8 @@ class KCodecAction;
 class QAction;
 class KActionMenu;
 
-namespace Konsole {
+namespace Konsole
+{
 class EditProfileDialog;
 class EscapeSequenceUrlFilter;
 class FileFilter;
@@ -61,6 +49,7 @@ class Session;
 class SessionGroup;
 class TerminalDisplay;
 class UrlFilter;
+class ColorFilter;
 
 /**
  * Provides the menu actions to manipulate a single terminal session and view pair.
@@ -88,7 +77,7 @@ public:
         CopyInputToSelectedTabsMode = 1,
 
         /** Do not copy keyboard input to other tabs */
-        CopyInputToNoneMode = 2
+        CopyInputToNoneMode = 2,
     };
 
     /**
@@ -98,13 +87,13 @@ public:
     ~SessionController() override;
 
     /** Returns the session associated with this controller */
-    QPointer<Session> session()
+    QPointer<Session> session() const
     {
         return _sessionDisplayConnection->session();
     }
 
     /** Returns the view associated with this controller */
-    QPointer<TerminalDisplay> view()
+    QPointer<TerminalDisplay> view() const
     {
         return _sessionDisplayConnection->view();
     }
@@ -134,8 +123,6 @@ public:
      * show the menu bar.
      */
     void setShowMenuAction(QAction *action);
-
-    EditProfileDialog *profileDialogPointer();
 
     // reimplemented
     QUrl url() const override;
@@ -246,6 +233,7 @@ private Q_SLOTS:
     void searchFrom();
     void findNextInHistory();
     void findPreviousInHistory();
+    void updateMenuIconsAccordingToReverseSearchSetting();
     void changeSearchMatch();
     void saveHistory();
     void showHistoryOptions();
@@ -256,6 +244,8 @@ private Q_SLOTS:
     void monitorProcessFinish(bool monitor);
     void renameSession();
     void switchProfile(const QExplicitlySharedDataPointer<Profile> &profile);
+    // Set the action text to either "Edit" or "Create New" Profile
+    void setEditProfileActionText(const QExplicitlySharedDataPointer<Profile> &profile);
     void handleWebShortcutAction();
     void configureWebShortcuts();
     void sendSignal(QAction *action);
@@ -275,7 +265,8 @@ private Q_SLOTS:
     void searchTextChanged(const QString &text);
     void searchCompleted(bool success);
 
-    void updateFilterList(QExplicitlySharedDataPointer<Profile> profile); // Called when the profile has changed, so we might need to change the list of filters
+    void updateFilterList(
+        const QExplicitlySharedDataPointer<Profile> &profile); // Called when the profile has changed, so we might need to change the list of filters
 
     void viewFocusChangeHandler(bool focused);
     void interactionHandler();
@@ -286,7 +277,7 @@ private Q_SLOTS:
     void highlightMatches(bool highlight);
     void scrollBackOptionsChanged(int mode, int lines);
     void sessionResizeRequest(const QSize &size);
-    void trackOutput(QKeyEvent *event);  // move view to end of current output
+    void trackOutput(QKeyEvent *event); // move view to end of current output
     // when a key press occurs in the
     // display area
 
@@ -331,6 +322,7 @@ private:
     RegExpFilter *_searchFilter;
     UrlFilter *_urlFilter;
     FileFilter *_fileFilter;
+    ColorFilter *_colorFilter;
 
     QAction *_copyInputToAllTabsAction;
 
@@ -361,7 +353,6 @@ private:
     QStringList _bookmarkValidProgramsToClear;
 
     bool _isSearchBarEnabled;
-    QPointer<EditProfileDialog> _editProfileDialog;
 
     QString _searchText;
     QPointer<IncrementalSearchBar> _searchBar;
@@ -375,4 +366,4 @@ private:
 
 }
 
-#endif //SESSIONCONTROLLER_H
+#endif // SESSIONCONTROLLER_H

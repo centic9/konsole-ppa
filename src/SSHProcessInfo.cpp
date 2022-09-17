@@ -1,45 +1,32 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "SSHProcessInfo.h"
 
 // Unix
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
-#include <unistd.h>
+#include <cerrno>
+#include <netinet/in.h>
 #include <pwd.h>
 #include <sys/param.h>
-#include <cerrno>
+#include <sys/socket.h>
+#include <unistd.h>
 
 // Qt
 #include <QDebug>
 
 using namespace Konsole;
 
-SSHProcessInfo::SSHProcessInfo(const ProcessInfo &process) :
-    _process(process),
-    _user(QString()),
-    _host(QString()),
-    _port(QString()),
-    _command(QString())
+SSHProcessInfo::SSHProcessInfo(const ProcessInfo &process)
+    : _process(process)
+    , _user(QString())
+    , _host(QString())
+    , _port(QString())
+    , _command(QString())
 {
     bool ok = false;
 
@@ -65,7 +52,7 @@ SSHProcessInfo::SSHProcessInfo(const ProcessInfo &process) :
     // options which take no arguments
     static const QString noArgumentOptions(QStringLiteral("1246AaCfgKkMNnqsTtVvXxYy"));
     // options which take one argument
-    static const QString singleArgumentOptions(QStringLiteral("bcDeFIiLlmOopRSWw"));
+    static const QString singleArgumentOptions(QStringLiteral("bcDeFIiJLlmOopRSWw"));
 
     if (ok) {
         // find the username, host and command arguments
@@ -207,4 +194,3 @@ QString SSHProcessInfo::format(const QString &input) const
 
     return output;
 }
-

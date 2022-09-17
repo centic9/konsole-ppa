@@ -1,20 +1,7 @@
 /*
-    Copyright 2010 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2010 Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -31,9 +18,9 @@
 
 using Konsole::RenameTabWidget;
 
-RenameTabWidget::RenameTabWidget(QWidget *parent) :
-    QWidget(parent),
-    _ui(nullptr)
+RenameTabWidget::RenameTabWidget(QWidget *parent)
+    : QWidget(parent)
+    , _ui(nullptr)
 {
     _ui = new Ui::RenameTabWidget();
     _ui->setupUi(this);
@@ -41,25 +28,23 @@ RenameTabWidget::RenameTabWidget(QWidget *parent) :
     _ui->tabTitleEdit->setClearButtonEnabled(true);
     _ui->remoteTabTitleEdit->setClearButtonEnabled(true);
 
-    QList<QColor> listColors(_ui->tabColorCombo->colors());
-    listColors.insert(0, QColor(QColor::Invalid));
-    _ui->tabColorCombo->setColors(listColors);
-    _ui->tabColorCombo->setItemText(1, i18n("Color from theme"));
+    _colorNone = palette().base().color(); // so that item's text is visible in the combo-box
+    _colorNone.setAlpha(0);
 
-    connect(_ui->tabTitleEdit, &QLineEdit::textChanged, this,
-            &Konsole::RenameTabWidget::tabTitleFormatChanged);
-    connect(_ui->remoteTabTitleEdit, &QLineEdit::textChanged, this,
-            &Konsole::RenameTabWidget::remoteTabTitleFormatChanged);
-    connect(_ui->tabColorCombo, &KColorCombo::activated, this,
-            &Konsole::RenameTabWidget::tabColorChanged);
+    QList<QColor> listColors(_ui->tabColorCombo->colors());
+    listColors.insert(0, _colorNone);
+    _ui->tabColorCombo->setColors(listColors);
+    _ui->tabColorCombo->setItemText(1, i18nc("@label:listbox No color selected", "None"));
+
+    connect(_ui->tabTitleEdit, &QLineEdit::textChanged, this, &Konsole::RenameTabWidget::tabTitleFormatChanged);
+    connect(_ui->remoteTabTitleEdit, &QLineEdit::textChanged, this, &Konsole::RenameTabWidget::remoteTabTitleFormatChanged);
+    connect(_ui->tabColorCombo, &KColorCombo::activated, this, &Konsole::RenameTabWidget::tabColorChanged);
 
     _ui->tabTitleFormatButton->setContext(Session::LocalTabTitle);
-    connect(_ui->tabTitleFormatButton, &Konsole::TabTitleFormatButton::dynamicElementSelected, this,
-            &Konsole::RenameTabWidget::insertTabTitleText);
+    connect(_ui->tabTitleFormatButton, &Konsole::TabTitleFormatButton::dynamicElementSelected, this, &Konsole::RenameTabWidget::insertTabTitleText);
 
     _ui->remoteTabTitleFormatButton->setContext(Session::RemoteTabTitle);
-    connect(_ui->remoteTabTitleFormatButton, &Konsole::TabTitleFormatButton::dynamicElementSelected,
-            this, &Konsole::RenameTabWidget::insertRemoteTabTitleText);
+    connect(_ui->remoteTabTitleFormatButton, &Konsole::TabTitleFormatButton::dynamicElementSelected, this, &Konsole::RenameTabWidget::insertRemoteTabTitleText);
 }
 
 RenameTabWidget::~RenameTabWidget()
@@ -89,7 +74,11 @@ void RenameTabWidget::setRemoteTabTitleText(const QString &text)
 
 void RenameTabWidget::setColor(const QColor &color)
 {
-    _ui->tabColorCombo->setColor(color);
+    if (!color.isValid() || color.alpha() == 0) {
+        _ui->tabColorCombo->setColor(_colorNone);
+    } else {
+        _ui->tabColorCombo->setColor(color);
+    }
 }
 
 QString RenameTabWidget::tabTitleText() const

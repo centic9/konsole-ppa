@@ -1,20 +1,7 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef PART_H
@@ -28,13 +15,14 @@
 #include <QVariantList>
 
 // Konsole
-#include "session/Session.h"
 #include "config-konsole.h"
+#include "session/Session.h"
 
 class QStringList;
 class QKeyEvent;
 
-namespace Konsole {
+namespace Konsole
+{
 class Session;
 class SessionController;
 class ViewManager;
@@ -103,10 +91,9 @@ public Q_SLOTS:
      *
      * This is highly experimental. Do not use it at the moment
      */
-    void createSession(const QString &profileName = QString(),
-                       const QString &directory = QString());
+    void createSession(const QString &profileName = QString(), const QString &directory = QString());
 
-    void showManageProfilesDialog(QWidget* parent);
+    void showManageProfilesDialog(QWidget *parent);
 
     /**
      * Shows the dialog used to edit the profile used by the active session.  The
@@ -150,11 +137,11 @@ public Q_SLOTS:
     void setMonitorSilenceEnabled(bool enabled);
 
     /**
-    * Toggles monitoring for activity in the active session. If activity is detected,
-    * the activityDetected() signal is emitted.
-    *
-    * @param enabled Whether to enable or disable monitoring for activity.
-    * */
+     * Toggles monitoring for activity in the active session. If activity is detected,
+     * the activityDetected() signal is emitted.
+     *
+     * @param enabled Whether to enable or disable monitoring for activity.
+     * */
     void setMonitorActivityEnabled(bool enabled);
 
     /**
@@ -213,6 +200,7 @@ private Q_SLOTS:
     void newTab();
     void overrideTerminalShortcut(QKeyEvent *, bool &override);
     void notificationChanged(Session::Notification notification, bool enabled);
+
 private:
     Session *activeSession() const;
 

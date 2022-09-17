@@ -1,20 +1,7 @@
 /*
-    Copyright 2018 by Mariusz Glebocki <mglb@arccos-1.net>
+    SPDX-FileCopyrightText: 2018 Mariusz Glebocki <mglb@arccos-1.net>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -26,30 +13,33 @@
 
 // KDE
 #include <KLocalizedString>
+#include <kwidgetsaddons_version.h>
 
 using namespace Konsole;
 
-FontDialog::FontDialog(QWidget *parent) :
-    QDialog(parent)
+FontDialog::FontDialog(QWidget *parent)
+    : QDialog(parent)
     , _fontChooser(nullptr)
     , _showAllFonts(nullptr)
     , _buttonBox(nullptr)
 {
     setWindowTitle(i18nc("@title:window", "Select font"));
 
+#if KWIDGETSADDONS_VERSION >= QT_VERSION_CHECK(5, 86, 0)
+    _fontChooser = new KFontChooser(KFontChooser::FixedFontsOnly, this);
+#else
     _fontChooser = new KFontChooser(this, KFontChooser::FixedFontsOnly);
+#endif
+
     _showAllFonts = new QCheckBox(i18nc("@action:button", "Show all fonts"), this);
     _showAllFontsWarningButton = new QToolButton(this);
-    _buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok |
-                                      QDialogButtonBox::Cancel,
-                                      Qt::Horizontal, this);
+    _buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
 
-    _fontChooser->setSampleText(QStringLiteral(
-            "0OQ 1Il!| 5S 8B rnm :; ,. \"'` ~-= ({[<>]})\n"
-            "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\n"
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789\n"
-            "abcdefghijklmnopqrstuvwxyz"
-    ));
+    _fontChooser->setSampleText(
+        QStringLiteral("0OQ 1Il!| 5S 8B rnm :; ,. \"'` ~-= ({[<>]})\n"
+                       "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\n"
+                       "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789\n"
+                       "abcdefghijklmnopqrstuvwxyz"));
     _showAllFontsWarningButton->setIcon(QIcon::fromTheme(QStringLiteral("emblem-warning")));
     _showAllFontsWarningButton->setAutoRaise(true);
 
@@ -58,7 +48,9 @@ FontDialog::FontDialog(QWidget *parent) :
         _fontChooser->setFont(_fontChooser->font(), !enable);
     });
     connect(_showAllFontsWarningButton, &QToolButton::clicked, this, [this](bool) {
-        const QString message = i18nc("@info:status", "By its very nature, a terminal program requires font characters that are equal width (monospace). Any non monospaced font may cause display issues. This should not be necessary except in rare cases.");
+        const QString message = i18nc("@info:status",
+                                      "By its very nature, a terminal program requires font characters that are equal width (monospace). Any non monospaced "
+                                      "font may cause display issues. This should not be necessary except in rare cases.");
         const QPoint pos = QPoint(_showAllFonts->width() / 2, _showAllFonts->height());
         QWhatsThis::showText(_showAllFonts->mapToGlobal(pos), message, _showAllFonts);
     });

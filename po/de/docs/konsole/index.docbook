@@ -118,9 +118,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->2020-09-16</date>
+>2021-04-25</date>
 <releaseinfo
->Anwendungen 20.12</releaseinfo>
+>Anwendungen 21.08</releaseinfo>
 
 <abstract
 ><para
@@ -1400,6 +1400,46 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Unterfenster-Layout in Datei speichern</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Ermöglicht das Speichern des Layouts von Unterfenstern der aktuellen Ansicht in einer besonderen &konsole;-Layoutdatei, die dann wieder benutzt werden kann, um ein Layout zu laden. </action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Unterfenster-Layout aus Datei laden</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Ermöglicht das Laden eines Ansichts-Layouts aus einer Layoutdatei, die mit dem Menüeintrag <menuchoice
+><guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Unterfenster-Layout in Datei speichern</guimenuitem
+></menuchoice
+> vorher gespeichert wurde.</action
+>. Die Standardlayouts (2x2, 2x1, and 1x2) können über die Werkzeugleiste geladen werden. </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
@@ -1636,6 +1676,27 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycap
+>F11</keycap
+></shortcut
+> <guimenu
+>Ansicht</guimenu
+><guimenuitem
+>Vollbildmodus</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Schaltet den Vollbildmodus für &konsole; an bzw. wieder aus.</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1825,20 +1886,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycap
->F11</keycap
-></shortcut
-> <guimenu
+><guimenu
 >Einstellungen</guimenu
 ><guimenuitem
->Vollbildmodus</guimenuitem
+>Angezeigte Werkzeugleisten</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Schaltet den Vollbildmodus für &konsole; an bzw. wieder aus.</action
+>-</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Einstellungen</guimenu
+> <guimenuitem
+>Statusleiste anzeigen</guimenuitem
+> </menuchoice
+></term>
+<listitem
+><para
+><action
+>Zeigt die Statusleiste an bzw. blendet sie aus.</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1848,8 +1922,25 @@ Various search improvements
 ><menuchoice
 ><guimenu
 >Einstellungen</guimenu
+><guimenuitem
+>Sprache einrichten ...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Öffnet einen Dialog zur Einstellung der Sprache für diese Anwendung.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Einstellungen</guimenu
 > <guimenuitem
->Kurzbefehle festlegen ...</guimenuitem
+>Tastaturkurzbefehle festlegen ...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1897,7 +1988,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Pfeil links</keysym
 ></keycombo
 ></entry>
@@ -1907,7 +1998,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >Pfeil rechts</keysym
 ></keycombo
 ></entry>
@@ -1924,19 +2015,29 @@ Various search improvements
 <entry
 >Auswahl einfügen</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Shift;&Tab;</keycombo
-></entry>
-<entry
->Nächste Ansicht</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Einstellungen</guimenu
+> <guimenuitem
+>Werkzeugleisten einrichten ...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Öffnet den <ulink url="help:/fundamentals/config.html#toolbars-items"
+>Einrichtungsdialog für die Werkzeugleiste</ulink
+></action
+></para>
 </listitem>
 </varlistentry>
 
@@ -2999,7 +3100,7 @@ Space+Ctrl
 </itemizedlist>
 
 <para
->Sie könne auch Zeichenketten mit der C-Syntax benutzen. Daher können Sie folgende Escape-Sequenzen verwenden:</para>
+>Sie könne auch Zeichenfolgen mit der C-Syntax benutzen. Daher können Sie folgende Escape-Sequenzen verwenden:</para>
 
 <itemizedlist>
 <listitem

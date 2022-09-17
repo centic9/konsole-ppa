@@ -88,7 +88,9 @@
 ><year
 >2018</year
 ><year
->2020</year>
+>2020</year
+><year
+>2021</year>
 <holder
 >&Kurt.Hindenburg;</holder>
 </copyright>
@@ -104,9 +106,9 @@
 >&FDLNotice;</legalnotice>
 
 <date
->16 вересня 2020 року</date>
+>28 жовтня 2021 року</date>
 <releaseinfo
->Програми 20.12</releaseinfo>
+>Програми 21.12</releaseinfo>
 
 <abstract
 ><para
@@ -278,17 +280,6 @@
 
 </orderedlist>
 </para>
-
-<para
->Пункти з назвами всіх профілів, для яких позначено пункт <guilabel
->Показ у меню</guilabel
->, буде показано у меню <menuchoice
-><guimenu
->Файл</guimenu
-><guisubmenu
->Нова вкладка</guisubmenu
-></menuchoice
->. Відповідного підменю не буде показано, якщо позначено пункт показу лише для типового профілю. </para>
 
 </sect1>
 
@@ -640,7 +631,7 @@
 >Відкриває нову вкладку з типовим профілем</action>
 <note
 ><para
->&konsole; встановлюється з типовим профілем. Всі створені користувачем профілі буде показано у підменю. Підменю не буде показано, якщо у списку буде лише типовий профіль. </para
+>Першим профілем у підменю завжди буде «Типовий», тобто вбудований профіль. Усі інші профілі стоятимуть у списку нижче, упорядковані за абеткою. Вказаний користувачем типовий профіль буде позначено напівжирним шрифтом. </para
 ></note>
 </para
 ></listitem
@@ -742,13 +733,13 @@
 > <guimenu
 >Файл</guimenu
 > <guimenuitem
->Закрити вкладку</guimenuitem
+>Закрити сеанс</guimenuitem
 ></menuchoice>
 </term>
 <listitem
 ><para
 ><action
->Закриває поточну вкладку</action>
+>Завершує поточний сеанс</action>
 </para
 ></listitem>
 </varlistentry>
@@ -775,17 +766,8 @@
 ></para>
 <note
 ><para
->&konsole; відкриє діалогове вікно підтвердження виходу, якщо відкрито декілька вкладок. Показ цього вікна можна вимкнути позначенням пункту <guibutton
+>&konsole; відкриє діалогове вікно підтвердження виходу, якщо відкрито декілька сеансів або якщо певні програми працюють у якомусь із сеансів. Показ таких вікон можна вимкнути позначенням пункту <guibutton
 >Більше не питати</guibutton
->. </para>
-<para
->Якщо ви хочете повернути діалогове вікно підтвердження, вам слід вилучити рядки <screen
->[Notification Messages]
-CloseAllTabs=true</screen
-> з файла <filename
->$<envar
->XDG_CONFIG_HOME</envar
->/konsolerc</filename
 >. </para>
 </note>
 </listitem>
@@ -1244,56 +1226,6 @@ Various search improvements
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
->X</keycap
-></keycombo
-></shortcut
-> <guimenu
->Перегляд</guimenu
-> <guisubmenu
->Розділений перегляд</guisubmenu
-> <guimenuitem
->Закрити активний</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Закриває поточний перегляд</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
->O</keycap
-></keycombo
-></shortcut
-> <guimenu
->Перегляд</guimenu
-> <guisubmenu
->Розділений перегляд</guisubmenu
-> <guimenuitem
->Закрити інші</guimenuitem
-></menuchoice>
-</term>
-<listitem
-><para
-><action
->Закриває всі перегляди, окрім поточного</action>
-</para
-></listitem>
-</varlistentry>
-
-<varlistentry>
-<term
-><menuchoice
-><shortcut
-><keycombo action="simul"
->&Ctrl;&Shift;<keycap
 >]</keycap
 ></keycombo
 ></shortcut
@@ -1334,6 +1266,31 @@ Various search improvements
 ><para
 ><action
 >Робить поточну область перегляду меншою</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo action="simul"
+>&Ctrl;&Shift;<keycap
+>E</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Перегляд</guimenu
+> <guisubmenu
+>Розділений перегляд</guisubmenu
+> <guimenuitem
+>Перемкнути максимізацію поточної панелі</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Перемикає поточну панель перегляду між поточним розміром та максимізованим</action>
 </para
 ></listitem>
 </varlistentry>
@@ -1384,6 +1341,46 @@ Various search improvements
 ><action
 >Відкриває поточну розділену панель у окремому вікні</action>
 </para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Перегляд</guimenu
+> <guimenuitem
+>Зберегти компонування вкладок до файла</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Надає вам змогу зберегти компонування вкладок поточної панелі перегляду до спеціалізовано файла компонувань &konsole;, який згодом можна завантажити для відновлення одного з ваших улюблених компонувань.</action>
+</para
+></listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Перегляд</guimenu
+> <guimenuitem
+>Завантажити компонування вкладок з файла</guimenuitem
+></menuchoice>
+</term>
+<listitem
+><para
+><action
+>Надає вам змогу завантажити одне з ваших улюблених компонувань панелі перегляду з файла компонування, який раніше було збережено за допомогою пункту меню <menuchoice
+><guimenu
+>Перегляд</guimenu
+><guimenuitem
+>Зберегти компонування вкладок до файла</guimenuitem
+></menuchoice
+>.</action
+> Типові компонування (2x2, 2x1 і 1x2) можна завантажити за допомогою панелі інструментів. </para
 ></listitem>
 </varlistentry>
 
@@ -1624,6 +1621,29 @@ Various search improvements
 ></listitem>
 </varlistentry>
 
+<varlistentry>
+<term
+><menuchoice
+><shortcut
+><keycombo
+><keycap
+>F11</keycap
+></keycombo
+></shortcut
+> <guimenu
+>Перегляд</guimenu
+><guimenuitem
+>Повноекранний режим</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Вмикає або вимикає режим, коли вікно &konsole; заповнює весь екран</action
+></para
+></listitem>
+</varlistentry>
+
 </variablelist>
 </sect2>
 
@@ -1731,6 +1751,16 @@ Various search improvements
 </variablelist>
 </sect2>
 
+<sect2 id="plugins-menu">
+<title
+>Меню «Додатки»</title>
+
+<para
+>Буде показано список усіх встановлених додатків або повідомлення «Немає доступних додатків» </para>
+
+</sect2>
+
+
 <sect2 id="settings-menu">
 <title
 >Меню «Параметри»</title>
@@ -1790,6 +1820,23 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
+><guimenu
+>Параметри</guimenu
+> <guimenuitem
+>Схема кольорів вікна</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Змінити в інтерфейсі користувача &konsole; схему кольорів на вказану</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
 ><shortcut
 ><keycombo action="simul"
 >&Ctrl;&Shift;<keycap
@@ -1813,22 +1860,33 @@ Various search improvements
 <varlistentry>
 <term
 ><menuchoice
-><shortcut
-><keycombo
-><keycap
->F11</keycap
-></keycombo
-></shortcut
-> <guimenu
+><guimenu
 >Параметри</guimenu
-><guimenuitem
->Повноекранний режим</guimenuitem
+> <guimenuitem
+>Показані панелі</guimenuitem
 ></menuchoice
 ></term>
 <listitem
 ><para
 ><action
->Вмикає або вимикає режим, коли вікно &konsole; заповнює весь екран</action
+>Уможливлює перемикання видимості панелей інструментів &konsole;</action
+></para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметри</guimenu
+> <guimenuitem
+>Показати смужку стану</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Вмикає або вимикає видимість смужки стану</action
 ></para
 ></listitem>
 </varlistentry>
@@ -1839,7 +1897,24 @@ Various search improvements
 ><guimenu
 >Параметри</guimenu
 ><guimenuitem
->Налаштувати скорочення...</guimenuitem
+>Налаштувати мову...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Відкриває вікно для вибору перекладу інтерфейсу &konsole;.</action>
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметри</guimenu
+><guimenuitem
+>Налаштувати клавіатурні скорочення...</guimenuitem
 ></menuchoice
 ></term>
 <listitem
@@ -1887,7 +1962,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >←</keysym
 ></keycombo
 ></entry>
@@ -1897,7 +1972,7 @@ Various search improvements
 <row>
 <entry
 ><keycombo action="simul"
->&Ctrl;&Shift;<keysym
+>&Ctrl;&Alt;<keysym
 >→</keysym
 ></keycombo
 ></entry>
@@ -1914,19 +1989,29 @@ Various search improvements
 <entry
 >Вставити позначене</entry>
 </row>
-<row>
-<entry
-><keycombo action="simul"
->&Shift;&Tab;</keycombo
-></entry>
-<entry
->Наступний контейнер переглядів</entry
-> <!--FIXME what is this:yurchor container widget which holds views-->
-</row>
 </tbody>
 </tgroup>
 </informaltable>
 
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term
+><menuchoice
+><guimenu
+>Параметри</guimenu
+><guimenuitem
+>Налаштувати пенали...</guimenuitem
+></menuchoice
+></term>
+<listitem
+><para
+><action
+>Відкриває <ulink url="help:/fundamentals/config.html#toolbars-items"
+>вікно налаштовування панелей інструментів</ulink
+></action
+></para>
 </listitem>
 </varlistentry>
 
@@ -3384,8 +3469,7 @@ CommonDirNames=назва1,назва2,назва3...
 >Переклад українською: Юрій Чорноіван <email
 >yurchor@ukr.net</email
 ></para
-> 
-&underFDL; &underGPL; </chapter>
+> &underFDL; &underGPL; </chapter>
 
 <appendix id="links">
 <title

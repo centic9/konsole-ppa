@@ -1,59 +1,60 @@
 /*
-    This file is part of Konsole, an X terminal.
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 2021-2021 Carlos Alves <cbcalves@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef COMPACTHISTORYSCROLL_H
 #define COMPACTHISTORYSCROLL_H
 
-#include "konsoleprivate_export.h"
-
 #include "history/HistoryScroll.h"
-#include "history/compact/CompactHistoryLine.h"
+#include "konsoleprivate_export.h"
 
 namespace Konsole
 {
-
 class KONSOLEPRIVATE_EXPORT CompactHistoryScroll : public HistoryScroll
 {
-    typedef QList<CompactHistoryLine *> HistoryArray;
+    typedef QVector<Character> TextLine;
 
 public:
-    explicit CompactHistoryScroll(unsigned int maxLineCount = 1000);
-    ~CompactHistoryScroll() override;
+    explicit CompactHistoryScroll(const unsigned int maxLineCount = 1000);
+    ~CompactHistoryScroll() override = default;
 
-    int  getLines() override;
-    int  getLineLen(int lineNumber) override;
-    void getCells(int lineNumber, int startColumn, int count, Character buffer[]) override;
-    bool isWrappedLine(int lineNumber) override;
+    int getLines() const override;
+    int getMaxLines() const override;
+    int getLineLen(const int lineNumber) const override;
+    void getCells(const int lineNumber, const int startColumn, const int count, Character buffer[]) const override;
+    bool isWrappedLine(const int lineNumber) const override;
+    LineProperty getLineProperty(const int lineNumber) const override;
 
-    void addCells(const Character a[], int count) override;
-    void addCellsVector(const TextLine &cells) override;
-    void addLine(bool previousWrapped = false) override;
+    void addCells(const Character a[], const int count) override;
+    void addLine(const LineProperty lineProperty = 0) override;
 
-    void setMaxNbLines(unsigned int lineCount);
+    void removeCells() override;
+
+    void setMaxNbLines(const int lineCount);
+
+    int reflowLines(const int columns) override;
 
 private:
-    bool hasDifferentColors(const TextLine &line) const;
-    HistoryArray _lines;
-    CompactHistoryBlockList _blockList;
+    QList<Character> _cells;
+    QList<int> _index;
+    QList<LineProperty> _flags;
 
-    unsigned int _maxLineCount;
+    int _maxLineCount;
+
+    void removeFirstLine();
+
+    inline int lineLen(const int line) const
+    {
+        return line == 0 ? _index.at(0) : _index.at(line) - _index.at(line - 1);
+    }
+
+    inline int startOfLine(const int line) const
+    {
+        return line == 0 ? 0 : _index.at(line - 1);
+    }
 };
 
 }

@@ -1,56 +1,35 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2020 by Tomaz Canabrava <tcanabrava@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2020 Tomaz Canabrava <tcanabrava@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #include "UrlFilterHotspot.h"
 
-#include <kio_version.h>
-#if KIO_VERSION < QT_VERSION_CHECK(5, 71, 0)
-#include <KRun>
-#else
 #include <KIO/JobUiDelegate>
 #include <KIO/OpenUrlJob>
-#endif
 
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
 #include <QRegularExpression>
 
-#include <QIcon>
 #include <KLocalizedString>
+#include <QIcon>
 #include <QMouseEvent>
 
 #include "UrlFilter.h"
 #include "terminalDisplay/TerminalDisplay.h"
-//regexp matches:
+// regexp matches:
 // full url:
-
-
 
 using namespace Konsole;
 
 UrlFilterHotSpot::~UrlFilterHotSpot() = default;
 
-UrlFilterHotSpot::UrlFilterHotSpot(int startLine, int startColumn, int endLine, int endColumn,
-                            const QStringList &capturedTexts) :
-    RegExpFilterHotSpot(startLine, startColumn, endLine, endColumn, capturedTexts)
+UrlFilterHotSpot::UrlFilterHotSpot(int startLine, int startColumn, int endLine, int endColumn, const QStringList &capturedTexts)
+    : RegExpFilterHotSpot(startLine, startColumn, endLine, endColumn, capturedTexts)
 {
     const UrlType kind = urlType();
     if (kind == Email) {
@@ -98,13 +77,9 @@ void UrlFilterHotSpot::activate(QObject *object)
             url.prepend(QLatin1String("mailto:"));
         }
 
-#if KIO_VERSION < QT_VERSION_CHECK(5, 71, 0)
-        new KRun(QUrl(url), QApplication::activeWindow());
-#else
         auto *job = new KIO::OpenUrlJob(QUrl(url));
         job->setUiDelegate(new KIO::JobUiDelegate(KJobUiDelegate::AutoHandlingEnabled, QApplication::activeWindow()));
         job->start();
-#endif
     }
 }
 
@@ -134,8 +109,12 @@ QList<QAction *> UrlFilterHotSpot::actions()
     openAction->setObjectName(QStringLiteral("open-action"));
     copyAction->setObjectName(QStringLiteral("copy-action"));
 
-    QObject::connect(openAction, &QAction::triggered, this, [this, openAction]{ activate(openAction); });
-    QObject::connect(copyAction, &QAction::triggered, this, [this, copyAction]{ activate(copyAction); });
+    QObject::connect(openAction, &QAction::triggered, this, [this, openAction] {
+        activate(openAction);
+    });
+    QObject::connect(copyAction, &QAction::triggered, this, [this, copyAction] {
+        activate(copyAction);
+    });
 
     return {openAction, copyAction};
 }

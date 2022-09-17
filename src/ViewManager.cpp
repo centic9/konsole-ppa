@@ -1,20 +1,7 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -23,13 +10,21 @@
 #include "config-konsole.h"
 
 // Qt
+#include <QFile>
+#include <QFileDialog>
+#include <QStandardPaths>
 #include <QStringList>
 #include <QTabBar>
 
+#include <QJsonArray>
+#include <QJsonDocument>
+
 // KDE
-#include <KLocalizedString>
 #include <KActionCollection>
+#include <KActionMenu>
 #include <KConfigGroup>
+#include <KLocalizedString>
+#include <KMessageBox>
 
 // Konsole
 #include <windowadaptor.h>
@@ -51,16 +46,16 @@ using namespace Konsole;
 
 int ViewManager::lastManagerId = 0;
 
-ViewManager::ViewManager(QObject *parent, KActionCollection *collection) :
-    QObject(parent),
-    _viewContainer(nullptr),
-    _pluggedController(nullptr),
-    _sessionMap(QHash<TerminalDisplay *, Session *>()),
-    _actionCollection(collection),
-    _navigationMethod(NoNavigation),
-    _navigationVisibility(NavigationNotSet),
-    _managerId(0),
-    _terminalDisplayHistoryIndex(-1)
+ViewManager::ViewManager(QObject *parent, KActionCollection *collection)
+    : QObject(parent)
+    , _viewContainer(nullptr)
+    , _pluggedController(nullptr)
+    , _sessionMap(QHash<TerminalDisplay *, Session *>())
+    , _actionCollection(collection)
+    , _navigationMethod(TabbedNavigation)
+    , _navigationVisibility(NavigationNotSet)
+    , _managerId(0)
+    , _terminalDisplayHistoryIndex(-1)
 {
     _viewContainer = createContainer();
     // setup actions which are related to the views
@@ -69,21 +64,17 @@ ViewManager::ViewManager(QObject *parent, KActionCollection *collection) :
     /* TODO: Reconnect
     // emit a signal when all of the views held by this view manager are destroyed
     */
-    connect(_viewContainer.data(), &Konsole::TabbedViewContainer::empty,
-            this, &Konsole::ViewManager::empty);
+    connect(_viewContainer.data(), &Konsole::TabbedViewContainer::empty, this, &Konsole::ViewManager::empty);
 
     // listen for profile changes
-    connect(ProfileManager::instance(), &Konsole::ProfileManager::profileChanged,
-            this, &Konsole::ViewManager::profileChanged);
-    connect(SessionManager::instance(), &Konsole::SessionManager::sessionUpdated,
-            this, &Konsole::ViewManager::updateViewsForSession);
+    connect(ProfileManager::instance(), &Konsole::ProfileManager::profileChanged, this, &Konsole::ViewManager::profileChanged);
+    connect(SessionManager::instance(), &Konsole::SessionManager::sessionUpdated, this, &Konsole::ViewManager::updateViewsForSession);
 
-    //prepare DBus communication
+    // prepare DBus communication
     new WindowAdaptor(this);
 
     _managerId = ++lastManagerId;
-    QDBusConnection::sessionBus().registerObject(QLatin1String("/Windows/")
-                                                 + QString::number(_managerId), this);
+    QDBusConnection::sessionBus().registerObject(QLatin1String("/Windows/") + QString::number(_managerId), this);
 }
 
 ViewManager::~ViewManager() = default;
@@ -111,32 +102,68 @@ void ViewManager::setupActions()
     }
 
     KActionCollection *collection = _actionCollection;
+    KActionMenu *splitViewActions =
+        new KActionMenu(QIcon::fromTheme(QStringLiteral("view-split-left-right")), i18nc("@action:inmenu", "Split View"), collection);
+    splitViewActions->setPopupMode(QToolButton::InstantPopup);
+    collection->addAction(QStringLiteral("split-view"), splitViewActions);
+
     // Let's reuse the pointer, no need not to.
     auto *action = new QAction(this);
     action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-left-right")));
     action->setText(i18nc("@action:inmenu", "Split View Left/Right"));
     connect(action, &QAction::triggered, this, &ViewManager::splitLeftRight);
     collection->addAction(QStringLiteral("split-view-left-right"), action);
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::Key_ParenLeft);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_ParenLeft);
+    splitViewActions->addAction(action);
 
     action = new QAction(this);
     action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-top-bottom")));
     action->setText(i18nc("@action:inmenu", "Split View Top/Bottom"));
     connect(action, &QAction::triggered, this, &ViewManager::splitTopBottom);
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::Key_ParenRight);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::Key_ParenRight);
     collection->addAction(QStringLiteral("split-view-top-bottom"), action);
+    splitViewActions->addAction(action);
+
+    splitViewActions->addSeparator();
+
+    action = new QAction(this);
+    action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-top-bottom")));
+    action->setText(i18nc("@action:inmenu", "Load a new tab with layout 2x2 terminals"));
+    connect(action, &QAction::triggered, this, [this]() {
+        this->loadLayout(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/2x2-terminals.json")));
+    });
+    collection->addAction(QStringLiteral("load-terminals-layout-2x2"), action);
+    splitViewActions->addAction(action);
+
+    action = new QAction(this);
+    action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-left-right")));
+    action->setText(i18nc("@action:inmenu", "Load a new tab with layout 2x1 terminals"));
+    connect(action, &QAction::triggered, this, [this]() {
+        this->loadLayout(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/2x1-terminals.json")));
+    });
+    collection->addAction(QStringLiteral("load-terminals-layout-2x1"), action);
+    splitViewActions->addAction(action);
+
+    action = new QAction(this);
+    action->setIcon(QIcon::fromTheme(QStringLiteral("view-split-top-bottom")));
+    action->setText(i18nc("@action:inmenu", "Load a new tab with layout 1x2 terminals"));
+    connect(action, &QAction::triggered, this, [this]() {
+        this->loadLayout(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("konsole/1x2-terminals.json")));
+    });
+    collection->addAction(QStringLiteral("load-terminals-layout-1x2"), action);
+    splitViewActions->addAction(action);
 
     action = new QAction(this);
     action->setText(i18nc("@action:inmenu", "Expand View"));
     action->setEnabled(false);
     connect(action, &QAction::triggered, this, &ViewManager::expandActiveContainer);
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Qt::Key_BracketRight);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_BracketRight);
     collection->addAction(QStringLiteral("expand-active-view"), action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(this);
     action->setText(i18nc("@action:inmenu", "Shrink View"));
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Qt::Key_BracketLeft);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_BracketLeft);
     action->setEnabled(false);
     collection->addAction(QStringLiteral("shrink-active-view"), action);
     connect(action, &QAction::triggered, this, &ViewManager::shrinkActiveContainer);
@@ -152,7 +179,7 @@ void ViewManager::setupActions()
 
     // Ctrl+Shift+D is not used as a shortcut by default because it is too close
     // to Ctrl+D - which will terminate the session in many cases
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Qt::Key_H);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Qt::Key_H);
 
     action = collection->addAction(QStringLiteral("detach-tab"));
     action->setEnabled(true);
@@ -163,7 +190,7 @@ void ViewManager::setupActions()
 
     // keyboard shortcut only actions
     action = new QAction(i18nc("@action Shortcut entry", "Next Tab"), this);
-    const QList<QKeySequence> nextViewActionKeys{Qt::SHIFT + Qt::Key_Right, Qt::CTRL + Qt::Key_PageDown};
+    const QList<QKeySequence> nextViewActionKeys{Qt::SHIFT | Qt::Key_Right, Qt::CTRL | Qt::Key_PageDown};
     collection->setDefaultShortcuts(action, nextViewActionKeys);
     collection->addAction(QStringLiteral("next-tab"), action);
     connect(action, &QAction::triggered, this, &ViewManager::nextView);
@@ -171,7 +198,7 @@ void ViewManager::setupActions()
     // _viewSplitter->addAction(nextViewAction);
 
     action = new QAction(i18nc("@action Shortcut entry", "Previous Tab"), this);
-    const QList<QKeySequence> previousViewActionKeys{Qt::SHIFT + Qt::Key_Left, Qt::CTRL + Qt::Key_PageUp};
+    const QList<QKeySequence> previousViewActionKeys{Qt::SHIFT | Qt::Key_Left, Qt::CTRL | Qt::Key_PageUp};
     collection->setDefaultShortcuts(action, previousViewActionKeys);
     collection->addAction(QStringLiteral("previous-tab"), action);
     connect(action, &QAction::triggered, this, &ViewManager::previousView);
@@ -181,25 +208,25 @@ void ViewManager::setupActions()
     action = new QAction(i18nc("@action Shortcut entry", "Focus Above Terminal"), this);
     connect(action, &QAction::triggered, this, &ViewManager::focusUp);
     collection->addAction(QStringLiteral("focus-view-above"), action);
-    collection->setDefaultShortcut(action, Qt::SHIFT + Qt::CTRL + Qt::Key_Up);
+    collection->setDefaultShortcut(action, Qt::SHIFT | Qt::CTRL | Qt::Key_Up);
     _viewContainer->addAction(action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Below Terminal"), this);
-    collection->setDefaultShortcut(action, Qt::SHIFT + Qt::CTRL + Qt::Key_Down);
+    collection->setDefaultShortcut(action, Qt::SHIFT | Qt::CTRL | Qt::Key_Down);
     collection->addAction(QStringLiteral("focus-view-below"), action);
     connect(action, &QAction::triggered, this, &ViewManager::focusDown);
     _multiSplitterOnlyActions << action;
     _viewContainer->addAction(action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Left Terminal"), this);
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Konsole::LEFT);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Konsole::LEFT);
     connect(action, &QAction::triggered, this, &ViewManager::focusLeft);
     collection->addAction(QStringLiteral("focus-view-left"), action);
     _multiSplitterOnlyActions << action;
 
     action = new QAction(i18nc("@action Shortcut entry", "Focus Right Terminal"), this);
-    collection->setDefaultShortcut(action, Konsole::ACCEL + Qt::SHIFT + Konsole::RIGHT);
+    collection->setDefaultShortcut(action, Konsole::ACCEL | Qt::SHIFT | Konsole::RIGHT);
     connect(action, &QAction::triggered, this, &ViewManager::focusRight);
     collection->addAction(QStringLiteral("focus-view-right"), action);
     _multiSplitterOnlyActions << action;
@@ -211,7 +238,7 @@ void ViewManager::setupActions()
 
     action = new QAction(i18nc("@action Shortcut entry", "Last Used Tabs"), this);
     connect(action, &QAction::triggered, this, &ViewManager::lastUsedView);
-    collection->setDefaultShortcut(action, Qt::CTRL + Qt::Key_Tab);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::Key_Tab);
     collection->addAction(QStringLiteral("last-used-tab"), action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Toggle Between Two Tabs"), this);
@@ -221,28 +248,28 @@ void ViewManager::setupActions()
 
     action = new QAction(i18nc("@action Shortcut entry", "Last Used Tabs (Reverse)"), this);
     collection->addAction(QStringLiteral("last-used-tab-reverse"), action);
-    collection->setDefaultShortcut(action, Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_Tab);
     connect(action, &QAction::triggered, this, &ViewManager::lastUsedViewReverse);
 
     action = new QAction(i18nc("@action Shortcut entry", "Toggle maximize current view"), this);
     action->setText(i18nc("@action:inmenu", "Toggle maximize current view"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("view-fullscreen")));
     collection->addAction(QStringLiteral("toggle-maximize-current-view"), action);
-    collection->setDefaultShortcut(action, Qt::CTRL + Qt::SHIFT + Qt::Key_E);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::SHIFT | Qt::Key_E);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::toggleMaximizeCurrentTerminal);
     _multiSplitterOnlyActions << action;
     _viewContainer->addAction(action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Move tab to the right"), this);
     collection->addAction(QStringLiteral("move-tab-to-right"), action);
-    collection->setDefaultShortcut(action, Qt::CTRL + Qt::ALT + Qt::Key_Right);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_Right);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::moveTabRight);
     _multiTabOnlyActions << action;
     _viewContainer->addAction(action);
 
     action = new QAction(i18nc("@action Shortcut entry", "Move tab to the left"), this);
     collection->addAction(QStringLiteral("move-tab-to-left"), action);
-    collection->setDefaultShortcut(action, Qt::CTRL + Qt::ALT + Qt::Key_Left);
+    collection->setDefaultShortcut(action, Qt::CTRL | Qt::ALT | Qt::Key_Left);
     connect(action, &QAction::triggered, _viewContainer, &TabbedViewContainer::moveTabLeft);
     _multiTabOnlyActions << action;
     _viewContainer->addAction(action);
@@ -251,7 +278,9 @@ void ViewManager::setupActions()
     const int SWITCH_TO_TAB_COUNT = 19;
     for (int i = 0; i < SWITCH_TO_TAB_COUNT; ++i) {
         action = new QAction(i18nc("@action Shortcut entry", "Switch to Tab %1", i + 1), this);
-        connect(action, &QAction::triggered, this, [this, i]() { switchToView(i); });
+        connect(action, &QAction::triggered, this, [this, i]() {
+            switchToView(i);
+        });
         collection->addAction(QStringLiteral("switch-to-tab-%1").arg(i), action);
         _multiTabOnlyActions << action;
 
@@ -260,29 +289,25 @@ void ViewManager::setupActions()
             collection->setDefaultShortcut(action, QStringLiteral("Alt+%1").arg(i + 1));
         } else if (i == 9) {
             // add shortcut for 10th tab
-            collection->setDefaultShortcut(action, Qt::ALT + Qt::Key_0);
+            collection->setDefaultShortcut(action, Qt::ALT | Qt::Key_0);
         }
     }
 
     connect(_viewContainer, &TabbedViewContainer::viewAdded, this, &ViewManager::toggleActionsBasedOnState);
-    connect(_viewContainer, &TabbedViewContainer::viewRemoved, this, &ViewManager::toggleActionsBasedOnState);
     connect(_viewContainer, &QTabWidget::currentChanged, this, &ViewManager::toggleActionsBasedOnState);
 
     toggleActionsBasedOnState();
 }
 
-void ViewManager::toggleActionsBasedOnState() {
+void ViewManager::toggleActionsBasedOnState()
+{
     const int count = _viewContainer->count();
     for (QAction *tabOnlyAction : qAsConst(_multiTabOnlyActions)) {
         tabOnlyAction->setEnabled(count > 1);
     }
 
     if ((_viewContainer != nullptr) && (_viewContainer->activeViewSplitter() != nullptr)) {
-        const int splitCount = _viewContainer
-                ->activeViewSplitter()
-                ->getToplevelSplitter()
-                ->findChildren<TerminalDisplay*>()
-                    .count();
+        const int splitCount = _viewContainer->activeViewSplitter()->getToplevelSplitter()->findChildren<TerminalDisplay *>().count();
 
         for (QAction *action : qAsConst(_multiSplitterOnlyActions)) {
             action->setEnabled(splitCount > 1);
@@ -295,9 +320,9 @@ void ViewManager::switchToView(int index)
     _viewContainer->setCurrentIndex(index);
 }
 
-void ViewManager::switchToTerminalDisplay(Konsole::TerminalDisplay* terminalDisplay)
+void ViewManager::switchToTerminalDisplay(Konsole::TerminalDisplay *terminalDisplay)
 {
-    auto splitter = qobject_cast<ViewSplitter*>(terminalDisplay->parentWidget());
+    auto splitter = qobject_cast<ViewSplitter *>(terminalDisplay->parentWidget());
     auto toplevelSplitter = splitter->getToplevelSplitter();
 
     // Focus the TermialDisplay
@@ -341,7 +366,7 @@ void ViewManager::moveActiveViewRight()
 
 void ViewManager::nextContainer()
 {
-//    _viewSplitter->activateNextContainer();
+    //    _viewSplitter->activateNextContainer();
 }
 
 void ViewManager::nextView()
@@ -406,13 +431,13 @@ void ViewManager::toggleTwoViews()
 void ViewManager::detachActiveView()
 {
     // find the currently active view and remove it from its container
-    if ((_viewContainer->findChildren<TerminalDisplay*>()).count() > 1) {
+    if ((_viewContainer->findChildren<TerminalDisplay *>()).count() > 1) {
         auto activeSplitter = _viewContainer->activeViewSplitter();
         auto terminal = activeSplitter->activeTerminalDisplay();
         auto newSplitter = new ViewSplitter();
         newSplitter->addTerminalDisplay(terminal, Qt::Horizontal);
-        QHash<TerminalDisplay*, Session*> detachedSessions = forgetAll(newSplitter);
-        emit terminalsDetached(newSplitter, detachedSessions);
+        QHash<TerminalDisplay *, Session *> detachedSessions = forgetAll(newSplitter);
+        Q_EMIT terminalsDetached(newSplitter, detachedSessions);
         focusAnotherTerminal(activeSplitter->getToplevelSplitter());
         toggleActionsBasedOnState();
     }
@@ -426,25 +451,26 @@ void ViewManager::detachActiveTab()
 
 void ViewManager::detachTab(int tabIdx)
 {
-    ViewSplitter* splitter = _viewContainer->viewSplitterAt(tabIdx);
-    QHash<TerminalDisplay*, Session*> detachedSessions = forgetAll(_viewContainer->viewSplitterAt(tabIdx));
-    emit terminalsDetached(splitter, detachedSessions);
+    ViewSplitter *splitter = _viewContainer->viewSplitterAt(tabIdx);
+    QHash<TerminalDisplay *, Session *> detachedSessions = forgetAll(_viewContainer->viewSplitterAt(tabIdx));
+    Q_EMIT terminalsDetached(splitter, detachedSessions);
 }
 
-QHash<TerminalDisplay*, Session*> ViewManager::forgetAll(ViewSplitter* splitter) {
+QHash<TerminalDisplay *, Session *> ViewManager::forgetAll(ViewSplitter *splitter)
+{
     splitter->setParent(nullptr);
-    QHash<TerminalDisplay*, Session*> detachedSessions;
-    const QList<TerminalDisplay *> displays = splitter->findChildren<TerminalDisplay*>();
+    QHash<TerminalDisplay *, Session *> detachedSessions;
+    const QList<TerminalDisplay *> displays = splitter->findChildren<TerminalDisplay *>();
     for (TerminalDisplay *terminal : displays) {
-        Session* session = forgetTerminal(terminal);
+        Session *session = forgetTerminal(terminal);
         detachedSessions[terminal] = session;
     }
     return detachedSessions;
 }
 
-Session* ViewManager::forgetTerminal(TerminalDisplay* terminal)
+Session *ViewManager::forgetTerminal(TerminalDisplay *terminal)
 {
-    disconnect(terminal, &TerminalDisplay::requestToggleExpansion, nullptr, nullptr);
+    unregisterTerminal(terminal);
 
     removeController(terminal->sessionController());
     auto session = _sessionMap.take(terminal);
@@ -456,7 +482,7 @@ Session* ViewManager::forgetTerminal(TerminalDisplay* terminal)
     return session;
 }
 
-Session* ViewManager::createSession(const Profile::Ptr &profile, const QString &directory)
+Session *ViewManager::createSession(const Profile::Ptr &profile, const QString &directory)
 {
     Session *session = SessionManager::instance()->createSession(profile);
     Q_ASSERT(session);
@@ -475,18 +501,27 @@ void ViewManager::sessionFinished()
         return;
     }
 
+    if (_navigationMethod == TabbedNavigation) {
+        // The last session/tab, and only one view (no splits), emit empty()
+        // so that close() is called in MainWindow, fixes #432077
+        if (_viewContainer->count() == 1 && _viewContainer->currentTabViewCount() == 1) {
+            Q_EMIT empty();
+            return;
+        }
+    }
+
     auto *session = qobject_cast<Session *>(sender());
     Q_ASSERT(session);
 
     auto view = _sessionMap.key(session);
     _sessionMap.remove(view);
 
-    if (SessionManager::instance()->isClosingAllSessions()){
+    if (SessionManager::instance()->isClosingAllSessions()) {
         return;
     }
 
     // Before deleting the view, let's unmaximize if it's maximized.
-    auto *splitter = qobject_cast<ViewSplitter*>(view->parentWidget());
+    auto *splitter = qobject_cast<ViewSplitter *>(view->parentWidget());
     if (splitter == nullptr) {
         return;
     }
@@ -495,7 +530,9 @@ void ViewManager::sessionFinished()
 
     toplevelSplitter->handleMinimizeMaximize(false);
     view->deleteLater();
-
+    connect(view, &QObject::destroyed, this, [this]() {
+        toggleActionsBasedOnState();
+    });
 
     // Only remove the controller from factory() if it's actually controlling
     // the session from the sender.
@@ -503,19 +540,18 @@ void ViewManager::sessionFinished()
     if ((!_pluggedController.isNull()) && (_pluggedController->session() == session)) {
         // This is needed to remove this controller from factory() in
         // order to prevent BUG: 185466 - disappearing menu popup
-        emit unplugController(_pluggedController);
+        Q_EMIT unplugController(_pluggedController);
     }
 
     if (!_sessionMap.empty()) {
         updateTerminalDisplayHistory(view, true);
         focusAnotherTerminal(toplevelSplitter);
-        toggleActionsBasedOnState();
     }
 }
 
 void ViewManager::focusAnotherTerminal(ViewSplitter *toplevelSplitter)
 {
-    auto tabTterminalDisplays = toplevelSplitter->findChildren<TerminalDisplay*>();
+    auto tabTterminalDisplays = toplevelSplitter->findChildren<TerminalDisplay *>();
     if (tabTterminalDisplays.count() == 0) {
         return;
     }
@@ -538,12 +574,12 @@ void ViewManager::focusAnotherTerminal(ViewSplitter *toplevelSplitter)
 
 void ViewManager::activateView(TerminalDisplay *view)
 {
-    Q_ASSERT(view != nullptr);
-
-    // focus the activated view, this will cause the SessionController
-    // to notify the world that the view has been focused and the appropriate UI
-    // actions will be plugged in.
-    view->setFocus(Qt::OtherFocusReason);
+    if (view) {
+        // focus the activated view, this will cause the SessionController
+        // to notify the world that the view has been focused and the appropriate UI
+        // actions will be plugged in.
+        view->setFocus(Qt::OtherFocusReason);
+    }
 }
 
 void ViewManager::splitLeftRight()
@@ -567,9 +603,7 @@ void ViewManager::splitView(Qt::Orientation orientation)
 
     auto profile = SessionManager::instance()->sessionProfile(activeSession);
 
-    const QString directory = profile->startInCurrentSessionDir()
-                              ? activeSession->currentWorkingDirectory()
-                              : QString();
+    const QString directory = profile->startInCurrentSessionDir() ? activeSession->currentWorkingDirectory() : QString();
     auto *session = createSession(profile, directory);
 
     auto terminalDisplay = createView(session);
@@ -597,16 +631,11 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
     // create a new controller for the session, and ensure that this view manager
     // is notified when the view gains the focus
     auto controller = new SessionController(session, view, this);
-    connect(controller, &Konsole::SessionController::viewFocused, this,
-            &Konsole::ViewManager::controllerChanged);
-    connect(session, &Konsole::Session::destroyed, controller,
-            &Konsole::SessionController::deleteLater);
-    connect(session, &Konsole::Session::primaryScreenInUse, controller,
-            &Konsole::SessionController::setupPrimaryScreenSpecificActions);
-    connect(session, &Konsole::Session::selectionChanged, controller,
-            &Konsole::SessionController::selectionChanged);
-    connect(view, &Konsole::TerminalDisplay::destroyed, controller,
-            &Konsole::SessionController::deleteLater);
+    connect(controller, &Konsole::SessionController::viewFocused, this, &Konsole::ViewManager::controllerChanged);
+    connect(session, &Konsole::Session::destroyed, controller, &Konsole::SessionController::deleteLater);
+    connect(session, &Konsole::Session::primaryScreenInUse, controller, &Konsole::SessionController::setupPrimaryScreenSpecificActions);
+    connect(session, &Konsole::Session::selectionChanged, controller, &Konsole::SessionController::selectionChanged);
+    connect(view, &Konsole::TerminalDisplay::destroyed, controller, &Konsole::SessionController::deleteLater);
 
     // if this is the first controller created then set it as the active controller
     if (_pluggedController.isNull()) {
@@ -617,7 +646,7 @@ SessionController *ViewManager::createController(Session *session, TerminalDispl
 }
 
 // should this be handed by ViewManager::unplugController signal
-void ViewManager::removeController(SessionController* controller)
+void ViewManager::removeController(SessionController *controller)
 {
     if (_pluggedController == controller) {
         _pluggedController.clear();
@@ -635,7 +664,7 @@ void ViewManager::controllerChanged(SessionController *controller)
     updateTerminalDisplayHistory(controller->view());
 
     _pluggedController = controller;
-    emit activeViewChanged(controller);
+    Q_EMIT activeViewChanged(controller);
 }
 
 SessionController *ViewManager::activeViewController() const
@@ -645,15 +674,13 @@ SessionController *ViewManager::activeViewController() const
 
 void ViewManager::attachView(TerminalDisplay *terminal, Session *session)
 {
-    connect(session, &Konsole::Session::finished, this, &Konsole::ViewManager::sessionFinished,
-            Qt::UniqueConnection);
+    connect(session, &Konsole::Session::finished, this, &Konsole::ViewManager::sessionFinished, Qt::UniqueConnection);
 
     // Disconnect from the other viewcontainer.
-    disconnect(terminal, &TerminalDisplay::requestToggleExpansion, nullptr, nullptr);
+    unregisterTerminal(terminal);
 
     // reconnect on this container.
-    connect(terminal, &TerminalDisplay::requestToggleExpansion,
-            _viewContainer, &TabbedViewContainer::toggleMaximizeCurrentTerminal, Qt::UniqueConnection);
+    registerTerminal(terminal);
 
     _sessionMap[terminal] = session;
     createController(session, terminal);
@@ -667,8 +694,7 @@ TerminalDisplay *ViewManager::createView(Session *session)
     // can be deleted
     //
     // Use Qt::UniqueConnection to avoid duplicate connection
-    connect(session, &Konsole::Session::finished, this, &Konsole::ViewManager::sessionFinished,
-            Qt::UniqueConnection);
+    connect(session, &Konsole::Session::finished, this, &Konsole::ViewManager::sessionFinished, Qt::UniqueConnection);
     TerminalDisplay *display = createTerminalDisplay(session);
 
     const Profile::Ptr profile = SessionManager::instance()->sessionProfile(session);
@@ -687,7 +713,7 @@ TerminalDisplay *ViewManager::createView(Session *session)
     // tell the session whether it has a light or dark background
     session->setDarkBackground(colorSchemeForProfile(profile)->hasDarkBackground());
     display->setFocus(Qt::OtherFocusReason);
-//     updateDetachViewState();
+    //     updateDetachViewState();
 
     return display;
 }
@@ -699,24 +725,16 @@ TabbedViewContainer *ViewManager::createContainer()
     connect(container, &TabbedViewContainer::detachTab, this, &ViewManager::detachTab);
 
     // connect signals and slots
-    connect(container, &Konsole::TabbedViewContainer::viewAdded, this,
-           [this, container]() {
-               containerViewsChanged(container);
-           });
+    connect(container, &Konsole::TabbedViewContainer::viewAdded, this, [this, container]() {
+        containerViewsChanged(container);
+    });
+    connect(container, &Konsole::TabbedViewContainer::viewRemoved, this, [this, container]() {
+        containerViewsChanged(container);
+    });
 
-    connect(container, &Konsole::TabbedViewContainer::viewRemoved, this,
-           [this, container]() {
-               containerViewsChanged(container);
-           });
-
-    connect(container, &TabbedViewContainer::newViewRequest,
-            this, &ViewManager::newViewRequest);
-    connect(container, &Konsole::TabbedViewContainer::newViewWithProfileRequest,
-            this, &Konsole::ViewManager::newViewWithProfileRequest);
-    connect(container, &Konsole::TabbedViewContainer::viewRemoved, this,
-            &Konsole::ViewManager::viewDestroyed);
-    connect(container, &Konsole::TabbedViewContainer::activeViewChanged, this,
-            &Konsole::ViewManager::activateView);
+    connect(container, &TabbedViewContainer::newViewRequest, this, &ViewManager::newViewRequest);
+    connect(container, &Konsole::TabbedViewContainer::newViewWithProfileRequest, this, &Konsole::ViewManager::newViewWithProfileRequest);
+    connect(container, &Konsole::TabbedViewContainer::activeViewChanged, this, &Konsole::ViewManager::activateView);
 
     return container;
 }
@@ -742,7 +760,7 @@ void ViewManager::setNavigationMethod(NavigationMethod method)
 
     const bool enable = (method != NoNavigation);
 
-    auto enableAction = [&enable, &collection](const QString& actionName) {
+    auto enableAction = [&enable, &collection](const QString &actionName) {
         auto *action = collection->action(actionName);
         if (action != nullptr) {
             action->setEnabled(enable);
@@ -770,7 +788,7 @@ void ViewManager::containerViewsChanged(TabbedViewContainer *container)
 {
     Q_UNUSED(container)
     // TODO: Verify that this is right.
-    emit viewPropertiesChanged(viewProperties());
+    Q_EMIT viewPropertiesChanged(viewProperties());
 }
 
 void ViewManager::viewDestroyed(QWidget *view)
@@ -782,7 +800,7 @@ void ViewManager::viewDestroyed(QWidget *view)
 
     // 1. detach view from session
     // 2. if the session has no views left, close it
-    Session *session = _sessionMap[ display ];
+    Session *session = _sessionMap[display];
     _sessionMap.remove(display);
     if (session != nullptr) {
         if (session->views().count() == 0) {
@@ -790,29 +808,27 @@ void ViewManager::viewDestroyed(QWidget *view)
         }
     }
 
-    //we only update the focus if the splitter is still alive
+    // we only update the focus if the splitter is still alive
     toggleActionsBasedOnState();
 
     // The below causes the menus  to be messed up
     // Only happens when using the tab bar close button
-//    if (_pluggedController)
-//        emit unplugController(_pluggedController);
+    //    if (_pluggedController)
+    //        Q_EMIT unplugController(_pluggedController);
 }
 
 TerminalDisplay *ViewManager::createTerminalDisplay(Session *session)
 {
     auto display = new TerminalDisplay(nullptr);
     display->setRandomSeed(session->sessionId() | (qApp->applicationPid() << 10));
-    connect(display, &TerminalDisplay::requestToggleExpansion,
-            _viewContainer, &TabbedViewContainer::toggleMaximizeCurrentTerminal);
+    registerTerminal(display);
 
     return display;
 }
 
 const ColorScheme *ViewManager::colorSchemeForProfile(const Profile::Ptr &profile)
 {
-    const ColorScheme *colorScheme = ColorSchemeManager::instance()->
-                                     findColorScheme(profile->colorScheme());
+    const ColorScheme *colorScheme = ColorSchemeManager::instance()->findColorScheme(profile->colorScheme());
     if (colorScheme == nullptr) {
         colorScheme = ColorSchemeManager::instance()->defaultColorScheme();
     }
@@ -830,8 +846,8 @@ void ViewManager::applyProfileToView(TerminalDisplay *view, const Profile::Ptr &
 {
     Q_ASSERT(profile);
     view->applyProfile(profile);
-    emit updateWindowIcon();
-    emit blurSettingChanged(view->colorScheme()->blur());
+    Q_EMIT updateWindowIcon();
+    Q_EMIT blurSettingChanged(view->colorScheme()->blur());
 }
 
 void ViewManager::updateViewsForSession(Session *session)
@@ -852,9 +868,7 @@ void ViewManager::profileChanged(const Profile::Ptr &profile)
         iter.next();
 
         // if session uses this profile, update the display
-        if (iter.key() != nullptr
-            && iter.value() != nullptr
-            && SessionManager::instance()->sessionProfile(iter.value()) == profile) {
+        if (iter.key() != nullptr && iter.value() != nullptr && SessionManager::instance()->sessionProfile(iter.value()) == profile) {
             applyProfileToView(iter.key(), profile);
         }
     }
@@ -869,17 +883,18 @@ QList<ViewProperties *> ViewManager::viewProperties() const
         return {};
     }
 
-    auto terminalContainers = _viewContainer->findChildren<TerminalDisplay*>();
+    auto terminalContainers = _viewContainer->findChildren<TerminalDisplay *>();
     list.reserve(terminalContainers.size());
 
-    for(auto terminalDisplay : _viewContainer->findChildren<TerminalDisplay*>()) {
+    for (auto terminalDisplay : _viewContainer->findChildren<TerminalDisplay *>()) {
         list.append(terminalDisplay->sessionController());
     }
 
     return list;
 }
 
-namespace {
+namespace
+{
 QJsonObject saveSessionTerminal(TerminalDisplay *terminalDisplay)
 {
     QJsonObject thisTerminal;
@@ -889,19 +904,16 @@ QJsonObject saveSessionTerminal(TerminalDisplay *terminalDisplay)
     return thisTerminal;
 }
 
-QJsonObject saveSessionsRecurse(QSplitter *splitter) {
+QJsonObject saveSessionsRecurse(QSplitter *splitter)
+{
     QJsonObject thisSplitter;
-    thisSplitter.insert(
-        QStringLiteral("Orientation"),
-        splitter->orientation() == Qt::Horizontal ? QStringLiteral("Horizontal")
-                                                  : QStringLiteral("Vertical")
-    );
+    thisSplitter.insert(QStringLiteral("Orientation"), splitter->orientation() == Qt::Horizontal ? QStringLiteral("Horizontal") : QStringLiteral("Vertical"));
 
     QJsonArray internalWidgets;
     for (int i = 0; i < splitter->count(); i++) {
         auto *widget = splitter->widget(i);
-        auto *maybeSplitter = qobject_cast<QSplitter*>(widget);
-        auto *maybeTerminalDisplay = qobject_cast<TerminalDisplay*>(widget);
+        auto *maybeSplitter = qobject_cast<QSplitter *>(widget);
+        auto *maybeTerminalDisplay = qobject_cast<TerminalDisplay *>(widget);
 
         if (maybeSplitter != nullptr) {
             internalWidgets.append(saveSessionsRecurse(maybeSplitter));
@@ -915,11 +927,27 @@ QJsonObject saveSessionsRecurse(QSplitter *splitter) {
 
 } // namespace
 
+void ViewManager::saveLayoutFile()
+{
+    QFile file(QFileDialog::getSaveFileName(this->widget(), i18n("Save File"), QStringLiteral("~/"), i18n("Konsole View Layout (*.json)")));
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        KMessageBox::sorry(this->widget(), i18n("A problem occurred when saving the Layout.\n%1", file.fileName()));
+    }
+
+    QJsonObject jsonSplit = saveSessionsRecurse(_viewContainer->activeViewSplitter());
+
+    if (!jsonSplit.isEmpty()) {
+        file.write(QJsonDocument(jsonSplit).toJson());
+        qDebug() << "Maybe was saved";
+    }
+}
+
 void ViewManager::saveSessions(KConfigGroup &group)
 {
     QJsonArray rootArray;
-    for(int i = 0; i < _viewContainer->count(); i++) {
-        auto *splitter = qobject_cast<QSplitter*>(_viewContainer->widget(i));
+    for (int i = 0; i < _viewContainer->count(); i++) {
+        auto *splitter = qobject_cast<QSplitter *>(_viewContainer->widget(i));
         rootArray.append(saveSessionsRecurse(splitter));
     }
 
@@ -927,13 +955,12 @@ void ViewManager::saveSessions(KConfigGroup &group)
     group.writeEntry("Active", _viewContainer->currentIndex());
 }
 
-namespace {
-
-ViewSplitter *restoreSessionsSplitterRecurse(const QJsonObject& jsonSplitter, ViewManager *manager)
+namespace
+{
+ViewSplitter *restoreSessionsSplitterRecurse(const QJsonObject &jsonSplitter, ViewManager *manager, bool useSessionId)
 {
     const QJsonArray splitterWidgets = jsonSplitter[QStringLiteral("Widgets")].toArray();
-    auto orientation = (jsonSplitter[QStringLiteral("Orientation")].toString() == QStringLiteral("Horizontal"))
-        ? Qt::Horizontal : Qt::Vertical;
+    auto orientation = (jsonSplitter[QStringLiteral("Orientation")].toString() == QStringLiteral("Horizontal")) ? Qt::Horizontal : Qt::Vertical;
 
     auto *currentSplitter = new ViewSplitter();
     currentSplitter->setOrientation(orientation);
@@ -943,11 +970,12 @@ ViewSplitter *restoreSessionsSplitterRecurse(const QJsonObject& jsonSplitter, Vi
         const auto sessionIterator = widgetJsonObject.constFind(QStringLiteral("SessionRestoreId"));
 
         if (sessionIterator != widgetJsonObject.constEnd()) {
-            Session *session = SessionManager::instance()->idToSession(sessionIterator->toInt());
+            Session *session = useSessionId ? SessionManager::instance()->idToSession(sessionIterator->toInt()) : SessionManager::instance()->createSession();
+
             auto newView = manager->createView(session);
             currentSplitter->addWidget(newView);
         } else {
-            auto nextSplitter = restoreSessionsSplitterRecurse(widgetJsonObject, manager);
+            auto nextSplitter = restoreSessionsSplitterRecurse(widgetJsonObject, manager, useSessionId);
             currentSplitter->addWidget(nextSplitter);
         }
     }
@@ -955,12 +983,30 @@ ViewSplitter *restoreSessionsSplitterRecurse(const QJsonObject& jsonSplitter, Vi
 }
 
 } // namespace
+void ViewManager::loadLayout(QString file)
+{
+    QFile jsonFile(file);
+
+    if (!jsonFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        KMessageBox::sorry(this->widget(), i18n("A problem occurred when loading the Layout.\n%1", jsonFile.fileName()));
+    }
+    auto json = QJsonDocument::fromJson(jsonFile.readAll());
+    if (!json.isEmpty()) {
+        auto splitter = restoreSessionsSplitterRecurse(json.object(), this, false);
+        _viewContainer->addSplitter(splitter, _viewContainer->count());
+    }
+}
+void ViewManager::loadLayoutFile()
+{
+    loadLayout(QFileDialog::getOpenFileName(this->widget(), i18n("Open File"), QStringLiteral("~/"), i18n("Konsole View Layout (*.json)")));
+}
+
 void ViewManager::restoreSessions(const KConfigGroup &group)
 {
     const auto tabList = group.readEntry("Tabs", QByteArray("[]"));
     const auto jsonTabs = QJsonDocument::fromJson(tabList).array();
-    for (const auto& jsonSplitter : jsonTabs) {
-        auto topLevelSplitter = restoreSessionsSplitterRecurse(jsonSplitter.toObject(), this);
+    for (const auto &jsonSplitter : jsonTabs) {
+        auto topLevelSplitter = restoreSessionsSplitterRecurse(jsonSplitter.toObject(), this, true);
         _viewContainer->addSplitter(topLevelSplitter, _viewContainer->count());
     }
 
@@ -1054,7 +1100,7 @@ void ViewManager::setCurrentSession(int sessionId)
 
         auto *splitter = qobject_cast<ViewSplitter *>(display->parent());
         if (splitter != nullptr) {
-                _viewContainer->setCurrentWidget(splitter->getToplevelSplitter());
+            _viewContainer->setCurrentWidget(splitter->getToplevelSplitter());
         }
     }
 }
@@ -1072,7 +1118,7 @@ int ViewManager::newSession(const QString &profile)
 int ViewManager::newSession(const QString &profile, const QString &directory)
 {
     Profile::Ptr profileptr = ProfileManager::instance()->defaultProfile();
-    if(!profile.isEmpty()) {
+    if (!profile.isEmpty()) {
         const QList<Profile::Ptr> profilelist = ProfileManager::instance()->allProfiles();
 
         for (const auto &i : profilelist) {
@@ -1138,14 +1184,15 @@ void ViewManager::setTabWidthToText(bool setTabWidthToText)
     _viewContainer->tabBar()->update();
 }
 
-void ViewManager::setNavigationVisibility(NavigationVisibility navigationVisibility) {
+void ViewManager::setNavigationVisibility(NavigationVisibility navigationVisibility)
+{
     if (_navigationVisibility != navigationVisibility) {
         _navigationVisibility = navigationVisibility;
         _viewContainer->setNavigationVisibility(navigationVisibility);
     }
 }
 
-void ViewManager::updateTerminalDisplayHistory(TerminalDisplay* terminalDisplay, bool remove)
+void ViewManager::updateTerminalDisplayHistory(TerminalDisplay *terminalDisplay, bool remove)
 {
     if (terminalDisplay == nullptr) {
         if (_terminalDisplayHistoryIndex >= 0) {
@@ -1172,4 +1219,16 @@ void ViewManager::updateTerminalDisplayHistory(TerminalDisplay* terminalDisplay,
             break;
         }
     }
+}
+
+void ViewManager::registerTerminal(TerminalDisplay *terminal)
+{
+    connect(terminal, &TerminalDisplay::requestToggleExpansion, _viewContainer, &TabbedViewContainer::toggleMaximizeCurrentTerminal, Qt::UniqueConnection);
+    connect(terminal, &TerminalDisplay::requestMoveToNewTab, _viewContainer, &TabbedViewContainer::moveToNewTab, Qt::UniqueConnection);
+}
+
+void ViewManager::unregisterTerminal(TerminalDisplay *terminal)
+{
+    disconnect(terminal, &TerminalDisplay::requestToggleExpansion, nullptr, nullptr);
+    disconnect(terminal, &TerminalDisplay::requestMoveToNewTab, nullptr, nullptr);
 }

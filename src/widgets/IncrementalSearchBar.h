@@ -1,35 +1,23 @@
 /*
-    Copyright 2006-2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2006-2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef INCREMENTALSEARCHBAR_H
 #define INCREMENTALSEARCHBAR_H
 
 // Qt
-#include <QWidget>
 #include <QBitArray>
+#include <QWidget>
 
 class QAction;
 class QTimer;
 class QLineEdit;
 class QToolButton;
 
-namespace Konsole {
+namespace Konsole
+{
 /**
  * A widget which allows users to search incrementally through a document for a
  * a text string or regular expression.
@@ -67,7 +55,7 @@ public:
         /** Searches use regular expressions */
         RegExp = 2,
         /** Search from the bottom and up **/
-        ReverseSearch = 3
+        ReverseSearch = 3,
     };
 
     /**
@@ -116,6 +104,11 @@ Q_SIGNALS:
      * matches for the search text should be highlighted
      */
     void highlightMatchesToggled(bool);
+    /**
+     * Emitted when the user toggles the checkbox to indicate whether
+     * the search direction should be reversed.
+     */
+    void reverseSearchToggled(bool);
     /**
      * Emitted when the user toggles the checkbox to indicate whether
      * matching for the search text should be case sensitive

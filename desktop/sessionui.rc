@@ -1,6 +1,7 @@
-<!DOCTYPE kpartgui>
+<?xml version="1.0"?>
+<!DOCTYPE gui SYSTEM "kpartgui.dtd">
 
-<kpartgui name="session" version="29">
+<gui name="session" version="29">
     <MenuBar>
         <Menu name="file">
             <Action name="file_save_as" group="session-operations"/>
@@ -59,4 +60,12 @@
         <Action name="switch-profile"/>
         <Action name="edit-current-profile"/>
     </Menu>
-</kpartgui>
+    <ToolBar name="sessionToolbar">
+        <text>Session Toolbar</text>
+        <index>1</index>
+        <Spacer/>
+        <Action name="edit_copy" />
+        <Action name="edit_paste" />
+        <Action name="edit_find" />
+    </ToolBar>
+</gui>

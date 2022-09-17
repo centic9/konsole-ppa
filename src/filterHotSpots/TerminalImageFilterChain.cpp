@@ -1,45 +1,30 @@
 /*
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 2020 by Tomaz Canabrava <tcanabrava@gmail.com>
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2020 Tomaz Canabrava <tcanabrava@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 #include "TerminalImageFilterChain.h"
 #include "profile/Profile.h"
 
 #include <QTextStream>
 
-#include "PlainTextDecoder.h"
+#include "../decoders/PlainTextDecoder.h"
 
 #include "terminalDisplay/TerminalDisplay.h"
 
 using namespace Konsole;
 
-
-TerminalImageFilterChain::TerminalImageFilterChain(TerminalDisplay *terminalDisplay) :
-    FilterChain(terminalDisplay),
-    _buffer(nullptr),
-    _linePositions(nullptr)
+TerminalImageFilterChain::TerminalImageFilterChain(TerminalDisplay *terminalDisplay)
+    : FilterChain(terminalDisplay)
+    , _buffer(nullptr)
+    , _linePositions(nullptr)
 {
 }
 
 TerminalImageFilterChain::~TerminalImageFilterChain() = default;
 
-void TerminalImageFilterChain::setImage(const Character * const image, int lines, int columns,
-                                        const QVector<LineProperty> &lineProperties)
+void TerminalImageFilterChain::setImage(const Character *const image, int lines, int columns, const QVector<LineProperty> &lineProperties)
 {
     if (_filters.empty()) {
         return;

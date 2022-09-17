@@ -1,20 +1,7 @@
 /*
-    Copyright 2019 by Kurt Hindenburg <kurt.hindenburg@gmail.com>
+    SPDX-FileCopyrightText: 2019 Kurt Hindenburg <kurt.hindenburg@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -30,7 +17,7 @@ using namespace Konsole;
 
 /* This does not use Konsole's BookmarkHandler directly; it is used to
  *  test the code copied from there and to test any changes.
-*/
+ */
 
 /* Test that the URL (command) does not get mangled by KBookMark's encoding */
 void BookMarkTest::testBookMarkURLs_data()
@@ -40,22 +27,26 @@ void BookMarkTest::testBookMarkURLs_data()
     auto groupUrlList = bookmarkManager->root().groupUrlList();
 
     // text explaining test, correct test result
-    QStringList bm_urls = {
-        QStringLiteral("simple command"), QStringLiteral("ssh machine"),
-        QStringLiteral("command with pipe (|)"),  QStringLiteral("ssh machine | tee -a /var/log/system.log"),
-        QStringLiteral("file URL w/ non ASCII part"), QStringLiteral("file:///home/user/aκόσμε"),
-        QStringLiteral("command with double quotes"), QStringLiteral("isql-fb -u sysdba -p example \"test\""),
-        QStringLiteral("command with single quotes"), QStringLiteral("isql-fb -u sysdba -p example 'test'"),
-        QStringLiteral("command with %"), QStringLiteral("date +%m-%d-%Y")
-    };
+    QStringList bm_urls = {QStringLiteral("simple command"),
+                           QStringLiteral("ssh machine"),
+                           QStringLiteral("command with pipe (|)"),
+                           QStringLiteral("ssh machine | tee -a /var/log/system.log"),
+                           QStringLiteral("file URL w/ non ASCII part"),
+                           QStringLiteral("file:///home/user/aκόσμε"),
+                           QStringLiteral("command with double quotes"),
+                           QStringLiteral("isql-fb -u sysdba -p example \"test\""),
+                           QStringLiteral("command with single quotes"),
+                           QStringLiteral("isql-fb -u sysdba -p example 'test'"),
+                           QStringLiteral("command with %"),
+                           QStringLiteral("date +%m-%d-%Y")};
 
     QTest::addColumn<QString>("text");
     QTest::addColumn<QString>("result");
     for (int i = 0; i < groupUrlList.size(); ++i) {
-        const auto& bm_url = groupUrlList.at(i);
+        const auto &bm_url = groupUrlList.at(i);
         // Verify this line matching SessionControll.cpp to validate tests
         auto bm = QUrl::fromPercentEncoding(bm_url.toEncoded());
-        QTest::newRow(bm_urls.at(i * 2).toUtf8().data())<< bm_urls.at((i * 2) +1) << bm;
+        QTest::newRow(bm_urls.at(i * 2).toUtf8().data()) << bm_urls.at((i * 2) + 1) << bm;
     }
 }
 

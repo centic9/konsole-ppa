@@ -1,29 +1,15 @@
 /*
-    This file is part of Konsole, an X terminal.
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "HistoryFile.h"
 
 // Konsole
-#include "konsoledebug.h"
 #include "KonsoleSettings.h"
+#include "konsoledebug.h"
 
 // System
 #include <cerrno>
@@ -42,10 +28,10 @@ using namespace Konsole;
 Q_GLOBAL_STATIC(QString, historyFileLocation)
 
 // History File ///////////////////////////////////////////
-HistoryFile::HistoryFile() :
-    _length(0),
-    _fileMap(nullptr),
-    _readWriteBalance(0)
+HistoryFile::HistoryFile()
+    : _length(0)
+    , _fileMap(nullptr)
+    , _readWriteBalance(0)
 {
     // Determine the temp directory once
     // This class is called 3 times for each "unlimited" scrollback.
@@ -75,14 +61,15 @@ HistoryFile::HistoryFile() :
         // Validate file location
         const QFileInfo fi(fileLocation);
         if (fileLocation.isEmpty() || !fi.exists() || !fi.isDir() || !fi.isWritable()) {
-            qCWarning(KonsoleDebug)<<"Invalid scrollback folder "<<fileLocation<<"; using " << QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+            qCWarning(KonsoleDebug) << "Invalid scrollback folder " << fileLocation << "; using "
+                                    << QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
             // Per Qt docs, this path is never empty; not sure if that
             // means it always exists.
             fileLocation = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
             const QFileInfo fi2(fileLocation);
             if (!fi2.exists()) {
                 if (!QDir().mkpath(fileLocation)) {
-                    qCWarning(KonsoleDebug)<<"Unable to create scrollback folder "<<fileLocation;
+                    qCWarning(KonsoleDebug) << "Unable to create scrollback folder " << fileLocation;
                 }
             }
         }
@@ -115,9 +102,9 @@ HistoryFile::~HistoryFile()
     }
 }
 
-//TODO:  Mapping the entire file in will cause problems if the history file becomes exceedingly large,
+// TODO:  Mapping the entire file in will cause problems if the history file becomes exceedingly large,
 //(ie. larger than available memory).  HistoryFile::map() should only map in sections of the file at a time,
-//to avoid this.
+// to avoid this.
 void HistoryFile::map()
 {
     Q_ASSERT(_fileMap == nullptr);
@@ -127,7 +114,7 @@ void HistoryFile::map()
         _fileMap = _tmpFile.map(0, _length);
     }
 
-    //if mmap'ing fails, fall back to the read-lseek combination
+    // if mmap'ing fails, fall back to the read-lseek combination
     if (_fileMap == nullptr) {
         _readWriteBalance = 0;
         qCDebug(KonsoleDebug) << "mmap'ing history failed.  errno = " << errno;
@@ -143,7 +130,6 @@ void HistoryFile::unmap()
     }
 
     Q_ASSERT(_fileMap == nullptr);
-
 }
 
 void HistoryFile::add(const char *buffer, qint64 count)
@@ -172,16 +158,15 @@ void HistoryFile::add(const char *buffer, qint64 count)
 
 void HistoryFile::get(char *buffer, qint64 size, qint64 loc)
 {
-
     if (loc < 0 || size < 0 || loc + size > _length) {
         fprintf(stderr, "getHist(...,%lld,%lld): invalid args.\n", size, loc);
         return;
     }
 
-    //count number of get() calls vs. number of add() calls.
-    //If there are many more get() calls compared with add()
-    //calls (decided by using MAP_THRESHOLD) then mmap the log
-    //file to improve performance.
+    // count number of get() calls vs. number of add() calls.
+    // If there are many more get() calls compared with add()
+    // calls (decided by using MAP_THRESHOLD) then mmap the log
+    // file to improve performance.
     if (_readWriteBalance > INT_MIN) {
         _readWriteBalance--;
     }
@@ -204,6 +189,15 @@ void HistoryFile::get(char *buffer, qint64 size, qint64 loc)
             return;
         }
     }
+}
+
+void HistoryFile::removeLast(qint64 loc)
+{
+    if (loc < 0 || loc > _length) {
+        fprintf(stderr, "removeLast(%lld): invalid args.\n", loc);
+        return;
+    }
+    _length = loc;
 }
 
 qint64 HistoryFile::len() const

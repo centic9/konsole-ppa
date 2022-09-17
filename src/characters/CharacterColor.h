@@ -1,23 +1,8 @@
 /*
-    This file is part of Konsole, KDE's terminal.
+    SPDX-FileCopyrightText: 2007-2008 Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 1997, 1998 Lars Doelle <lars.doelle@on-line.de>
 
-    Copyright 2007-2008 by Robert Knight <robertknight@gmail.com>
-    Copyright 1997,1998 by Lars Doelle <lars.doelle@on-line.de>
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 #ifndef CHARACTERCOLOR_H
@@ -26,22 +11,15 @@
 // Qt
 #include <QColor>
 
-namespace Konsole {
-/**
- * An entry in a terminal display's color palette.
- *
- * A color palette is an array of 16 ColorEntry instances which map
- * system color indexes (from 0 to 15) into actual colors.
- */
-typedef QColor ColorEntry;
-
+namespace Konsole
+{
 // Attributed Character Representations ///////////////////////////////
 
 // Colors
 
-#define BASE_COLORS   (2+8)
-#define INTENSITIES   3
-#define TABLE_COLORS  (INTENSITIES*BASE_COLORS)
+#define BASE_COLORS (2 + 8)
+#define INTENSITIES 3
+#define TABLE_COLORS (INTENSITIES * BASE_COLORS)
 
 enum ColorTableIndex {
     ColorFgIndex,
@@ -99,11 +77,11 @@ enum ColorTableIndex {
    default foreground and default background color.
 */
 
-#define COLOR_SPACE_UNDEFINED   0
-#define COLOR_SPACE_DEFAULT     1
-#define COLOR_SPACE_SYSTEM      2
-#define COLOR_SPACE_256         3
-#define COLOR_SPACE_RGB         4
+#define COLOR_SPACE_UNDEFINED 0
+#define COLOR_SPACE_DEFAULT 1
+#define COLOR_SPACE_SYSTEM 2
+#define COLOR_SPACE_256 3
+#define COLOR_SPACE_RGB 4
 
 /**
  * Describes the color of a single character in the terminal.
@@ -114,11 +92,11 @@ class CharacterColor
 
 public:
     /** Constructs a new CharacterColor whose color and color space are undefined. */
-    CharacterColor() :
-        _colorSpace(COLOR_SPACE_UNDEFINED),
-        _u(0),
-        _v(0),
-        _w(0)
+    CharacterColor()
+        : _colorSpace(COLOR_SPACE_UNDEFINED)
+        , _u(0)
+        , _v(0)
+        , _w(0)
     {
     }
 
@@ -132,11 +110,11 @@ public:
      *
      * TODO : Add documentation about available color spaces.
      */
-    CharacterColor(quint8 colorSpace, int co) :
-        _colorSpace(colorSpace),
-        _u(0),
-        _v(0),
-        _w(0)
+    CharacterColor(quint8 colorSpace, int co)
+        : _colorSpace(colorSpace)
+        , _u(0)
+        , _v(0)
+        , _w(0)
     {
         switch (colorSpace) {
         case COLOR_SPACE_DEFAULT:
@@ -159,8 +137,16 @@ public:
         }
     }
 
-    quint8 colorSpace() const { return _colorSpace; }
-    void termColor(int *u, int *v, int *w) { *u = _u; *v = _v; *w = _w; }
+    quint8 colorSpace() const
+    {
+        return _colorSpace;
+    }
+    void termColor(int *u, int *v, int *w)
+    {
+        *u = _u;
+        *v = _v;
+        *w = _w;
+    }
 
     /**
      * Returns true if this character color entry is valid.
@@ -192,18 +178,18 @@ public:
      * The @p base is only used if this color is one of the 16 system colors, otherwise
      * it is ignored.
      */
-    QColor color(const ColorEntry *base) const;
+    QColor color(const QColor *base) const;
 
     /**
      * Compares two colors and returns true if they represent the same color value and
      * use the same color space.
      */
-    friend bool operator ==(const CharacterColor &a, const CharacterColor &b);
+    friend bool operator==(const CharacterColor &a, const CharacterColor &b);
     /**
      * Compares two colors and returns true if they represent different color values
      * or use different color spaces.
      */
-    friend bool operator !=(const CharacterColor &a, const CharacterColor &b);
+    friend bool operator!=(const CharacterColor &a, const CharacterColor &b);
 
 private:
     quint8 _colorSpace;
@@ -214,20 +200,17 @@ private:
     quint8 _w;
 };
 
-inline bool operator ==(const CharacterColor &a, const CharacterColor &b)
+inline bool operator==(const CharacterColor &a, const CharacterColor &b)
 {
-    return a._colorSpace == b._colorSpace
-           && a._u == b._u
-           && a._v == b._v
-           && a._w == b._w;
+    return a._colorSpace == b._colorSpace && a._u == b._u && a._v == b._v && a._w == b._w;
 }
 
-inline bool operator !=(const CharacterColor &a, const CharacterColor &b)
+inline bool operator!=(const CharacterColor &a, const CharacterColor &b)
 {
     return !operator==(a, b);
 }
 
-inline const QColor color256(quint8 u, const ColorEntry *base)
+inline const QColor color256(quint8 u, const QColor *base)
 {
     //   0.. 16: system colors
     if (u < 8) {
@@ -253,7 +236,7 @@ inline const QColor color256(quint8 u, const ColorEntry *base)
     return QColor(gray, gray, gray);
 }
 
-inline QColor CharacterColor::color(const ColorEntry *base) const
+inline QColor CharacterColor::color(const QColor *base) const
 {
     switch (_colorSpace) {
     case COLOR_SPACE_DEFAULT:

@@ -1,55 +1,40 @@
 /*
-    Copyright 2019 by Mariusz Glebocki <mglb@arccos-1.net>
+    SPDX-FileCopyrightText: 2019 Mariusz Glebocki <mglb@arccos-1.net>
 
     Based on KConfigDialog and KConfigDialogManager from KConfigWidgets
 
-    Copyright (C) 2003 Benjamin C Meyer (ben+kdelibs at meyerhome dot net)
-    Copyright (C) 2003 Waldo Bastian <bastian@kde.org>
+    SPDX-FileCopyrightText: 2003 Benjamin C Meyer (ben+kdelibs at meyerhome dot net)
+    SPDX-FileCopyrightText: 2003 Waldo Bastian <bastian@kde.org>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
 #include "ConfigDialogButtonGroupManager.h"
 
 // Qt
-#include <QTimer>
-#include <QString>
-#include <QButtonGroup>
 #include <QAbstractButton>
+#include <QButtonGroup>
+#include <QString>
+#include <QTimer>
 
 using namespace Konsole;
 
-//const QString ConfigDialogButtonGroupManager::ManagedNamePrefix;
+// const QString ConfigDialogButtonGroupManager::ManagedNamePrefix;
 const QString ConfigDialogButtonGroupManager::ManagedNamePrefix = QStringLiteral("kcfg_");
-
 
 ConfigDialogButtonGroupManager::ConfigDialogButtonGroupManager(QObject *parent, KCoreConfigSkeleton *config)
     : QObject(parent)
     , _config(config)
 {
     Q_ASSERT(config);
-    connect(_config, &KCoreConfigSkeleton::configChanged,
-        this, &ConfigDialogButtonGroupManager::updateWidgets);
+    connect(_config, &KCoreConfigSkeleton::configChanged, this, &ConfigDialogButtonGroupManager::updateWidgets);
 }
 
 void ConfigDialogButtonGroupManager::addChildren(const QObject *parentObj)
 {
     const auto allButtonGroups = parentObj->findChildren<QButtonGroup *>();
-    for (const auto *buttonGroup: allButtonGroups) {
+    for (const auto *buttonGroup : allButtonGroups) {
         if (buttonGroup->objectName().startsWith(ManagedNamePrefix)) {
             add(buttonGroup);
         }
@@ -59,15 +44,18 @@ void ConfigDialogButtonGroupManager::addChildren(const QObject *parentObj)
 void ConfigDialogButtonGroupManager::add(const QButtonGroup *obj)
 {
     Q_ASSERT(obj->exclusive());
-    connect(obj, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled),
-        this, &ConfigDialogButtonGroupManager::setButtonState, Qt::UniqueConnection);
+    connect(obj,
+            QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled),
+            this,
+            &ConfigDialogButtonGroupManager::setButtonState,
+            Qt::UniqueConnection);
     _groups.append(obj);
 }
 
 bool ConfigDialogButtonGroupManager::hasChanged() const
 {
-    for(const QButtonGroup *group: qAsConst(_groups)) {
-        if (!group->checkedButton()) {
+    for (const QButtonGroup *group : qAsConst(_groups)) {
+        if (group->checkedButton() == nullptr) {
             continue;
         }
         int value = buttonToEnumValue(group->checkedButton());
@@ -93,29 +81,29 @@ void ConfigDialogButtonGroupManager::updateWidgets()
     bool prevSignalsBlocked = signalsBlocked();
     bool changed = false;
     blockSignals(true);
-    for(const QButtonGroup *group: qAsConst(_groups)) {
+    for (const QButtonGroup *group : qAsConst(_groups)) {
         auto *enumItem = groupToConfigItemEnum(group);
-        if(enumItem == nullptr) {
+        if (enumItem == nullptr) {
             continue;
         }
 
         int value = enumItem->value();
         const QString &valueName = enumItem->choices().at(value).name;
         QAbstractButton *currentButton = nullptr;
-        for(auto &button: group->buttons()) {
-            if(button->objectName() == valueName) {
+        for (auto &button : group->buttons()) {
+            if (button->objectName() == valueName) {
                 currentButton = button;
                 break;
             }
         }
-        if(currentButton == nullptr) {
+        if (currentButton == nullptr) {
             return;
         }
         currentButton->setChecked(true);
         changed = true;
     }
     blockSignals(prevSignalsBlocked);
-    if(changed) {
+    if (changed) {
         QTimer::singleShot(0, this, &ConfigDialogButtonGroupManager::widgetModified);
     }
 }
@@ -130,17 +118,17 @@ void ConfigDialogButtonGroupManager::updateWidgetsDefault()
 void ConfigDialogButtonGroupManager::updateSettings()
 {
     bool updateConfig = false;
-    for(const QButtonGroup *group: qAsConst(_groups)) {
+    for (const QButtonGroup *group : qAsConst(_groups)) {
         auto *enumItem = groupToConfigItemEnum(group);
         if (enumItem == nullptr) {
             continue;
         }
         const auto *currentButton = group->checkedButton();
-        if(currentButton == nullptr) {
+        if (currentButton == nullptr) {
             continue;
         }
         const int value = buttonToEnumValue(currentButton);
-        if(value < 0) {
+        if (value < 0) {
             continue;
         }
 
@@ -149,21 +137,21 @@ void ConfigDialogButtonGroupManager::updateSettings()
             updateConfig = true;
         }
     }
-    if(updateConfig) {
+    if (updateConfig) {
         _config->save();
-        emit settingsChanged();
+        Q_EMIT settingsChanged();
     }
 }
 
 void ConfigDialogButtonGroupManager::setButtonState(QAbstractButton *button, bool checked)
 {
     Q_ASSERT(button->group());
-    if(!checked) {
+    if (!checked) {
         // Both deselected and selected buttons trigger this slot, ignore the deselected one
         return;
     }
     auto *enumItem = groupToConfigItemEnum(button->group());
-    if(enumItem == nullptr) {
+    if (enumItem == nullptr) {
         return;
     }
 
@@ -172,11 +160,11 @@ void ConfigDialogButtonGroupManager::setButtonState(QAbstractButton *button, boo
         return;
     }
 
-    emit settingsChanged();
+    Q_EMIT settingsChanged();
 }
 
 // Returns configuration item associated with the group
-KCoreConfigSkeleton::ItemEnum * ConfigDialogButtonGroupManager::groupToConfigItemEnum(const QButtonGroup *group) const
+KCoreConfigSkeleton::ItemEnum *ConfigDialogButtonGroupManager::groupToConfigItemEnum(const QButtonGroup *group) const
 {
     Q_ASSERT(group);
     const QString key = group->objectName().mid(ManagedNamePrefix.length());
@@ -210,7 +198,7 @@ int ConfigDialogButtonGroupManager::buttonToEnumValue(const QAbstractButton *but
     const QString buttonName = button->objectName();
     int value = -1;
     for (int i = 0; i < choices.size(); ++i) {
-        if(buttonName == choices.at(i).name) {
+        if (buttonName == choices.at(i).name) {
             value = i;
             break;
         }

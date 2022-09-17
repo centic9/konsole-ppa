@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: konsole\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-02-07 08:59+0100\n"
+"POT-Creation-Date: 2022-01-07 02:08+0000\n"
 "PO-Revision-Date: 2017-10-02 10:32+0200\n"
 "Last-Translator: Mindaugas Baranauskas <opensuse.lietuviu.kalba@gmail.com>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -35,85 +35,123 @@ msgid "Your emails"
 msgstr "laisve@gmail.com, liudas@akmc.lt"
 
 #. i18n: ectx: Menu (file)
-#: ../desktop/konsoleui.rc:5
+#: ../desktop/konsoleui.rc:6
 #, kde-format
 msgid "File"
 msgstr "Failas"
 
+#. i18n: ectx: property (text), widget (QPushButton, btnEdit)
 #. i18n: ectx: Menu (edit)
-#: ../desktop/konsoleui.rc:15
+#: ../desktop/konsoleui.rc:16 plugins/SSHManager/sshwidget.ui:224
 #, kde-format
 msgid "Edit"
 msgstr "Keisti"
 
 #. i18n: ectx: Menu (view)
-#: ../desktop/konsoleui.rc:18
+#: ../desktop/konsoleui.rc:19
 #, kde-format
 msgid "View"
 msgstr "Vaizdas"
 
 #. i18n: ectx: Menu (view-split)
-#: ../desktop/konsoleui.rc:19
+#: ../desktop/konsoleui.rc:20
 #, kde-format
 msgid "Split View"
 msgstr "Padalinti vaizdą"
 
 #. i18n: ectx: Menu (settings)
-#: ../desktop/konsoleui.rc:35
+#: ../desktop/konsoleui.rc:38
 #, kde-format
 msgid "Settings"
 msgstr "Nuostatos"
 
+#. i18n: ectx: Menu (plugins)
+#: ../desktop/konsoleui.rc:51
+#, kde-format
+msgid "Plugins"
+msgstr ""
+
 #. i18n: ectx: Menu (help)
-#: ../desktop/konsoleui.rc:46
+#: ../desktop/konsoleui.rc:54
 #, kde-format
 msgid "Help"
 msgstr "Pagalba"
 
+#. i18n: ectx: ToolBar (mainToolBar)
+#: ../desktop/konsoleui.rc:58
+#, kde-format
+msgid "Main Toolbar"
+msgstr ""
+
 #. i18n: ectx: Menu (history)
-#: ../desktop/partui.rc:13
+#: ../desktop/partui.rc:14
 #, kde-format
 msgid "S&crollback"
 msgstr "&Slinkties juosta"
 
-#: Application.cpp:64
+#. i18n: ectx: ToolBar (sessionToolbar)
+#: ../desktop/sessionui.rc:64
+#, fuzzy, kde-format
+#| msgid "Session Number: %#"
+msgid "Session Toolbar"
+msgstr "Sesijos numeris: %#"
+
+#: AppColorSchemeChooser.cpp:36
+#, fuzzy, kde-format
+#| msgid "New Color Scheme"
+msgid "&Window Color Scheme"
+msgstr "Nauja spalvų schema"
+
+#: Application.cpp:53
 #, kde-format
 msgctxt "@info:shell"
 msgid "Name of profile to use for new Konsole instance"
 msgstr "Naujo Konsole seanso profilio pavadinimas"
 
-#: Application.cpp:68
+#: Application.cpp:54
+#, fuzzy, kde-format
+#| msgctxt "@info:shell"
+#| msgid "Name of profile to use for new Konsole instance"
+msgctxt "@info:shell"
+msgid "json layoutfile to be loaded to use for new Konsole instance"
+msgstr "Naujo Konsole seanso profilio pavadinimas"
+
+#: Application.cpp:55
 #, kde-format
 msgctxt "@info:shell"
 msgid "Use the internal FALLBACK profile"
 msgstr "Naudoti vidinę atsarginę veikseną"
 
-#: Application.cpp:71
+#: Application.cpp:56
 #, kde-format
 msgctxt "@info:shell"
 msgid "Set the initial working directory of the new tab or window to 'dir'"
 msgstr "Nurodyti naujos kortelės ar lango pradinį aplanką „dir“"
 
-#: Application.cpp:75
+#: Application.cpp:57
 #, kde-format
 msgctxt "@info:shell"
 msgid "Do not close the initial session automatically when it ends."
 msgstr "Sesijai baigus darbą neužverti jos automatiškai."
 
-#: Application.cpp:78
-#, kde-format
+#: Application.cpp:59
+#, fuzzy, kde-format
+#| msgctxt "@info:shell"
+#| msgid ""
+#| "Create a new tab in an existing window rather than creating a new window"
 msgctxt "@info:shell"
 msgid ""
-"Create a new tab in an existing window rather than creating a new window"
+"Create a new tab in an existing window rather than creating a new window "
+"('Run all Konsole windows in a single process' must be enabled)"
 msgstr "Atidaryti naują kortelę dabartiniame lange"
 
-#: Application.cpp:81
+#: Application.cpp:60
 #, kde-format
 msgctxt "@info:shell"
 msgid "Create tabs as specified in given tabs configuration file"
 msgstr "Kurti korteles taip, kaip nurodyta kortelių konfigūracijos faile"
 
-#: Application.cpp:85
+#: Application.cpp:62
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -121,67 +159,67 @@ msgid ""
 "(by default) is pressed"
 msgstr ""
 
-#: Application.cpp:88
+#: Application.cpp:63
 #, kde-format
 msgctxt "@info:shell"
 msgid "Run in a separate process"
 msgstr "Vykdyti atskirame procese"
 
-#: Application.cpp:91
+#: Application.cpp:64
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show the menubar, overriding the default setting"
 msgstr "Rodyti meniu juostą, perrašant numatytus nustatymus"
 
-#: Application.cpp:94
+#: Application.cpp:65
 #, kde-format
 msgctxt "@info:shell"
 msgid "Hide the menubar, overriding the default setting"
 msgstr "Slėpti meniu juostą, perrašant numatytus nustatymus"
 
-#: Application.cpp:97
+#: Application.cpp:66
 #, kde-format
 msgctxt "@info:shell"
 msgid "Show the tabbar, overriding the default setting"
 msgstr "Rodyti kortelių juostą, perrašant numatytus nustatymus"
 
-#: Application.cpp:100
+#: Application.cpp:67
 #, kde-format
 msgctxt "@info:shell"
 msgid "Hide the tabbar, overriding the default setting"
 msgstr "Slėpti kortelių juostą, perrašant numatytus nustatymus"
 
-#: Application.cpp:103
+#: Application.cpp:68
 #, kde-format
 msgctxt "@info:shell"
 msgid "Start Konsole in fullscreen mode"
 msgstr "Paleisti Konsole viso ekrano režimu"
 
-#: Application.cpp:106
+#: Application.cpp:69
 #, kde-format
 msgctxt "@info:shell"
 msgid "Disable transparent backgrounds, even if the system supports them."
 msgstr "Išjungti permatomą foną net jei sistema jį palaiko."
 
-#: Application.cpp:109
+#: Application.cpp:70
 #, kde-format
 msgctxt "@info:shell"
 msgid "List the available profiles"
 msgstr "Esamų profilių sąrašas"
 
-#: Application.cpp:112
+#: Application.cpp:71
 #, kde-format
 msgctxt "@info:shell"
 msgid "List all the profile properties names and their type (for use with -p)"
 msgstr "Visų profilio savybių vardų ir tipų sąrašas (naudojimui su -p)"
 
-#: Application.cpp:115
+#: Application.cpp:72
 #, kde-format
 msgctxt "@info:shell"
 msgid "Change the value of a profile property."
 msgstr "Pakeisti profilio parinkties reikšmę."
 
-#: Application.cpp:119
+#: Application.cpp:74
 #, kde-format
 msgctxt "@info:shell"
 msgid ""
@@ -191,13 +229,13 @@ msgstr ""
 "Vykdytina komanda. Ši pasirinktis pagaus šiuos argumentus, taigi naudokite "
 "tai kaip paskutinį variantą."
 
-#: Application.cpp:128
+#: Application.cpp:80
 #, kde-format
 msgctxt "@info:shell"
 msgid "Arguments passed to command"
 msgstr "Komandos parametrai"
 
-#: Application.cpp:574
+#: Application.cpp:514
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Background (Intense)"
@@ -205,139 +243,139 @@ msgctxt "@item"
 msgid "Toggle Background Window"
 msgstr "Fono spalva (intensyvi)"
 
-#: BookmarkHandler.cpp:124
+#: BookmarkHandler.cpp:106
 #, kde-format
 msgctxt "@item:inmenu The user's name and host they are connected to via ssh"
 msgid "%1 on %2"
 msgstr "%1 – %2"
 
-#: BookmarkHandler.cpp:126
+#: BookmarkHandler.cpp:108
 #, kde-format
 msgctxt "@item:inmenu The host the user is connected to via ssh"
 msgid "%1"
 msgstr "%1"
 
-#: colorscheme/ColorScheme.cpp:128
+#: colorscheme/ColorScheme.cpp:117
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground"
 msgstr "Teksto spalva"
 
-#: colorscheme/ColorScheme.cpp:129
+#: colorscheme/ColorScheme.cpp:118
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background"
 msgstr "Fono spalva"
 
-#: colorscheme/ColorScheme.cpp:130
+#: colorscheme/ColorScheme.cpp:119
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 1"
 msgstr "Spalva 1"
 
-#: colorscheme/ColorScheme.cpp:131
+#: colorscheme/ColorScheme.cpp:120
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 2"
 msgstr "Spalva 2"
 
-#: colorscheme/ColorScheme.cpp:132
+#: colorscheme/ColorScheme.cpp:121
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 3"
 msgstr "Spalva 3"
 
-#: colorscheme/ColorScheme.cpp:133
+#: colorscheme/ColorScheme.cpp:122
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 4"
 msgstr "Spalva 4"
 
-#: colorscheme/ColorScheme.cpp:134
+#: colorscheme/ColorScheme.cpp:123
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 5"
 msgstr "Spalva 5"
 
-#: colorscheme/ColorScheme.cpp:135
+#: colorscheme/ColorScheme.cpp:124
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 6"
 msgstr "Spalva 6"
 
-#: colorscheme/ColorScheme.cpp:136
+#: colorscheme/ColorScheme.cpp:125
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 7"
 msgstr "Spalva 7"
 
-#: colorscheme/ColorScheme.cpp:137
+#: colorscheme/ColorScheme.cpp:126
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 8"
 msgstr "Spalva 8"
 
-#: colorscheme/ColorScheme.cpp:138
+#: colorscheme/ColorScheme.cpp:127
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Foreground (Intense)"
 msgstr "Teksto spalva (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:139
+#: colorscheme/ColorScheme.cpp:128
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Background (Intense)"
 msgstr "Fono spalva (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:140
+#: colorscheme/ColorScheme.cpp:129
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 1 (Intense)"
 msgstr "Spalva 1 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:141
+#: colorscheme/ColorScheme.cpp:130
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 2 (Intense)"
 msgstr "Spalva 2 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:142
+#: colorscheme/ColorScheme.cpp:131
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 3 (Intense)"
 msgstr "Spalva 3 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:143
+#: colorscheme/ColorScheme.cpp:132
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 4 (Intense)"
 msgstr "Spalva 4 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:144
+#: colorscheme/ColorScheme.cpp:133
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 5 (Intense)"
 msgstr "Spalva 5 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:145
+#: colorscheme/ColorScheme.cpp:134
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 6 (Intense)"
 msgstr "Spalva 6 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:146
+#: colorscheme/ColorScheme.cpp:135
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 7 (Intense)"
 msgstr "Spalva 7 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:147
+#: colorscheme/ColorScheme.cpp:136
 #, kde-format
 msgctxt "@item:intable palette"
 msgid "Color 8 (Intense)"
 msgstr "Spalva 8 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:148
+#: colorscheme/ColorScheme.cpp:137
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Foreground (Intense)"
@@ -345,7 +383,7 @@ msgctxt "@item:intable palette"
 msgid "Foreground (Faint)"
 msgstr "Teksto spalva (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:149
+#: colorscheme/ColorScheme.cpp:138
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Background (Intense)"
@@ -353,7 +391,7 @@ msgctxt "@item:intable palette"
 msgid "Background (Faint)"
 msgstr "Fono spalva (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:150
+#: colorscheme/ColorScheme.cpp:139
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 1 (Intense)"
@@ -361,7 +399,7 @@ msgctxt "@item:intable palette"
 msgid "Color 1 (Faint)"
 msgstr "Spalva 1 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:151
+#: colorscheme/ColorScheme.cpp:140
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 2 (Intense)"
@@ -369,7 +407,7 @@ msgctxt "@item:intable palette"
 msgid "Color 2 (Faint)"
 msgstr "Spalva 2 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:152
+#: colorscheme/ColorScheme.cpp:141
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 3 (Intense)"
@@ -377,7 +415,7 @@ msgctxt "@item:intable palette"
 msgid "Color 3 (Faint)"
 msgstr "Spalva 3 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:153
+#: colorscheme/ColorScheme.cpp:142
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 4 (Intense)"
@@ -385,7 +423,7 @@ msgctxt "@item:intable palette"
 msgid "Color 4 (Faint)"
 msgstr "Spalva 4 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:154
+#: colorscheme/ColorScheme.cpp:143
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 5 (Intense)"
@@ -393,7 +431,7 @@ msgctxt "@item:intable palette"
 msgid "Color 5 (Faint)"
 msgstr "Spalva 5 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:155
+#: colorscheme/ColorScheme.cpp:144
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 6 (Intense)"
@@ -401,7 +439,7 @@ msgctxt "@item:intable palette"
 msgid "Color 6 (Faint)"
 msgstr "Spalva 6 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:156
+#: colorscheme/ColorScheme.cpp:145
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 7 (Intense)"
@@ -409,7 +447,7 @@ msgctxt "@item:intable palette"
 msgid "Color 7 (Faint)"
 msgstr "Spalva 7 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:157
+#: colorscheme/ColorScheme.cpp:146
 #, fuzzy, kde-format
 #| msgctxt "@item:intable palette"
 #| msgid "Color 8 (Intense)"
@@ -417,32 +455,32 @@ msgctxt "@item:intable palette"
 msgid "Color 8 (Faint)"
 msgstr "Spalva 8 (intensyvi)"
 
-#: colorscheme/ColorScheme.cpp:444
+#: colorscheme/ColorScheme.cpp:441
 #, fuzzy, kde-format
 #| msgid "Un-named Color Scheme"
 msgctxt "@item"
 msgid "Un-named Color Scheme"
 msgstr "Spalvų schema be pavadinimo"
 
-#: colorscheme/ColorSchemeEditor.cpp:122
+#: colorscheme/ColorSchemeEditor.cpp:101
 #, kde-format
 msgctxt "@label:listbox Column header text for color names"
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: colorscheme/ColorSchemeEditor.cpp:123
+#: colorscheme/ColorSchemeEditor.cpp:101
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual colors"
 msgid "Color"
 msgstr "Spalva"
 
-#: colorscheme/ColorSchemeEditor.cpp:124
+#: colorscheme/ColorSchemeEditor.cpp:102
 #, kde-format
 msgctxt "@label:listbox Column header text for the actual intense colors"
 msgid "Intense color"
 msgstr "Intensyvi spalva"
 
-#: colorscheme/ColorSchemeEditor.cpp:125
+#: colorscheme/ColorSchemeEditor.cpp:103
 #, fuzzy, kde-format
 #| msgctxt "@label:listbox Column header text for the actual intense colors"
 #| msgid "Intense color"
@@ -450,7 +488,7 @@ msgctxt "@label:listbox Column header text for the actual faint colors"
 msgid "Faint color"
 msgstr "Intensyvi spalva"
 
-#: colorscheme/ColorSchemeEditor.cpp:154
+#: colorscheme/ColorSchemeEditor.cpp:128
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -460,7 +498,7 @@ msgstr ""
 "Jūsų darbalaukis nepalaiko permatomų langų, todėl negalima įjungti permatomo "
 "fono."
 
-#: colorscheme/ColorSchemeEditor.cpp:210
+#: colorscheme/ColorSchemeEditor.cpp:180
 #, fuzzy, kde-format
 #| msgctxt "@action:button"
 #| msgid "Select wallpaper image file"
@@ -468,39 +506,39 @@ msgctxt "@title:window"
 msgid "Select wallpaper image file"
 msgstr "Parinkite fono piešinio failą"
 
-#: colorscheme/ColorSchemeEditor.cpp:213
+#: colorscheme/ColorSchemeEditor.cpp:182
 #, kde-format
 msgctxt "@label:textbox Filter in file open dialog"
 msgid "Supported Images"
 msgstr "Palaikomi paveikslai"
 
-#: colorscheme/ColorSchemeEditor.cpp:271
+#: colorscheme/ColorSchemeEditor.cpp:240
 #, fuzzy, kde-format
 #| msgid "New Color Scheme"
 msgctxt "@title:window"
 msgid "New Color Scheme"
 msgstr "Nauja spalvų schema"
 
-#: colorscheme/ColorSchemeEditor.cpp:274
+#: colorscheme/ColorSchemeEditor.cpp:243
 #, fuzzy, kde-format
 #| msgid "Edit Color Scheme"
 msgctxt "@title:window"
 msgid "Edit Color Scheme"
 msgstr "Keisti spalvų schemą"
 
-#: colorscheme/ColorSchemeEditor.cpp:310
+#: colorscheme/ColorSchemeEditor.cpp:279
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose color"
 msgstr "Spragtelėkite pasirinkti spalvą"
 
-#: colorscheme/ColorSchemeEditor.cpp:316
+#: colorscheme/ColorSchemeEditor.cpp:284
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Click to choose intense color"
 msgstr "Spragtelėkite, kad pasirinkti intensyvią spalvą"
 
-#: colorscheme/ColorSchemeEditor.cpp:321
+#: colorscheme/ColorSchemeEditor.cpp:289
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Click to choose intense color"
@@ -508,8 +546,8 @@ msgctxt "@info:tooltip"
 msgid "Click to choose Faint color"
 msgstr "Spragtelėkite, kad pasirinkti intensyvią spalvą"
 
-#. i18n: ectx: property (text), widget (QLabel, discriptionLabel)
 #. i18n: ectx: property (text), widget (QLabel, descriptionLabel)
+#. i18n: ectx: property (text), widget (QLabel, discriptionLabel)
 #: colorscheme/ColorSchemeEditor.ui:31 KeyBindingEditor.ui:31
 #, kde-format
 msgid "Description:"
@@ -571,23 +609,23 @@ msgstr "Pasirinkti fono paveikslėlį"
 
 #. i18n: ectx: property (text), widget (QToolButton, wallpaperSelectButton)
 #. i18n: ectx: property (text), widget (QToolButton, dirSelectButton)
-#: colorscheme/ColorSchemeEditor.ui:120 widgets/EditProfileGeneralPage.ui:148
+#: colorscheme/ColorSchemeEditor.ui:120 widgets/EditProfileGeneralPage.ui:179
 #, kde-format
 msgid "..."
 msgstr "..."
 
-#: colorscheme/ColorSchemeViewDelegate.cpp:64
+#: colorscheme/ColorSchemeViewDelegate.cpp:50
 #, kde-format
 msgid "AaZz09..."
 msgstr ""
 
-#: CopyInputDialog.cpp:43
+#: CopyInputDialog.cpp:30
 #, kde-format
 msgid "Copy Input"
 msgstr "Kopijuoti įvestį"
 
-#. i18n: ectx: property (text), widget (QLabel, label)
 #. i18n: ectx: property (text), widget (QLabel, filterLabel)
+#. i18n: ectx: property (text), widget (QLabel, label)
 #: CopyInputDialog.ui:19 KeyBindingEditor.ui:41
 #, kde-format
 msgid "Filter:"
@@ -605,57 +643,64 @@ msgstr "Pažymėti viską"
 msgid "Deselect All"
 msgstr "Atžymėti viską"
 
-#: filterHotSpots/FileFilterHotspot.cpp:62
+#: filterHotSpots/FileFilterHotspot.cpp:160
+#, kde-format
+msgid ""
+"Could not open file with the text editor specified in the profile settings;\n"
+"it will be opened with the system default editor."
+msgstr ""
+
+#: filterHotSpots/FileFilterHotspot.cpp:174
 #, fuzzy, kde-format
 #| msgid "Copy Input To"
 msgid "Copy Location"
 msgstr "Kopijuoti įvestį į"
 
-#: filterHotSpots/FileFilterHotspot.cpp:84 session/SessionController.cpp:1826
+#: filterHotSpots/FileFilterHotspot.cpp:199
 #, kde-format
 msgid "open with"
 msgstr ""
 
-#: filterHotSpots/FileFilterHotspot.cpp:165
+#: filterHotSpots/FileFilterHotspot.cpp:297
 #, kde-format
 msgid "Generating Thumbnail"
 msgstr ""
 
-#: filterHotSpots/UrlFilterHotspot.cpp:120
+#: filterHotSpots/UrlFilterHotspot.cpp:95
 #, kde-format
 msgid "Open Link"
 msgstr "Atverti nuorodą"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:122
+#: filterHotSpots/UrlFilterHotspot.cpp:97
 #, kde-format
 msgid "Copy Link Address"
 msgstr "Kopijuoti nuorodos adresą"
 
-#: filterHotSpots/UrlFilterHotspot.cpp:125
+#: filterHotSpots/UrlFilterHotspot.cpp:100
 #, kde-format
 msgid "Send Email To..."
 msgstr "Siųsti el. laišką adresatui..."
 
-#: filterHotSpots/UrlFilterHotspot.cpp:127
+#: filterHotSpots/UrlFilterHotspot.cpp:102
 #, kde-format
 msgid "Copy Email Address"
 msgstr "Kopijuoti el. pašto adresą"
 
-#: FontDialog.cpp:38
+#: FontDialog.cpp:26
 #, fuzzy, kde-format
 #| msgid "Select Font..."
 msgctxt "@title:window"
 msgid "Select font"
 msgstr "Pasirinkti šriftą..."
 
-#: FontDialog.cpp:41
+#: FontDialog.cpp:34
 #, fuzzy, kde-format
 #| msgid "Show All Fonts"
 msgctxt "@action:button"
 msgid "Show all fonts"
 msgstr "Rodyti visus šriftus"
 
-#: FontDialog.cpp:61
+#: FontDialog.cpp:52
 #, kde-format
 msgctxt "@info:status"
 msgid ""
@@ -664,58 +709,59 @@ msgid ""
 "This should not be necessary except in rare cases."
 msgstr ""
 
-#: HistorySizeDialog.cpp:39
+#: HistorySizeDialog.cpp:26
 #, kde-format
 msgctxt "@title:window"
 msgid "Adjust Scrollback"
 msgstr "Tvarkyti slinkties juostą"
 
-#: HistorySizeDialog.cpp:61
+#: HistorySizeDialog.cpp:47
 #, kde-format
 msgctxt "@info:status"
 msgid "Any adjustments are only temporary to this session."
 msgstr "Bet kokie nustatymai yra tik laikini šiai sesijai."
 
-#: KeyBindingEditor.cpp:67
+#: KeyBindingEditor.cpp:54
 #, kde-format
 msgctxt "@label:textbox"
 msgid "Enter descriptive label"
 msgstr ""
 
-#: KeyBindingEditor.cpp:78
+#: KeyBindingEditor.cpp:63
 #, kde-format
 msgid "Key Combination"
 msgstr "Klavišų kombinacija"
 
-#: KeyBindingEditor.cpp:78
+#: KeyBindingEditor.cpp:63
 #, kde-format
 msgid "Output"
 msgstr "Išvestis"
 
-#: KeyBindingEditor.cpp:240 KeyBindingEditor.cpp:241
+#: KeyBindingEditor.cpp:219 KeyBindingEditor.cpp:220
 #, kde-format
 msgid "New Key Binding List"
 msgstr "Naujas sparčiųjų klavišų sąrašas"
 
-#: KeyBindingEditor.cpp:244
+#: KeyBindingEditor.cpp:223
 #, kde-format
 msgid "Edit Key Binding List"
 msgstr "Keisti sparčiųjų klavišų sąrašą"
 
-#: KeyBindingEditor.cpp:309
+#: KeyBindingEditor.cpp:286
 #, kde-format
 msgid "A key bindings scheme cannot be saved with an empty description."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, addEntryButton)
-#: KeyBindingEditor.ui:65
+#. i18n: ectx: property (text), widget (QPushButton, btnAdd)
+#: KeyBindingEditor.ui:65 plugins/SSHManager/sshwidget.ui:231
 #, kde-format
 msgid "Add"
 msgstr "Pridėti"
 
+#. i18n: ectx: property (text), widget (QPushButton, removeEntryButton)
 #. i18n: ectx: property (text), widget (QPushButton, removeKeyBindingsButton)
 #. i18n: ectx: property (text), widget (QPushButton, removeColorSchemeButton)
-#. i18n: ectx: property (text), widget (QPushButton, removeEntryButton)
 #: KeyBindingEditor.ui:72 widgets/EditProfileAppearancePage.ui:89
 #: widgets/EditProfileKeyboardPage.ui:95
 #, kde-format
@@ -741,158 +787,231 @@ msgstr "Įvestis:"
 msgid "Output:"
 msgstr "Išvestis:"
 
-#: main.cpp:149
+#: main.cpp:145
 #, kde-format
 msgctxt "@title"
 msgid "Konsole"
 msgstr "Konsolė"
 
-#: main.cpp:151
+#: main.cpp:147
 #, kde-format
 msgctxt "@title"
 msgid "Terminal emulator"
 msgstr "Terminalo emuliatorius"
 
-#: main.cpp:153
+#: main.cpp:149
 #, kde-format
 msgctxt "@info:credit"
-msgid "(c) 1997-2020, The Konsole Developers"
+msgid "(c) 1997-2022, The Konsole Developers"
 msgstr ""
 
-#: main.cpp:334
+#: main.cpp:319
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kurt Hindenburg"
 msgstr "Kurt Hindenburg"
 
-#: main.cpp:335
+#: main.cpp:321
 #, kde-format
 msgctxt "@info:credit"
 msgid "General maintainer, bug fixes and general improvements"
 msgstr "Pagrindinis prižiūrėtojas, klaidų taisymas ir bendri patobulinimai"
 
-#: main.cpp:338
+#: main.cpp:324
 #, kde-format
 msgctxt "@info:credit"
 msgid "Robert Knight"
 msgstr "Robert Knight"
 
-#: main.cpp:339
+#: main.cpp:325
 #, kde-format
 msgctxt "@info:credit"
 msgid "Previous maintainer, ported to KDE4"
 msgstr "Ankstesnis prižiūrėtojas, migravo į KDE4"
 
-#: main.cpp:341
+#: main.cpp:327
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Doelle"
 msgstr "Lars Doelle"
 
-#: main.cpp:342
+#: main.cpp:327
 #, kde-format
 msgctxt "@info:credit"
 msgid "Original author"
 msgstr "Pradinis autorius"
 
-#: main.cpp:344
+#: main.cpp:328
 #, kde-format
 msgctxt "@info:credit"
-msgid "Jekyll Wu"
-msgstr "Jekyll Wu"
+msgid "Ahmad Samir"
+msgstr ""
 
-#: main.cpp:345 main.cpp:348 main.cpp:351
+#: main.cpp:329 main.cpp:332 main.cpp:335 main.cpp:338
+#, fuzzy, kde-format
+#| msgctxt "@info:credit"
+#| msgid "General maintainer, bug fixes and general improvements"
+msgctxt "@info:credit"
+msgid "Major refactoring, bug fixes and major improvements"
+msgstr "Pagrindinis prižiūrėtojas, klaidų taisymas ir bendri patobulinimai"
+
+#: main.cpp:331
+#, kde-format
+msgctxt "@info:credit"
+msgid "Carlos Alves"
+msgstr ""
+
+#: main.cpp:334
+#, kde-format
+msgctxt "@info:credit"
+msgid "Tomaz Canabrava"
+msgstr ""
+
+#: main.cpp:337
+#, kde-format
+msgctxt "@info:credit"
+msgid "Gustavo Carneiro"
+msgstr ""
+
+#: main.cpp:340
+#, kde-format
+msgctxt "@info:credit"
+msgid "Edwin Pujols"
+msgstr ""
+
+#: main.cpp:341 main.cpp:344 main.cpp:346 main.cpp:351 main.cpp:353
+#: main.cpp:354 main.cpp:355
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and general improvements"
 msgstr "Klaidų taisymas ir bendri patobulinimai"
 
+#: main.cpp:343
+#, kde-format
+msgctxt "@info:credit"
+msgid "Martin T. H. Sandsmark"
+msgstr ""
+
+#: main.cpp:346
+#, kde-format
+msgctxt "@info:credit"
+msgid "Nate Graham"
+msgstr ""
+
 #: main.cpp:347
+#, kde-format
+msgctxt "@info:credit"
+msgid "Mariusz Glebocki"
+msgstr ""
+
+#: main.cpp:348
+#, fuzzy, kde-format
+#| msgctxt "@info:credit"
+#| msgid "Bug fixes and general improvements"
+msgctxt "@info:credit"
+msgid "Bug fixes and major improvements"
+msgstr "Klaidų taisymas ir bendri patobulinimai"
+
+#: main.cpp:350
+#, fuzzy, kde-format
+#| msgctxt "@info:credit"
+#| msgid "Thomas Dreibholz"
+msgctxt "@info:credit"
+msgid "Thomas Surrel"
+msgstr "Thomas Dreibholz"
+
+#: main.cpp:353
+#, kde-format
+msgctxt "@info:credit"
+msgid "Jekyll Wu"
+msgstr "Jekyll Wu"
+
+#: main.cpp:354
 #, kde-format
 msgctxt "@info:credit"
 msgid "Waldo Bastian"
 msgstr "Waldo Bastian"
 
-#: main.cpp:350
+#: main.cpp:355
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Binner"
 msgstr "Stephan Binner"
 
-#: main.cpp:353
+#: main.cpp:356
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thomas Dreibholz"
 msgstr "Thomas Dreibholz"
 
-#: main.cpp:354
+#: main.cpp:356
 #, kde-format
 msgctxt "@info:credit"
 msgid "General improvements"
 msgstr "Bendri patobulinimai"
 
-#: main.cpp:356
+#: main.cpp:357
 #, kde-format
 msgctxt "@info:credit"
 msgid "Chris Machemer"
 msgstr "Chris Machemer"
 
-#: main.cpp:357 main.cpp:360 main.cpp:396 main.cpp:399 main.cpp:402
-#: main.cpp:405
+#: main.cpp:357 main.cpp:358 main.cpp:385 main.cpp:386 main.cpp:387
+#: main.cpp:388
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes"
 msgstr "Klaidų taisymas"
 
-#: main.cpp:359
+#: main.cpp:358
 #, kde-format
 msgctxt "@info:credit"
 msgid "Francesco Cecconi"
 msgstr "Francesco Cecconi"
 
-#: main.cpp:362
+#: main.cpp:359
 #, kde-format
 msgctxt "@info:credit"
 msgid "Stephan Kulow"
 msgstr "Stephan Kulow"
 
-#: main.cpp:363
+#: main.cpp:359
 #, kde-format
 msgctxt "@info:credit"
 msgid "Solaris support and history"
 msgstr "Solaris palaikymas ir žurnalas"
 
-#: main.cpp:365
+#: main.cpp:360
 #, kde-format
 msgctxt "@info:credit"
 msgid "Alexander Neundorf"
 msgstr "Alexander Neundorf"
 
-#: main.cpp:366
+#: main.cpp:361
 #, kde-format
 msgctxt "@info:credit"
 msgid "Bug fixes and improved startup performance"
 msgstr "Klaidų taisymas ir patobulintas paleidimas"
 
-#: main.cpp:368
+#: main.cpp:363
 #, kde-format
 msgctxt "@info:credit"
 msgid "Peter Silva"
 msgstr "Peter Silva"
 
-#: main.cpp:369
+#: main.cpp:363
 #, kde-format
 msgctxt "@info:credit"
 msgid "Marking improvements"
 msgstr "Žymėjimo patobulinimai"
 
-#: main.cpp:371
+#: main.cpp:364
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lotzi Boloni"
 msgstr "Lotzi Boloni"
 
-#: main.cpp:372
+#: main.cpp:366
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -902,13 +1021,13 @@ msgstr ""
 "Įterpta Konsole\n"
 "Įrankių juosta ir sesijų pavadinimai"
 
-#: main.cpp:375
+#: main.cpp:369
 #, kde-format
 msgctxt "@info:credit"
 msgid "David Faure"
 msgstr "David Faure"
 
-#: main.cpp:376
+#: main.cpp:371
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -918,25 +1037,25 @@ msgstr ""
 "Įterpta Konsolė\n"
 "Bendri patobulinimai"
 
-#: main.cpp:379
+#: main.cpp:374
 #, kde-format
 msgctxt "@info:credit"
 msgid "Antonio Larrosa"
 msgstr "Antonio Larrosa"
 
-#: main.cpp:380
+#: main.cpp:374
 #, kde-format
 msgctxt "@info:credit"
 msgid "Visual effects"
 msgstr "Vaizdiniai efektai"
 
-#: main.cpp:382
+#: main.cpp:375
 #, kde-format
 msgctxt "@info:credit"
 msgid "Matthias Ettrich"
 msgstr "Matthias Ettrich"
 
-#: main.cpp:383
+#: main.cpp:377
 #, kde-format
 msgctxt "@info:credit"
 msgid ""
@@ -946,115 +1065,129 @@ msgstr ""
 "Kodas iš kvt projekto\n"
 "Bendri patobulinimai"
 
-#: main.cpp:386
+#: main.cpp:380
 #, kde-format
 msgctxt "@info:credit"
 msgid "Warwick Allison"
 msgstr "Warwick Allison"
 
-#: main.cpp:387
+#: main.cpp:381
 #, kde-format
 msgctxt "@info:credit"
 msgid "Schema and text selection improvements"
 msgstr "Schemos ir teksto žymėjimo patobulinimai"
 
-#: main.cpp:389
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dan Pilone"
 msgstr "Dan Pilone"
 
-#: main.cpp:390
+#: main.cpp:383
 #, kde-format
 msgctxt "@info:credit"
 msgid "SGI port"
 msgstr "SGI perkėlimas"
 
-#: main.cpp:392
+#: main.cpp:384
 #, kde-format
 msgctxt "@info:credit"
 msgid "Kevin Street"
 msgstr "Kevin Street"
 
-#: main.cpp:393
+#: main.cpp:384
 #, kde-format
 msgctxt "@info:credit"
 msgid "FreeBSD port"
 msgstr "FreeBSD pritaikymas"
 
-#: main.cpp:395
+#: main.cpp:385
 #, kde-format
 msgctxt "@info:credit"
 msgid "Sven Fischer"
 msgstr "Sven Fischer"
 
-#: main.cpp:398
+#: main.cpp:386
 #, kde-format
 msgctxt "@info:credit"
 msgid "Dale M. Flaven"
 msgstr "Dale M. Flaven"
 
-#: main.cpp:401
+#: main.cpp:387
 #, kde-format
 msgctxt "@info:credit"
 msgid "Martin Jones"
 msgstr "Martin Jones"
 
-#: main.cpp:404
+#: main.cpp:388
 #, kde-format
 msgctxt "@info:credit"
 msgid "Lars Knoll"
 msgstr "Lars Knoll"
 
-#: main.cpp:407
+#: main.cpp:389
 #, kde-format
 msgctxt "@info:credit"
 msgid "Thanks to many others.\n"
 msgstr "Ačiū daugeliui kitų.\n"
 
-#: MainWindow.cpp:328
+#: MainWindow.cpp:303
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&New Tab"
 msgstr "&Nauja kortelė"
 
-#: MainWindow.cpp:338
+#: MainWindow.cpp:313
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Clone Tab"
 msgstr "&Klonuoti kortelę"
 
-#: MainWindow.cpp:345
+#: MainWindow.cpp:320
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "New &Window"
 msgstr "Naujas &langas"
 
-#: MainWindow.cpp:352
+#: MainWindow.cpp:327
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Close Window"
 msgstr "Uždaryti langą"
 
-#: MainWindow.cpp:357
+#: MainWindow.cpp:332
 #, kde-format
 msgctxt "@title:menu"
 msgid "&Bookmarks"
 msgstr "&Žymelės"
 
-#: MainWindow.cpp:376
+#: MainWindow.cpp:353
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
 msgstr "Tvarkyti profilius..."
 
-#: MainWindow.cpp:382
+#: MainWindow.cpp:359
 #, kde-format
 msgctxt "@item"
 msgid "Activate Menu"
 msgstr "Aktyvuoti meniu"
 
-#: MainWindow.cpp:616 MainWindow.cpp:635
+#: MainWindow.cpp:365
+#, fuzzy, kde-format
+#| msgctxt "@action Shortcut entry"
+#| msgid "Move Tab Left"
+msgctxt "@action:inmenu"
+msgid "Save tab layout to file"
+msgstr "Pastumti kortelę kairėn"
+
+#: MainWindow.cpp:374
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Load tab layout from file"
+msgstr ""
+
+#: MainWindow.cpp:607 MainWindow.cpp:624
 #, kde-format
 msgctxt "@info"
 msgid "There is a process running in this window. Do you still want to quit?"
@@ -1065,25 +1198,25 @@ msgstr[1] "Yra veikiantys %1 procesai šiame lange. Ar tikrai norite išeiti?"
 msgstr[2] "Yra veikiančių %1 procesų šiame lange. Ar tikrai norite išeiti?"
 msgstr[3] "Yra veikiantis %1 procesas šiame lange. Ar tikrai norite išeiti?"
 
-#: MainWindow.cpp:622 MainWindow.cpp:641 MainWindow.cpp:659
+#: MainWindow.cpp:613 MainWindow.cpp:630 MainWindow.cpp:644
 #, kde-format
 msgctxt "@title"
 msgid "Confirm Close"
 msgstr "Patvirtinti uždarymą"
 
-#: MainWindow.cpp:624 MainWindow.cpp:643 MainWindow.cpp:660
+#: MainWindow.cpp:614 MainWindow.cpp:631 MainWindow.cpp:645
 #, kde-format
 msgctxt "@action:button"
 msgid "Close &Window"
 msgstr "Užverti &langą"
 
-#: MainWindow.cpp:646 MainWindow.cpp:663
+#: MainWindow.cpp:632 MainWindow.cpp:646
 #, kde-format
 msgctxt "@action:button"
 msgid "Close Current &Tab"
 msgstr "Užverti dabartinę kortelę"
 
-#: MainWindow.cpp:656
+#: MainWindow.cpp:641
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid ""
@@ -1094,40 +1227,242 @@ msgctxt "@info"
 msgid "There are %1 open terminals in this window. Do you still want to quit?"
 msgstr "Yra veikiantis procesas šiame lange. Ar tikrai norite išeiti?"
 
-#: MainWindow.cpp:778
-#, kde-format
-msgctxt "@title Preferences page name"
-msgid "General"
-msgstr "Bendri"
-
-#: MainWindow.cpp:783 Part.cpp:326
+#: MainWindow.cpp:748 Part.cpp:297
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Profiles"
 msgstr "Profiliai"
 
-#: MainWindow.cpp:788
+#: MainWindow.cpp:765
+#, kde-format
+msgctxt "@title Preferences page name"
+msgid "General"
+msgstr "Bendri"
+
+#: MainWindow.cpp:776
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Tab Bar / Splitters"
 msgstr ""
 
-#: MainWindow.cpp:793
+#: MainWindow.cpp:781
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Temporary Files"
 msgstr ""
 
-#: MainWindow.cpp:798
+#: MainWindow.cpp:786
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Thumbnails"
 msgstr ""
 
-#: Part.cpp:332
+#: Part.cpp:300
 #, kde-format
 msgctxt "@title Preferences page name"
 msgid "Part Info"
+msgstr ""
+
+#. i18n: ectx: property (currentText), widget (QComboBox, folder)
+#: plugins/SSHManager/sshmanagermodel.cpp:37
+#: plugins/SSHManager/sshwidget.ui:132
+#, fuzzy, kde-format
+#| msgid "&Set as Default"
+msgid "Default"
+msgstr "N&ustatyti kaip numatytą"
+
+#: plugins/SSHManager/sshmanagerplugin.cpp:51
+#, kde-format
+msgid "SSH Manager"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerplugin.cpp:69
+#, fuzzy, kde-format
+#| msgid "Show menubar by default"
+msgid "Show SSH Manager"
+msgstr "Rodyti meniu juostą pagal nutylėjimą"
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:158
+#, kde-format
+msgid ""
+"You are about to remove the folder %1,\n"
+" with multiple SSH Configurations, are you sure?"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:159
+#, kde-format
+msgid "You are about to remove %1, are you sure?"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:161
+#, kde-format
+msgid "Remove SSH Configurations"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:294
+#, kde-format
+msgid "Missing Hostname"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:299
+#, kde-format
+msgid "Missing Name"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:304
+#, kde-format
+msgid "Missing Port"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:310
+#, kde-format
+msgid "If Use Ssh Config is set, do not specify sshkey or username."
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:315
+#, kde-format
+msgid "At least Username or SSHKey must be set"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:321
+#, kde-format
+msgid "Missing Folder"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:326
+#, kde-format
+msgid "An SSH session must have a profile"
+msgstr ""
+
+#: plugins/SSHManager/sshmanagerpluginwidget.cpp:350
+#, fuzzy, kde-format
+#| msgctxt "@info:tooltip"
+#| msgid "Double click to change shortcut"
+msgid "Double click to change the folder name."
+msgstr "Du kart spustelėkite, kad pakeisti trumpinį"
+
+#. i18n: ectx: property (windowTitle), widget (QWidget, SSHTreeWidget)
+#: plugins/SSHManager/sshwidget.ui:14
+#, kde-format
+msgid "Form"
+msgstr ""
+
+#. i18n: ectx: property (placeholderText), widget (QLineEdit, filterText)
+#: plugins/SSHManager/sshwidget.ui:22
+#, fuzzy, kde-format
+#| msgid "Filter:"
+msgid "Filter..."
+msgstr "Filtras:"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnInvertFilter)
+#: plugins/SSHManager/sshwidget.ui:32
+#, kde-format
+msgid "Invert"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: plugins/SSHManager/sshwidget.ui:57
+#, kde-format
+msgid "Identifier"
+msgstr ""
+
+#. i18n: ectx: property (placeholderText), widget (QLineEdit, name)
+#: plugins/SSHManager/sshwidget.ui:64
+#, fuzzy, kde-format
+#| msgid "The number of pixels between two lines"
+msgid "The name of this entry on the list"
+msgstr "Pikselių skaičius tarp dviejų eilučių"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: plugins/SSHManager/sshwidget.ui:71
+#, kde-format
+msgid "SSH Hostname"
+msgstr ""
+
+#. i18n: ectx: property (placeholderText), widget (QLineEdit, hostname)
+#: plugins/SSHManager/sshwidget.ui:78
+#, fuzzy, kde-format
+#| msgid "Change the shape of the cursor"
+msgid "The hostname of the server"
+msgstr "Keisti žymeklio formą"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: plugins/SSHManager/sshwidget.ui:85
+#, kde-format
+msgid "Port"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLineEdit, port)
+#: plugins/SSHManager/sshwidget.ui:92
+#, kde-format
+msgid "22"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: plugins/SSHManager/sshwidget.ui:99
+#, kde-format
+msgid "SSH Key"
+msgstr ""
+
+#. i18n: ectx: property (placeholderText), widget (QLineEdit, sshkey)
+#: plugins/SSHManager/sshwidget.ui:109
+#, fuzzy, kde-format
+#| msgid "&Terminate Task"
+msgid "The private key"
+msgstr "&Nutraukti  užduotį"
+
+#. i18n: ectx: property (text), widget (QLabel, folderLabel)
+#: plugins/SSHManager/sshwidget.ui:116
+#, kde-format
+msgid "Folder"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: plugins/SSHManager/sshwidget.ui:139
+#, fuzzy, kde-format
+#| msgctxt "@title Preferences page name"
+#| msgid "Profiles"
+msgid "Profile"
+msgstr "Profiliai"
+
+#. i18n: ectx: property (placeholderText), widget (QLineEdit, username)
+#: plugins/SSHManager/sshwidget.ui:156
+#, fuzzy, kde-format
+#| msgctxt "NAME OF TRANSLATORS"
+#| msgid "Your names"
+msgid "Your username"
+msgstr "Dovydas Sankauskas, Liudas Ališauskas"
+
+#. i18n: ectx: property (text), widget (QLabel, label_7)
+#: plugins/SSHManager/sshwidget.ui:163
+#, fuzzy, kde-format
+#| msgid "User Name: %u"
+msgid "Username"
+msgstr "Naudotojo vardas: %u"
+
+#. i18n: ectx: property (text), widget (QCheckBox, useSshConfig)
+#: plugins/SSHManager/sshwidget.ui:170
+#, kde-format
+msgid "Use ~/.ssh/config for key"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QPushButton, btnImport)
+#: plugins/SSHManager/sshwidget.ui:217
+#, fuzzy, kde-format
+#| msgctxt "@info:credit"
+#| msgid "SGI port"
+msgid "Import"
+msgstr "SGI perkėlimas"
+
+#. i18n: ectx: property (text), widget (QPushButton, btnCancel)
+#: plugins/SSHManager/sshwidget.ui:238
+#, kde-format
+msgid "Cancel"
+msgstr ""
+
+#: pluginsystem/PluginManager.cpp:66
+#, kde-format
+msgid "No plugins available"
 msgstr ""
 
 #. i18n: ectx: property (windowTitle), widget (QWidget, PrintOptions)
@@ -1139,43 +1474,43 @@ msgstr "Išvesties parinktys"
 
 #. i18n: ectx: property (text), widget (QCheckBox, printerFriendly)
 #. i18n: ectx: label, entry (PrinterFriendly), group (PrintOptions)
-#: PrintOptions.ui:39 settings/konsole.kcfg:172
+#: PrintOptions.ui:39 settings/konsole.kcfg:165
 #, kde-format
 msgid "Printer &friendly mode (black text, no background)"
 msgstr "&Draugiška spausdintuvui veiksena (juodas tekstas, nėra fono)"
 
 #. i18n: ectx: property (text), widget (QCheckBox, scaleOutput)
 #. i18n: ectx: label, entry (ScaleOutput), group (PrintOptions)
-#: PrintOptions.ui:46 settings/konsole.kcfg:176
+#: PrintOptions.ui:46 settings/konsole.kcfg:169
 #, kde-format
 msgid "&Scale output"
 msgstr "&Keisti išvesties dydį"
 
-#: profile/Profile.cpp:166
+#: profile/Profile.cpp:165
 #, fuzzy, kde-format
 #| msgid "&Set as Default"
 msgctxt "Name of the default/builtin profile"
 msgid "Default"
 msgstr "N&ustatyti kaip numatytą"
 
-#: profile/ProfileList.cpp:48
+#: profile/ProfileList.cpp:37 widgets/EditProfileDialog.cpp:487
 #, kde-format
 msgid "Default profile"
 msgstr "Numatytas profilis"
 
-#: profile/ProfileManager.cpp:343
+#: profile/ProfileManager.cpp:265
 #, kde-format
 msgid "Konsole does not have permission to save this profile to %1"
 msgstr ""
 
-#: profile/ProfileManager.cpp:399
+#: profile/ProfileManager.cpp:302
 #, kde-format
 msgid ""
 "The name \"Default\" is reserved for the built-in fallback profile;\n"
 "the profile is going to be saved as \"%1\""
 msgstr ""
 
-#: profile/ProfileModel.cpp:71
+#: profile/ProfileModel.cpp:56
 #, fuzzy, kde-format
 #| msgctxt "@label:listbox Column header text for color names"
 #| msgid "Name"
@@ -1183,7 +1518,7 @@ msgctxt "@title:column Profile name"
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: profile/ProfileModel.cpp:72
+#: profile/ProfileModel.cpp:58
 #, fuzzy, kde-format
 #| msgctxt "@title:column Profile shortcut text"
 #| msgid "Shortcut"
@@ -1191,34 +1526,43 @@ msgctxt "@title:column Profile keyboard shortcut"
 msgid "Shortcut"
 msgstr "Spartusis klavišas"
 
-#: profile/ProfileModel.cpp:95
+#: profile/ProfileModel.cpp:81
+#, kde-format
+msgctxt ""
+"@label:textbox added to the name of the Default/fallback profile, to point "
+"out it's read-only/hardcoded"
+msgid " [Read-only]"
+msgstr ""
+
+#: profile/ProfileModel.cpp:85
 #, fuzzy, kde-format
 #| msgid "&Set as Default"
-msgid " (Default)"
+msgctxt "@label:textbox added to the name of the current default profile"
+msgid " (default)"
 msgstr "N&ustatyti kaip numatytą"
 
-#: profile/ProfileModel.cpp:113
+#: profile/ProfileModel.cpp:112
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Double click to change shortcut"
 msgstr "Du kart spustelėkite, kad pakeisti trumpinį"
 
-#: RenameTabDialog.cpp:38
+#: RenameTabDialog.cpp:25
 #, kde-format
 msgid "Tab Properties"
 msgstr ""
 
-#: SaveHistoryTask.cpp:84
+#: SaveHistoryTask.cpp:68
 #, kde-format
 msgid "Save Output From %1"
 msgstr "Įrašyti %1 išvestį"
 
-#: SaveHistoryTask.cpp:96
+#: SaveHistoryTask.cpp:80
 #, kde-format
 msgid "%1 is an invalid URL, the output could not be saved."
 msgstr "URL %1 yra klaidingas, išvesties įrašyti nepavyko."
 
-#: SaveHistoryTask.cpp:178
+#: SaveHistoryTask.cpp:161
 #, kde-format
 msgid ""
 "A problem occurred when saving the output.\n"
@@ -1307,23 +1651,29 @@ msgstr ""
 msgid "Solaris console"
 msgstr "Solaris konsolė"
 
-#: session/Session.cpp:129
-#, kde-format
-msgid "Bell in session '%1'"
+#: session/Session.cpp:121
+#, fuzzy, kde-format
+#| msgid "Bell in session '%1'"
+msgid "Bell in '%1' (Session '%2')"
 msgstr "Skambutis sesijoje „%1“"
 
-#: session/Session.cpp:412
+#: session/Session.cpp:406
 #, kde-format
 msgid "Could not find binary: "
 msgstr "Nerastas dvejetainis failas: "
 
-#: session/Session.cpp:421
+#: session/Session.cpp:415
 #, kde-format
 msgctxt "@info:shell Alert the user with red color text"
 msgid "Warning: "
 msgstr "Dėmesio: "
 
-#: session/Session.cpp:479
+#: session/Session.cpp:477
+#, kde-format
+msgid "Could not find an interactive shell to start."
+msgstr "Nepavyko rasti ir paleisti interaktyvaus apvalkalo."
+
+#: session/Session.cpp:483 session/Session.cpp:485
 #, kde-format
 msgid ""
 "Could not find '%1', starting '%2' instead.  Please check your profile "
@@ -1331,22 +1681,18 @@ msgid ""
 msgstr ""
 "Nepavyko rasti „%1“, todėl paleidžiama „%2“. Patikrinkite profilio parinktis."
 
-#: session/Session.cpp:482
-#, kde-format
-msgid "Could not find an interactive shell to start."
-msgstr "Nepavyko rasti ir paleisti interaktyvaus apvalkalo."
-
 #: session/Session.cpp:520
 #, kde-format
 msgid "Could not start program '%1' with arguments '%2'."
 msgstr "Nepavyko paleisti programos „%1“ su parametrais „%2“."
 
 #: session/Session.cpp:660
-#, kde-format
-msgid "Silence in session '%1'"
+#, fuzzy, kde-format
+#| msgid "Silence in session '%1'"
+msgid "Silence in '%1' (Session '%2')"
 msgstr "Jokios veiklos sesijoje „%1“"
 
-#: session/Session.cpp:929
+#: session/Session.cpp:911
 #, kde-format
 msgid ""
 "The D-Bus methods sendText/runCommand were just used.  There are security "
@@ -1355,254 +1701,262 @@ msgid ""
 "warning will only show once for this Konsole instance.</p>"
 msgstr ""
 
-#: session/Session.cpp:965
+#: session/Session.cpp:947
 #, kde-format
 msgctxt "@info:shell This session is done"
 msgid "Finished"
 msgstr "Baigta"
 
-#: session/Session.cpp:979 session/Session.cpp:992
+#: session/Session.cpp:961 session/Session.cpp:972
 #, kde-format
 msgid "Program '%1' crashed."
 msgstr "Programa „%1“ nulūžo."
 
-#: session/Session.cpp:981
+#: session/Session.cpp:963
 #, kde-format
 msgid "Program '%1' exited with status %2."
 msgstr "Programa „%1“ baigė darbą ir pranešė kodą „%2“."
 
-#: session/Session.cpp:1424
+#: session/Session.cpp:1397
 #, kde-format
 msgid "ZModem Progress"
 msgstr "ZModem eiga"
 
-#: session/Session.cpp:1740
-#, kde-format
-msgid "Activity in session '%1'"
+#: session/Session.cpp:1724
+#, fuzzy, kde-format
+#| msgid "Activity in session '%1'"
+msgid "Activity in '%1' (Session '%2')"
 msgstr "Aktyvi veikla sesijoje „%1“"
 
-#: session/SessionController.cpp:149
+#: session/SessionController.cpp:135
 #, kde-format
 msgid "Konsole"
 msgstr "Konsolė"
 
-#: session/SessionController.cpp:365
+#: session/SessionController.cpp:344
 #, kde-format
 msgid "The process '%1' has finished running in session '%2'"
 msgstr ""
 
-#: session/SessionController.cpp:445
+#: session/SessionController.cpp:422
 #, kde-format
 msgid "Konsole does not know how to open the bookmark: "
 msgstr "Konsolė nežino, kaip atidaryti žymelę: "
 
-#: session/SessionController.cpp:512
+#: session/SessionController.cpp:488
 #, kde-format
 msgid "Search for '%1' with"
 msgstr "Ieškoti „%1“ su"
 
-#: session/SessionController.cpp:526
+#: session/SessionController.cpp:502
 #, kde-format
 msgid "Configure Web Shortcuts..."
 msgstr "Konfigūruoti žiniatinklio trumpinius..."
 
-#: session/SessionController.cpp:629
+#: session/SessionController.cpp:600
 #, kde-format
 msgid "&Close Session"
 msgstr "Uždaryti langą"
 
-#: session/SessionController.cpp:636
+#: session/SessionController.cpp:607
 #, kde-format
 msgid "Open File Manager"
 msgstr "Atverti failų tvarkyklę"
 
-#: session/SessionController.cpp:654
+#: session/SessionController.cpp:625
 #, kde-format
 msgid "Copy"
 msgstr ""
 
-#: session/SessionController.cpp:671
+#: session/SessionController.cpp:642
 #, kde-format
 msgid "Paste Selection"
 msgstr "Padėti pažymėtą sritį"
 
-#: session/SessionController.cpp:678
+#: session/SessionController.cpp:649
 #, kde-format
 msgid "Web Search"
 msgstr "Paieška žiniatinklyje "
 
-#: session/SessionController.cpp:685
+#: session/SessionController.cpp:655
 #, kde-format
 msgid "&Select All"
 msgstr "&Pažymėti viską"
 
-#: session/SessionController.cpp:689
+#: session/SessionController.cpp:659
 #, kde-format
 msgid "Select &Line"
 msgstr "Pažymėti eilutę"
 
-#: session/SessionController.cpp:692
+#: session/SessionController.cpp:662
 #, kde-format
 msgid "Save Output &As..."
 msgstr "Įrašyti išvestį &kaip..."
 
-#: session/SessionController.cpp:698
+#: session/SessionController.cpp:668
 #, kde-format
 msgid "&Print Screen..."
 msgstr "&Spausdinti ekraną..."
 
-#: session/SessionController.cpp:702
+#: session/SessionController.cpp:672
 #, kde-format
 msgid "Adjust Scrollback..."
 msgstr "Tvarkyti slinkties juostą..."
 
-#: session/SessionController.cpp:706
+#: session/SessionController.cpp:676
 #, kde-format
 msgid "Clear Scrollback"
 msgstr "Išvalyti slinkties istoriją"
 
-#: session/SessionController.cpp:710
+#: session/SessionController.cpp:680
 #, kde-format
 msgid "Clear Scrollback and Reset"
 msgstr "Išvalyti ir paleisti iš naujo slinkties juostą"
 
-#: session/SessionController.cpp:716
-#, kde-format
-msgid "Edit Current Profile..."
-msgstr "Keisti dabartinį profilį..."
-
-#: session/SessionController.cpp:719
+#: session/SessionController.cpp:689
 #, kde-format
 msgid "Switch Profile"
 msgstr "Perjungti profilį"
 
-#: session/SessionController.cpp:743
+#: session/SessionController.cpp:718
 #, kde-format
 msgid "Set &Encoding"
 msgstr "Nustatyti &koduotę"
 
-#: session/SessionController.cpp:754
+#: session/SessionController.cpp:735
 #, kde-format
 msgctxt "@item:inmenu A read only (locked) session"
 msgid "Read-only"
 msgstr ""
 
-#: session/SessionController.cpp:765
+#: session/SessionController.cpp:746
 #, fuzzy, kde-format
 #| msgid "&Rename Tab..."
 msgid "&Configure or Rename Tab..."
 msgstr "Pe&rvadinti kortelę..."
 
-#: session/SessionController.cpp:771
+#: session/SessionController.cpp:752
 #, kde-format
 msgid "&All Tabs in Current Window"
 msgstr "&Visos kortelės dabartiniame lange"
 
-#: session/SessionController.cpp:778
+#: session/SessionController.cpp:759
 #, kde-format
 msgid "&Select Tabs..."
 msgstr "&Pažymėti korteles..."
 
-#: session/SessionController.cpp:784
+#: session/SessionController.cpp:765
 #, kde-format
 msgctxt "@action:inmenu Do not select any tabs"
 msgid "&None"
 msgstr "&Nei vienos"
 
-#: session/SessionController.cpp:792
+#: session/SessionController.cpp:773
 #, kde-format
 msgid "Copy Input To"
 msgstr "Kopijuoti įvestį į"
 
-#: session/SessionController.cpp:801
+#: session/SessionController.cpp:780
 #, kde-format
 msgid "&ZModem Upload..."
 msgstr "&ZModem įkėlimas..."
 
-#: session/SessionController.cpp:806
+#: session/SessionController.cpp:785
 #, kde-format
 msgid "Monitor for &Activity"
 msgstr "Stebėti &aktyvumą"
 
-#: session/SessionController.cpp:811
+#: session/SessionController.cpp:791
 #, kde-format
 msgid "Monitor for &Silence"
 msgstr "&Stebėti neaktyvumą"
 
-#: session/SessionController.cpp:816
+#: session/SessionController.cpp:797
 #, fuzzy, kde-format
 #| msgid "Monitor for &Activity"
 msgid "Monitor for Process Finishing"
 msgstr "Stebėti &aktyvumą"
 
-#: session/SessionController.cpp:822
+#: session/SessionController.cpp:804
 #, kde-format
 msgid "Enlarge Font"
 msgstr "Padidinti šriftą"
 
-#: session/SessionController.cpp:830
+#: session/SessionController.cpp:812
 #, kde-format
 msgid "Shrink Font"
 msgstr "Sumažinti šriftą"
 
-#: session/SessionController.cpp:835
+#: session/SessionController.cpp:817
 #, kde-format
 msgid "Reset Font Size"
 msgstr ""
 
-#: session/SessionController.cpp:840
+#: session/SessionController.cpp:822
 #, kde-format
 msgid "Send Signal"
 msgstr "Siųsti signalą"
 
-#: session/SessionController.cpp:846
+#: session/SessionController.cpp:826
 #, kde-format
 msgid "&Suspend Task"
 msgstr "&Sustabdyti užduotį"
 
-#: session/SessionController.cpp:851
+#: session/SessionController.cpp:831
 #, kde-format
 msgid "&Continue Task"
 msgstr "&Tęsti užduotį"
 
-#: session/SessionController.cpp:856
+#: session/SessionController.cpp:836
 #, kde-format
 msgid "&Hangup"
 msgstr "&Atsijungti"
 
-#: session/SessionController.cpp:861
+#: session/SessionController.cpp:841
 #, kde-format
 msgid "&Interrupt Task"
 msgstr "&Pertraukti užduotį"
 
-#: session/SessionController.cpp:866
+#: session/SessionController.cpp:846
 #, kde-format
 msgid "&Terminate Task"
 msgstr "&Nutraukti  užduotį"
 
-#: session/SessionController.cpp:871
+#: session/SessionController.cpp:851
 #, kde-format
 msgid "&Kill Task"
 msgstr "&Nutraukti užduotį"
 
-#: session/SessionController.cpp:876
+#: session/SessionController.cpp:856
 #, kde-format
 msgid "User Signal &1"
 msgstr "Naudotojo signalas &1"
 
-#: session/SessionController.cpp:881
+#: session/SessionController.cpp:861
 #, kde-format
 msgid "User Signal &2"
 msgstr "Naudotojo signalas &2"
 
-#: session/SessionController.cpp:1005
+#: session/SessionController.cpp:878
+#, fuzzy, kde-format
+#| msgctxt "@item This will be used as part of the file name"
+#| msgid "New Profile"
+msgid "Create New Profile..."
+msgstr "Naujas profilis"
+
+#: session/SessionController.cpp:880
+#, kde-format
+msgid "Edit Current Profile..."
+msgstr "Keisti dabartinį profilį..."
+
+#: session/SessionController.cpp:997
 #, kde-format
 msgid ""
 "A program is currently running in this session.  Are you sure you want to "
 "close it?"
 msgstr "Šioje kortelėje vykdoma programa. Ar tikrai norite užverti kortelę?"
 
-#: session/SessionController.cpp:1008
+#: session/SessionController.cpp:1001
 #, kde-format
 msgid ""
 "The program '%1' is currently running in this session.  Are you sure you "
@@ -1610,12 +1964,12 @@ msgid ""
 msgstr ""
 "Šioje kortelėje vykdoma programa „%1“. Ar tikrai norite užverti kortelę?"
 
-#: session/SessionController.cpp:1014 session/SessionController.cpp:1044
+#: session/SessionController.cpp:1008 session/SessionController.cpp:1041
 #, kde-format
 msgid "Confirm Close"
 msgstr "Patvirtinti baigimą"
 
-#: session/SessionController.cpp:1037
+#: session/SessionController.cpp:1032
 #, kde-format
 msgid ""
 "A program in this session would not die.  Are you sure you want to kill it "
@@ -1624,7 +1978,7 @@ msgstr ""
 "Šioje kortelėje vykdoma programa niekaip nemiršta. Ar tikrai norite ją "
 "užbaigti prievarta?"
 
-#: session/SessionController.cpp:1040
+#: session/SessionController.cpp:1036
 #, kde-format
 msgid ""
 "The program '%1' is in this session would not die.  Are you sure you want to "
@@ -1633,13 +1987,13 @@ msgstr ""
 "Šioje kortelėje vykdoma programa „%1“ niekaip nemiršta. Ar tikrai norite ją "
 "užbaigti prievarta?"
 
-#: session/SessionController.cpp:1867
+#: session/SessionController.cpp:1868
 #, fuzzy, kde-format
 #| msgid "Save ZModem Download to..."
 msgid "Save ZModem Download to..."
 msgstr "Įrašyti ZModem atsisiuntimą į..."
 
-#: session/SessionController.cpp:1877
+#: session/SessionController.cpp:1878
 #, kde-format
 msgid ""
 "<p>A ZModem file transfer attempt has been detected, but no suitable ZModem "
@@ -1665,54 +2019,105 @@ msgstr ""
 "<p>Šioje sistemoje nepavyko rasti tinkamos ZModem programos.</p><p>Tokią "
 "programą galite įgyti įdiegdami paketą „rzsz“ arba „lrzsz“.</p>"
 
-#: session/SessionController.cpp:1904
+#: session/SessionController.cpp:1903
 #, kde-format
 msgid "Select Files for ZModem Upload"
 msgstr "Pažymėkite failus išsiuntimui su ZModem"
 
-#: session/SessionListModel.cpp:104
+#: session/SessionListModel.cpp:90
 #, kde-format
 msgctxt "@item:intable The session index"
 msgid "Number"
 msgstr "Skaičius"
 
-#: session/SessionListModel.cpp:106
+#: session/SessionListModel.cpp:92
 #, kde-format
 msgctxt "@item:intable The session title"
 msgid "Title"
 msgstr "Antraštė"
 
-#: settings/ConfigurationDialog.cpp:45
+#: settings/ConfigurationDialog.cpp:31
 #, fuzzy, kde-format
 #| msgid "Confirm Close"
 msgctxt "@title:window"
 msgid "Configure"
 msgstr "Patvirtinti baigimą"
 
-#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchReverseSearch)
-#. i18n: ectx: tooltip, entry (SearchReverseSearch), group (SearchSettings)
-#: settings/GeneralSettings.ui:61 settings/konsole.kcfg:86
-#, kde-format
-msgid "Sets whether search should start from the bottom"
-msgstr "Nustato kad paieška turi startuoti nuo apačios"
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchReverseSearch)
-#. i18n: ectx: label, entry (SearchReverseSearch), group (SearchSettings)
-#: settings/GeneralSettings.ui:64 settings/konsole.kcfg:85
-#, kde-format
-msgid "Search backwards"
-msgstr "Ieškoti pradžios link"
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: settings/GeneralSettings.ui:55
+#, fuzzy, kde-format
+#| msgid "Web Search"
+msgctxt "@item:intext Search options"
+msgid "Search:"
+msgstr "Paieška žiniatinklyje "
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_AllowMenuAccelerators)
 #. i18n: ectx: label, entry (AllowMenuAccelerators), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:77 settings/konsole.kcfg:27
+#: settings/GeneralSettings.ui:68 settings/konsole.kcfg:22
 #, kde-format
 msgid "Enable menu accelerators"
 msgstr "Įjungti meniu sparčiuosius klavišus"
 
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_RememberWindowSize)
+#: settings/GeneralSettings.ui:81
+#, kde-format
+msgid "If enabled, profile settings will be ignored"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_RememberWindowSize)
+#: settings/GeneralSettings.ui:84
+#, kde-format
+msgid "Remember window size"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowWindowTitleOnTitleBar)
+#. i18n: ectx: label, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:97 settings/konsole.kcfg:17
+#, kde-format
+msgid "Show window title on the titlebar"
+msgstr "Rodyti lango pavadinimą pavadinimo juostoje"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_FocusFollowsMouse)
+#. i18n: ectx: label, entry (FocusFollowsMouse), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:104 settings/konsole.kcfg:13
+#, kde-format
+msgid "Focus terminals when the mouse pointer is moved over them"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchRegExpression)
+#. i18n: ectx: label, entry (SearchRegExpression), group (SearchSettings)
+#: settings/GeneralSettings.ui:117 settings/konsole.kcfg:69
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu"
+#| msgid "Match regular expression"
+msgid "Match using regular expressions"
+msgstr "Ieškoti kaip reguliaraus reiškinio"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: tooltip, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:130 settings/konsole.kcfg:33
+#, kde-format
+msgid "When launching Konsole re-use existing process if possible"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseSingleInstance)
+#. i18n: ectx: label, entry (UseSingleInstance), group (KonsoleWindow)
+#: settings/GeneralSettings.ui:133 settings/konsole.kcfg:32
+#, kde-format
+msgid "Run all Konsole windows in a single process"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchHighlightMatches)
+#: settings/GeneralSettings.ui:146
+#, fuzzy, kde-format
+#| msgctxt "@item:inmenu"
+#| msgid "Highlight all matches"
+msgid "Highlight all matches"
+msgstr "Paryškinti visus atitikmenis"
+
 #. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchCaseSensitive)
 #. i18n: ectx: tooltip, entry (SearchCaseSensitive), group (SearchSettings)
-#: settings/GeneralSettings.ui:90 settings/konsole.kcfg:72
+#: settings/GeneralSettings.ui:175 settings/konsole.kcfg:65
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Sets whether the search is case sensitive"
@@ -1720,208 +2125,118 @@ msgid "Sets whether the search is case sensitive"
 msgstr "Paieškos metu skirti raidžių dydį"
 
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchCaseSensitive)
-#: settings/GeneralSettings.ui:93
+#: settings/GeneralSettings.ui:178
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu"
 #| msgid "Case sensitive"
 msgid "Case sensitive"
 msgstr "Skirti raidžių dydį"
 
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowMenuBarByDefault)
-#: settings/GeneralSettings.ui:106
-#, fuzzy, kde-format
-#| msgid "Show menubar by default"
-msgid "Show menubar"
-msgstr "Rodyti meniu juostą pagal nutylėjimą"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SaveGeometryOnExit)
-#: settings/GeneralSettings.ui:119
-#, kde-format
-msgid "If enabled, profile settings will be ignored"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SaveGeometryOnExit)
-#: settings/GeneralSettings.ui:122
-#, kde-format
-msgid "Remember window size"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowWindowTitleOnTitleBar)
-#. i18n: ectx: label, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:135 settings/konsole.kcfg:22
-#, kde-format
-msgid "Show window title on the titlebar"
-msgstr "Rodyti lango pavadinimą pavadinimo juostoje"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_UseSingleInstance)
-#. i18n: ectx: tooltip, entry (UseSingleInstance), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:148 settings/konsole.kcfg:43
-#, kde-format
-msgid "When launching Konsole re-use existing process if possible"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_UseSingleInstance)
-#. i18n: ectx: label, entry (UseSingleInstance), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:151 settings/konsole.kcfg:42
-#, kde-format
-msgid "Run all Konsole windows in a single process"
-msgstr ""
-
 #. i18n: ectx: property (text), widget (QCheckBox, kcfg_RemoveWindowTitleBarAndFrame)
 #. i18n: ectx: label, entry (RemoveWindowTitleBarAndFrame), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:158 settings/konsole.kcfg:14
+#: settings/GeneralSettings.ui:185 settings/konsole.kcfg:9
 #, kde-format
 msgid "Remove window titlebar and frame"
 msgstr ""
 
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_FocusFollowsMouse)
-#. i18n: ectx: label, entry (FocusFollowsMouse), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:165 settings/konsole.kcfg:18
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: settings/GeneralSettings.ui:208
 #, kde-format
-msgid "Focus terminals when the mouse pointer is moved over them"
+msgid "Process and window:"
 msgstr ""
 
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchHighlightMatches)
-#: settings/GeneralSettings.ui:178
-#, fuzzy, kde-format
-#| msgctxt "@item:inmenu"
-#| msgid "Highlight all matches"
-msgid "Highlight all matches"
-msgstr "Paryškinti visus atitikmenis"
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ShowTerminalSizeHint)
-#. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
-#. i18n: ectx: label, entry (ShowTerminalSizeHint), group (KonsoleWindow)
-#: settings/GeneralSettings.ui:191 settings/konsole.kcfg:32
-#: widgets/EditProfileAppearancePage.ui:491
-#, kde-format
-msgid "Show hint for terminal size after resizing"
-msgstr "Rodyti terminalo dydį po lango dydžio keitimo"
-
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: settings/GeneralSettings.ui:198
+#: settings/GeneralSettings.ui:218
 #, fuzzy, kde-format
 #| msgid "Notifications"
 msgid "Notifications:"
 msgstr "Pranešimai"
 
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: settings/GeneralSettings.ui:205
-#, fuzzy, kde-format
-#| msgid "Web Search"
-msgctxt "@item:intext Search options"
-msgid "Search:"
-msgstr "Paieška žiniatinklyje "
-
 #. i18n: ectx: property (toolTip), widget (QPushButton, enableAllMessagesButton)
-#: settings/GeneralSettings.ui:239
+#: settings/GeneralSettings.ui:236
 #, kde-format
 msgid "All dialogs will be shown again"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QPushButton, enableAllMessagesButton)
-#: settings/GeneralSettings.ui:242
+#: settings/GeneralSettings.ui:239
 #, kde-format
 msgid "Enable all \"Don't Ask Again\" messages"
 msgstr ""
 
-#. i18n: ectx: property (text), widget (QLabel, label)
-#: settings/GeneralSettings.ui:264
+#. i18n: ectx: property (toolTip), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: tooltip, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:267 settings/konsole.kcfg:79
 #, kde-format
-msgid "Process and window:"
-msgstr ""
+msgid "Sets whether search should start from the bottom"
+msgstr "Nustato kad paieška turi startuoti nuo apačios"
 
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchRegExpression)
-#. i18n: ectx: label, entry (SearchRegExpression), group (SearchSettings)
-#: settings/GeneralSettings.ui:280 settings/konsole.kcfg:76
-#, fuzzy, kde-format
-#| msgctxt "@item:inmenu"
-#| msgid "Match regular expression"
-msgid "Match using regular expressions"
-msgstr "Ieškoti kaip reguliaraus reiškinio"
-
-#. i18n: ectx: label, entry (ShowMenuBarByDefault), group (KonsoleWindow)
-#: settings/konsole.kcfg:9
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_SearchReverseSearch)
+#. i18n: ectx: label, entry (SearchReverseSearch), group (SearchSettings)
+#: settings/GeneralSettings.ui:270 settings/konsole.kcfg:78
 #, kde-format
-msgid "Show menubar by default"
-msgstr "Rodyti meniu juostą pagal nutylėjimą"
-
-#. i18n: ectx: tooltip, entry (ShowMenuBarByDefault), group (KonsoleWindow)
-#: settings/konsole.kcfg:10
-#, kde-format
-msgid "Show menubar by default in each Konsole window"
-msgstr "Rodyti meniu juostą pagal nutylėjimą kiekvienoje Konsolės lange"
+msgid "Search backwards"
+msgstr "Ieškoti pradžios link"
 
 #. i18n: ectx: tooltip, entry (ShowWindowTitleOnTitleBar), group (KonsoleWindow)
-#: settings/konsole.kcfg:23
+#: settings/konsole.kcfg:18
 #, kde-format
 msgid "Show window title set by escape sequence on the titlebar"
 msgstr "Rodyti lango pavadinimą nustatytą išėjimo sekos pavadinimo juostoje"
 
 #. i18n: ectx: tooltip, entry (AllowMenuAccelerators), group (KonsoleWindow)
-#: settings/konsole.kcfg:28
+#: settings/konsole.kcfg:23
 #, kde-format
 msgid "Allow users to access top menu through Alt+Key combination"
 msgstr "Leisti naudotojams pasiekti meniu su Alt+Key kombinacija"
 
-#. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
-#. i18n: ectx: tooltip, entry (ShowTerminalSizeHint), group (KonsoleWindow)
-#: settings/konsole.kcfg:33 widgets/EditProfileAppearancePage.ui:488
-#, kde-format
-msgid ""
-"Show terminal size in columns and lines in the center of window after "
-"resizing"
-msgstr ""
-"Po lango dydžio pakeitimo rodyti per vidurį terminalo dydį stulpeliais ir "
-"linijomis"
-
-#. i18n: ectx: label, entry (SaveGeometryOnExit), group (KonsoleWindow)
-#: settings/konsole.kcfg:37
+#. i18n: ectx: label, entry (RememberWindowSize), group (KonsoleWindow)
+#: settings/konsole.kcfg:27
 #, kde-format
 msgid "Use current window size on next startup"
 msgstr "Išsaugoti lango dydį kito paleidimo metu"
 
-#. i18n: ectx: tooltip, entry (SaveGeometryOnExit), group (KonsoleWindow)
-#: settings/konsole.kcfg:38
+#. i18n: ectx: tooltip, entry (RememberWindowSize), group (KonsoleWindow)
+#: settings/konsole.kcfg:28
 #, kde-format
 msgid "The window size will be saved upon exiting Konsole"
 msgstr "Lango dydis bus išsaugotas uždarant Konsolę"
 
 #. i18n: ectx: label, entry (ThumbnailSize), group (ThumbnailsSettings)
-#: settings/konsole.kcfg:49
+#: settings/konsole.kcfg:42
 #, kde-format
 msgid "Thumbnail Width"
 msgstr ""
 
 #. i18n: ectx: tooltip, entry (ThumbnailSize), group (ThumbnailsSettings)
-#: settings/konsole.kcfg:50
+#: settings/konsole.kcfg:43
 #, kde-format
 msgid "Sets the width of the thumbnail"
 msgstr ""
 
 #. i18n: ectx: label, entry (ThumbnailShift), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailShift), group (ThumbnailsSettings)
-#: settings/konsole.kcfg:54 settings/konsole.kcfg:55
+#: settings/konsole.kcfg:47 settings/konsole.kcfg:48
 #, kde-format
 msgid "Use Shift to display a thumbnail"
 msgstr ""
 
 #. i18n: ectx: label, entry (ThumbnailAlt), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailAlt), group (ThumbnailsSettings)
-#: settings/konsole.kcfg:59 settings/konsole.kcfg:60
+#: settings/konsole.kcfg:52 settings/konsole.kcfg:53
 #, kde-format
 msgid "Use Alt to display a thumbnail"
 msgstr ""
 
 #. i18n: ectx: label, entry (ThumbnailCtrl), group (ThumbnailsSettings)
 #. i18n: ectx: tooltip, entry (ThumbnailCtrl), group (ThumbnailsSettings)
-#: settings/konsole.kcfg:64 settings/konsole.kcfg:65
+#: settings/konsole.kcfg:57 settings/konsole.kcfg:58
 #, kde-format
 msgid "Use Ctrl to display a thumbnail"
 msgstr ""
 
 #. i18n: ectx: label, entry (SearchCaseSensitive), group (SearchSettings)
-#: settings/konsole.kcfg:71
+#: settings/konsole.kcfg:64
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Sets whether the search is case sensitive"
@@ -1929,7 +2244,7 @@ msgid "Search is case sensitive"
 msgstr "Paieškos metu skirti raidžių dydį"
 
 #. i18n: ectx: label, entry (SearchHighlightMatches), group (SearchSettings)
-#: settings/konsole.kcfg:80
+#: settings/konsole.kcfg:73
 #, fuzzy, kde-format
 #| msgctxt "@item:inmenu"
 #| msgid "Highlight all matches"
@@ -1937,7 +2252,7 @@ msgid "Highlight all search matches"
 msgstr "Paryškinti visus atitikmenis"
 
 #. i18n: ectx: tooltip, entry (SearchHighlightMatches), group (SearchSettings)
-#: settings/konsole.kcfg:81
+#: settings/konsole.kcfg:74
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Sets whether matching text should be highlighted"
@@ -1946,93 +2261,93 @@ msgstr "Paryškinti paieškos užklausą atitikusį tekstą"
 
 #. i18n: ectx: label, entry (SplitViewVisibility), group (SplitView)
 #. i18n: ectx: label, entry (TabBarVisibility), group (TabBar)
-#: settings/konsole.kcfg:92 settings/konsole.kcfg:112
+#: settings/konsole.kcfg:85 settings/konsole.kcfg:105
 #, kde-format
 msgid "Control the visibility of the whole tab bar"
 msgstr "Kontroliuoti matomumą visos kortelės juostos"
 
 #. i18n: ectx: label, entry (SplitDragHandleSize), group (SplitView)
-#: settings/konsole.kcfg:101
+#: settings/konsole.kcfg:94
 #, fuzzy, kde-format
 #| msgid "Control the visibility of the whole tab bar"
 msgid "Control the size of the handle between panels"
 msgstr "Kontroliuoti matomumą visos kortelės juostos"
 
 #. i18n: ectx: label, entry (TabBarPosition), group (TabBar)
-#: settings/konsole.kcfg:121
+#: settings/konsole.kcfg:114
 #, kde-format
 msgid "Control the position of the tab bar"
 msgstr "Kontroliuoti kortelių juostos poziciją"
 
 #. i18n: ectx: label, entry (TabBarStyleSheet), group (TabBar)
-#: settings/konsole.kcfg:129
+#: settings/konsole.kcfg:122
 #, kde-format
 msgid "Control the visual style of the tab bar"
 msgstr "Kontroliuoti kortelių juostos išvaizdos stilių"
 
 #. i18n: ectx: label, entry (TabBarUseUserStyleSheet), group (TabBar)
-#: settings/konsole.kcfg:133
+#: settings/konsole.kcfg:126
 #, kde-format
 msgid "Use a user-defined .css file for the tab bar"
 msgstr "Naudoti naudotojo nurodytą .css failą kortelių juostai"
 
 #. i18n: ectx: label, entry (TabBarUserStyleSheetFile), group (TabBar)
-#: settings/konsole.kcfg:137
+#: settings/konsole.kcfg:130
 #, kde-format
 msgid "The .css file to use for the tab bar style"
 msgstr ""
 
 #. i18n: ectx: label, entry (CloseTabOnMiddleMouseButton), group (TabBar)
-#: settings/konsole.kcfg:141
+#: settings/konsole.kcfg:134
 #, kde-format
 msgid "Allow middle-clicking on open tabs to close them"
 msgstr ""
 
 #. i18n: ectx: label, entry (NewTabButton), group (TabBar)
-#: settings/konsole.kcfg:145
+#: settings/konsole.kcfg:138
 #, fuzzy, kde-format
 #| msgid "Control the visibility of quick buttons on the tab bar"
 msgid "Control the visibility of 'New Tab' button on the tab bar"
 msgstr "Kontroliuoti greitųjų mygtukų matomumą kortelių juostoje"
 
 #. i18n: ectx: label, entry (CloseTabButton), group (TabBar)
-#: settings/konsole.kcfg:149
+#: settings/konsole.kcfg:142
 #, kde-format
 msgid "Control where the \"Close tab\" button will be displayed"
 msgstr ""
 
 #. i18n: ectx: label, entry (NewTabBehavior), group (TabBar)
-#: settings/konsole.kcfg:158
+#: settings/konsole.kcfg:151
 #, kde-format
 msgid "Control where to put the new tab"
 msgstr "Kontroliuoti kur padėti naują kortelę"
 
 #. i18n: ectx: label, entry (ExpandTabWidth), group (TabBar)
-#: settings/konsole.kcfg:166
+#: settings/konsole.kcfg:159
 #, kde-format
 msgid "Expand the tab widths"
 msgstr ""
 
 #. i18n: ectx: label, entry (scrollbackUseSystemLocation), group (FileLocation)
-#: settings/konsole.kcfg:182
+#: settings/konsole.kcfg:175
 #, kde-format
 msgid "For scrollback files, use system-wide folder location"
 msgstr ""
 
 #. i18n: ectx: label, entry (scrollbackUseCacheLocation), group (FileLocation)
-#: settings/konsole.kcfg:186
+#: settings/konsole.kcfg:179
 #, kde-format
 msgid "For scrollback files, use user's specific folder location"
 msgstr ""
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocation), group (FileLocation)
-#: settings/konsole.kcfg:190
+#: settings/konsole.kcfg:183
 #, kde-format
 msgid "For scrollback files, use specified folder location"
 msgstr ""
 
 #. i18n: ectx: label, entry (scrollbackUseSpecifiedLocationDirectory), group (FileLocation)
-#: settings/konsole.kcfg:194
+#: settings/konsole.kcfg:187
 #, kde-format
 msgid "For scrollback files, use this folder"
 msgstr ""
@@ -2049,16 +2364,11 @@ msgid ""
 "a change to how these are handled.</body></html>"
 msgstr ""
 
-#: settings/ProfileSettings.cpp:150
-#, kde-format
-msgctxt "@item This will be used as part of the file name"
-msgid "New Profile"
-msgstr "Naujas profilis"
-
 #. i18n: ectx: property (toolTip), widget (QPushButton, newProfileButton)
 #: settings/ProfileSettings.ui:39
-#, kde-format
-msgid "Create a new profile based upon the selected profile"
+#, fuzzy, kde-format
+#| msgid "Create a new profile based upon the selected profile"
+msgid "Create a new profile based on the selected profile"
 msgstr "Sukurti naują profilį pagal pažymėtą profilį"
 
 #. i18n: ectx: property (text), widget (QPushButton, newProfileButton)
@@ -2071,9 +2381,11 @@ msgstr "Nauja..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, editProfileButton)
 #: settings/ProfileSettings.ui:52
-#, kde-format
-msgid "Edit the selected profile(s)"
-msgstr "Keisti pažymėtą profilį(ius)"
+#, fuzzy, kde-format
+#| msgid "Set the selected profile as the default for new terminal sessions"
+msgid ""
+"Edit the selected profile (this button is disabled for read-only profiles)"
+msgstr "Nurodyti pažymėtą profilį kaip numatytą profilį naujiems terminalams"
 
 #. i18n: ectx: property (text), widget (QPushButton, editProfileButton)
 #: settings/ProfileSettings.ui:55
@@ -2084,8 +2396,9 @@ msgstr "Keisti..."
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, deleteProfileButton)
 #: settings/ProfileSettings.ui:65
-#, kde-format
-msgid "Delete the selected profile(s)"
+#, fuzzy, kde-format
+#| msgid "Delete the selected profile(s)"
+msgid "Delete the selected profile"
 msgstr "Pašalinti pažymėtą profilį(ius)"
 
 #. i18n: ectx: property (text), widget (QPushButton, deleteProfileButton)
@@ -2223,8 +2536,8 @@ msgstr ""
 msgid "Use user-defined stylesheet:"
 msgstr "Naudoti naudotojo apibrėžtą stilių lentelę"
 
-#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
 #. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_scrollbackUseSpecifiedLocationDirectory)
+#. i18n: ectx: property (filter), widget (KUrlRequester, kcfg_TabBarUserStyleSheetFile)
 #: settings/TabBarSettings.ui:258 settings/TemporaryFilesSettings.ui:53
 #, kde-format
 msgid "text/css"
@@ -2334,7 +2647,7 @@ msgctxt "@option:radio Always show the split header"
 msgid "Always"
 msgstr ""
 
-#: settings/TemporaryFilesSettings.cpp:49
+#: settings/TemporaryFilesSettings.cpp:33
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2342,7 +2655,7 @@ msgctxt ""
 msgid "System temporary directory (%1)"
 msgstr ""
 
-#: settings/TemporaryFilesSettings.cpp:52
+#: settings/TemporaryFilesSettings.cpp:35
 #, kde-format
 msgctxt ""
 "@option:radio File location; <filename>%1</filename>: path to directory "
@@ -2376,34 +2689,8 @@ msgstr ""
 msgid "px"
 msgstr ""
 
-#. i18n: ectx: property (text), widget (QLabel, label_5)
-#: settings/ThumbnailsSettings.ui:37
-#, kde-format
-msgid "Mouse hover plus"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailShift)
-#: settings/ThumbnailsSettings.ui:44
-#, fuzzy, kde-format
-#| msgid "Shift"
-msgid "Shift"
-msgstr "Lyg2"
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailAlt)
-#: settings/ThumbnailsSettings.ui:51
-#, fuzzy, kde-format
-#| msgid "Alt"
-msgid "Alt"
-msgstr "Alt"
-
-#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailCtrl)
-#: settings/ThumbnailsSettings.ui:58
-#, kde-format
-msgid "Ctrl"
-msgstr ""
-
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: settings/ThumbnailsSettings.ui:65
+#: settings/ThumbnailsSettings.ui:37
 #, kde-format
 msgid ""
 "<html><head/><body><p>To use this feature, enable <span style=\" font-"
@@ -2412,25 +2699,58 @@ msgid ""
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: settings/ThumbnailsSettings.ui:81
+#: settings/ThumbnailsSettings.ui:53
 #, fuzzy, kde-format
 #| msgctxt "@item"
 #| msgid "Activate Menu"
 msgid "Activation:"
 msgstr "Aktyvuoti meniu"
 
-#: terminalDisplay/TerminalDisplay.cpp:969
-#: terminalDisplay/TerminalDisplay.cpp:970
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: settings/ThumbnailsSettings.ui:63
+#, kde-format
+msgid "Mouse hover plus"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailShift)
+#: settings/ThumbnailsSettings.ui:70
+#, fuzzy, kde-format
+#| msgid "Shift"
+msgid "Shift"
+msgstr "Lyg2"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailAlt)
+#: settings/ThumbnailsSettings.ui:77
+#, fuzzy, kde-format
+#| msgid "Alt"
+msgid "Alt"
+msgstr "Alt"
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_ThumbnailCtrl)
+#: settings/ThumbnailsSettings.ui:84
+#, kde-format
+msgid "Ctrl"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_EnableThumbnails)
+#: settings/ThumbnailsSettings.ui:93
+#, fuzzy, kde-format
+#| msgid "Enable menu accelerators"
+msgid "Enable thumbnails generation"
+msgstr "Įjungti meniu sparčiuosius klavišus"
+
+#: terminalDisplay/TerminalDisplay.cpp:682
+#: terminalDisplay/TerminalDisplay.cpp:683
 #, kde-format
 msgid "Size: XXX x XXX"
 msgstr "Matmenys: XXX x XXX"
 
-#: terminalDisplay/TerminalDisplay.cpp:981
+#: terminalDisplay/TerminalDisplay.cpp:694
 #, kde-format
 msgid "Size: %1 x %2"
 msgstr "Matmenys: %1 x %2"
 
-#: terminalDisplay/TerminalDisplay.cpp:2388
+#: terminalDisplay/TerminalDisplay.cpp:2074
 #, kde-format
 msgid "Are you sure you want to paste %1 character?"
 msgid_plural "Are you sure you want to paste %1 characters?"
@@ -2439,86 +2759,86 @@ msgstr[1] "Ar tikrai norite įklijuoti  %1 rašmenis?"
 msgstr[2] "Ar tikrai norite įklijuoti  %1 rašmenų?"
 msgstr[3] "Ar tikrai norite įklijuoti  %1 rašmenį?"
 
-#: terminalDisplay/TerminalDisplay.cpp:2391
+#: terminalDisplay/TerminalDisplay.cpp:2075
 #, kde-format
 msgid "Confirm Paste"
 msgstr "Patvirtinti įklijavimą"
 
-#: terminalDisplay/TerminalDisplay.cpp:2423
+#: terminalDisplay/TerminalDisplay.cpp:2108
 #, kde-format
 msgid "End Of Text/Interrupt: may exit the current process"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2424
+#: terminalDisplay/TerminalDisplay.cpp:2109
 #, kde-format
 msgid "End Of Transmission: may exit the current process"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2425
+#: terminalDisplay/TerminalDisplay.cpp:2110
 #, kde-format
 msgid "Bell: will try to emit an audible warning"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2426
+#: terminalDisplay/TerminalDisplay.cpp:2111
 #, kde-format
 msgid "Backspace"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2427
+#: terminalDisplay/TerminalDisplay.cpp:2112
 #, kde-format
 msgid "Device Control Three/XOFF: suspends output"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2428
+#: terminalDisplay/TerminalDisplay.cpp:2113
 #, kde-format
 msgid "Substitute/Suspend: may suspend current process"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2429
+#: terminalDisplay/TerminalDisplay.cpp:2114
 #, kde-format
 msgid "Escape: used for manipulating terminal state"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2430
+#: terminalDisplay/TerminalDisplay.cpp:2115
 #, kde-format
 msgid "File Separator/Quit: may abort the current process"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2452
+#: terminalDisplay/TerminalDisplay.cpp:2138
 #, kde-format
 msgid ""
 "The text you're trying to paste contains hidden control characters, do you "
 "want to filter them out?"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2455
+#: terminalDisplay/TerminalDisplay.cpp:2141
 #, fuzzy, kde-format
 #| msgid "Confirm Paste"
 msgctxt "@title"
 msgid "Confirm Paste"
 msgstr "Patvirtinti įklijavimą"
 
-#: terminalDisplay/TerminalDisplay.cpp:2457
+#: terminalDisplay/TerminalDisplay.cpp:2142
 #, fuzzy, kde-format
 #| msgid "Set cursor color to match current character"
 msgctxt "@action:button"
 msgid "Paste &without control characters"
 msgstr "Žymeklio palva atitinka simbolio spalvą"
 
-#: terminalDisplay/TerminalDisplay.cpp:2460
+#: terminalDisplay/TerminalDisplay.cpp:2143
 #, fuzzy, kde-format
 #| msgid "Paste Selection"
 msgctxt "@action:button"
 msgid "&Paste everything"
 msgstr "Padėti pažymėtą sritį"
 
-#: terminalDisplay/TerminalDisplay.cpp:2463
+#: terminalDisplay/TerminalDisplay.cpp:2144
 #, kde-format
 msgctxt "@action:button"
 msgid "&Cancel"
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:2694
+#: terminalDisplay/TerminalDisplay.cpp:2373
 #, fuzzy, kde-format
 #| msgid ""
 #| "<qt>Output has been <a href=\"http://en.wikipedia.org/wiki/"
@@ -2533,46 +2853,71 @@ msgstr ""
 "Software_flow_control\">sulaikyta</a> paspaudus klavišą Vald+S. Norėdami "
 "tęsti paspauskite <b>Vald+Q</b>. Šis pranešimas dings po 10 sekundžių.</qt>"
 
-#: terminalDisplay/TerminalDisplay.cpp:2735
+#: terminalDisplay/TerminalDisplay.cpp:2416
 #, kde-format
 msgid "This terminal is read-only."
 msgstr ""
 
-#: terminalDisplay/TerminalDisplay.cpp:3020
+#: terminalDisplay/TerminalDisplay.cpp:2639
 #, kde-format
 msgid "Change &Directory To"
 msgstr "Keisti &direktoriją į"
 
-#: terminalDisplay/TerminalDisplay.cpp:3052
+#: terminalDisplay/TerminalDisplay.cpp:2672
 #, kde-format
 msgid "&Paste Location"
 msgstr "&Padėti vieta"
 
-#: ViewManager.cpp:117
+#: ViewManager.cpp:106
+#, fuzzy, kde-format
+#| msgid "Split View"
+msgctxt "@action:inmenu"
+msgid "Split View"
+msgstr "Padalinti vaizdą"
+
+#: ViewManager.cpp:113
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Split View Left/Right"
 msgstr "Padalinti polangį į kairę ir į dešinę"
 
-#: ViewManager.cpp:124
+#: ViewManager.cpp:121
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Split View Top/Bottom"
 msgstr "Padalinti polangį į viršų ir į apačią"
 
-#: ViewManager.cpp:130
+#: ViewManager.cpp:131
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Load a new tab with layout 2x2 terminals"
+msgstr ""
+
+#: ViewManager.cpp:140
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Load a new tab with layout 2x1 terminals"
+msgstr ""
+
+#: ViewManager.cpp:149
+#, kde-format
+msgctxt "@action:inmenu"
+msgid "Load a new tab with layout 1x2 terminals"
+msgstr ""
+
+#: ViewManager.cpp:157
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Expand View"
 msgstr "Išplėsti polangį"
 
-#: ViewManager.cpp:138
+#: ViewManager.cpp:165
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Shrink View"
 msgstr "Sumažinti polangį"
 
-#: ViewManager.cpp:148
+#: ViewManager.cpp:175
 #, fuzzy, kde-format
 #| msgctxt "@action:inmenu"
 #| msgid "D&etach Current Tab"
@@ -2580,7 +2925,7 @@ msgctxt "@action:inmenu"
 msgid "Detach Current &View"
 msgstr "&Atkabinti dabartinę kortelę"
 
-#: ViewManager.cpp:160
+#: ViewManager.cpp:187
 #, fuzzy, kde-format
 #| msgctxt "@action:inmenu"
 #| msgid "D&etach Current Tab"
@@ -2588,81 +2933,81 @@ msgctxt "@action:inmenu"
 msgid "Detach Current &Tab"
 msgstr "&Atkabinti dabartinę kortelę"
 
-#: ViewManager.cpp:165
+#: ViewManager.cpp:192
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Next Tab"
 msgstr "Kita kortelė"
 
-#: ViewManager.cpp:173
+#: ViewManager.cpp:200
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Previous Tab"
 msgstr "Ankstesnė kortelė"
 
-#: ViewManager.cpp:181
+#: ViewManager.cpp:208
 #, fuzzy, kde-format
 #| msgid "Above Terminal Area"
 msgctxt "@action Shortcut entry"
 msgid "Focus Above Terminal"
 msgstr "Virš terminalo ploto"
 
-#: ViewManager.cpp:188
+#: ViewManager.cpp:215
 #, fuzzy, kde-format
 #| msgid "Below Terminal Area"
 msgctxt "@action Shortcut entry"
 msgid "Focus Below Terminal"
 msgstr "Žemiau terminalo ploto"
 
-#: ViewManager.cpp:195
+#: ViewManager.cpp:222
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Left Terminal"
 msgstr ""
 
-#: ViewManager.cpp:201
+#: ViewManager.cpp:228
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Focus Right Terminal"
 msgstr ""
 
-#: ViewManager.cpp:207
+#: ViewManager.cpp:234
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Switch to Last Tab"
 msgstr "Persijungti į paskutinę kortelę"
 
-#: ViewManager.cpp:212
+#: ViewManager.cpp:239
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Last Used Tabs"
 msgstr ""
 
-#: ViewManager.cpp:217
+#: ViewManager.cpp:244
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Toggle Between Two Tabs"
 msgstr ""
 
-#: ViewManager.cpp:222
+#: ViewManager.cpp:249
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Last Used Tabs (Reverse)"
 msgstr ""
 
-#: ViewManager.cpp:227
+#: ViewManager.cpp:254
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Toggle maximize current view"
 msgstr ""
 
-#: ViewManager.cpp:228
+#: ViewManager.cpp:255
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "Toggle maximize current view"
 msgstr ""
 
-#: ViewManager.cpp:236
+#: ViewManager.cpp:263
 #, fuzzy, kde-format
 #| msgctxt "@action Shortcut entry"
 #| msgid "Move Tab Right"
@@ -2670,7 +3015,7 @@ msgctxt "@action Shortcut entry"
 msgid "Move tab to the right"
 msgstr "Pastumti kortelę dešinėn"
 
-#: ViewManager.cpp:243
+#: ViewManager.cpp:270
 #, fuzzy, kde-format
 #| msgctxt "@action Shortcut entry"
 #| msgid "Move Tab Left"
@@ -2678,13 +3023,53 @@ msgctxt "@action Shortcut entry"
 msgid "Move tab to the left"
 msgstr "Pastumti kortelę kairėn"
 
-#: ViewManager.cpp:253
+#: ViewManager.cpp:280
 #, kde-format
 msgctxt "@action Shortcut entry"
 msgid "Switch to Tab %1"
 msgstr "Persijungti į kortelę %1"
 
-#: Vt102Emulation.cpp:1254
+#: ViewManager.cpp:932
+#, fuzzy, kde-format
+#| msgid "Open File"
+msgid "Save File"
+msgstr "Atverti failą"
+
+#: ViewManager.cpp:932 ViewManager.cpp:1001
+#, kde-format
+msgid "Konsole View Layout (*.json)"
+msgstr ""
+
+#: ViewManager.cpp:935
+#, fuzzy, kde-format
+#| msgid ""
+#| "A problem occurred when saving the output.\n"
+#| "%1"
+msgid ""
+"A problem occurred when saving the Layout.\n"
+"%1"
+msgstr ""
+"Įrašant išvestį įvyko klaida.\n"
+"%1"
+
+#: ViewManager.cpp:991
+#, fuzzy, kde-format
+#| msgid ""
+#| "A problem occurred when saving the output.\n"
+#| "%1"
+msgid ""
+"A problem occurred when loading the Layout.\n"
+"%1"
+msgstr ""
+"Įrašant išvestį įvyko klaida.\n"
+"%1"
+
+#: ViewManager.cpp:1001
+#, kde-format
+msgid "Open File"
+msgstr "Atverti failą"
+
+#: Vt102Emulation.cpp:1255
 #, kde-format
 msgid ""
 "No keyboard translator available.  The information needed to convert key "
@@ -2833,9 +3218,11 @@ msgstr "Keisti pažymėtą spalvų schemą"
 
 #. i18n: ectx: property (text), widget (QPushButton, editKeyBindingsButton)
 #. i18n: ectx: property (text), widget (QPushButton, environmentEditButton)
+#. i18n: ectx: property (text), widget (QPushButton, textEditorCustomBtn)
 #. i18n: ectx: property (text), widget (QPushButton, editColorSchemeButton)
 #: widgets/EditProfileAppearancePage.ui:79
-#: widgets/EditProfileGeneralPage.ui:189 widgets/EditProfileKeyboardPage.ui:85
+#: widgets/EditProfileGeneralPage.ui:220 widgets/EditProfileKeyboardPage.ui:85
+#: widgets/EditProfileMousePage.ui:310
 #, kde-format
 msgid "Edit..."
 msgstr "Keisti..."
@@ -2878,50 +3265,50 @@ msgid "Font:"
 msgstr "Šriftas"
 
 #. i18n: ectx: property (text), widget (QPushButton, chooseFontButton)
-#: widgets/EditProfileAppearancePage.ui:174
+#: widgets/EditProfileAppearancePage.ui:171
 #, kde-format
 msgctxt "@action:button open a dialog with list of fonts"
 msgid "Choose..."
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, antialiasTextButton)
-#: widgets/EditProfileAppearancePage.ui:181
+#: widgets/EditProfileAppearancePage.ui:178
 #, kde-format
 msgid "Smooth fonts"
 msgstr "Glotnūs šriftai"
 
 #. i18n: ectx: property (text), widget (QCheckBox, boldIntenseButton)
-#: widgets/EditProfileAppearancePage.ui:188
+#: widgets/EditProfileAppearancePage.ui:185
 #, kde-format
 msgid "Draw intense colors in bold font"
 msgstr "Vaizduoti intensyvias spalvas riebiu šriftu"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:195
+#: widgets/EditProfileAppearancePage.ui:192
 #, kde-format
 msgid "Use the selected font for line characters instead of the builtin code"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, useFontLineCharactersButton)
-#: widgets/EditProfileAppearancePage.ui:198
+#: widgets/EditProfileAppearancePage.ui:195
 #, kde-format
 msgid "Use line characters contained in font"
 msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, cursorTab)
-#: widgets/EditProfileAppearancePage.ui:206
+#: widgets/EditProfileAppearancePage.ui:203
 #, kde-format
 msgid "Cursor"
 msgstr "Žymeklis"
 
 #. i18n: ectx: property (text), widget (QLabel, label_8)
-#: widgets/EditProfileAppearancePage.ui:226
+#: widgets/EditProfileAppearancePage.ui:223
 #, kde-format
 msgid "Shape:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeBlock)
-#: widgets/EditProfileAppearancePage.ui:236
+#: widgets/EditProfileAppearancePage.ui:233
 #, fuzzy, kde-format
 #| msgctxt "The shape of the cursor"
 #| msgid "Block"
@@ -2930,7 +3317,7 @@ msgid "Block"
 msgstr "Blokas"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeIBeam)
-#: widgets/EditProfileAppearancePage.ui:246
+#: widgets/EditProfileAppearancePage.ui:243
 #, fuzzy, kde-format
 #| msgctxt "The shape of the cursor, similar to a capital I"
 #| msgid "I-Beam"
@@ -2939,7 +3326,7 @@ msgid "I-Beam"
 msgstr "I-Beam"
 
 #. i18n: ectx: property (text), widget (QRadioButton, cursorShapeUnderline)
-#: widgets/EditProfileAppearancePage.ui:256
+#: widgets/EditProfileAppearancePage.ui:253
 #, fuzzy, kde-format
 #| msgctxt "The shape of the cursor"
 #| msgid "Underline"
@@ -2948,7 +3335,7 @@ msgid "Underline"
 msgstr "Pabraukti"
 
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: widgets/EditProfileAppearancePage.ui:288
+#: widgets/EditProfileAppearancePage.ui:285
 #, fuzzy, kde-format
 #| msgctxt "@label:listbox Column header text for the actual colors"
 #| msgid "Color"
@@ -2957,81 +3344,81 @@ msgid "Color:"
 msgstr "Spalva"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:304
+#: widgets/EditProfileAppearancePage.ui:301
 #, kde-format
 msgid "Set the cursor to match the color of the character underneath it."
 msgstr "Žymeklio spalva atitinka simbolio, esančio virš jo, spalvą."
 
 #. i18n: ectx: property (text), widget (QRadioButton, autoCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:307
+#: widgets/EditProfileAppearancePage.ui:304
 #, fuzzy, kde-format
 #| msgid "Set cursor color to match current character"
 msgid "Match current character"
 msgstr "Žymeklio palva atitinka simbolio spalvą"
 
 #. i18n: ectx: property (toolTip), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:323
+#: widgets/EditProfileAppearancePage.ui:320
 #, kde-format
 msgid "Use a custom, fixed color for the cursor"
 msgstr "Naudoti nurodytą pastovią žymeklio spalvą"
 
 #. i18n: ectx: property (text), widget (QRadioButton, customCursorColorButton)
-#: widgets/EditProfileAppearancePage.ui:326
+#: widgets/EditProfileAppearancePage.ui:323
 #, fuzzy, kde-format
 #| msgid "Custom cursor color:"
 msgid "Custom cursor color"
 msgstr "Nurodyti žymeklio spalvą:"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorColorLabel)
-#: widgets/EditProfileAppearancePage.ui:357
+#: widgets/EditProfileAppearancePage.ui:354
 #, fuzzy, kde-format
 #| msgid "Cursor"
 msgid "Cursor:"
 msgstr "Žymeklis"
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:370
+#: widgets/EditProfileAppearancePage.ui:367
 #, kde-format
 msgid "Select the color used to draw the cursor"
 msgstr "Nurodykite žymeklio spalvą"
 
 #. i18n: ectx: property (text), widget (QLabel, customCursorTextColorLabel)
-#: widgets/EditProfileAppearancePage.ui:390
+#: widgets/EditProfileAppearancePage.ui:387
 #, kde-format
 msgid "Text:"
 msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (KColorButton, customTextColorSelectButton)
-#: widgets/EditProfileAppearancePage.ui:403
+#: widgets/EditProfileAppearancePage.ui:400
 #, fuzzy, kde-format
 #| msgid "Select the color used to draw the cursor"
 msgid "Select the color used to draw the character underneath the cursor"
 msgstr "Nurodykite žymeklio spalvą"
 
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: widgets/EditProfileAppearancePage.ui:428
+#: widgets/EditProfileAppearancePage.ui:425
 #, fuzzy, kde-format
 #| msgid "Blinking cursor"
 msgid "Blinking:"
 msgstr "Mirksintis žymeklis"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, enableBlinkingCursorButton)
-#: widgets/EditProfileAppearancePage.ui:444
+#: widgets/EditProfileAppearancePage.ui:441
 #, kde-format
 msgid "Make the cursor blink regularly"
 msgstr "Žymeklis mirksi nuolatos"
 
 #. i18n: ectx: property (text), widget (QCheckBox, enableBlinkingCursorButton)
 #. i18n: ectx: property (text), widget (QCheckBox, alignToCenterButton)
-#: widgets/EditProfileAppearancePage.ui:447
-#: widgets/EditProfileAppearancePage.ui:667
+#: widgets/EditProfileAppearancePage.ui:444
+#: widgets/EditProfileAppearancePage.ui:671
 #, kde-format
 msgid "Enabled"
 msgstr ""
 
 #. i18n: ectx: attribute (title), widget (QWidget, tab_2)
 #. i18n: ectx: attribute (title), widget (QWidget, miscTab)
-#: widgets/EditProfileAppearancePage.ui:470 widgets/EditProfileMousePage.ui:249
+#: widgets/EditProfileAppearancePage.ui:467 widgets/EditProfileMousePage.ui:249
 #, fuzzy, kde-format
 #| msgid "Miscellaneous"
 msgctxt "Items that do not fit in other categories"
@@ -3039,27 +3426,49 @@ msgid "Miscellaneous"
 msgstr "Įvairūs"
 
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: widgets/EditProfileAppearancePage.ui:481
+#: widgets/EditProfileAppearancePage.ui:478
 #, fuzzy, kde-format
 #| msgid "Window"
 msgid "Window:"
 msgstr "Langas"
 
+#. i18n: ectx: property (toolTip), widget (QCheckBox, showTerminalSizeHintButton)
+#: widgets/EditProfileAppearancePage.ui:485
+#, kde-format
+msgid ""
+"Show terminal size in columns and lines in the center of window after "
+"resizing"
+msgstr ""
+"Po lango dydžio pakeitimo rodyti per vidurį terminalo dydį stulpeliais ir "
+"linijomis"
+
+#. i18n: ectx: property (text), widget (QCheckBox, showTerminalSizeHintButton)
+#: widgets/EditProfileAppearancePage.ui:488
+#, kde-format
+msgid "Show hint for terminal size after resizing"
+msgstr "Rodyti terminalo dydį po lango dydžio keitimo"
+
+#. i18n: ectx: property (text), widget (QCheckBox, invertSelectionColorsCheckbox)
+#: widgets/EditProfileAppearancePage.ui:495
+#, kde-format
+msgid "Always invert the colors of selected text"
+msgstr ""
+
 #. i18n: ectx: property (text), widget (QLabel, dimLabel)
-#: widgets/EditProfileAppearancePage.ui:500
+#: widgets/EditProfileAppearancePage.ui:504
 #, kde-format
 msgid "Darkening strength:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_10)
-#: widgets/EditProfileAppearancePage.ui:525
+#: widgets/EditProfileAppearancePage.ui:529
 #, fuzzy, kde-format
 #| msgid "Terminal Size"
 msgid "Inactive Terminals:"
 msgstr "Terminalo dydis"
 
 #. i18n: ectx: property (title), widget (QGroupBox, contentsGroup)
-#: widgets/EditProfileAppearancePage.ui:535
+#: widgets/EditProfileAppearancePage.ui:539
 #, fuzzy, kde-format
 #| msgid "Terminal Features"
 msgctxt "@title:group"
@@ -3067,127 +3476,128 @@ msgid "Terminal contents"
 msgstr "Terminalo parinktys"
 
 #. i18n: ectx: property (text), widget (QLabel, lineSpacingLabel)
-#: widgets/EditProfileAppearancePage.ui:547
+#: widgets/EditProfileAppearancePage.ui:551
 #, fuzzy, kde-format
 #| msgid "Line Spacing:"
 msgid "Line spacing:"
 msgstr "Eilučių išretinimas:"
 
 #. i18n: ectx: property (toolTip), widget (QSpinBox, lineSpacingSpinner)
-#: widgets/EditProfileAppearancePage.ui:565
+#: widgets/EditProfileAppearancePage.ui:569
 #, kde-format
 msgid "The number of pixels between two lines"
 msgstr "Pikselių skaičius tarp dviejų eilučių"
 
 #. i18n: ectx: property (suffix), widget (QSpinBox, lineSpacingSpinner)
 #. i18n: ectx: property (suffix), widget (QSpinBox, marginsSpinner)
-#: widgets/EditProfileAppearancePage.ui:568
-#: widgets/EditProfileAppearancePage.ui:620
+#: widgets/EditProfileAppearancePage.ui:572
+#: widgets/EditProfileAppearancePage.ui:624
 #, kde-format
 msgctxt "(pixels) visual size unit"
 msgid " px"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileAppearancePage.ui:602
+#: widgets/EditProfileAppearancePage.ui:606
 #, kde-format
 msgid "Margins:"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileAppearancePage.ui:654
+#: widgets/EditProfileAppearancePage.ui:658
 #, kde-format
 msgid "Align to center:"
 msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:677
+#: widgets/EditProfileAppearancePage.ui:681
 #, kde-format
 msgid "Indicate whether the window is active by dimming the colors"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, dimWhenInactiveCheckbox)
-#: widgets/EditProfileAppearancePage.ui:680
+#: widgets/EditProfileAppearancePage.ui:684
 #, kde-format
 msgid "Darken"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QCheckBox, displayVerticalLine)
-#: widgets/EditProfileAppearancePage.ui:722
+#: widgets/EditProfileAppearancePage.ui:726
 #, kde-format
 msgid "Display Vertical line at column:"
 msgstr ""
 
-#: widgets/EditProfileDialog.cpp:85
+#: widgets/EditProfileDialog.cpp:75
 #, kde-format
 msgid "Edit Profile"
 msgstr "Keisti profilį"
 
-#: widgets/EditProfileDialog.cpp:116
+#: widgets/EditProfileDialog.cpp:104
 #, kde-format
 msgctxt "@title:tab Generic, common options"
 msgid "General"
 msgstr "Bendra"
 
-#: widgets/EditProfileDialog.cpp:127
+#: widgets/EditProfileDialog.cpp:115
 #, kde-format
 msgid "Tabs"
 msgstr "Kortelės"
 
-#: widgets/EditProfileDialog.cpp:145
+#: widgets/EditProfileDialog.cpp:132
 #, kde-format
 msgid "Appearance"
 msgstr "Išvaizda"
 
-#: widgets/EditProfileDialog.cpp:162
+#: widgets/EditProfileDialog.cpp:148
 #, kde-format
 msgid "Scrolling"
 msgstr "Slinkties juosta"
 
-#: widgets/EditProfileDialog.cpp:177
+#: widgets/EditProfileDialog.cpp:162
 #, kde-format
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
-#: widgets/EditProfileDialog.cpp:178
+#: widgets/EditProfileDialog.cpp:163
 #, fuzzy, kde-format
 #| msgid "Key Bindings"
 msgid "Key bindings"
 msgstr "Spartieji klavišai"
 
-#: widgets/EditProfileDialog.cpp:190
+#: widgets/EditProfileDialog.cpp:174
 #, kde-format
 msgid "Mouse"
 msgstr "Pelė"
 
 # (pofilter) compendiumconflicts: checks for Gettext compendium conflicts (#-#-#-#-#)
-#: widgets/EditProfileDialog.cpp:207
+#: widgets/EditProfileDialog.cpp:190
 #, kde-format
 msgctxt "@title:tab Complex options"
 msgid "Advanced"
 msgstr "Sudėtingesnės parinktys"
 
-#: widgets/EditProfileDialog.cpp:315
-#, kde-format
+#: widgets/EditProfileDialog.cpp:302
+#, kde-kuit-format
+msgctxt "@info"
 msgid ""
-"<p>Konsole does not have permission to save this profile to:<br /> \"%1\"</"
-"p><p>To be able to save settings you can either change the permissions of "
-"the profile configuration file or change the profile name to save the "
-"settings to a new profile.</p>"
+"Insufficient permissions to save settings to: <filename>%1</filename>.<nl/"
+">Either change the permissions of that file or set a different name to save "
+"the settings to a new profile."
 msgstr ""
 
-#: widgets/EditProfileDialog.cpp:336
+#: widgets/EditProfileDialog.cpp:319
 #, kde-format
-msgid "<p>Each profile must have a name before it can be saved into disk.</p>"
+msgctxt "@info"
+msgid "Profile Name was empty; please set a name to be able to save settings."
 msgstr ""
-"<p>Kiekvienas profilis prieš įrašant į diską turi turėti savo pavadinimą.</p>"
 
-#: widgets/EditProfileDialog.cpp:344
+#: widgets/EditProfileDialog.cpp:327
 #, kde-format
-msgid "<p>A profile with this name already exists.</p>"
+msgctxt "@info"
+msgid "A profile with the name \"%1\" already exists."
 msgstr ""
 
-#: widgets/EditProfileDialog.cpp:378
+#: widgets/EditProfileDialog.cpp:362
 #, kde-format
 msgid "Editing profile: %2"
 msgid_plural "Editing %1 profiles: %2"
@@ -3196,12 +3606,19 @@ msgstr[1] "Keičiami %1 profiliai: %2"
 msgstr[2] "Keičiama %1 profilių: %2"
 msgstr[3] "Keičiamas %1 profilis: %2"
 
-#: widgets/EditProfileDialog.cpp:383
+#: widgets/EditProfileDialog.cpp:365
+#, fuzzy, kde-format
+#| msgctxt "@item This will be used as part of the file name"
+#| msgid "New Profile"
+msgid "Create New Profile"
+msgstr "Naujas profilis"
+
+#: widgets/EditProfileDialog.cpp:367
 #, kde-format
 msgid "Edit Profile \"%1\""
 msgstr "Keisti profilį „%1“"
 
-#: widgets/EditProfileDialog.cpp:471
+#: widgets/EditProfileDialog.cpp:464
 #, fuzzy, kde-format
 #| msgid "Columns"
 msgctxt ""
@@ -3214,7 +3631,7 @@ msgstr[1] "Stulpeliai"
 msgstr[2] "Stulpeliai"
 msgstr[3] "Stulpeliai"
 
-#: widgets/EditProfileDialog.cpp:472
+#: widgets/EditProfileDialog.cpp:466
 #, kde-format
 msgctxt ""
 "Suffix of the number of rows (N rows). The leading space is needed to "
@@ -3226,19 +3643,48 @@ msgstr[1] ""
 msgstr[2] ""
 msgstr[3] ""
 
-#: widgets/EditProfileDialog.cpp:524
+#: widgets/EditProfileDialog.cpp:476
+#, kde-format
+msgid "System Bell"
+msgstr ""
+
+#: widgets/EditProfileDialog.cpp:476
+#, fuzzy, kde-format
+#| msgid "Notifications"
+msgid "System Notifications"
+msgstr "Pranešimai"
+
+#: widgets/EditProfileDialog.cpp:476
+#, fuzzy, kde-format
+#| msgctxt "@info:credit"
+#| msgid "Visual effects"
+msgid "Visual Bell"
+msgstr "Vaizdiniai efektai"
+
+#: widgets/EditProfileDialog.cpp:476
+#, kde-format
+msgid "Ignore Bell Events"
+msgstr ""
+
+#: widgets/EditProfileDialog.cpp:485
+#, fuzzy, kde-format
+#| msgid "Set the selected profile as the default for new terminal sessions"
+msgid "Default profile for new terminal sessions in %1"
+msgstr "Nurodyti pažymėtą profilį kaip numatytą profilį naujiems terminalams"
+
+#: widgets/EditProfileDialog.cpp:526
 #, kde-format
 msgid "Edit Environment"
 msgstr "Keisti aplinką"
 
-#: widgets/EditProfileDialog.cpp:525
+#: widgets/EditProfileDialog.cpp:527
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "One environment variable per line"
 msgid "One environment variable per line"
 msgstr "Po vieną aplinkos kintamąjį eilutėje"
 
-#: widgets/EditProfileDialog.cpp:559
+#: widgets/EditProfileDialog.cpp:558
 #, kde-format
 msgctxt "Unit of time"
 msgid " second"
@@ -3248,18 +3694,18 @@ msgstr[1] " sekundės"
 msgstr[2] " sekundžių"
 msgstr[3] " sekundė"
 
-#: widgets/EditProfileDialog.cpp:652
+#: widgets/EditProfileDialog.cpp:647
 #, kde-format
 msgid "Select Initial Directory"
 msgstr "Nurodykite pradinį aplanką"
 
-#: widgets/EditProfileDialog.cpp:1213
+#: widgets/EditProfileDialog.cpp:1159
 #, kde-kuit-format
 msgctxt "@info"
 msgid "Scheme <resource>%1</resource> failed to load."
 msgstr ""
 
-#: widgets/EditProfileDialog.cpp:1398
+#: widgets/EditProfileDialog.cpp:1338
 #, kde-format
 msgid ""
 "This color scheme uses a transparent background which does not appear to be "
@@ -3267,7 +3713,7 @@ msgid ""
 msgstr ""
 "Spalvų schemoje naudojamas permatomas fonas, kurio jūsų darbalaukis nepalaiko"
 
-#: widgets/EditProfileDialog.cpp:1404
+#: widgets/EditProfileDialog.cpp:1344
 #, kde-format
 msgid ""
 "Konsole was started before desktop effects were enabled. You need to restart "
@@ -3276,34 +3722,63 @@ msgstr ""
 "Konsolė buvo paleista prieš įjungiant darbalaukio efektus. Jums reikia iš "
 "naujo paleisti Konsolę, kad matytumėte permatomą foną."
 
+#: widgets/EditProfileDialog.cpp:1735
+#, kde-format
+msgid ""
+"The format is e.g. 'editorExec PATH:LINE:COLUMN'\n"
+"\n"
+"PATH    will be replaced by the path to the text file\n"
+"LINE    will be replaced by the line number\n"
+"COLUMN  (optional) will be replaced by the column number\n"
+"Note: you will need to replace 'PATH:LINE:COLUMN' by the actual\n"
+"syntax the editor you want to use supports; e.g.:\n"
+"gedit +LINE:COLUMN PATH\n"
+"\n"
+"If PATH or LINE aren't present in the command, this setting\n"
+"will be ignored and the file will be opened by the default text\n"
+"editor."
+msgstr ""
+
+#: widgets/EditProfileDialog.cpp:1748
+#, kde-format
+msgid "Text Editor Custom Command"
+msgstr ""
+
 #. i18n: ectx: property (toolTip), widget (QPushButton, iconSelectButton)
-#: widgets/EditProfileGeneralPage.ui:55
+#: widgets/EditProfileGeneralPage.ui:59
 #, kde-format
 msgid "Select the icon displayed on tabs using this profile"
 msgstr "Nurodykite šio profilio kortelės ženkliuką"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:71
+#: widgets/EditProfileGeneralPage.ui:77
 #, kde-format
 msgid "A descriptive name for the profile"
 msgstr "Prasmingas profilio pavadinimas"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, profileNameEdit)
-#: widgets/EditProfileGeneralPage.ui:74
+#: widgets/EditProfileGeneralPage.ui:80
 #, fuzzy, kde-format
 #| msgid "Profile name:"
 msgctxt "@label:textbox"
 msgid "Profile name"
 msgstr "Profilio pavadinimas:"
 
-#. i18n: ectx: property (text), widget (QLabel, label_3)
+#. i18n: ectx: property (text), widget (QCheckBox, setAsDefaultButton)
 #: widgets/EditProfileGeneralPage.ui:87
+#, fuzzy, kde-format
+#| msgid "Default profile"
+msgid "Default Profile"
+msgstr "Numatytas profilis"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: widgets/EditProfileGeneralPage.ui:118
 #, kde-format
 msgid "Command:"
 msgstr "Komanda:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:100
+#: widgets/EditProfileGeneralPage.ui:131
 #, kde-format
 msgid ""
 "The command to execute when new terminal sessions are created using this "
@@ -3311,64 +3786,64 @@ msgid ""
 msgstr "Atvėrus naują naują kortelę su šiuo profiliu įvykdyti šią komandą"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, commandEdit)
-#: widgets/EditProfileGeneralPage.ui:106
+#: widgets/EditProfileGeneralPage.ui:137
 #, kde-format
 msgid "/bin/sh"
 msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, label_9)
-#: widgets/EditProfileGeneralPage.ui:119
+#: widgets/EditProfileGeneralPage.ui:150
 #, kde-format
 msgid "Initial directory:"
 msgstr "Pradinis aplankas:"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:132
+#: widgets/EditProfileGeneralPage.ui:163
 #, kde-format
 msgid ""
 "The initial working directory for new terminal sessions using this profile"
 msgstr "Naujos kortelės su šiuo profiliu pradinis aplankas"
 
 #. i18n: ectx: property (placeholderText), widget (QLineEdit, initialDirEdit)
-#: widgets/EditProfileGeneralPage.ui:138
+#: widgets/EditProfileGeneralPage.ui:169
 #, kde-format
 msgid "/home/username"
 msgstr ""
 
 #. i18n: ectx: property (toolTip), widget (QToolButton, dirSelectButton)
-#: widgets/EditProfileGeneralPage.ui:145
+#: widgets/EditProfileGeneralPage.ui:176
 #, kde-format
 msgid "Choose the initial directory"
 msgstr "Nurodyti pradinį aplanką"
 
 #. i18n: ectx: property (text), widget (QCheckBox, startInSameDirButton)
-#: widgets/EditProfileGeneralPage.ui:155
+#: widgets/EditProfileGeneralPage.ui:186
 #, fuzzy, kde-format
 #| msgid "Start in same directory as current tab"
 msgid "Start in same directory as current session"
 msgstr "Pradėti tame pačiame aplanke kaip ir dabartinė kortelė"
 
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: widgets/EditProfileGeneralPage.ui:168
+#: widgets/EditProfileGeneralPage.ui:199
 #, kde-format
 msgid "Environment:"
 msgstr "Aplinka:"
 
 #. i18n: ectx: property (toolTip), widget (QPushButton, environmentEditButton)
-#: widgets/EditProfileGeneralPage.ui:186
+#: widgets/EditProfileGeneralPage.ui:217
 #, kde-format
 msgid "Edit the list of environment variables and associated values"
 msgstr "Keisti aplinkos kintamųjų ir parametrų reikšmes"
 
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: widgets/EditProfileGeneralPage.ui:233
+#: widgets/EditProfileGeneralPage.ui:264
 #, fuzzy, kde-format
 #| msgid "Terminal Size"
 msgid "Initial terminal size:"
 msgstr "Terminalo dydis"
 
 #. i18n: ectx: property (text), widget (QLabel, useCurrentWindowSizeNote)
-#: widgets/EditProfileGeneralPage.ui:308
+#: widgets/EditProfileGeneralPage.ui:339
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -3376,6 +3851,14 @@ msgid ""
 "Configure Konsole → General → Remember window size</span> must be disabled "
 "for these entries to work.</p></body></html>"
 msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, terminalBellLabel)
+#: widgets/EditProfileGeneralPage.ui:352
+#, fuzzy, kde-format
+#| msgctxt "@title"
+#| msgid "Terminal emulator"
+msgid "Terminal bell mode:"
+msgstr "Terminalo emuliatorius"
 
 #. i18n: ectx: property (text), widget (QLabel, note)
 #: widgets/EditProfileKeyboardPage.ui:29
@@ -3559,41 +4042,8 @@ msgstr ""
 msgid "Trim trailing spaces"
 msgstr "Trinti tarpus eilučių pabaigoje"
 
-#. i18n: ectx: property (toolTip), widget (QLineEdit, linkEscapeSequenceTexts)
-#: widgets/EditProfileMousePage.ui:279
-#, kde-format
-msgid "The formats of possible links, like http://, https:// and file://"
-msgstr ""
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, ctrlRequiredForDragButton)
-#: widgets/EditProfileMousePage.ui:286
-#, kde-format
-msgid "Selected text will require control key plus click to drag."
-msgstr "Pažymėtas tekstas reikalaus valdymo klavišo ir spūstelėjimo kad kelti."
-
-#. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
-#: widgets/EditProfileMousePage.ui:289
-#, fuzzy, kde-format
-#| msgid "Require Ctrl key for drag and drop"
-msgid "Require Ctrl key for drag && drop"
-msgstr "Reikalauja Vald kad tempti ir mesti"
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, enableAlternateScrollingButton)
-#: widgets/EditProfileMousePage.ui:296
-#, kde-format
-msgid ""
-"Mouse scroll wheel will emulate up/down key presses in programs that use the "
-"Alternate Screen buffer (e.g. less)"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, enableAlternateScrollingButton)
-#: widgets/EditProfileMousePage.ui:299
-#, kde-format
-msgid "Enable Alternate Screen buffer scrolling"
-msgstr ""
-
 #. i18n: ectx: property (toolTip), widget (QCheckBox, underlineLinksButton)
-#: widgets/EditProfileMousePage.ui:306
+#: widgets/EditProfileMousePage.ui:263
 #, fuzzy, kde-format
 #| msgid ""
 #| "Text recognized as a link or an email address will be underlined when "
@@ -3606,14 +4056,14 @@ msgstr ""
 "virš jo pelės žymeklį."
 
 #. i18n: ectx: property (text), widget (QCheckBox, underlineLinksButton)
-#: widgets/EditProfileMousePage.ui:309
+#: widgets/EditProfileMousePage.ui:266
 #, fuzzy, kde-format
 #| msgid "Underline links"
 msgid "Underline links"
 msgstr "Pabraukti nuorodas"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, underlineFilesButton)
-#: widgets/EditProfileMousePage.ui:332
+#: widgets/EditProfileMousePage.ui:273
 #, fuzzy, kde-format
 #| msgid ""
 #| "Text recognized as a link or an email address will be underlined when "
@@ -3626,62 +4076,28 @@ msgstr ""
 "virš jo pelės žymeklį."
 
 #. i18n: ectx: property (text), widget (QCheckBox, underlineFilesButton)
-#: widgets/EditProfileMousePage.ui:335
+#: widgets/EditProfileMousePage.ui:276
 #, fuzzy, kde-format
 #| msgid "Underline links"
 msgid "Underline files"
 msgstr "Pabraukti nuorodas"
 
-#. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
-#: widgets/EditProfileMousePage.ui:342
+#. i18n: ectx: property (text), widget (QLabel, textEditorCommandLabel)
+#: widgets/EditProfileMousePage.ui:285
 #, kde-format
-msgid ""
-"Always paste dropped files and URLs as text without offering move, copy and "
-"link actions."
+msgid "Text Editor Command: "
 msgstr ""
 
-#. i18n: ectx: property (text), widget (QCheckBox, dropUrlsAsText)
-#: widgets/EditProfileMousePage.ui:345
+#. i18n: ectx: property (toolTip), widget (QLabel, textEditorCommandLabel)
+#. i18n: ectx: property (toolTip), widget (QComboBox, textEditorCombo)
+#: widgets/EditProfileMousePage.ui:291 widgets/EditProfileMousePage.ui:303
 #, kde-format
-msgid "Disable drag && drop menu for files && URLs"
+msgctxt "@info:tooltip"
+msgid "Text editor to use when opening text file URLs at a given line/column."
 msgstr ""
-
-#. i18n: ectx: property (text), widget (QCheckBox, allowLinkEscapeSequenceButton)
-#: widgets/EditProfileMousePage.ui:352
-#, kde-format
-msgid "Allow escape sequences for links"
-msgstr ""
-
-#. i18n: ectx: property (text), widget (QLabel, allowLinkEscapeSequenceButtonWarning)
-#: widgets/EditProfileMousePage.ui:359
-#, kde-format
-msgid ""
-"<b>WARNING</b>: This has security implications as it allows malicious URLs "
-"to be shown as another URL or hidden.<br>Make sure you understand the "
-"implications before turning this on."
-msgstr ""
-
-#. i18n: ectx: property (toolTip), widget (QCheckBox, enableMouseWheelZoomButton)
-#: widgets/EditProfileMousePage.ui:375
-#, kde-format
-msgid "Pressing Ctrl+scrollwheel will increase/decrease the text size."
-msgstr "Spaudžiant Vald+slinkimo ratukas didins/mažins teksto dydį."
-
-#. i18n: ectx: property (text), widget (QCheckBox, enableMouseWheelZoomButton)
-#: widgets/EditProfileMousePage.ui:378
-#, kde-format
-msgid "Allow Ctrl+scrollwheel to zoom text size"
-msgstr "Leisti Vald+slinkimo ratukas keisti teksto dydį"
-
-#. i18n: ectx: property (text), widget (QLabel, label_2)
-#: widgets/EditProfileMousePage.ui:385
-#, fuzzy, kde-format
-#| msgid "Allow blinking text"
-msgid "Allowed link formats"
-msgstr "Leisti mirgantį tekstą"
 
 #. i18n: ectx: property (toolTip), widget (QCheckBox, openLinksByDirectClickButton)
-#: widgets/EditProfileMousePage.ui:401
+#: widgets/EditProfileMousePage.ui:329
 #, fuzzy, kde-format
 #| msgid ""
 #| "Text recognized as a link or an email address can be opened by direct "
@@ -3694,11 +4110,106 @@ msgstr ""
 "tiesiogiai spūstelėjus pele."
 
 #. i18n: ectx: property (text), widget (QCheckBox, openLinksByDirectClickButton)
-#: widgets/EditProfileMousePage.ui:404
+#: widgets/EditProfileMousePage.ui:332
 #, fuzzy, kde-format
 #| msgid "Open links by direct click"
-msgid "Open by direct click"
+msgid "Open files/links by direct click"
 msgstr "Atverti nuorodas tiesioginiu spragtelėjimu"
+
+#. i18n: ectx: property (text), widget (QCheckBox, allowLinkEscapeSequenceButton)
+#: widgets/EditProfileMousePage.ui:343
+#, kde-format
+msgid "Allow escape sequences for links"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, allowLinkEscapeSequenceButtonWarning)
+#: widgets/EditProfileMousePage.ui:350
+#, kde-format
+msgid ""
+"<b>WARNING</b>: This has security implications as it allows malicious URLs "
+"to be shown as another URL or hidden.<br>Make sure you understand the "
+"implications before turning this on."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: widgets/EditProfileMousePage.ui:368
+#, fuzzy, kde-format
+#| msgid "Allow blinking text"
+msgid "Allowed link formats: "
+msgstr "Leisti mirgantį tekstą"
+
+#. i18n: ectx: property (toolTip), widget (QLineEdit, linkEscapeSequenceTexts)
+#: widgets/EditProfileMousePage.ui:378
+#, kde-format
+msgid "The formats of possible links, like http://, https:// and file://"
+msgstr ""
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, ctrlRequiredForDragButton)
+#: widgets/EditProfileMousePage.ui:389
+#, kde-format
+msgid "Selected text will require control key plus click to drag."
+msgstr "Pažymėtas tekstas reikalaus valdymo klavišo ir spūstelėjimo kad kelti."
+
+#. i18n: ectx: property (text), widget (QCheckBox, ctrlRequiredForDragButton)
+#: widgets/EditProfileMousePage.ui:392
+#, fuzzy, kde-format
+#| msgid "Require Ctrl key for drag and drop"
+msgid "Require Ctrl key for drag && drop"
+msgstr "Reikalauja Vald kad tempti ir mesti"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableAlternateScrollingButton)
+#: widgets/EditProfileMousePage.ui:399
+#, kde-format
+msgid ""
+"Mouse scroll wheel will emulate up/down key presses in programs that use the "
+"Alternate Screen buffer (e.g. less)"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableAlternateScrollingButton)
+#: widgets/EditProfileMousePage.ui:402
+#, kde-format
+msgid "Enable Alternate Screen buffer scrolling"
+msgstr ""
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, dropUrlsAsText)
+#: widgets/EditProfileMousePage.ui:409
+#, kde-format
+msgid ""
+"Always paste dropped files and URLs as text without offering move, copy and "
+"link actions."
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, dropUrlsAsText)
+#: widgets/EditProfileMousePage.ui:412
+#, kde-format
+msgid "Disable drag && drop menu for files && URLs"
+msgstr ""
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, enableMouseWheelZoomButton)
+#: widgets/EditProfileMousePage.ui:419
+#, kde-format
+msgid "Pressing Ctrl+scrollwheel will increase/decrease the text size."
+msgstr "Spaudžiant Vald+slinkimo ratukas didins/mažins teksto dydį."
+
+#. i18n: ectx: property (text), widget (QCheckBox, enableMouseWheelZoomButton)
+#: widgets/EditProfileMousePage.ui:422
+#, kde-format
+msgid "Allow Ctrl+scrollwheel to zoom text size"
+msgstr "Leisti Vald+slinkimo ratukas keisti teksto dydį"
+
+#. i18n: ectx: property (toolTip), widget (QCheckBox, allowColorFilters)
+#: widgets/EditProfileMousePage.ui:429
+#, kde-format
+msgid ""
+"When positioning the mouse over a hexadecimal color it will be displayed in "
+"a frame next to the mouse pointer"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, allowColorFilters)
+#: widgets/EditProfileMousePage.ui:432
+#, kde-format
+msgid "Allow Color Filters"
+msgstr ""
 
 #. i18n: ectx: property (text), widget (QLabel, historySizeLabel)
 #: widgets/EditProfileScrollingPage.ui:43
@@ -3794,6 +4305,18 @@ msgstr ""
 msgid "Highlight the lines coming into view"
 msgstr ""
 
+#. i18n: ectx: property (text), widget (QLabel, labelReflowLines)
+#: widgets/EditProfileScrollingPage.ui:240
+#, kde-format
+msgid "Reflow Lines:"
+msgstr ""
+
+#. i18n: ectx: property (text), widget (QCheckBox, reflowLinesButton)
+#: widgets/EditProfileScrollingPage.ui:250
+#, kde-format
+msgid "Reflow lines when terminal resizes"
+msgstr ""
+
 #. i18n: ectx: property (title), widget (QGroupBox, groupBox_5)
 #: widgets/EditProfileTabsPage.ui:43
 #, kde-format
@@ -3818,7 +4341,7 @@ msgstr "Slenkstis besitęsiančiai tylai:"
 msgid "The threshold for continuous silence to be detected by Konsole"
 msgstr "Slenkstis besitęsiančiai tylai bus aptinkama Konsolės"
 
-#: widgets/HistorySizeWidget.cpp:57
+#: widgets/HistorySizeWidget.cpp:40
 #, kde-format
 msgctxt "@label:textbox Unit of scrollback"
 msgid " line"
@@ -3828,7 +4351,7 @@ msgstr[1] " eilutės"
 msgstr[2] " eilučių"
 msgstr[3] " eilutė"
 
-#: widgets/HistorySizeWidget.cpp:72
+#: widgets/HistorySizeWidget.cpp:57
 #, kde-format
 msgctxt "@info:whatsthis"
 msgid ""
@@ -3837,7 +4360,7 @@ msgid ""
 "issues with your system."
 msgstr ""
 
-#: widgets/HistorySizeWidget.cpp:81
+#: widgets/HistorySizeWidget.cpp:68
 #, fuzzy, kde-kuit-format
 #| msgctxt "@info:status"
 #| msgid ""
@@ -3904,7 +4427,7 @@ msgctxt "Do not save any lines to the scrollback history"
 msgid "None"
 msgstr "&Nei vienos"
 
-#: widgets/IncrementalSearchBar.cpp:60
+#: widgets/IncrementalSearchBar.cpp:47
 #, fuzzy, kde-format
 #| msgctxt "@label:textbox"
 #| msgid "Find:"
@@ -3912,115 +4435,117 @@ msgctxt "@label:textbox"
 msgid "Find..."
 msgstr "Ieškoti:"
 
-#: widgets/IncrementalSearchBar.cpp:62
+#: widgets/IncrementalSearchBar.cpp:49
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Enter the text to search for here"
 msgstr "Įrašykite ieškomą frazę čia"
 
-#: widgets/IncrementalSearchBar.cpp:88
+#: widgets/IncrementalSearchBar.cpp:73
 #, kde-format
 msgctxt "@action:button Go to the next phrase"
 msgid "Next"
 msgstr "Kitas"
 
-#: widgets/IncrementalSearchBar.cpp:92
+#: widgets/IncrementalSearchBar.cpp:76
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the next match for the current search phrase"
 msgstr "Rasti kitą atitikmenį dabartinei paieškos frazei"
 
-#: widgets/IncrementalSearchBar.cpp:100
+#: widgets/IncrementalSearchBar.cpp:83
 #, kde-format
 msgctxt "@action:button Go to the previous phrase"
 msgid "Previous"
 msgstr "Ankstesnis"
 
-#: widgets/IncrementalSearchBar.cpp:103
+#: widgets/IncrementalSearchBar.cpp:85
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Find the previous match for the current search phrase"
 msgstr "Rasti ankstesnį atitikmenį dabartinei paieškos frazei"
 
-#: widgets/IncrementalSearchBar.cpp:120
+#: widgets/IncrementalSearchBar.cpp:100
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Display the options menu"
 msgstr "Rodyti parinkčių meniu"
 
-#: widgets/IncrementalSearchBar.cpp:127
+#: widgets/IncrementalSearchBar.cpp:107
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Close the search bar"
 msgstr "Užverti paieškos juostą"
 
-#: widgets/IncrementalSearchBar.cpp:137
+#: widgets/IncrementalSearchBar.cpp:117
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Case sensitive"
 msgstr "Skirti raidžių dydį"
 
-#: widgets/IncrementalSearchBar.cpp:139
+#: widgets/IncrementalSearchBar.cpp:119
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether the search is case sensitive"
 msgstr "Paieškos metu skirti raidžių dydį"
 
-#: widgets/IncrementalSearchBar.cpp:143
+#: widgets/IncrementalSearchBar.cpp:122
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Match regular expression"
 msgstr "Ieškoti kaip reguliaraus reiškinio"
 
-#: widgets/IncrementalSearchBar.cpp:148
+#: widgets/IncrementalSearchBar.cpp:126
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Highlight all matches"
 msgstr "Paryškinti visus atitikmenis"
 
-#: widgets/IncrementalSearchBar.cpp:151
+#: widgets/IncrementalSearchBar.cpp:128
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Sets whether matching text should be highlighted"
 msgstr "Paryškinti paieškos užklausą atitikusį tekstą"
 
-#: widgets/IncrementalSearchBar.cpp:155
+#: widgets/IncrementalSearchBar.cpp:131
 #, kde-format
 msgctxt "@item:inmenu"
 msgid "Search backwards"
 msgstr "Ieškoti pradžios link"
 
-#: widgets/IncrementalSearchBar.cpp:158
+#: widgets/IncrementalSearchBar.cpp:133
 #, fuzzy, kde-format
 #| msgid "Sets whether search should start from the bottom"
 msgctxt "@info:tooltip"
 msgid "Sets whether search should start from the bottom"
 msgstr "Nustato kad paieška turi startuoti nuo apačios"
 
-#: widgets/IncrementalSearchBar.cpp:189
+#: widgets/IncrementalSearchBar.cpp:163
 #, fuzzy, kde-format
 #| msgid "Search for the current search phrase from the bottom"
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the bottom"
 msgstr "Ieškoti dabartinės paieškos frazės nuo apačios"
 
-#: widgets/IncrementalSearchBar.cpp:195
+#: widgets/IncrementalSearchBar.cpp:168
 #, fuzzy, kde-format
 #| msgid "Search for the current search phrase from the top"
 msgctxt "@info:tooltip"
 msgid "Search for the current search phrase from the top"
 msgstr "Ieškoti dabartinės paieškos frazės nuo viršaus"
 
-#: widgets/KonsolePrintManager.cpp:63
+#: widgets/KonsolePrintManager.cpp:50
 #, kde-format
 msgid "Print Shell"
 msgstr "Spausdintų apvalkalą"
 
-#: widgets/RenameTabWidget.cpp:47
+#: widgets/RenameTabWidget.cpp:37
 #, fuzzy, kde-format
-#| msgid "New Color Scheme"
-msgid "Color from theme"
-msgstr "Nauja spalvų schema"
+#| msgctxt "@action:inmenu Do not select any tabs"
+#| msgid "&None"
+msgctxt "@label:listbox No color selected"
+msgid "None"
+msgstr "&Nei vienos"
 
 #. i18n: ectx: property (toolTip), widget (QLineEdit, remoteTabTitleEdit)
 #: widgets/RenameTabWidget.ui:41
@@ -4058,85 +4583,85 @@ msgstr "Standartinis kortelių pavadinimų formatas"
 msgid "Tab Color:"
 msgstr "Spalva"
 
-#: widgets/TabTitleFormatButton.cpp:33
+#: widgets/TabTitleFormatButton.cpp:20
 #, kde-format
 msgid "Program Name: %n"
 msgstr "Programos pavadinimas: %n"
 
-#: widgets/TabTitleFormatButton.cpp:34
+#: widgets/TabTitleFormatButton.cpp:21
 #, kde-format
 msgid "Current Directory (Short): %d"
 msgstr "Dabartinis aplankas (trumpas): %d"
 
-#: widgets/TabTitleFormatButton.cpp:35
+#: widgets/TabTitleFormatButton.cpp:22
 #, kde-format
 msgid "Current Directory (Long): %D"
 msgstr "Dabartinis aplankas (ilgas): %D"
 
-#: widgets/TabTitleFormatButton.cpp:36 widgets/TabTitleFormatButton.cpp:51
+#: widgets/TabTitleFormatButton.cpp:23 widgets/TabTitleFormatButton.cpp:40
 #, kde-format
 msgid "Window Title Set by Shell: %w"
 msgstr "Lango pavadinimas nustatytas pagal apvalkalą: %w"
 
-#: widgets/TabTitleFormatButton.cpp:37 widgets/TabTitleFormatButton.cpp:52
+#: widgets/TabTitleFormatButton.cpp:24 widgets/TabTitleFormatButton.cpp:41
 #, kde-format
 msgid "Session Number: %#"
 msgstr "Sesijos numeris: %#"
 
-#: widgets/TabTitleFormatButton.cpp:38 widgets/TabTitleFormatButton.cpp:46
+#: widgets/TabTitleFormatButton.cpp:25 widgets/TabTitleFormatButton.cpp:35
 #, kde-format
 msgid "User Name: %u"
 msgstr "Naudotojo vardas: %u"
 
-#: widgets/TabTitleFormatButton.cpp:39
+#: widgets/TabTitleFormatButton.cpp:26
 #, kde-format
 msgid "Local Host: %h"
 msgstr "Vietinis serveris: %h"
 
-#: widgets/TabTitleFormatButton.cpp:40
+#: widgets/TabTitleFormatButton.cpp:29
 #, kde-format
 msgid "User's Bourne prompt sigil: %B"
 msgstr ""
 
-#: widgets/TabTitleFormatButton.cpp:47
+#: widgets/TabTitleFormatButton.cpp:36
 #, fuzzy, kde-format
 #| msgid "User Name: %u"
 msgid "User Name@ (if given): %U"
 msgstr "Naudotojo vardas: %u"
 
-#: widgets/TabTitleFormatButton.cpp:48
+#: widgets/TabTitleFormatButton.cpp:37
 #, kde-format
 msgid "Remote Host (Short): %h"
 msgstr "Nutolęs mazgas (trumpas): %h"
 
-#: widgets/TabTitleFormatButton.cpp:49
+#: widgets/TabTitleFormatButton.cpp:38
 #, kde-format
 msgid "Remote Host (Long): %H"
 msgstr "Nutolęs mazgas (ilgas): %H"
 
-#: widgets/TabTitleFormatButton.cpp:50
+#: widgets/TabTitleFormatButton.cpp:39
 #, kde-format
 msgid "Command and arguments: %c"
 msgstr ""
 
-#: widgets/TabTitleFormatButton.cpp:61
+#: widgets/TabTitleFormatButton.cpp:49
 #, kde-format
 msgid "Insert"
 msgstr "Įterpti"
 
-#: widgets/TabTitleFormatButton.cpp:86
+#: widgets/TabTitleFormatButton.cpp:74
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert title format"
 msgstr "Įterpti antraštės formatą"
 
-#: widgets/TabTitleFormatButton.cpp:90
+#: widgets/TabTitleFormatButton.cpp:78
 #, kde-format
 msgctxt "@info:tooltip"
 msgid "Insert remote title format"
 msgstr "Įterpti nuotolinio pavadinimo formatą"
 
-#: widgets/TerminalHeaderBar.cpp:95 widgets/TerminalHeaderBar.cpp:196
+#: widgets/TerminalHeaderBar.cpp:80 widgets/TerminalHeaderBar.cpp:188
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Close tab"
@@ -4144,7 +4669,14 @@ msgctxt "@info:tooltip"
 msgid "Maximize terminal"
 msgstr "Užverti kortelę"
 
-#: widgets/TerminalHeaderBar.cpp:106
+#: widgets/TerminalHeaderBar.cpp:91
+#, fuzzy, kde-format
+#| msgid "Above Terminal Area"
+msgctxt "@info:tooltip"
+msgid "Move terminal to new tab"
+msgstr "Virš terminalo ploto"
+
+#: widgets/TerminalHeaderBar.cpp:101
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Close tab"
@@ -4152,7 +4684,7 @@ msgctxt "@info:tooltip"
 msgid "Close terminal"
 msgstr "Užverti kortelę"
 
-#: widgets/TerminalHeaderBar.cpp:194
+#: widgets/TerminalHeaderBar.cpp:186
 #, fuzzy, kde-format
 #| msgctxt "@info:tooltip"
 #| msgid "Close tab"
@@ -4160,7 +4692,7 @@ msgctxt "@info:tooltip"
 msgid "Restore terminal"
 msgstr "Užverti kortelę"
 
-#: widgets/ViewContainer.cpp:73
+#: widgets/ViewContainer.cpp:57
 #, fuzzy, kde-format
 #| msgctxt "@action:inmenu"
 #| msgid "&Detach Tab"
@@ -4168,7 +4700,7 @@ msgctxt "@info:tooltip"
 msgid "Open a new tab"
 msgstr "&Atkabinti kortelę"
 
-#: widgets/ViewContainer.cpp:78
+#: widgets/ViewContainer.cpp:62
 #, fuzzy, kde-format
 #| msgctxt "@info:whatsthis"
 #| msgid "Close the active tab"
@@ -4176,25 +4708,61 @@ msgctxt "@info:tooltip"
 msgid "Close this tab"
 msgstr "Užverti aktyvią kortelę"
 
-#: widgets/ViewContainer.cpp:115
+#: widgets/ViewContainer.cpp:95
 #, kde-format
 msgctxt "@action:inmenu"
 msgid "&Detach Tab"
 msgstr "&Atkabinti kortelę"
 
-#: widgets/ViewContainer.cpp:122
+#: widgets/ViewContainer.cpp:101
 #, fuzzy, kde-format
 #| msgid "&Rename Tab..."
 msgctxt "@action:inmenu"
 msgid "&Configure or Rename Tab..."
 msgstr "Pe&rvadinti kortelę..."
 
-#: widgets/ViewContainer.cpp:129
+#: widgets/ViewContainer.cpp:106
 #, fuzzy, kde-format
 #| msgid "&Close Tab"
 msgctxt "@action:inmenu"
 msgid "Close Tab"
 msgstr "&Užverti kortelę"
+
+#, fuzzy
+#~| msgid "Show menubar by default"
+#~ msgid "Show menubar"
+#~ msgstr "Rodyti meniu juostą pagal nutylėjimą"
+
+#~ msgid "Show menubar by default"
+#~ msgstr "Rodyti meniu juostą pagal nutylėjimą"
+
+#~ msgid "Show menubar by default in each Konsole window"
+#~ msgstr "Rodyti meniu juostą pagal nutylėjimą kiekvienoje Konsolės lange"
+
+#, fuzzy
+#~| msgid "Open File Manager"
+#~ msgid "Hide SSH Manager"
+#~ msgstr "Atverti failų tvarkyklę"
+
+#~ msgid ""
+#~ "<p>Each profile must have a name before it can be saved into disk.</p>"
+#~ msgstr ""
+#~ "<p>Kiekvienas profilis prieš įrašant į diską turi turėti savo pavadinimą."
+#~ "</p>"
+
+#, fuzzy
+#~| msgid "&Set as Default"
+#~ msgctxt "@label:textbox Name of the current default profile"
+#~ msgid " (Default)"
+#~ msgstr "N&ustatyti kaip numatytą"
+
+#~ msgid "Edit the selected profile(s)"
+#~ msgstr "Keisti pažymėtą profilį(ius)"
+
+#, fuzzy
+#~| msgid "New Color Scheme"
+#~ msgid "Color from theme"
+#~ msgstr "Nauja spalvų schema"
 
 #~ msgctxt "The default name of a profile"
 #~ msgid "Profile #%1"
@@ -4214,27 +4782,12 @@ msgstr "&Užverti kortelę"
 #~ msgid "Show profile in menu"
 #~ msgstr "Rodyti meniu"
 
-#, fuzzy
-#~| msgid "&Set as Default"
-#~ msgctxt "@item:intable Default list item's name suffix (with separator)"
-#~ msgid " (default)"
-#~ msgstr "N&ustatyti kaip numatytą"
-
 #~ msgid "Rename Tab"
 #~ msgstr "Pervadinti kortelę"
 
 #~ msgctxt "@action:inmenu"
 #~ msgid "&Rename Tab..."
 #~ msgstr "&Pervadinti kortelę..."
-
-#~ msgid "Open File"
-#~ msgstr "Atverti failą"
-
-#, fuzzy
-#~| msgid "Filter:"
-#~ msgctxt "@title"
-#~ msgid "Filter"
-#~ msgstr "Filtras:"
 
 #, fuzzy
 #~| msgid "Confirm Paste"
@@ -4386,9 +4939,6 @@ msgstr "&Užverti kortelę"
 
 #~ msgid "Cursor shape:"
 #~ msgstr "Žymeklio forma:"
-
-#~ msgid "Change the shape of the cursor"
-#~ msgstr "Keisti žymeklio formą"
 
 #~ msgid "Encoding"
 #~ msgstr "Koduotė"

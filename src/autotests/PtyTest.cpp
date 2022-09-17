@@ -1,20 +1,7 @@
 /*
-    Copyright 2008 by Robert Knight <robertknight@gmail.com>
+    SPDX-FileCopyrightText: 2008 Robert Knight <robertknight@gmail.com>
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-    02110-1301  USA.
+    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
 // Own
@@ -25,6 +12,7 @@
 #include <QStringList>
 
 // KDE
+#include <kcoreaddons_version.h>
 #include <qtest.h>
 
 using namespace Konsole;
@@ -84,9 +72,7 @@ void PtyTest::testRunProgram()
 
     QCOMPARE(result, 0);
 
-    // since there is no other processes using this pty, the two methods
-    // should return the same pid.
-    QCOMPARE(pty.foregroundProcessGroup(), pty.pid());
+    QCOMPARE(pty.foregroundProcessGroup(), pty.processId());
 }
 
 QTEST_GUILESS_MAIN(PtyTest)
